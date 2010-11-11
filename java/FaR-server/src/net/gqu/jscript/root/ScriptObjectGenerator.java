@@ -5,11 +5,10 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
 import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.Scriptable;
 
 public class ScriptObjectGenerator {
 
-	public static Scriptable createRequestParams(HttpServletRequest request, String remains) {
+	public static NativeObject createRequestParams(HttpServletRequest request, String remains) {
 
 		NativeObject object = new NativeObject();
 		Enumeration names = request.getParameterNames();
