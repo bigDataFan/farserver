@@ -351,8 +351,8 @@ public class GQServlet extends HttpServlet {
 		// add web script parameters
 		ScriptRequest sr = new ScriptRequest(req);
 		sr.setRemainPath(remainPath);
+		params.put("params", sr.getParams());
 		params.put("request", sr);
-		params.put("params", ScriptObjectGenerator.createRequestParams(req, remainPath));
 		params.put("response", new ScriptResponse(response));
 		params.put("user", AuthenticationUtil.getCurrentUser());
 		params.put("db", new ScriptMongoDB(dbProvider,
