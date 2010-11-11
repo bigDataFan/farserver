@@ -1,0 +1,143 @@
+package net.gqu.jscript.root;
+
+import java.io.UnsupportedEncodingException;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import net.gqu.exception.HttpStatusExceptionImpl;
+/**
+ * Http服务处理类 
+ */
+
+public class ScriptRequest {
+	private static final String GET = "get";
+	private static final String UTF_8 = "utf-8";
+	private static final String ISO_8859_1 = "ISO-8859-1";
+	private HttpServletRequest request;
+	private String remainPath;
+	
+	private StringBuffer sb = new StringBuffer();
+	ScriptCookie[] cookies = null;
+	
+	public ScriptRequest(HttpServletRequest req) {
+		request = req;
+	}
+	public String getPath() {
+		return remainPath;
+	}
+	public void setRemainPath(String remainPath) {
+		this.remainPath = remainPath;
+	}
+
+
+	public String getSessionId() {
+		return request.getSession().getId();
+	}
+	
+	public ScriptCookie[] getCookies() {
+		if (cookies==null) {
+			Cookie[] cs = request.getCookies();
+			cookies = new ScriptCookie[cs.length];
+			
+			for (int i = 0; i < cs.length; i++) {
+				cookies[i] = new ScriptCookie(cs[i]);
+			}
+		}
+		return cookies;
+	}
+	
+	public String getSessionAttr( String key) {
+		return (String) request.getSession().getAttribute(key);
+	}
+	
+	public void setSessionAttr(String key, String value) {
+		request.getSession().setAttribute(key, value);
+	}
+	
+	
+	public Object getAttribute(String arg0) {
+		return request.getAttribute(arg0);
+	}
+
+	public String getHeader(String arg0) {
+		return request.getHeader(arg0);
+	}
+
+	public String getParameter(String arg0) {
+		try {
+			if (request.getMethod().equalsIgnoreCase(GET)) {
+	 			String value = request.getParameter(arg0);
+				if (value!=null) {
+					return new String(value.getBytes(ISO_8859_1),UTF_8);
+				}
+			} else {
+				return request.getParameter(arg0);
+			}
+		} catch (UnsupportedEncodingException e) {
+		}
+		return null;
+	}
+
+	public Object getParameter(String arg0,Object defaultvalue) {
+		return request.getParameter(arg0)==null?defaultvalue:request.getParameter(arg0);
+	}
+	
+	
+	public String getPathInfo() {
+		return request.getPathInfo();
+	}
+
+	public String getQueryString() {
+		return request.getQueryString();
+	}
+
+	public String getBaseUrl() {
+		String[] splits = request.getRequestURI().split("/");
+		
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < 4; i++) {
+			sb.append(splits[i]).append("/");
+		}
+		
+		return sb.toString();
+	}
+
+
+
+	/**
+	 * 直接设置http返回状态码，用来处理出错情况 
+	 * 代码执行到此则直接返回
+	 * @param code 
+	 */
+	public void setCode(int code) {
+		throw new HttpStatusExceptionImpl(code, null);
+	}
+	
+	/**
+	 * 直接设置http返回状态码，用来处理出错情况 
+	 * 代码执行到此则直接返回
+	 * @param code 
+	 */
+	public void code(int code) {
+		throw new HttpStatusExceptionImpl(code, null);
+	}
+	
+	public void msg(String msg) {
+		if(sb.length()>10000) {
+			return;
+		} else {
+			sb.append(msg);
+		}
+	}
+	
+	public String getMsg() {
+		return sb.toString();
+	}
+	
+	
+	public String getRemoteAddr() {
+		return request.getRemoteAddr();
+	}
+	
+}
