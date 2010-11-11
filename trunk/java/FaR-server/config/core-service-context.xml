@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="dbProvider" class="net.gqu.mongodb.MongoDBProvider" init-method="init">
+		<property name="ip" value="127.0.0.1"></property>
+		<property name="port" value="27017"></property>
+		<property name="mainDb" value="MainDB"></property>
+	</bean>
+	
+	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl">
+		<property name="mainServer" value="http://127.0.0.1:8080/GQMain/"></property>
+		<property name="dbProvider" ref="dbProvider"></property>
+	</bean>
+	
+	<bean id="repositoryService" class="net.gqu.repository.RepositoryServiceImpl">
+		<property name="loaders">
+			<list>
+				<ref bean="loader.github"/>
+				<ref bean="loader.googlecode"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="loader.github" class="net.gqu.repository.GitHubLoader">
+	</bean>
+
+	<bean id="loader.googlecode" class="net.gqu.repository.GoogleLoader">
+	</bean>
+	
+	<bean id="cacheService" class="net.gqu.cache.EhCacheService"></bean>
+
+	<bean id="userService" class="net.gqu.security.GQUUserService">
+		<property name="dbProvider">
+			<ref bean="dbProvider"/>
+		</property>
+	</bean>
+	
+	<bean id="scriptService" class="net.gqu.service.ScriptExecService" init-method="init">
+	</bean>
+	
+	<bean id="rest.applicationService" class="net.gqu.rest.ApplicationRestService">
+		<property name="applicationService" ref="applicationService"></property>
+		<property name="cacheService" ref="cacheService"></property>
+	</bean>
+
+	<bean id="registry" class="net.gqu.rest.HttpServiceRegistry">
+		<property name="injectedServices">
+			<list>
+				<ref bean="rest.applicationService"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 
+	<bean name="image.transformer.exe" class="net.gqu.utils.RuntimeExec">
+            <property name="processDirectory">
+            	<value>E:/apache-tomcat-6.0.18/ImageMagick/bin</value>
+            </property>
+            <property name="defaultProperties">
+               <props>
+                  <prop key="options"></prop>
+               </props>
+            </property>
+         </bean>
+       -->
+</beans>
