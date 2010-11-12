@@ -1,3 +1,4 @@
+var result = new Object();
 
 if (params.cmd=="open") {
 		
@@ -16,7 +17,6 @@ if (params.cmd=="open") {
 		}
 	}
 	
-	var result = new Object();
 	
 	result.cwd = getCwd(parent);
 	result.cdc = getCdc(parent);
