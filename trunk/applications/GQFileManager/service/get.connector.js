@@ -28,11 +28,7 @@ if (params.cmd=="open") {
 		result.params = getParams();
 	}
 
-}
-
-
-
-if (params.cmd=="mkdir") {
+} else if (params.cmd=="mkdir") {
 	var parentFolder = db.getCollection("files").getById(params.current);
 	if (parentFolder!=null && parentFolder.isFolder) {
 		var newFolder = new Object();
@@ -40,10 +36,9 @@ if (params.cmd=="mkdir") {
 		newFolder.parent = parentFolder.id;
 		db.getCollection("files").save(newFolder);
 	}
-
 }
-result;
 
+result;
 
 
 
