@@ -8,6 +8,17 @@ if (params.cmd=="open") {
 		result.tree.read = true;
 		result.tree.write = true;
 		result.tree.dirs = new Array();
+		result.tree.dirs.push({
+            "name": "Homex",
+            "hash": "316c0925240a4647cc706541e6794dc3",
+            "mime": "directory",
+            "date": "11 Mar 2010 06:39",
+            "size": 0,
+            "read": true,
+            "write": false,
+            "rm": false
+        });
+		
 	}
 }
 
