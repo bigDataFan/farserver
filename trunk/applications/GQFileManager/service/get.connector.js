@@ -40,8 +40,8 @@ if (params.cmd=="open") {
 			};
 		db.getCollection("files").insert(newFolder);
 		
-		result.cdc = getCdc(parent);
-		result.cwd = getCwd(parent);
+		result.cdc = getCdc(parentFolder);
+		result.cwd = getCwd(parentFolder);
 		result.select = [];
 	}
 }
