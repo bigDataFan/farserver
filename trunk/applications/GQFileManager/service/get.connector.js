@@ -49,18 +49,6 @@ result.cdc = [
             "rm": false
         }
         ];
-        
-        
-result.tree =  {
-        "hash": "40c7485acf3286896ca633dfbdd01ffc",
-        "name": "Home",
-        "read": true,
-        "write": true,
-        "dirs": [
-        ]
-};
-
-
 
 result.debug = {
     "time": 0.671977997,
