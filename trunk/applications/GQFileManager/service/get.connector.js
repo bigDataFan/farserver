@@ -1,4 +1,6 @@
 var result = new Object();
+
+
 if (params.cmd=="open") {
 	if (params.tree=="true") {
 		result.tree = new Object();
@@ -12,11 +14,11 @@ if (params.cmd=="open") {
 result.params = new Object();
 result.params.uplMaxSize = "10M";
 result.params.archives = [
-                          "application\/x-tar",
-                          "application\/x-gzip",
-                          "application\/x-bzip2",
-                          "application\/x-7z-compressed",
-                          "application\/zip"
+                          "application/x-tar",
+                          "application/x-gzip",
+                          "application/x-bzip2",
+                          "application/x-7z-compressed",
+                          "application/zip"
                       ];
 result.params.extract = result.params.archives;
 result.params.url = "/service/upload";
@@ -26,7 +28,7 @@ result.cwd = {
     "hash": "e9f8bf5d915a834ee06ac784b906ce51",
     "name": "MIME-types",
     "mime": "directory",
-    "rel": "Home\/MIME-types",
+    "rel": "Home/MIME-types",
     "size": 0,
     "date": "11 Mar 2010 06:39",
     "read": true,
@@ -61,7 +63,6 @@ result.tree =  {
                      "read": false,
                      "write": false,
                      "dirs": [
-                         
                      ]
                  }
         ]
