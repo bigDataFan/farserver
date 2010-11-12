@@ -30,11 +30,19 @@ if (params.cmd=="open") {
 
 } else if (params.cmd=="mkdir") {
 	var parentFolder = db.getCollection("files").getById(params.current);
-	if (parentFolder!=null && parentFolder.isFolder) {
-		var newFolder = new Object();
-		newFolder.name = params.name;
-		newFolder.parent = parentFolder.id;
+	if (parentFolder!=null && parentFolder.mime=="directory") {
+		var newFolder = {
+				"modified" : new Date(),
+				"mime": "directory",
+				"name": params.name,
+				"rel": "/",
+				"parent":params.current
+			};
 		db.getCollection("files").save(newFolder);
+		
+		result.cdc = getCdc(parent);
+		result.cwd = getCwd(parent);
+		result.select = [];
 	}
 }
 
