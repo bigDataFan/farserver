@@ -61,7 +61,7 @@ function getCdc(folder) {
 		 {
             "name": o.name,
             "hash": o.id,
-            "mime": o.mimetype,
+            "mime": o.mime,
             "date": o.modified,
             "size": o.size,
             "read": true,
