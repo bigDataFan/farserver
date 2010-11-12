@@ -28,7 +28,7 @@ result.cwd = {
     "hash": "e9f8bf5d915a834ee06ac784b906ce51",
     "name": "MIME-types",
     "mime": "directory",
-    "rel": "Home/MIME-types",
+    "rel": "/",
     "size": 0,
     "date": "11 Mar 2010 06:39",
     "read": true,
@@ -39,7 +39,7 @@ result.cwd = {
 
 result.cdc = [
         {
-            "name": "Drag &amp; Drop",
+            "name": "Home",
             "hash": "316c0925240a4647cc706541e6794dc3",
             "mime": "directory",
             "date": "11 Mar 2010 06:39",
@@ -57,16 +57,9 @@ result.tree =  {
         "read": true,
         "write": true,
         "dirs": [
-                 {
-                     "hash": "1fa6eca9d4e8d3dc10b35e36388d9723",
-                     "name": "Backup",
-                     "read": false,
-                     "write": false,
-                     "dirs": [
-                     ]
-                 }
         ]
 };
+
 
 
 result.debug = {
