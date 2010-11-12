@@ -39,7 +39,7 @@ if (params.cmd=="mkdir") {
 		newFolder.name = params.name;
 		newFolder.parent = parentFolder.id;
 		db.getCollection("files").save(newFolder);
-	}		
+	}
 
 }
 result;
