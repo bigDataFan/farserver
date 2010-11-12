@@ -34,7 +34,7 @@ result.cwd = {
     "read": true,
     "write": true,
     "rm": true
-}
+};
 
 
 result.cdc = [
@@ -48,7 +48,7 @@ result.cdc = [
             "write": false,
             "rm": false
         }
-        ]
+        ];
         
         
 result.tree =  {
@@ -66,7 +66,7 @@ result.tree =  {
                      ]
                  }
         ]
-}
+};
 
 
 result.debug = {
@@ -75,6 +75,6 @@ result.debug = {
     "imgLib": "gd",
     "dirSize": true,
     "du": true
-}
+};
 
 result;
