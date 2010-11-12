@@ -38,8 +38,7 @@ if (params.cmd=="open") {
 				"rel": "/",
 				"parent":params.current
 			};
-		db.getCollection("files").insert(newFolder);
-		
+		db.getCollection("files").upsert({"parent":params.current, "name":params.name},newFolder);
 		result.cdc = getCdc(parentFolder);
 		result.cwd = getCwd(parentFolder);
 		result.select = [];
