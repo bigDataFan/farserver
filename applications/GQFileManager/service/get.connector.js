@@ -19,7 +19,6 @@ if (params.cmd=="open") {
 		parent = db.getCollection("files").findOne({"parent":params.target});
 	}
 	
-	
 	result.cwd = getCwd(parent);
 	result.cdc = getCdc(parent);
 	result.disabled = [];
@@ -93,6 +92,7 @@ function getTree(folder) {
 	tree.read = true;
 	tree.write = true;
 	tree.dirs = getDirs(folder, true);
+	return tree;
 }
 
 
