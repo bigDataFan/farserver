@@ -3,7 +3,7 @@ var result = new Object();
 if (params.cmd=="open") {
 		
 	var parent = null;
-	if (params.init == true) {
+	if (params.init == "true") {
 		parent = db.getCollection("files").findOne({"parent":""});
 		if (parent==null) {
 			parent = {
@@ -15,6 +15,8 @@ if (params.cmd=="open") {
 			};
 			parent.id = db.getCollection("files").upsert({"parent":""}, parent);
 		}
+	} else {
+		parent = db.getCollection("files").findOne({"parent":params.target});
 	}
 	
 	
