@@ -16,7 +16,8 @@ if (params.cmd=="open") {
             "size": 0,
             "read": true,
             "write": false,
-            "rm": false
+            "rm": false,
+            "dirs":[]
         });
 		
 	}
