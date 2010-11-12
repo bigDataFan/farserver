@@ -26,9 +26,9 @@ result.params.url = "/service/upload";
 
 result.cwd = {
     "hash": "e9f8bf5d915a834ee06ac784b906ce51",
-    "name": "MIME-types",
+    "name": "Home",
     "mime": "directory",
-    "rel": "/",
+    "rel": "Home",
     "size": 0,
     "date": "11 Mar 2010 06:39",
     "read": true,
@@ -39,7 +39,7 @@ result.cwd = {
 
 result.cdc = [
         {
-            "name": "Home",
+            "name": "Homex",
             "hash": "316c0925240a4647cc706541e6794dc3",
             "mime": "directory",
             "date": "11 Mar 2010 06:39",
