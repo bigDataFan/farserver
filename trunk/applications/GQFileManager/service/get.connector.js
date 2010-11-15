@@ -5,7 +5,7 @@ if (params.cmd=="open") {
 	var cwdNode = null;
 	if (params.init == "true") {
 		cwdNode = db.getCollection("files").findOne({"parent":""});
-		if (cwdNode==null) {
+		if (cwdNode == null) {
 			cwdNode = {
 				"modified" : new Date(),
 				"mime": "directory",
@@ -13,7 +13,7 @@ if (params.cmd=="open") {
 				"rel": "/",
 				"parent":""
 			};
-			db.getCollection("files").upsert({"parent":""}, parent);
+			db.getCollection("files").upsert({"parent":""}, cwdNode);
 			//reload after initialize
 			response.sendRedirect("index.html");
 		} else {
