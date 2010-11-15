@@ -14,24 +14,11 @@ if (params.cmd=="open") {
 			var upsertedId = db.getCollection("files").upsert({"parent":""}, cwdNode);
 			cwdNode.id = upsertedId;
 		}
-		
-		result.cwd = getCwd(cwdNode);
-		result.cdc = getCdc(cwdNode);
-		result.disabled = [];
-		if (params.tree=="true") {
-			result.tree = getTree(cwdNode);
-			result.params = getParams();
-		}
-		
+		generateResult(cwdNode);
 	} else {
 		var cwdNode = db.getCollection("files").getById(params.target);
 		if (cwdNode!=null && cwdNode.mime == "directory") {
-			result.cwd = getCwd(cwdNode);
-			result.cdc = getCdc(cwdNode);
-			if (params.tree=="true") {
-				result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
-				result.params = getParams();
-			}
+			generateResult(cwdNode);
 		} else {
 			/**a content down load*/
 			result = content.get(cwdNode.content);
@@ -48,60 +35,34 @@ if (params.cmd=="open") {
 				"parent":params.current
 			};
 		db.getCollection("files").upsert({"parent":params.current, "name":params.name},newFolder);
-		result.cdc = getCdc(parentFolder);
-		result.cwd = getCwd(parentFolder);
-		result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
-		result.params = getParams();
-		result.select = [];
+		generateResult(parentFolder);
 	}
 } else if (params.cmd == "rm") {
 	var targets = request.getParameters("targets[]");
 	for(var i=0; i<targets.length; i++) {
-		var targetNode = db.getCollection("files").getById(targets[i]);
-		if (targetNode.content) {
-			content.remove(targetNode.content);
-		}
-		db.getCollection("files").remove({"id": targets[i]});	
+		removeNode(db.getCollection("files").getById(targets[i]));
 	}
 	var parentFolder = db.getCollection("files").getById(params.current);
-	
-	if (parentFolder!=null) {
-		result.cdc = getCdc(parentFolder);
-		result.cwd = getCwd(parentFolder);
-		result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
-		result.params = getParams();
-	}
+	generateResult(parentFolder);
 } else if (params.cmd == "rename") {
 	var targetNode = db.getCollection("files").getById(params.target);
 	if (targetNode!=null) {
 		targetNode.name = params.name;
-		db.getCollection("files").upsert({"id": params.target}, targetNode);
+		db.getCollection("files").upsert(targetNode);
 	}
-	
 	var currentNode = db.getCollection("files").getById(params.current);
-	
-	if (currentNode!=null) {
-		result.cdc = getCdc(currentNode);
-		result.cwd = getCwd(currentNode);
-	}
+	generateResult(currentNode);
 } else if (params.cmd=="duplicate") {
 	var targetNode = db.getCollection("files").getById(params.target);
 	
 	var currentNode = db.getCollection("files").getById(params.current);
-	
 	if (targetNode!=null && currentNode!=null) {
 		var newName = genDuplicatName(targetNode);
 		copyTo(targetNode, currentNode, newName);
-	}
-	
-	if (currentNode!=null) {
-		result.cdc = getCdc(currentNode);
-		result.cwd = getCwd(currentNode);
+		generateResult(currentNode);
 	}
 } else if (params.cmd == "paste") {
-	
 	var currentNode = db.getCollection("files").getById(params.current);
-	
 	if (currentNode!=null) {
 		var targetList = request.getParameters("targets[]");
 		for(var i=0; i<targetList.length; i++) {
@@ -110,12 +71,41 @@ if (params.cmd=="open") {
 				copyTo(nodeToCopy, currentNode, nodeToCopy.name);	
 			}
 		}
-		result.cdc = getCdc(currentNode);
-		result.cwd = getCwd(currentNode);	
+		generateResult(currentNode);
 	}
 }
 
+
+
+
 result;
+
+function generateResult(currentNode) {
+	result.cwd = getCwd(currentNode);
+	result.cdc = getCdc(currentNode);
+	result.disabled = [];
+	if (params.tree=="true") {
+		result.tree = getTree();
+		result.params = getParams();
+	}
+}
+
+
+
+function removeNode(node) {
+	if (!node) return; 
+	if (node.mime == "directory") {
+		var childfdcur = db.getCollection("files").find({"parent": node.id});
+		while (childfdcur.hasNext()) {
+			var o = childfdcur.next();
+			removeNode(o);
+		}
+	} else if (node.content) {
+		content.remove(node.content);
+	}
+	db.getCollection("files").remove({"id": node.id});
+}
+
 
 function copyTo(srcNode, targetParent, name) {
 	if (srcNode.mime=="directory") {
@@ -214,7 +204,8 @@ function getCwd(folder) {
 
 
 
-function getTree(folder) {
+function getTree() {
+	var folder = db.getCollection("files").findOne({"parent":""});
 	var tree = new Object();
 	tree.hash = folder.id;
 	tree.name = folder.name;
