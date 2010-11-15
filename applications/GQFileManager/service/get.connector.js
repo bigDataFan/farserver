@@ -86,7 +86,7 @@ if (params.cmd=="open") {
 	var currentNode = db.getCollection("files").getById(params.current);
 	
 	if (targetNode!=null && currentNode!=null) {
-		var newName = getCopiedName(targetNode);
+		var newName = genDuplicatName(targetNode);
 		copyTo(targetNode, currentNode, newName);
 	}
 	
@@ -132,7 +132,7 @@ function copyTo(srcNode, targetParent, name) {
 }
 
 
-function getCopiedName(targetNode) {
+function genDuplicatName(targetNode) {
 	
 	var p = targetNode.name.lastIndexOf(".");
 	var fname = targetNode.name;
