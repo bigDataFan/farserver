@@ -49,6 +49,8 @@ if (params.cmd=="open") {
 		db.getCollection("files").upsert({"parent":params.current, "name":params.name},newFolder);
 		result.cdc = getCdc(parentFolder);
 		result.cwd = getCwd(parentFolder);
+		result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
+		result.params = getParams();
 		result.select = [];
 	}
 } else if (params.cmd == "rm") {
@@ -64,7 +66,6 @@ if (params.cmd=="open") {
 		result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
 		result.params = getParams();
 	}
-	
 } 
 
 result;
