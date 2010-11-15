@@ -57,7 +57,7 @@ if (params.cmd=="open") {
 } else if (params.cmd == "rm") {
 	var targets = request.getParameters("targets[]");
 	for(var i=0; i<targets.length; i++) {
-		var targetNode = db.getCollection("files").findOne({"id": targets[i]});
+		var targetNode = db.getCollection("files").getById(targets[i]);
 		if (targetNode.content) {
 			content.remove(targetNode.content);
 		}
