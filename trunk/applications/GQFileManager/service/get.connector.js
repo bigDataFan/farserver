@@ -110,6 +110,8 @@ if (params.cmd=="open") {
 				copyTo(nodeToCopy, currentNode, nodeToCopy.name);	
 			}
 		}
+		result.cdc = getCdc(currentNode);
+		result.cwd = getCwd(currentNode);	
 	}
 	
 }
