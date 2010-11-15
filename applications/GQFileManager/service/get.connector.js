@@ -85,7 +85,7 @@ if (params.cmd=="open") {
 	
 	var currentNode = db.getCollection("files").getById(params.current);
 	
-	if (targetNode!=null && currentNode) {
+	if (targetNode!=null && currentNode!=null) {
 		var newName = getCopiedName(targetNode);
 		copyTo(targetNode, currentNode, newName);
 	}
@@ -126,6 +126,8 @@ function copyTo(srcNode, targetParent, name) {
 					"size": srcNode.size,
 					"content": copied_content_id 
 		};
+		
+		db.getCollection("files").insert(newFile);
 	}
 }
 
