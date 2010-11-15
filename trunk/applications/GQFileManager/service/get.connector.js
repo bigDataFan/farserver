@@ -15,17 +15,21 @@ if (params.cmd=="open") {
 			};
 			parent.id = db.getCollection("files").upsert({"parent":""}, parent);
 		}
-	} else {
-		parent = db.getCollection("files").findOne({"parent":params.target});
-	}
+		
+		result.cwd = getCwd(parent);
+		result.cdc = getCdc(parent);
+		result.disabled = [];
 	
-	result.cwd = getCwd(parent);
-	result.cdc = getCdc(parent);
-	result.disabled = [];
-
-	if (params.tree=="true") {
-		result.tree = getTree(parent);
-		result.params = getParams();
+		if (params.tree=="true") {
+			result.tree = getTree(parent);
+			result.params = getParams();
+		}
+	} else {
+		var cwdNode = db.getCollection("files").getById(params.target);
+		if (cwdNode!=null) {
+			result.cwd = getCwd(cwdNode);
+			result.cdc = getCdc(cwdNode);
+		}
 	}
 
 } else if (params.cmd=="mkdir") {
@@ -44,11 +48,8 @@ if (params.cmd=="open") {
 		result.select = [];
 	}
 } else if (params.cmd == "open") {
-	var cwdNode = db.getCollection("files").getById(params.target);
-	if (cwdNode!=null) {
-		result.cwd = getCwd(cwdNode);
-		result.cdc = getCdc(cwdNode);
-	}
+	
+	
 }
 
 result;
