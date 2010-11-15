@@ -13,25 +13,30 @@ if (params.cmd=="open") {
 				"parent":""
 			};
 			db.getCollection("files").upsert({"parent":""}, cwdNode);
-
+			
+			response.sendRedirect("index.html");
 		} else {
 			result.cwd = getCwd(cwdNode);
 			result.cdc = getCdc(cwdNode);
 			result.disabled = [];
 		}
+		
+		if (params.tree=="true") {
+			result.tree = getTree(cwdNode);
+			result.params = getParams();
+		}
+		
 	} else {
 		var cwdNode = db.getCollection("files").getById(params.target);
 		if (cwdNode!=null) {
 			result.cwd = getCwd(cwdNode);
 			result.cdc = getCdc(cwdNode);
 		}
+		if (params.tree=="true") {
+			result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
+			result.params = getParams();
+		}
 	}
-	
-	if (params.tree=="true") {
-		result.tree = getTree(cwdNode);
-		result.params = getParams();
-	}
-
 } else if (params.cmd=="mkdir") {
 	var parentFolder = db.getCollection("files").getById(params.current);
 	if (parentFolder!=null && parentFolder.mime=="directory") {
@@ -122,7 +127,7 @@ function getDirs(folder, getsub) {
 					"name": o.name,
 					"read": true,
 					"write": true,
-					"dirs": getsub?getDirs(o, false):[]
+					"dirs": getDirs(o, true)
 				}
 		);
 	}
