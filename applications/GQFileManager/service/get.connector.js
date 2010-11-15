@@ -42,7 +42,7 @@ if (params.cmd=="open") {
 		var newFolder = {
 				"modified" : new Date(),
 				"mime": "directory",
-				"name": params.name,
+				"name": request.getParameter("name"),
 				"rel": "/",
 				"parent":params.current
 			};
@@ -51,6 +51,20 @@ if (params.cmd=="open") {
 		result.cwd = getCwd(parentFolder);
 		result.select = [];
 	}
+} else if (params.cmd == "rm") {
+	var targets = request.getParameters("targets[]");
+	for(var i=0; i<targets.length; i++) {
+		db.getCollection("files").remove({"id": targets[i]});	
+	}
+	var parentFolder = db.getCollection("files").getById(params.current);
+	
+	if (parentFolder!=null) {
+		result.cdc = getCdc(parentFolder);
+		result.cwd = getCwd(parentFolder);
+		result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
+		result.params = getParams();
+	}
+	
 } 
 
 result;
