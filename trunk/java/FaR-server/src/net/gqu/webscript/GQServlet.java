@@ -3,7 +3,9 @@ package net.gqu.webscript;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketException;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -20,12 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 import net.gqu.application.ApprovedApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
+import net.gqu.content.ContentService;
 import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
 import net.gqu.freemarker.RepositoryTemplateLoader;
 import net.gqu.jscript.root.ScriptContent;
+import net.gqu.jscript.root.ContentFile;
 import net.gqu.jscript.root.ScriptMongoDB;
-import net.gqu.jscript.root.ScriptObjectGenerator;
 import net.gqu.jscript.root.ScriptRequest;
 import net.gqu.jscript.root.ScriptResponse;
 import net.gqu.mongodb.MongoDBProvider;
@@ -38,20 +41,19 @@ import net.gqu.service.ScriptExecService;
 import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.MimeTypeUtils;
-import net.gqu.utils.RhinoUtils;
 import net.gqu.utils.StringUtils;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.io.CopyUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.RhinoException;
-import org.mozilla.javascript.Scriptable;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -81,6 +83,8 @@ public class GQServlet extends HttpServlet {
 	private MongoDBProvider dbProvider;
 	private GQUUserService userService;
 	private Configuration freemarkerConfiguration;
+	private DiskFileItemFactory  fileItemFactory;
+	private ContentService contentService;
 	
 	
 	/**
@@ -113,6 +117,7 @@ public class GQServlet extends HttpServlet {
     	applicationService = (ApplicationService)ctx.getBean("applicationService");
     	dbProvider = (MongoDBProvider) ctx.getBean("dbProvider");
     	userService = (GQUUserService) ctx.getBean("userService");
+    	contentService = (ContentService) ctx.getBean("contentService");
     	
     	freemarkerConfiguration = new Configuration();
 		freemarkerConfiguration.setObjectWrapper(new DefaultObjectWrapper());
@@ -122,6 +127,7 @@ public class GQServlet extends HttpServlet {
 		freemarkerConfiguration.setTemplateExceptionHandler(new GQuFreemarkerExceptionHandler());
 		freemarkerConfiguration.setLocalizedLookup(false);
 		
+		fileItemFactory = new DiskFileItemFactory();
 	}
 	
 	
@@ -184,8 +190,12 @@ public class GQServlet extends HttpServlet {
 					response.setContentType(HTML_TYPE);
 					template.process(params, response.getWriter());
 				} else {
-					response.setContentType(JSON_CONTENT_TYPE);
-					response.getWriter().println(JSONUtils.toJSONString(wsresult));
+					if (wsresult instanceof ContentFile) {
+						handleFileDownLoad(request, response, (ContentFile)wsresult);
+					} else {
+						response.setContentType(JSON_CONTENT_TYPE);
+						response.getWriter().println(JSONUtils.toJSONString(wsresult));
+					}
 				}
 			} else {
 				handleStaticPage(request, response, pathArray, application);
@@ -193,7 +203,6 @@ public class GQServlet extends HttpServlet {
 		} catch (Exception e) {
 			handleException(response, pathLists, e);
 		}
-		
 	}
 
 	private String[] getPathList(HttpServletRequest request) {
@@ -241,6 +250,9 @@ public class GQServlet extends HttpServlet {
 			response.setStatus(((HttpStatusExceptionImpl)e).getCode());
 			return;
 		} else if (e instanceof RhinoException) {
+			e.printStackTrace();
+			RhinoException re = (RhinoException)e;
+			System.out.println(re.columnNumber());
 			response.sendError(422, e.getClass().getCanonicalName() + "  " + e.getMessage());
 			return;
 		} else if (e instanceof TemplateException) {
@@ -304,7 +316,7 @@ public class GQServlet extends HttpServlet {
 				params.put("model", wsresult);
 			 
 				if (!response.isCommitted()) {
-					response.setContentType(JSON_CONTENT_TYPE);
+					response.setContentType(HTML_TYPE);
 					response.getWriter().println(JSONUtils.toJSONString(wsresult));
 				}
 			} else {
@@ -340,7 +352,7 @@ public class GQServlet extends HttpServlet {
 		if (lr.getStatus()==404) {
 			return null;
 		}
-		String content = StringUtils.inputStream2String(lr.getInputStream());
+		String content = StringUtils.getText(lr.getInputStream());
 		WebScript webScript = new WebScript(content);
 		scriptExecService.compile(webScript);
 		return webScript;
@@ -351,13 +363,15 @@ public class GQServlet extends HttpServlet {
 		// add web script parameters
 		ScriptRequest sr = new ScriptRequest(req);
 		sr.setRemainPath(remainPath);
+		sr.setFactory(fileItemFactory);
 		params.put("params", sr.getParams());
 		params.put("request", sr);
 		params.put("response", new ScriptResponse(response));
+
 		params.put("user", AuthenticationUtil.getCurrentUser());
 		params.put("db", new ScriptMongoDB(dbProvider,
 				userService.getUser(installedApplication.getUser()).getDb(), installedApplication.getApp()));
-		params.put("content", new ScriptContent());
+		params.put("content", new ScriptContent(contentService));
 		return params;
 	}
 	
@@ -443,6 +457,107 @@ public class GQServlet extends HttpServlet {
             }
         }
         return false;
+    }
+    
+    
+    private void handleFileDownLoad(HttpServletRequest request, HttpServletResponse response, ContentFile downloadFile) {
+    	if (downloadFile.getModified()!=null) {
+    		response.setDateHeader("Last-Modified", downloadFile.getModified().getTime());
+    		response.setHeader("ETag", "\"" + Long.toString(downloadFile.getModified().getTime()) + "\"");
+    	}
+    	response.setHeader("Cache-Control", "must-revalidate");
+    	
+    	
+    	response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadFile.getFileName() + "\";");
+    	
+    	if (downloadFile.getMimetype()!=null) {
+    		response.setContentType(downloadFile.getMimetype());
+    	}
+    	
+    	try {
+    		boolean processedRange = false;
+    		String range = request.getHeader("Content-Range");
+    		if (range == null) {
+    			range = request.getHeader("Range");
+    		} 
+    		
+    		if (range != null) {
+    			// return the specific set of bytes as requested in the content-range header
+	             /* Examples of byte-content-range-spec values, assuming that the entity contains total of 1234 bytes:
+	                   The first 500 bytes:
+	                    bytes 0-499/1234
+	
+	                   The second 500 bytes:
+	                    bytes 500-999/1234
+	
+	                   All except for the first 500 bytes:
+	                    bytes 500-1233/1234 */
+	             /* 'Range' header example:
+	                    bytes=10485760-20971519 */
+          	
+          	
+    			response.reset();
+    			response.setHeader("Accept-Ranges", "bytes");
+    			response.setStatus(javax.servlet.http.HttpServletResponse.SC_PARTIAL_CONTENT);
+
+    			long l = downloadFile.getSize(); //get the length
+
+          		String length = range.substring("bytes=".length());
+          		
+          		if (length.endsWith("-")) {
+          			length = length.substring(0,length.length()-1);
+          		}
+          		
+          		long p = Long.parseLong(length);
+          		response.setHeader("Content-Length", new Long(downloadFile.getSize() - p).toString());
+          		
+          		if (p != 0) {
+          		response.setHeader("Content-Range","bytes " + new Long(p).toString() + "-" + new Long(l -1).toString() + "/" + new Long(l).toString());
+          	}
+          		
+          	long k =0;
+          	int ibuffer=65536;
+          	byte[] bytes=new byte[ibuffer];
+          	InputStream fileinputstream = downloadFile.getInputStream();
+          	try{
+          		if (p!=0) fileinputstream.skip(p);
+          		while (k<l){
+          			int j=fileinputstream.read(bytes,0,ibuffer);
+          			response.getOutputStream().write(bytes,0,j);
+          			response.getOutputStream().flush();
+          			k +=j;
+          		}
+	            processedRange = true;
+          	} catch (Exception e) {
+          		System.err.println(e.getMessage());
+          	} finally {
+          		try {
+					fileinputstream.close();
+				} catch (IOException e) {
+				}
+          	}
+          }
+          if (processedRange == false)
+          {
+             // As per the spec:
+             //  If the server ignores a byte-range-spec because it is syntactically
+             //  invalid, the server SHOULD treat the request as if the invalid Range
+             //  header field did not exist.
+             long size = downloadFile.getSize();
+             response.setHeader("Content-Range", "bytes 0-" + Long.toString(size-1L) + "/" + Long.toString(size));
+             response.setHeader("Content-Length", Long.toString(size));
+             
+             
+             FileCopyUtils.copy(downloadFile.getInputStream(), response.getOutputStream());
+          }
+       }
+       catch (SocketException e1)
+       {
+          // the client cut the connection - our mission was accomplished apart from a little error message
+       } catch (IOException e) {
+		e.printStackTrace();
+	}
+       
     }
     
 }

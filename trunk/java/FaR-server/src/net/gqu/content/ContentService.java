@@ -1,11 +1,11 @@
 package net.gqu.content;
 
-import java.io.InputStream;
+import net.gqu.jscript.root.ContentFile;
 
 public interface ContentService {
 	
-	public String putContent(InputStream is);
-	public InputStream getContent(String id);
+	public String putContent(ContentFile cf);
+	public ContentFile getContent(String id);
 	public boolean removeFile(String id);
 	
 }

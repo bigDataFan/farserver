@@ -59,7 +59,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 			HttpResponse response = HttpLoader.load(mainServer + "/service/application/get?name=" + id);
 			if (response!=null && response.getStatusLine().getStatusCode()==200) {
 				try {
-					JSONObject json = new JSONObject(StringUtils.inputStream2String(response.getEntity().getContent()));
+					JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
 					ApprovedApplication application = new ApprovedApplication(JSONUtils.jsonObjectToMap(json));
 					applicationMap.put(id, application);
 				} catch (JSONException e) {

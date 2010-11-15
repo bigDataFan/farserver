@@ -14,6 +14,10 @@
 		<property name="dbProvider" ref="dbProvider"></property>
 	</bean>
 	
+	<bean id="contentService" class="net.gqu.content.GridFSContentService">
+		<property name="dbProvider" ref="dbProvider"></property>
+	</bean>
+	
 	<bean id="repositoryService" class="net.gqu.repository.RepositoryServiceImpl">
 		<property name="loaders">
 			<list>
