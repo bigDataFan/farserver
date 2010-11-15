@@ -67,7 +67,21 @@ if (params.cmd=="open") {
 		result.tree = getTree(db.getCollection("files").findOne({"parent":""}));
 		result.params = getParams();
 	}
-} 
+} else if (params.cmd == "rename") {
+	var targetNode = db.getCollection("files").getById(params.target);
+	if (targetNode!=null) {
+		targetNode.name = params.name;
+		db.getCollection("files").save(targetNode);
+	}
+	
+	var currentNode = db.getCollection("files").getById(params.current);
+	
+	if (currentNode!=null) {
+		result.cdc = getCdc(currentNode);
+		result.cwd = getCwd(currentNode);
+	}
+	
+}
 
 result;
 
