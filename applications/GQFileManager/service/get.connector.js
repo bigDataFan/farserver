@@ -12,19 +12,17 @@ if (params.cmd=="open") {
 				"parent":""
 			};
 			db.getCollection("files").upsert({"parent":""}, cwdNode);
-			
 			response.sendRedirect("index.html");
+			
 		} else {
 			result.cwd = getCwd(cwdNode);
 			result.cdc = getCdc(cwdNode);
 			result.disabled = [];
+			if (params.tree=="true") {
+				result.tree = getTree(cwdNode);
+				result.params = getParams();
+			}
 		}
-		
-		if (params.tree=="true") {
-			result.tree = getTree(cwdNode);
-			result.params = getParams();
-		}
-		
 	} else {
 		var cwdNode = db.getCollection("files").getById(params.target);
 		if (cwdNode!=null) {
