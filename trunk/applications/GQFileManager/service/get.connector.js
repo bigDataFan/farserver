@@ -106,7 +106,7 @@ if (params.cmd=="open") {
 		var targetList = request.getParameters("targets[]");
 		for(var i=0; i<targetList.length; i++) {
 			var nodeToCopy =  db.getCollection("files").getById(targetList[i]);
-			if (db.getCollection("files").findOne({"parent": params.current, "name":name})==null) {
+			if (db.getCollection("files").findOne({"parent": params.current, "name":nodeToCopy.name})==null) {
 				copyTo(nodeToCopy, currentNode, nodeToCopy.name);	
 			}
 		}
