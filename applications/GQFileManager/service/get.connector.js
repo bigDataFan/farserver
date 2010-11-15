@@ -133,7 +133,15 @@ function copyTo(srcNode, targetParent, name) {
 
 
 function getCopiedName(targetNode) {
-	var newName = targetNode.name + "-副本";
+	
+	var p = targetNode.name.lastIndexOf(".");
+	var fname = targetNode.name;
+	var endfix = "";
+	if (p>-1) {
+		fname = targetNode.name.substring(0, p);
+		endfix = targetNode.name.substring(p+1);
+	}
+	var newName = fname + " 副本" + (endfix=="")?"":("."+endfix);
 	
 	var i = 1;
 	while(true) {
@@ -142,7 +150,7 @@ function getCopiedName(targetNode) {
 			break;
 		}
 		i ++;
-		newName = targetNode.name + "-副本 (" + i + ")";
+		newName = fname + " 副本 (" + i + ")" + (endfix=="")?"":("."+endfix);
 	}
 	
 	return newName;
