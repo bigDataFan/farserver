@@ -89,6 +89,11 @@ if (params.cmd=="open") {
 		var newName = getCopiedName(targetNode);
 		copyTo(targetNode, currentNode, newName);
 	}
+	
+	if (currentNode!=null) {
+		result.cdc = getCdc(currentNode);
+		result.cwd = getCwd(currentNode);
+	}
 }
 
 result;
