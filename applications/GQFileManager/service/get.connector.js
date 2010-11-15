@@ -1,7 +1,6 @@
 var result = new Object();
 
 if (params.cmd=="open") {
-		
 	var cwdNode = null;
 	if (params.init == "true") {
 		cwdNode = db.getCollection("files").findOne({"parent":""});
@@ -14,8 +13,7 @@ if (params.cmd=="open") {
 				"parent":""
 			};
 			db.getCollection("files").upsert({"parent":""}, cwdNode);
-			//reload after initialize
-			response.sendRedirect("index.html");
+
 		} else {
 			result.cwd = getCwd(cwdNode);
 			result.cdc = getCdc(cwdNode);
