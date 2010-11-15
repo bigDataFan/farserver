@@ -131,7 +131,7 @@ function copyTo(srcNode, targetParent, name) {
 
 
 function getCopiedName(targetNode) {
-	var newName = targetNode.name + "-副本";
+	var newName = targetNode.name + "-copied";
 	
 	var i = 1;
 	while(true) {
@@ -140,7 +140,7 @@ function getCopiedName(targetNode) {
 			break;
 		}
 		i ++ 
-		newName = targetNode.name + "-副本(" + i + ")";
+		newName = targetNode.name + "-copied (" + i + ")";
 	}
 }
 
