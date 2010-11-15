@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.mozilla.javascript.IdScriptableObject;
 import org.mozilla.javascript.NativeArray;
@@ -93,7 +94,11 @@ public class RhinoUtils {
 	    
 	    for (String key : map.keySet()) {
 	    	Object value = map.get(key);
-	    	object.put(key, object, value);
+	    	if (value instanceof ObjectId) {
+	    		object.put("id", object, ((ObjectId)value).toString());
+	    	} else {
+	    		object.put(key, object, value);
+	    	}
 		}
 	    return object;
 	}

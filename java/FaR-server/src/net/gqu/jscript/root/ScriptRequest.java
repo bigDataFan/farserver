@@ -1,6 +1,8 @@
 package net.gqu.jscript.root;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -27,6 +29,8 @@ public class ScriptRequest {
 	private StringBuffer sb = new StringBuffer();
 	ScriptCookie[] cookies = null;
 	private FileItemFactory factory;
+	private long fileSizeMax = -1;
+	
 	
 	public ScriptRequest(HttpServletRequest req) {
 		request = req;
@@ -41,27 +45,50 @@ public class ScriptRequest {
 	public boolean isMultipart() {
 		return ServletFileUpload.isMultipartContent(request);
 	}
-	
-	public NativeObject getMultipartParams() {
+
+	public void setFactory(FileItemFactory factory) {
+		this.factory = factory;
+	}
+	public void setFileSizeMax(long fileSizeMax) {
+		this.fileSizeMax = fileSizeMax;
+	}
+
+	public NativeObject[] getMultipartParams() {
 		ServletFileUpload upload = new ServletFileUpload(factory);
+		if (fileSizeMax!=-1) {
+			upload.setFileSizeMax(fileSizeMax);
+		}
 		NativeObject object = new NativeObject();
 		try {
 			List<FileItem> items = upload.parseRequest(request);
+			ArrayList<NativeObject> result = new ArrayList<NativeObject>();
+			
 			for (FileItem fileItem : items) {
+				NativeObject no = new NativeObject();
 				if (fileItem.isFormField()) {
-					object.put(fileItem.getFieldName(), object, fileItem.getString());
+					no.put("name", no, fileItem.getFieldName());
+					no.put("value", no, fileItem.getString());
 				} else {
-					
+					try {
+						if (fileItem.getSize()>0) {
+							no.put("filename", no, fileItem.getName());
+							no.put("inputstream", no, fileItem.getInputStream());
+							no.put("mimetype", no, fileItem.getContentType());
+							no.put("size", no, fileItem.getSize());
+							no.put("name", no, fileItem.getFieldName());
+							no.put("isfile", no, true);
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
+				result.add(no);
 			}
+			return result.toArray(new NativeObject[result.size()]);
 		} catch (FileUploadException e) {
 			e.printStackTrace();
 		}
-		return object;
-	}
-	
-	public NativeObject getParams() {
-		return ScriptObjectGenerator.createRequestParams(request, remainPath);
+		return new NativeObject[0];
 	}
 	
 	public String getSessionId() {
@@ -107,6 +134,23 @@ public class ScriptRequest {
 			} else {
 				return request.getParameter(arg0);
 			}
+		} catch (UnsupportedEncodingException e) {
+		}
+		return null;
+	}
+	
+	public String[] getParameters(String args) {
+		try {
+			String[] value = request.getParameterValues(args);
+			if (request.getMethod().equalsIgnoreCase(GET)) {
+				String[] result = new String[value.length];
+				for (int i = 0; i < value.length; i++) {
+					result[i] = new String(value[i].getBytes(ISO_8859_1),UTF_8);
+				}
+				return result;
+			}
+			return value;
+			
 		} catch (UnsupportedEncodingException e) {
 		}
 		return null;
@@ -171,6 +215,10 @@ public class ScriptRequest {
 	
 	public String getRemoteAddr() {
 		return request.getRemoteAddr();
+	}
+	
+	public NativeObject getParams() {
+		return ScriptObjectGenerator.createRequestParams(request, remainPath);
 	}
 	
 }

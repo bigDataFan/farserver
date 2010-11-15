@@ -17,6 +17,7 @@
 package net.gqu.utils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -1086,14 +1087,15 @@ public abstract class StringUtils {
         return strFormattedSize;
     }
     
-    public static String inputStream2String(InputStream is) throws IOException{
-    	BufferedReader in = new BufferedReader(new InputStreamReader(is));
-    	StringBuffer buffer = new StringBuffer();
-    	String line = "";
-    	while ((line = in.readLine()) != null){
-    		buffer.append(line);
-    	}
-    	return buffer.toString();
+    public static String getText(InputStream is) throws IOException{
+    	// read from the stream into a byte[]
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		FileCopyUtils.copy(is, os);
+		byte[] bytes = os.toByteArray();
+		// create the string from the byte[] using encoding if necessary
+		String content =  new String(bytes, "UTF-8");
+		// done
+		return content;
 	}
     
 	public static void main(String[] args) {

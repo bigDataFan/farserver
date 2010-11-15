@@ -1,6 +1,5 @@
 package net.gqu.jscript.root;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,29 +22,53 @@ public class ScriptMongoDBCollection {
 
 	private  DBCollection coll;
 	
-	public void insert(NativeObject no) throws MongoException {
+	public String insert(NativeObject no) throws MongoException {
 		Map<String, Object> map = RhinoUtils.nativeObjectToMap(no);
-		WriteResult wr = coll.insert(new BasicDBObject(map), WriteConcern.SAFE);
+		BasicDBObject bo = new BasicDBObject(map);
+		WriteResult wr = coll.insert(bo, WriteConcern.SAFE);
+		return bo.getString("_id");
 	}
 	
-	public void upsert(NativeObject o, NativeObject n) throws MongoException {
+	public String upsert(NativeObject o, NativeObject n) throws MongoException {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 		Map<String, Object> newMap = RhinoUtils.nativeObjectToMap(n);
-		WriteResult wr = coll.update(new BasicDBObject(oldMap),new BasicDBObject(newMap), true, false);
+		BasicDBObject newobj = new BasicDBObject(newMap);
+		WriteResult wr = coll.update(new BasicDBObject(oldMap), newobj, true, false);
+		if ((Boolean)wr.getField("updatedExisting")) {
+			DBObject one = coll.findOne(new BasicDBObject(oldMap));
+			return one.get("_id").toString();
+		}
+		
+		Object upserted = wr.getField("upserted");
+		return upserted.toString();
 	}
 	
-	public void upsert(NativeObject o) throws MongoException {
+	public String upsert(NativeObject o) throws MongoException {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 		
+		WriteResult wr; 
 		if (oldMap.get("id")!=null) {
 			DBObject query = new BasicDBObject();
 			query.put("_id", new ObjectId((String)oldMap.get("id")));
-			coll.update(query, new BasicDBObject(oldMap), true, false);
+			wr = coll.update(query, new BasicDBObject(oldMap), true, false);
 		} else {
-			coll.insert(new BasicDBObject(oldMap), WriteConcern.SAFE);
+			wr = coll.insert(new BasicDBObject(oldMap), WriteConcern.SAFE);
 		}
+		
+		if ((Boolean)wr.getField("updatedExisting")) {
+			DBObject one = coll.findOne(new BasicDBObject(oldMap));
+			return one.get("_id").toString();
+		}
+		
+		Object upserted = wr.getField("upserted");
+		return upserted.toString();
+		
 	}
 
+	public void save(NativeObject o) {
+		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
+		coll.save(new BasicDBObject(oldMap));
+	}
 	
 	public NativeObject getById(String id) {
 		DBObject dbo = new BasicDBObject();
@@ -61,9 +84,12 @@ public class ScriptMongoDBCollection {
 	public NativeObject findOne(NativeObject o) {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 		DBObject one = coll.findOne(new BasicDBObject(oldMap));
-		return RhinoUtils.mapToNativeObject(one.toMap());
+		if (one==null) {
+			return null;
+		} else {
+			return RhinoUtils.mapToNativeObject(one.toMap());
+		}
 	}
-	
 	
 	public void remove(NativeObject o)throws MongoException {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
@@ -182,26 +208,6 @@ public class ScriptMongoDBCollection {
 		return coll.findAndRemove(query);
 	}
 
-	public final DBObject findOne() throws MongoException {
-		return coll.findOne();
-	}
-
-	public final DBObject findOne(DBObject o, DBObject fields) {
-		return coll.findOne(o, fields);
-	}
-
-	public final DBObject findOne(DBObject o) throws MongoException {
-		return coll.findOne(o);
-	}
-
-	public final DBObject findOne(Object obj, DBObject fields) {
-		return coll.findOne(obj, fields);
-	}
-
-	public final DBObject findOne(Object obj) throws MongoException {
-		return coll.findOne(obj);
-	}
-
 	public DBCollection getCollection(String n) {
 		return coll.getCollection(n);
 	}
@@ -228,28 +234,10 @@ public class ScriptMongoDBCollection {
 		return coll.group(key, cond, initial, reduce);
 	}
 
-
-	public WriteResult remove(DBObject arg0, WriteConcern arg1)
-			throws MongoException {
-		return coll.remove(arg0, arg1);
-	}
-
-	public WriteResult remove(DBObject o) throws MongoException {
-		return coll.remove(o);
-	}
-
 	public DBCollection rename(String newName) throws MongoException {
 		return coll.rename(newName);
 	}
 
-	public final WriteResult save(DBObject jo, WriteConcern concern)
-			throws MongoException {
-		return coll.save(jo, concern);
-	}
-
-	public final WriteResult save(DBObject jo) {
-		return coll.save(jo);
-	}
 	
 /*
 	private DBObject[] convert(NativeArray na) {

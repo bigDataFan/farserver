@@ -15,7 +15,7 @@ public class ScriptObjectGenerator {
 		
 		while (names.hasMoreElements()) {
 			String name = (String) names.nextElement();
-			object.put(name, object, request.getParameter(name));
+			object.put(name, object,  request.getParameter(name));
 		}
 		
 		return object;
