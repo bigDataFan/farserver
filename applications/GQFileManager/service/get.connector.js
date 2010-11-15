@@ -52,6 +52,7 @@ if (params.cmd=="open") {
 	}
 	var currentNode = db.getCollection("files").getById(params.current);
 	generateResult(currentNode);
+	result.tree= getTree();
 } else if (params.cmd=="duplicate") {
 	var targetNode = db.getCollection("files").getById(params.target);
 	
