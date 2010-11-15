@@ -98,6 +98,20 @@ if (params.cmd=="open") {
 		result.cdc = getCdc(currentNode);
 		result.cwd = getCwd(currentNode);
 	}
+} else if (params.cmd == "paste") {
+	
+	var currentNode = db.getCollection("files").getById(params.current);
+	
+	if (currentNode!=null) {
+		var targetList = request.getParameters("targets[]");
+		for(var i=0; i<targetList.length; i++) {
+			var nodeToCopy =  db.getCollection("files").getById(targetList[i]);
+			if (db.getCollection("files").findOne({"parent": params.current, "name":name})==null) {
+				copyTo(nodeToCopy, currentNode, nodeToCopy.name);	
+			}
+		}
+	}
+	
 }
 
 result;
@@ -111,7 +125,7 @@ function copyTo(srcNode, targetParent, name) {
 				"rel": "/",
 				"parent":targetParent.id
 		};
-		newNode.id = db.getCollection("files").insert(newNode);
+		newNode.id = db.getCollection("files").upsert({"parent":targetParent.id, "name": name}, newNode);
 		
 		var childfdcur = db.getCollection("files").find({"parent": srcNode.id});
 	
@@ -131,7 +145,7 @@ function copyTo(srcNode, targetParent, name) {
 					"content": copied_content_id 
 		};
 		
-		db.getCollection("files").insert(newFile);
+		db.getCollection("files").upsert({"parent":targetParent.id, "name": name},newFile);
 	}
 }
 
