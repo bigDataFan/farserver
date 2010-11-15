@@ -85,7 +85,7 @@ if (params.cmd=="open") {
 	
 	var currentNode = db.getCollection("files").getById(params.current);
 	
-	if (targetNode!=null && currentNode!=null) {
+	if (targetNode!=null && currentNode) {
 		var newName = getCopiedName(targetNode);
 		copyTo(targetNode, currentNode, newName);
 	}
@@ -135,7 +135,7 @@ function getCopiedName(targetNode) {
 			break;
 		}
 		i ++ 
-		newName = targetNode.name + + "-副本(" + i + ")";
+		newName = targetNode.name + "-副本(" + i + ")";
 	}
 }
 
