@@ -141,7 +141,7 @@ function genDuplicatName(targetNode) {
 		fname = targetNode.name.substring(0, p);
 		endfix = targetNode.name.substring(p+1);
 	}
-	var newName = fname + " 副本" + (endfix=="")?"":("."+endfix);
+	var newName = fname + " 副本" + ((endfix=="")?"":("."+endfix));
 	
 	var i = 1;
 	while(true) {
@@ -150,7 +150,7 @@ function genDuplicatName(targetNode) {
 			break;
 		}
 		i ++;
-		newName = fname + " 副本 (" + i + ")" + (endfix=="")?"":("."+endfix);
+		newName = fname + " 副本 (" + i + ")" + ((endfix=="")?"":("."+endfix));
 	}
 	
 	return newName;
