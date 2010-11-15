@@ -2,27 +2,24 @@ var result = new Object();
 
 if (params.cmd=="open") {
 		
-	var parent = null;
+	var cwdNode = null;
 	if (params.init == "true") {
-		parent = db.getCollection("files").findOne({"parent":""});
-		if (parent==null) {
-			parent = {
+		cwdNode = db.getCollection("files").findOne({"parent":""});
+		if (cwdNode==null) {
+			cwdNode = {
 				"modified" : new Date(),
 				"mime": "directory",
 				"name": "根文件夹",
 				"rel": "/",
 				"parent":""
 			};
-			parent.id = db.getCollection("files").upsert({"parent":""}, parent);
-		}
-		
-		result.cwd = getCwd(parent);
-		result.cdc = getCdc(parent);
-		result.disabled = [];
-	
-		if (params.tree=="true") {
-			result.tree = getTree(parent);
-			result.params = getParams();
+			cwdNode.id = db.getCollection("files").upsert({"parent":""}, parent);
+			//reload after initialize
+			response.sendRedirect("index.html");
+		} else {
+			result.cwd = getCwd(cwdNode);
+			result.cdc = getCdc(cwdNode);
+			result.disabled = [];
 		}
 	} else {
 		var cwdNode = db.getCollection("files").getById(params.target);
@@ -30,6 +27,13 @@ if (params.cmd=="open") {
 			result.cwd = getCwd(cwdNode);
 			result.cdc = getCdc(cwdNode);
 		}
+		
+		
+	}
+	
+	if (params.tree=="true") {
+		result.tree = getTree(cwdNode);
+		result.params = getParams();
 	}
 
 } else if (params.cmd=="mkdir") {
