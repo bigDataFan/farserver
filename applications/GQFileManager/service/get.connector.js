@@ -80,17 +80,64 @@ if (params.cmd=="open") {
 		result.cdc = getCdc(currentNode);
 		result.cwd = getCwd(currentNode);
 	}
+} else if (params.cmd=="duplicate") {
+	var targetNode = db.getCollection("files").getById(params.target);
 	
+	var currentNode = db.getCollection("files").getById(params.current);
+	
+	if (targetNode!=null && currentNode!=null) {
+		var newName = getCopiedName(targetNode);
+		copyTo(targetNode, currentNode, newName);
+	}
 }
 
 result;
 
+function copyTo(srcNode, targetParent, name) {
+	if (srcNode.mime=="directory") {
+		var newNode = {
+				"modified" : new Date(),
+				"mime": "directory",
+				"name": name,
+				"rel": "/",
+				"parent":targetParent.id
+		};
+		newNode.id = db.getCollection("files").insert(newNode);
+		
+		var childcur = db.getCollection("files").find({"parent": srcNode.id});
+	
+		while (childfdcur.hasNext()) {
+			var o = childfdcur.next();
+			copyTo(o, newNode, o.name);
+		}
+	} else {
+		var copied_content_id = content.put(content.get(srcNode.content));
+		var newFile = {
+					"modified" : new Date(),
+					"mime": srcNode.mimetype,
+					"name": name,
+					"rel": "/",
+					"parent":targetParent.id,
+					"size": srcNode.size,
+					"content": copied_content_id 
+		};
+	}
+}
 
 
-
-
-
-
+function getCopiedName(targetNode) {
+	var newName = targetNode.name + "-副本";
+	
+	var i = 1;
+	while(true) {
+		var one = db.getCollection("files").findOne({"parent": targetNode.parent, "name" : newName});
+		if (!one) {
+			break;
+		}
+		i ++ 
+		newName = targetNode.name + + "-副本(" + i + ")";
+	}
+}
 
 
 function getCdc(folder) {
