@@ -43,6 +43,12 @@ if (params.cmd=="open") {
 		result.cwd = getCwd(parentFolder);
 		result.select = [];
 	}
+} else if (params.cmd == "open") {
+	var cwdNode = db.getCollection("files").getById(params.target);
+	if (cwdNode!=null) {
+		result.cwd = getCwd(cwdNode);
+		result.cdc = getCdc(cwdNode);
+	}
 }
 
 result;
