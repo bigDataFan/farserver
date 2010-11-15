@@ -119,7 +119,7 @@ function copyTo(srcNode, targetParent, name) {
 		var copied_content_id = content.put(content.get(srcNode.content));
 		var newFile = {
 					"modified" : new Date(),
-					"mime": srcNode.mimetype,
+					"mime": srcNode.mime,
 					"name": name,
 					"rel": "/",
 					"parent":targetParent.id,
@@ -144,6 +144,8 @@ function getCopiedName(targetNode) {
 		i ++;
 		newName = targetNode.name + "-副本 (" + i + ")";
 	}
+	
+	return newName;
 }
 
 
