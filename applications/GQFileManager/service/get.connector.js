@@ -113,7 +113,6 @@ if (params.cmd=="open") {
 		result.cdc = getCdc(currentNode);
 		result.cwd = getCwd(currentNode);	
 	}
-	
 }
 
 result;
