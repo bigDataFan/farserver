@@ -75,7 +75,7 @@ if (params.cmd=="open") {
 	var targetNode = db.getCollection("files").getById(params.target);
 	if (targetNode!=null) {
 		targetNode.name = params.name;
-		db.getCollection("files").save(targetNode);
+		db.getCollection("files").upsert({"id": params.target}, targetNode);
 	}
 	
 	var currentNode = db.getCollection("files").getById(params.current);
