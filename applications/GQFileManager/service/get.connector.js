@@ -13,7 +13,7 @@ if (params.cmd=="open") {
 				"rel": "/",
 				"parent":""
 			};
-			cwdNode.id = db.getCollection("files").upsert({"parent":""}, parent);
+			db.getCollection("files").upsert({"parent":""}, parent);
 			//reload after initialize
 			response.sendRedirect("index.html");
 		} else {
@@ -27,8 +27,6 @@ if (params.cmd=="open") {
 			result.cwd = getCwd(cwdNode);
 			result.cdc = getCdc(cwdNode);
 		}
-		
-		
 	}
 	
 	if (params.tree=="true") {
@@ -51,10 +49,7 @@ if (params.cmd=="open") {
 		result.cwd = getCwd(parentFolder);
 		result.select = [];
 	}
-} else if (params.cmd == "open") {
-	
-	
-}
+} 
 
 result;
 
