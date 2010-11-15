@@ -113,7 +113,7 @@ function copyTo(srcNode, targetParent, name) {
 		};
 		newNode.id = db.getCollection("files").insert(newNode);
 		
-		var childcur = db.getCollection("files").find({"parent": srcNode.id});
+		var childfdcur = db.getCollection("files").find({"parent": srcNode.id});
 	
 		while (childfdcur.hasNext()) {
 			var o = childfdcur.next();
