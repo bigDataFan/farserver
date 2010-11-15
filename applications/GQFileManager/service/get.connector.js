@@ -1,9 +1,8 @@
 var result = new Object();
 
 if (params.cmd=="open") {
-	var cwdNode = null;
 	if (params.init == "true") {
-		cwdNode = db.getCollection("files").findOne({"parent":""});
+		var cwdNode = db.getCollection("files").findOne({"parent":""});
 		if (cwdNode == null) {
 			cwdNode = {
 				"modified" : new Date(),
@@ -131,7 +130,6 @@ function getDirs(folder, getsub) {
 				}
 		);
 	}
-	
 	return dirs;
 }
 
