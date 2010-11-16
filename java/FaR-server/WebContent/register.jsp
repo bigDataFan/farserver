@@ -3,10 +3,24 @@
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="net.gqu.security.BasicUserService"%>
+<%@page import="java.util.List"%>
+<%@page import="net.gqu.security.Role"%><html>
 <head>
 <title></title>
 <link rel="stylesheet" type="text/css" href="/css/simple.css">
+
+
+<%
+
+WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+BasicUserService userService = (BasicUserService) ctx.getBean("userService");
+
+List<Role> openRoles = userService.getOpenRoles();
+
+%>
 </head>
 <body>
 <div id="main">
@@ -15,12 +29,19 @@
 		<div class="pagehead">
 			<h2>用户注册</h2>   
 		</div>
+		
+		<%if (openRoles.size()==0) { %>
+			抱歉，当前服务器不允许匿名注册，请联系服务器管理员
+		<%} else { %>
 			<form action="register" method="POST">
 				<%=(String)session.getAttribute("error") %>
 		    	<label for="username">
    						用户名<br />
  					    <input class="text" type="text" name="username"  value="" /> <font color="red"><%=session.getAttribute("username")==null?"":session.getAttribute("username")%></font>
  					</label>
+ 					
+ 					<input type="hidden" name="role" value="<%=openRoles.get(0).getName()%>"></input>
+ 					
  					<label for="password">
    						密码<br />
  					    <input class="text" type="password" name="pwd"  value="" /><font color="red"><%=session.getAttribute("pwd")==null?"":session.getAttribute("pwd")%></font>
@@ -40,6 +61,7 @@
  					
     				<input type="submit" value="注册"/>
 			</form>	
+			<%} %>
 	      		</div>
 </div>
 

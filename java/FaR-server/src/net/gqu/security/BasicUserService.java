@@ -54,6 +54,21 @@ public class BasicUserService {
 		return result;
 	}
 	
+	public List<Role> getOpenRoles() {
+		DB db = dbProvider.getMainDB();
+		DBCollection coll = db.getCollection("roles");
+		
+		DBCursor cur = coll.find(new BasicDBObject("isOpen",true));
+		
+		List<Role> result = new ArrayList<Role>();
+		
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			result.add(new Role(dbo.toMap()));
+		}
+		return result;
+	}
+	
 	public List<User> getUsers(String role, int first, int max) {
 		DB db = dbProvider.getMainDB();
 		DBCollection coll = db.getCollection("users");
