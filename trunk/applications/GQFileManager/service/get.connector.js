@@ -80,12 +80,12 @@ if (params.cmd=="open") {
 		}
 		generateResult(targetParent);
 	} else if (params.cut=="1") { //move of nodes
-		var targetParent = db.getCollection("files").getById(params.dist);
+		var targetParent = db.getCollection("files").getById(params.dst);
 		if (targetParent!=null) {
 			var moveList = request.getParameters("targets[]");
 			for(var i=0; i<moveList.length; i++) {
 				var nodeToMove =  db.getCollection("files").getById(moveList[i]);
-				if (db.getCollection("files").findOne({"parent":params.dist,"name":nodeToMove.name})==null) {
+				if (db.getCollection("files").findOne({"parent":params.dst,"name":nodeToMove.name})==null) {
 					moveTo(nodeToMove, targetParent);
 				}
 				
