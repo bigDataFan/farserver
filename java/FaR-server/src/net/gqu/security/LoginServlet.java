@@ -24,9 +24,7 @@ public class LoginServlet extends HttpServlet {
 	public static final String HEADER_REFERER = "Referer";
 	private static final long serialVersionUID = 1L;
 	private EhCacheService cacheService;
-	private GQUUserService userService;
-    
-	public final String LOGIN_PAGE = "/NewGQ/login.jsp";
+	private BasicUserService userService;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		userService = (GQUUserService) ctx.getBean("userService");
+		userService = (BasicUserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
 		
 	}
@@ -56,12 +54,19 @@ public class LoginServlet extends HttpServlet {
     		//response.getWriter().println(1);
     		return;
     	}
+    	
+    	
+    	if (AuthenticationUtil.ADMIN_USER_NAME.equals(username) && pwd.equals(userService.getAdminPassword())) {
+    		request.getSession().setAttribute(AuthenticationUtil.ADMIN_USER_NAME, true);
+    		
+    	}
+    	
     	  // Get the authorization header
     	User user = userService.getUser(username);
     	
     	if (user!=null) {
     		if (!user.getPassword().equals(pwd)) {
-    			response.sendRedirect(LOGIN_PAGE);
+    			response.sendRedirect(userService.getLoginPage());
     			return;
     		} else {
     			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, user);		
@@ -75,16 +80,13 @@ public class LoginServlet extends HttpServlet {
         			String url = (String)request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER);
         			request.getSession().removeAttribute(AuthenticationFilter.LOGIN_REFERER);
         			response.sendRedirect(url);
-        		} else if (request.getHeader(HEADER_REFERER)!=null ) {
-        			response.sendRedirect(request.getHeader(HEADER_REFERER));
         		} else { 
-        			response.sendRedirect(LOGIN_PAGE);
+        			response.sendRedirect(userService.getMainPage());
         		}
-        		//response.getWriter().print(cookie.getValue());
         		return;
     		}
     	} else {
-    		response.sendRedirect(LOGIN_PAGE);
+    		response.sendRedirect(userService.getLoginPage());
     	}
 	}
 	  public Cookie createNewCookie(HttpServletResponse httpResp ) {

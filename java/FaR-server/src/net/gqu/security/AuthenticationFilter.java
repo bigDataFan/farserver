@@ -68,13 +68,13 @@ public class AuthenticationFilter implements Filter
     public static final String ARG_TICKET = "ticket";
     
     private EhCacheService cacheService; //ServiceRegistry.getInstance().getCacheService();
-    private GQUUserService userService; //ServiceRegistry.getInstance().getUserService();
+    private BasicUserService userService; //ServiceRegistry.getInstance().getUserService();
     // Servlet context
 	
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		userService = (GQUUserService) ctx.getBean("userService");
+		userService = (BasicUserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
 	}
 
@@ -114,7 +114,7 @@ public class AuthenticationFilter implements Filter
         			return;
         		}
         	}
-        	
+        	httpReq.getSession().setAttribute(AuthenticationFilter.LOGIN_REFERER, httpReq.getRequestURI());
         	httpResp.sendRedirect(userService.getLoginPage());
         	return;
         } else {

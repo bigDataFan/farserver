@@ -16,6 +16,8 @@ public class AuthenticationUtil
     
     public static final String SYSTEM_USER_NAME = "system";
     public static final String GUEST_USER_NAME = "guest";
+    public static final String ADMIN_USER_NAME = "admin";
+    
     
     
     public static void setCurrentUser(User user) {
@@ -23,7 +25,13 @@ public class AuthenticationUtil
     }
     
     public static boolean isCurrentUserAdmin() {
-    	return currentUser.get().getName().equals(SYSTEM_USER_NAME);
+    	return (currentUser.get()==null)? false: (currentUser.get().getName().equals(ADMIN_USER_NAME));
+    }
+    
+    public static void setCurrrentUserAdmin() {
+    	User admin = new User();
+    	admin.setName(ADMIN_USER_NAME);
+    	currentUser.set(admin);
     }
     
 	public static void setCurrentAsGuest() {

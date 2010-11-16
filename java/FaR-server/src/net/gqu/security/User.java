@@ -12,8 +12,6 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String id;
-
 	private String name;
 	private String password;
 	private String email;
@@ -23,10 +21,7 @@ public class User implements Serializable {
 
 	private String db;
 	
-	public String getId() {
-		return id;
-	}
-	
+
 	public String getRole() {
 		return role;
 	}
@@ -42,7 +37,7 @@ public class User implements Serializable {
 		this.email = (String) one.get("email");
 		this.db = (String) one.get("db");
 		this.role = (String) one.get("role");
-		this.id = ((ObjectId) one.get("_id")).toString();
+		this.disabled = (Boolean)one.get("disabled");
 	}
 	
 	public Map<String, Object> getMap() {
@@ -52,7 +47,7 @@ public class User implements Serializable {
 		map.put("email", email);
 		map.put("db", db);
 		map.put("role", role);
-		map.put("_id", id);
+		map.put("disabled", disabled);
 		return map;
 	}
 	
@@ -65,10 +60,6 @@ public class User implements Serializable {
 	}
 
 	public User() {
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {

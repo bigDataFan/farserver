@@ -41,7 +41,7 @@
 	
 	<bean id="cacheService" class="net.gqu.cache.EhCacheService"></bean>
 
-	<bean id="userService" class="net.gqu.security.GQUUserService">
+	<bean id="userService" class="net.gqu.security.BasicUserService">
 		<property name="dbProvider">
 			<ref bean="dbProvider"/>
 		</property>
@@ -56,6 +56,9 @@
 		</property>
 		<property name="loginPage">
 			<value>${auth.loginpage}</value>
+		</property>
+		<property name="mainPage">
+			<value>${auth.managepage}</value>
 		</property>
 	</bean>
 	
