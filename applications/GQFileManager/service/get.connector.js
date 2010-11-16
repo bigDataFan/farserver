@@ -65,17 +65,22 @@ if (params.cmd=="open") {
 	}
 } else if (params.cmd == "paste") {
 	var currentNode = db.getCollection("files").getById(params.current);
+	
 	if (currentNode!=null) {
 		var targetList = request.getParameters("targets[]");
 		for(var i=0; i<targetList.length; i++) {
 			var nodeToCopy =  db.getCollection("files").getById(targetList[i]);
 			if (db.getCollection("files").findOne({"parent": params.current, "name":nodeToCopy.name})==null) {
-				copyTo(nodeToCopy, currentNode, nodeToCopy.name);	
+				if (params.cut=="0") {
+					copyTo(nodeToCopy, currentNode, nodeToCopy.name);
+				} else if (params.cut=="1") {
+					moveTo(nodeToCopy, currentNode);
+				}
 			}
 		}
 		generateResult(currentNode);
 	}
-}
+} else if (params.cmd=="")
 
 
 
@@ -93,12 +98,12 @@ function generateResult(currentNode) {
 }
 
 
-function isChildOrEqual(nodeToCopy, targetNode) {
-	if (nodeToCopy.id == targetNode.id) return true;
+function isChildOrEqual(srcNode, targetNode) {
+	if (srcNode.id == targetNode.id) return true;
 
-	if (nodeToCopy.parent!="") {
-		var nodeToCopy = db.getCollection("files").getById(nodeToCopy.parent);
-		return isChildOrEqual(nodeToCopy, targetNode);
+	if (srcNode.parent!="") {
+		var srcNode = db.getCollection("files").getById(srcNode.parent);
+		return isChildOrEqual(srcNode, targetNode);
 	} else {
 		return false;
 	}
@@ -119,10 +124,17 @@ function removeNode(node) {
 	db.getCollection("files").remove({"id": node.id});
 }
 
+function moveTo(srcNode, targetParent) {
+	if (isChildOrEqual(targetParent, srcNode)) return;
+
+	srcNode.parent = targetParent.id;
+	
+	db.getCollection("files").upsert(srcNode);
+}
 
 function copyTo(srcNode, targetParent, name) {
 	
-	if (isChildOrEqual(srcNode, targetParent)) return;
+	if (isChildOrEqual(targetParent, srcNode)) return;
 	
 	if (srcNode.mime=="directory") {
 		var newNode = {
