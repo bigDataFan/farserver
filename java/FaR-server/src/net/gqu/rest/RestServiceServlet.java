@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.gqu.exception.HttpStatusExceptionImpl;
+import net.gqu.security.GQUUserService;
 import net.gqu.security.LoginServlet;
 
 import org.json.JSONArray;
@@ -30,6 +31,7 @@ public class RestServiceServlet extends HttpServlet {
 
 	private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
 	private HttpServiceRegistry registry;
+	private GQUUserService userService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -42,7 +44,7 @@ public class RestServiceServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils
 		.getRequiredWebApplicationContext(config.getServletContext());
-		
+		userService = (GQUUserService) ctx.getBean("userService");
 		registry = (HttpServiceRegistry) ctx.getBean("registry");
 	}
 	
@@ -76,7 +78,7 @@ public class RestServiceServlet extends HttpServlet {
 		} catch (HttpStatusExceptionImpl e) {
 			if (e.getCode()==401) {
 				request.getSession().setAttribute(LoginServlet.HEADER_REFERER, request.getRequestURI());
-				response.sendRedirect(LoginServlet.LOGIN_PAGE);
+				response.sendRedirect(userService.getLoginPage());
 				return;
 			} else {
 				response.setStatus(e.getCode());
@@ -122,7 +124,7 @@ public class RestServiceServlet extends HttpServlet {
 			render(response, result);
 		} catch (HttpStatusExceptionImpl e) {
 			if (e.getCode()==401) {
-				response.sendRedirect(LoginServlet.LOGIN_PAGE);
+				response.sendRedirect(userService.getLoginPage());
 				return;
 			} else {
 				response.setStatus(e.getCode());

@@ -71,6 +71,9 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public NativeObject getById(String id) {
+		if (id=="undefined") {
+			return null;
+		}
 		DBObject dbo = new BasicDBObject();
 		dbo.put("_id", new ObjectId(id));	
 		DBObject result = coll.findOne(dbo);

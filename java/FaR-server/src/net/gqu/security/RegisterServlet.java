@@ -26,7 +26,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * Servlet implementation class RegisterServlet
  */
 public class RegisterServlet extends HttpServlet {
-	private static final String REGISTER_JSP = "/NewGQ/register.jsp";
+	private String registerPage;
 	
 	private Log logger = LogFactory.getLog(RegisterServlet.class);
 	
@@ -46,10 +46,9 @@ public class RegisterServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		
 		userService = (GQUUserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
-		
+		registerPage = userService.getRegisterPage();
 	}
 
 
@@ -62,48 +61,49 @@ public class RegisterServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("pwd");
 		String passwordc = request.getParameter("pwdcfm");
+		String role = request.getParameter("role");
 		Object rndimg = request.getSession().getAttribute(RandomImgServlet.VALIDATE_CODE);
 		removeAllAttr(request.getSession());
 		logger.debug("register: " + username + "  " +  email + " " + password + "  " );
 		if (username==null || username.length()<4 ) {
 			request.getSession().setAttribute("error", "invalid user name");
-			response.sendRedirect(REGISTER_JSP);
+			response.sendRedirect(registerPage);
 			return;
 		} 
 		
 		
 		if ( password==null || password.length()<6 ) {
 			request.getSession().setAttribute("error", "password strenth");
-			response.sendRedirect(REGISTER_JSP);
+			response.sendRedirect(registerPage);
 			return;
 		} 
 		
 		if (passwordc==null || !password.equals(passwordc)) {
 			request.getSession().setAttribute("error", "password confirm");
-			response.sendRedirect(REGISTER_JSP);
+			response.sendRedirect(registerPage);
 			return;
 		} 
 		
 		if (email==null) {
 			request.getSession().setAttribute("error", "invalid email");
-			response.sendRedirect(REGISTER_JSP);
+			response.sendRedirect(registerPage);
 			return;
 		} 
 		
 		if (request.getParameter("randomimg")==null || !request.getParameter("randomimg").equals(rndimg)) {
 			request.getSession().setAttribute("error", "invalid random picture");
-			response.sendRedirect(REGISTER_JSP);
+			response.sendRedirect(registerPage);
 			return;
 		}
 		
 		try {
 			if (userService.getUser(username)!=null) {
 				request.getSession().setAttribute("error", "username conflict");
-				response.sendRedirect(REGISTER_JSP);
+				response.sendRedirect(registerPage);
 				return;
 			}
 			
-			boolean random = userService.createUser(username, password, email);
+			boolean random = userService.createUser(username, password, role, email);
 			User user = userService.getUser(username);
 			
 			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, user);		
@@ -117,10 +117,9 @@ public class RegisterServlet extends HttpServlet {
     		response.flushBuffer();
     		return;
 		} catch (Exception e) {
-			response.sendRedirect(REGISTER_JSP);
+			response.sendRedirect(registerPage);
 			return;
 		}
-		
 	}
 
 
