@@ -64,22 +64,35 @@ if (params.cmd=="open") {
 		generateResult(currentNode);
 	}
 } else if (params.cmd == "paste") {
-	var currentNode = db.getCollection("files").getById(params.current);
 	
-	if (currentNode!=null) {
-		var targetList = request.getParameters("targets[]");
-		for(var i=0; i<targetList.length; i++) {
-			var nodeToCopy =  db.getCollection("files").getById(targetList[i]);
-			if (db.getCollection("files").findOne({"parent": params.current, "name":nodeToCopy.name})==null) {
-				if (params.cut=="0") {
-					copyTo(nodeToCopy, currentNode, nodeToCopy.name);
-				} else if (params.cut=="1") {
-					moveTo(nodeToCopy, currentNode);
+	
+	if (params.cut=="0") {
+		var targetParent = db.getCollection("files").getById(params.current);
+	
+		if (targetParent!=null) {
+			var copyList = request.getParameters("targets[]");
+			for(var i=0; i<copyList.length; i++) {
+				var nodeToCopy =  db.getCollection("files").getById(copyList[i]);
+				if (db.getCollection("files").findOne({"parent": params.current, "name":nodeToCopy.name})==null) {
+					copyTo(nodeToCopy, targetParent, nodeToCopy.name);
 				}
 			}
 		}
-		generateResult(currentNode);
+		generateResult(targetParent);
+	} else if (params.cut=="1") {
+		var targetParent = db.getCollection("files").getById(params.dist);
+		if (targetParent!=null) {
+			var moveList = request.getParameters("targets[]");
+			for(var i=0; i<moveList.length; i++) {
+				var nodeToMove =  db.getCollection("files").getById(moveList[i]);
+				if (db.getCollection("files").findOne({"parent":params.dist,"name":nodeToMove.name})==null) {
+					moveTo(nodeToMove, targetParent);
+				}
+				
+			}
+		}
 	}
+	
 } else if (params.cmd=="") {
 	
 }
