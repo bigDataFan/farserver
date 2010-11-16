@@ -247,8 +247,6 @@ function getCwd(folder) {
 	return cwd;
 }
 
-
-
 function getTree() {
 	var folder = db.getCollection("files").findOne({"parent":""});
 	var tree = new Object();
@@ -259,8 +257,6 @@ function getTree() {
 	tree.dirs = getDirs(folder, true);
 	return tree;
 }
-
-
 
 function getDirs(folder, getsub) {
 	var dirs = new Array();
@@ -281,21 +277,11 @@ function getDirs(folder, getsub) {
 	return dirs;
 }
 
-
 function getParams() {
 	var z = new Object();
 	z.uplMaxSize = "10M";
-	z.archives = [
-	                          "application/x-tar",
-	                          "application/x-gzip",
-	                          "application/x-bzip2",
-	                          "application/x-7z-compressed",
-	                          "application/zip"
-	                      ];
+	z.archives = [];
 	z.extract = z.archives;
-	z.url = "/service/upload";
-	
-	return z;	
+	z.url = "/service/upload";	
+	return z;
 }
-
-
