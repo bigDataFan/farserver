@@ -66,7 +66,7 @@ if (params.cmd=="open") {
 } else if (params.cmd == "paste") {
 	
 	
-	if (params.cut=="0") {
+	if (params.cut=="0") { // copy of nodes
 		var targetParent = db.getCollection("files").getById(params.current);
 	
 		if (targetParent!=null) {
@@ -79,7 +79,7 @@ if (params.cmd=="open") {
 			}
 		}
 		generateResult(targetParent);
-	} else if (params.cut=="1") {
+	} else if (params.cut=="1") { //move of nodes
 		var targetParent = db.getCollection("files").getById(params.dist);
 		if (targetParent!=null) {
 			var moveList = request.getParameters("targets[]");
