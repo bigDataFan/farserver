@@ -17,7 +17,17 @@
 			
 			var f = $('#finder').elfinder({
 				url : 'service/connector.gs',
-				lang : 'en'
+				lang : 'en',
+				toolbar        : [
+				      			['back', 'reload'],
+				      			['select', 'open'],
+				      			['mkdir', 'mkfile', 'upload'],
+				      			['copy', 'paste', 'rm'],
+				      			['rename'],
+				      			['info', 'quicklook'],
+				      			['icons', 'list'],
+				      			['help']
+				      		]
 				// docked : true,
 				// dialog : {
 				// 	title : 'File manager',
