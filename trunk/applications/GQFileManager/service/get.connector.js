@@ -44,6 +44,7 @@ if (params.cmd=="open") {
 	}
 	var parentFolder = db.getCollection("files").getById(params.current);
 	generateResult(parentFolder);
+	result.tree = getTree();
 } else if (params.cmd == "rename") {
 	var targetNode = db.getCollection("files").getById(params.target);
 	if (targetNode!=null) {
@@ -92,6 +93,17 @@ function generateResult(currentNode) {
 }
 
 
+function isChildOrEqual(nodeToCopy, targetNode) {
+	if (nodeToCopy.id == targetNode.id) return true;
+
+	if (nodeToCopy.parent!="") {
+		var nodeToCopy = db.getCollection("files").getById(nodeToCopy.parent);
+		return isChildOrEqual(nodeToCopy, targetNode);
+	} else {
+		return false;
+	}
+}
+
 
 function removeNode(node) {
 	if (!node) return; 
@@ -109,6 +121,9 @@ function removeNode(node) {
 
 
 function copyTo(srcNode, targetParent, name) {
+	
+	if (isChildOrEqual(srcNode, targetParent)) return;
+	
 	if (srcNode.mime=="directory") {
 		var newNode = {
 				"modified" : new Date(),
