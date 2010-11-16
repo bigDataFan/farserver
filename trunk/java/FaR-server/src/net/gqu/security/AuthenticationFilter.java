@@ -44,6 +44,8 @@ import net.sf.ehcache.Element;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * WebDAV Authentication Filter Class
@@ -64,7 +66,6 @@ public class AuthenticationFilter implements Filter
 
     // Allow an authentication ticket to be passed as part of a request to bypass authentication
     public static final String ARG_TICKET = "ticket";
-	private static final String MAIN_PAGE = "/";
     
     private EhCacheService cacheService; //ServiceRegistry.getInstance().getCacheService();
     private GQUUserService userService; //ServiceRegistry.getInstance().getUserService();
@@ -72,7 +73,9 @@ public class AuthenticationFilter implements Filter
 	
 	@Override
 	public void init(FilterConfig config) throws ServletException {
-		
+		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+		userService = (GQUUserService) ctx.getBean("userService");
+		cacheService = (EhCacheService) ctx.getBean("cacheService");
 	}
 
     /**
@@ -107,65 +110,17 @@ public class AuthenticationFilter implements Filter
         			User cachedUser = (User) element.getValue();
         			httpReq.getSession().setAttribute(AUTHENTICATION_USER, cachedUser);
         			AuthenticationUtil.setCurrentUser(user);
-        			/*
-        			if (httpReq.getSession().getAttribute(REDIRECT_TO)!=null) {
-                		String url = (String) httpReq.getSession().getAttribute(REDIRECT_TO);
-                		httpReq.getSession().removeAttribute(REDIRECT_TO);
-                		httpResp.sendRedirect(url);
-                		return;
-                	}
-                	*/
         			chain.doFilter(req, resp);
         			return;
         		}
         	}
         	
-        	String username = httpReq.getParameter("username");
-        	String pwd = httpReq.getParameter("password");
-        	if (username==null || pwd==null ) {
-        		if (httpReq.getHeader(LOGIN_REFERER)!=null) {
-        			httpReq.getSession().setAttribute(LOGIN_REFERER, httpReq.getHeader(LOGIN_REFERER));
-        		}
-        		httpResp.sendRedirect(LoginServlet.LOGIN_PAGE);
-        		return;
-        	}
-            // Get the authorization header
-        	user = userService.getUser(username);
-        	if (user!=null) {
-        		if (!user.getPassword().equals(pwd)) {
-        			user = null;
-        		}
-        	}
-        	
-        	if (user==null) {
-        		//go to login page
-        		httpReq.getSession().setAttribute(REDIRECT_TO, httpReq.getServletPath());
-        		httpResp.sendRedirect(LoginServlet.LOGIN_PAGE);
-        	} else {
-        		httpReq.getSession().setAttribute(AUTHENTICATION_USER, user);		
-        		Cookie cookie = createNewCookie(httpResp);
-        		Element element = new Element(cookie.getValue(), user);
-        		Cache cookieCache = cacheService.getCookieCache();
-        		cookieCache.put(element);
-        		AuthenticationUtil.setCurrentUser(user);
-        		/*
-        		httpResp.sendRedirect(MAIN_PAGE);
-        		*/
-        	}
-        	chain.doFilter(req, resp);
+        	httpResp.sendRedirect(userService.getLoginPage());
+        	return;
         } else {
         	AuthenticationUtil.setCurrentUser(user);
-        	
-        	/*
-        	if (httpReq.getSession().getAttribute(REDIRECT_TO)!=null) {
-        		String url = (String) httpReq.getSession().getAttribute(REDIRECT_TO);
-        		httpReq.getSession().removeAttribute(REDIRECT_TO);
-        		httpResp.sendRedirect(url);
-        	}
-        	*/
         	chain.doFilter(req, resp);
         }
-
     }
 
     

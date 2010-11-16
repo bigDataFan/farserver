@@ -26,7 +26,8 @@ public class LoginServlet extends HttpServlet {
 	private EhCacheService cacheService;
 	private GQUUserService userService;
     
-	public static final String LOGIN_PAGE = "/NewGQ/login.jsp";
+	public final String LOGIN_PAGE = "/NewGQ/login.jsp";
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,6 +40,7 @@ public class LoginServlet extends HttpServlet {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		userService = (GQUUserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
+		
 	}
 
 

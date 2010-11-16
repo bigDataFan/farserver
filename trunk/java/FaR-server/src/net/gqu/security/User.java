@@ -17,6 +17,7 @@ public class User implements Serializable {
 	private String name;
 	private String password;
 	private String email;
+	private String role;
 	
 	private boolean disabled;
 
@@ -25,14 +26,22 @@ public class User implements Serializable {
 	public String getId() {
 		return id;
 	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public User(Map<String, Object> one) {
 		super();
 		this.name = (String) one.get("name");
 		this.password = (String) one.get("password");
 		this.email = (String) one.get("email");
-		this.db = (one.get("db")==null)? GQUUserService.USERDB: (String) one.get("db");
-		//this.disabled = (Boolean) one.get("disabled");
+		this.db = (String) one.get("db");
+		this.role = (String) one.get("role");
 		this.id = ((ObjectId) one.get("_id")).toString();
 	}
 	
@@ -42,6 +51,7 @@ public class User implements Serializable {
 		map.put("password", password);
 		map.put("email", email);
 		map.put("db", db);
+		map.put("role", role);
 		map.put("_id", id);
 		return map;
 	}
