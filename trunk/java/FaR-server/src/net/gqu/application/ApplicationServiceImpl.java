@@ -6,7 +6,7 @@ import java.util.Map;
 
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.HttpLoader;
-import net.gqu.security.GQUUserService;
+import net.gqu.security.BasicUserService;
 import net.gqu.security.User;
 import net.gqu.service.ApplicationService;
 import net.gqu.utils.JSONUtils;
@@ -28,7 +28,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public static final String INSTALLED_COLL_NAME = "installed";
 	private String mainServer = null; //"http://127.0.0.1:8080/GQMain/";
 	private MongoDBProvider dbProvider;
-	private GQUUserService userService;
+	private BasicUserService userService;
 	
 	private Map<String, ApprovedApplication> applicationMap = new HashMap<String, ApprovedApplication>();
 	
@@ -40,7 +40,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		this.mainServer = mainServer;
 	}
 	
-	public void setUserService(GQUUserService userService) {
+	public void setUserService(BasicUserService userService) {
 		this.userService = userService;
 	}
 

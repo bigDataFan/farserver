@@ -35,7 +35,7 @@ import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
 import net.gqu.security.AuthenticationUtil;
-import net.gqu.security.GQUUserService;
+import net.gqu.security.BasicUserService;
 import net.gqu.service.ApplicationService;
 import net.gqu.service.ScriptExecService;
 import net.gqu.utils.FileCopyUtils;
@@ -81,7 +81,7 @@ public class GQServlet extends HttpServlet {
 	private ScriptExecService scriptExecService;
 	private EhCacheService cacheService;
 	private MongoDBProvider dbProvider;
-	private GQUUserService userService;
+	private BasicUserService userService;
 	private Configuration freemarkerConfiguration;
 	private DiskFileItemFactory  fileItemFactory;
 	private ContentService contentService;
@@ -116,7 +116,7 @@ public class GQServlet extends HttpServlet {
     	scriptExecService =  (ScriptExecService) ctx.getBean("scriptService");
     	applicationService = (ApplicationService)ctx.getBean("applicationService");
     	dbProvider = (MongoDBProvider) ctx.getBean("dbProvider");
-    	userService = (GQUUserService) ctx.getBean("userService");
+    	userService = (BasicUserService) ctx.getBean("userService");
     	contentService = (ContentService) ctx.getBean("contentService");
     	
     	freemarkerConfiguration = new Configuration();

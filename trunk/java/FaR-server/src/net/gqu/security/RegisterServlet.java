@@ -40,13 +40,13 @@ public class RegisterServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-    private GQUUserService userService;
+    private BasicUserService userService;
     private EhCacheService cacheService;
     
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		userService = (GQUUserService) ctx.getBean("userService");
+		userService = (BasicUserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
 		registerPage = userService.getRegisterPage();
 	}
