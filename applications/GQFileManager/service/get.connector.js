@@ -91,6 +91,8 @@ if (params.cmd=="open") {
 				
 			}
 		}
+		var current = db.getCollection("files").getById(params.current);
+		generateResult(current);
 	}
 	
 } else if (params.cmd=="") {
