@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>System Admin</title>
+
+<link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">
+<script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
+<script language="Javascript" type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+	$('#rolecfg').click(
+			function() {
+				$('#main').html($('#rolesDiv').html());
+				$('#main').attr("title", "Roles");
+
+				$('#save_role').click(
+						function() {
+							postForm($('#roleForm'));
+						}
+				);
+
+				
+			}
+	);
+
+
+
+});
+
+
+
+function postForm(form) {
+
+	var params = new Object();
+
+	$(form).find('input').each(
+		function() {
+			$(this).validatebox();
+		}
+	);
+}
+
+
+$.extend($.fn.validatebox.defaults.rules, {
+    integer: {
+        validator: function(value, param){
+            return parseInt(value);
+        },
+        message: 'Please enter at least {0} characters.'
+    }
+});
+
+
+
+
+</script>
+<style type="text/css">
+
+input[type="text"], input[type="password"], textarea, select {
+	background:url("../img/shadow.gif") repeat-x scroll 0 0 #FFFFFF !important;
+	border:1px solid #ADADAD !important;
+	color:#626262;
+	font-family:"Lucida Grande","Lucida Sans","Lucida Sans Unicode","Luxi Sans",Tahoma,sans-serif;
+	font-size:1em;
+	padding:6px 5px;
+	width:120px;
+}
+
+#main {
+	padding: 5px;
+}
+
+
+
+</style>
+</head>
+
+<body class="easyui-layout">
+		<div region="west" split="true" title="&nbsp;" style="width:300px;">
+			<ul>
+				<LI><a id="servercfg" href="#">Summary</a></LI>
+				<li><a id="rolecfg" href="#" >Groups</a></li>
+				<LI><a href="">Permissions</a></LI>
+			</ul>
+		</div>
+		<div id="console" region="south" icon="icon-cancel" split="true" title="日志" style="height:200px;padding:5px;background:white" >
+					
+		</div>
+		<div region="center" id="main" title="&nbsp;" >
+			
+		</div>
+		
+		<div style="display: none" id="rolesDiv">
+			<form id="roleForm" method="POST" action="../admin/updaterole">
+	          	Name:<input type="text" maxlength="255" name="name" id="role_name">
+				Register:<select name="isopen">
+								<option value="1">Free</option>
+								<option value="0">Added By Admin</option>
+						 </select>
+			    LimitSize:<input type="text" maxlength="255" validType="email" name="fileSize">KB
+				TotalLimit:<input type="text" maxlength="255" name="totalSize">KB
+				
+				<a id="save_role" href="#">SAVE</a>
+			</form>
+		</div>
+</body>
+</html>
