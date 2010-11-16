@@ -4,9 +4,15 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 	
 	<bean id="dbProvider" class="net.gqu.mongodb.MongoDBProvider" init-method="init">
-		<property name="ip" value="127.0.0.1"></property>
-		<property name="port" value="27017"></property>
-		<property name="mainDb" value="MainDB"></property>
+		<property name="ip">
+			<value>${mongodb.ip}</value>
+		</property>
+		<property name="port">
+			<value>${mongodb.port}</value>
+		</property>
+		<property name="mainDb">
+			<value>${mongodb.maindb}</value>
+		</property>
 	</bean>
 	
 	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl">
@@ -39,6 +45,18 @@
 		<property name="dbProvider">
 			<ref bean="dbProvider"/>
 		</property>
+		<property name="adminPassword">
+			<value>${auth.adminpassword}</value>
+		</property>
+		<property name="registerPage">
+			<value>${auth.registerpage}</value>
+		</property>
+		<property name="userdb">
+			<value>${mongodb.userdb}</value>
+		</property>
+		<property name="loginPage">
+			<value>${auth.loginpage}</value>
+		</property>
 	</bean>
 	
 	<bean id="scriptService" class="net.gqu.service.ScriptExecService" init-method="init">
@@ -57,6 +75,18 @@
 		</property>
 	</bean>
 
+
+	<bean id="repository-properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+		<property name="locations">
+			<list>
+				<value>classpath:farserver.properties</value>
+			</list>
+		</property>
+	</bean>
+	
 	<!-- 
 	<bean name="image.transformer.exe" class="net.gqu.utils.RuntimeExec">
             <property name="processDirectory">
