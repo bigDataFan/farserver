@@ -80,7 +80,9 @@ if (params.cmd=="open") {
 		}
 		generateResult(currentNode);
 	}
-} else if (params.cmd=="")
+} else if (params.cmd=="") {
+	
+}
 
 
 
