@@ -55,17 +55,11 @@ public class LoginServlet extends HttpServlet {
     		return;
     	}
     	
-    	
-    	if (AuthenticationUtil.ADMIN_USER_NAME.equals(username) && pwd.equals(userService.getAdminPassword())) {
-    		request.getSession().setAttribute(AuthenticationUtil.ADMIN_USER_NAME, true);
-    		
-    	}
-    	
     	  // Get the authorization header
     	User user = userService.getUser(username);
     	
     	if (user!=null) {
-    		if (!user.getPassword().equals(pwd)) {
+    		if (!pwd.equals(user.getPassword())) {
     			response.sendRedirect(userService.getLoginPage());
     			return;
     		} else {
