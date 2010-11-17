@@ -3,21 +3,27 @@ package net.gqu.security;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 
 public class Role {
 
 	private String name;
+	private ObjectId id;
 	private long contentSize;
 	private long totalSize;
 	
-	private boolean isOpen;
+	private boolean open;
+	private boolean enabled;
 
 	public Role(Map<String, Object> one) {
 		super();
 		this.name = (String) one.get("name");
 		this.contentSize = (Long) one.get("contentSize");
 		this.totalSize = (Long) one.get("totalSize");
-		this.isOpen = (Boolean) one.get("isOpen");
+		this.open = (Boolean) one.get("open");
+		this.enabled = (Boolean) one.get("enabled");
+		this.id = (ObjectId)one.get("_id");
 	}
 	
 	
@@ -26,6 +32,24 @@ public class Role {
 		// TODO Auto-generated constructor stub
 	}
 
+	public ObjectId getId() {
+		return id;
+	}
+
+
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 
 	public Map<String, Object> getMap() {
@@ -33,7 +57,11 @@ public class Role {
 		map.put("name", name);
 		map.put("contentSize", contentSize);
 		map.put("totalSize", totalSize);
-		map.put("isOpen", isOpen);
+		map.put("open", open);
+		map.put("enabled", enabled);
+		if (id!=null) {
+			map.put("id", id.toString());
+		}
 		return map;
 	}
 	
@@ -63,14 +91,15 @@ public class Role {
 		this.totalSize = totalSize;
 	}
 
+
 	public boolean isOpen() {
-		return isOpen;
+		return open;
 	}
 
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
+
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
-	
 	
 	
 }

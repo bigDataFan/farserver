@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import net.gqu.mongodb.MongoDBProvider;
 
 import com.mongodb.BasicDBObject;
@@ -26,6 +28,7 @@ public class BasicUserService {
 	private String loginPage;
 	private String mainPage;
 	
+	
 	public String getMainPage() {
 		return mainPage;
 	}
@@ -37,8 +40,11 @@ public class BasicUserService {
 	public MongoDBProvider getDbProvider() {
 		return dbProvider;
 	}
-
 	
+	public BasicUserService() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public List<Role> getRoles() {
 		DB db = dbProvider.getMainDB();
 		DBCollection coll = db.getCollection("roles");
@@ -140,7 +146,13 @@ public class BasicUserService {
 	}
 
 	public void setAdminPassword(String adminPassword) {
+		
 		this.adminPassword = adminPassword;
+		User adminUser = new User();
+		adminUser.setName(AuthenticationUtil.ADMIN_USER_NAME);
+		adminUser.setPassword(adminPassword);
+		usersMap.put(AuthenticationUtil.ADMIN_USER_NAME, adminUser);
+		
 	}
 
 	public boolean updateUser(User user) {
@@ -153,24 +165,33 @@ public class BasicUserService {
 	public boolean updateRole(Role role) {
 		DB db = dbProvider.getMainDB();
 		DBCollection coll = db.getCollection("roles");
-		WriteResult wr = coll.update(new BasicDBObject("name", role.getName()), new BasicDBObject(role.getMap()), true, false);
+		
+		if (role.getId()==null) {
+			coll.insert(new BasicDBObject(role.getMap()));
+		} else {
+			
+			WriteResult wr = coll.update(new BasicDBObject("_id", role.getId()), new BasicDBObject(role.getMap()), true, false);
+		}
 		return true;
 	}
 	
-	public Role getRole(String name) {
-		if (rolesMap.get(name)!=null) {
-			return rolesMap.get(name);
+	public Role getRole(String id) {
+		if (rolesMap.get(id)!=null) {
+			return rolesMap.get(id);
 		} else {
 			DB db = dbProvider.getMainDB();
 			DBCollection rolecoll = db.getCollection("roles");
-			DBObject roleDoc = rolecoll.findOne(new BasicDBObject("name", name));
+			DBObject roleDoc = rolecoll.findOne(new BasicDBObject("_id", new ObjectId(id)));
 			if (roleDoc==null) {
 				return null;
 			}
-			rolesMap.put(name, new Role(roleDoc.toMap()));
-			return rolesMap.get(name);
+			rolesMap.put(id, new Role(roleDoc.toMap()));
+			return rolesMap.get(id);
 		}
-		
+	}
+	public void removeRole(String id) {
+		DB db = dbProvider.getMainDB();
+		db.getCollection("roles").remove(new BasicDBObject("_id", new ObjectId(id)));
 	}
 	
 	
