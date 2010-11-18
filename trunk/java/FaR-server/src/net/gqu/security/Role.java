@@ -8,6 +8,11 @@ import org.bson.types.ObjectId;
 
 public class Role {
 
+	public static final String KEY_ENABLED = "enabled";
+	public static final String KEY_OPEN = "open";
+	public static final String KEY_TOTAL_SIZE = "totalSize";
+	public static final String KEY_CONTENT_SIZE = "contentSize";
+	public static final String KEY_NAME = "name";
 	private String name;
 	private ObjectId id;
 	private long contentSize;
@@ -18,11 +23,11 @@ public class Role {
 
 	public Role(Map<String, Object> one) {
 		super();
-		this.name = (String) one.get("name");
-		this.contentSize = (Long) one.get("contentSize");
-		this.totalSize = (Long) one.get("totalSize");
-		this.open = (Boolean) one.get("open");
-		this.enabled = (Boolean) one.get("enabled");
+		this.name = (String) one.get(KEY_NAME);
+		this.contentSize = (Long) one.get(KEY_CONTENT_SIZE);
+		this.totalSize = (Long) one.get(KEY_TOTAL_SIZE);
+		this.open = (Boolean) one.get(KEY_OPEN);
+		this.enabled = (Boolean) one.get(KEY_ENABLED);
 		this.id = (ObjectId)one.get("_id");
 	}
 	
@@ -54,11 +59,11 @@ public class Role {
 
 	public Map<String, Object> getMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", name);
-		map.put("contentSize", contentSize);
-		map.put("totalSize", totalSize);
-		map.put("open", open);
-		map.put("enabled", enabled);
+		map.put(KEY_NAME, name);
+		map.put(KEY_CONTENT_SIZE, contentSize);
+		map.put(KEY_TOTAL_SIZE, totalSize);
+		map.put(KEY_OPEN, open);
+		map.put(KEY_ENABLED, enabled);
 		if (id!=null) {
 			map.put("id", id.toString());
 		}

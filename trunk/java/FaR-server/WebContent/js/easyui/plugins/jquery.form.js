@@ -1,5 +1,5 @@
 ﻿/**
- * jQuery EasyUI 1.1.1
+ * jQuery EasyUI 1.2.1
  * 
  * Licensed under the GPL:
  *   http://www.gnu.org/licenses/gpl.txt
@@ -63,31 +63,52 @@ _6.remove();
 };
 };
 function _b(_c,_d){
+if(!$.data(_c,"form")){
+$.data(_c,"form",{options:$.extend({},$.fn.form.defaults)});
+}
+var _e=$.data(_c,"form").options;
 if(typeof _d=="string"){
-$.ajax({url:_d,dataType:"json",success:function(_e){
-_f(_e);
+var _f={};
+if(_e.onBeforeLoad.call(_c,_f)==false){
+return;
+}
+$.ajax({url:_d,data:_f,dataType:"json",success:function(_10){
+_11(_10);
+},error:function(){
+_e.onLoadError.apply(_c,arguments);
 }});
 }else{
-_f(_d);
+_11(_d);
 }
-function _f(_10){
-var _11=$(_c);
-for(var _12 in _10){
-var val=_10[_12];
-$("input[name="+_12+"]",_11).val(val);
-$("textarea[name="+_12+"]",_11).val(val);
-$("select[name="+_12+"]",_11).val(val);
-if($.fn.combobox){
-$("select[comboboxName="+_12+"]",_11).combobox("setValue",val);
+function _11(_12){
+var _13=$(_c);
+for(var _14 in _12){
+var val=_12[_14];
+$("input[name="+_14+"]",_13).val(val);
+$("textarea[name="+_14+"]",_13).val(val);
+$("select[name="+_14+"]",_13).val(val);
+var cc=["combo","combobox","combotree","combogrid"];
+for(var i=0;i<cc.length;i++){
+_15(cc[i],_14,val);
 }
-if($.fn.combotree){
-$("select[combotreeName="+_12+"]",_11).combotree("setValue",val);
+}
+_e.onLoadSuccess.call(_c,_12);
+_1f(_c);
+};
+function _15(_16,_17,val){
+var _18=$(_c);
+var c=_18.find("."+_16+"-f[comboName="+_17+"]");
+if(c.length&&c[_16]){
+if(c[_16]("options").multiple){
+c[_16]("setValues",val);
+}else{
+c[_16]("setValue",val);
 }
 }
 };
 };
-function _13(_14){
-$("input,select,textarea",_14).each(function(){
+function _19(_1a){
+$("input,select,textarea",_1a).each(function(){
 var t=this.type,tag=this.tagName.toLowerCase();
 if(t=="text"||t=="hidden"||t=="password"||tag=="textarea"){
 this.value="";
@@ -101,64 +122,73 @@ this.selectedIndex=-1;
 }
 }
 });
+if($.fn.combo){
+$(".combo-f",_1a).combo("clear");
+}
 if($.fn.combobox){
-$("select[comboboxName]",_14).combobox("clear");
+$(".combobox-f",_1a).combobox("clear");
 }
 if($.fn.combotree){
-$("select[combotreeName]",_14).combotree("clear");
+$(".combotree-f",_1a).combotree("clear");
+}
+if($.fn.combogrid){
+$(".combogrid-f",_1a).combogrid("clear");
 }
 };
-function _15(_16){
-var _17=$.data(_16,"form").options;
-var _18=$(_16);
-_18.unbind(".form").bind("submit.form",function(){
+function _1b(_1c){
+var _1d=$.data(_1c,"form").options;
+var _1e=$(_1c);
+_1e.unbind(".form").bind("submit.form",function(){
 setTimeout(function(){
-_1(_16,_17);
+_1(_1c,_1d);
 },0);
 return false;
 });
 };
-function _19(_1a){
+function _1f(_20){
 if($.fn.validatebox){
-var box=$(".validatebox-text",_1a);
+var box=$(".validatebox-text",_20);
 if(box.length){
 box.validatebox("validate");
 box.trigger("blur");
-var _1b=$(".validatebox-invalid:first",_1a).focus();
-return _1b.length==0;
+var _21=$(".validatebox-invalid:first",_20).focus();
+return _21.length==0;
 }
 }
 return true;
 };
-$.fn.form=function(_1c,_1d){
-if(typeof _1c=="string"){
-switch(_1c){
-case "submit":
-return this.each(function(){
-_1(this,$.extend({},$.fn.form.defaults,_1d||{}));
-});
-case "load":
-return this.each(function(){
-_b(this,_1d);
-});
-case "clear":
-return this.each(function(){
-_13(this);
-});
-case "validate":
-return _19(this[0]);
+$.fn.form=function(_22,_23){
+if(typeof _22=="string"){
+return $.fn.form.methods[_22](this,_23);
 }
-}
-_1c=_1c||{};
+_22=_22||{};
 return this.each(function(){
 if(!$.data(this,"form")){
-$.data(this,"form",{options:$.extend({},$.fn.form.defaults,_1c)});
+$.data(this,"form",{options:$.extend({},$.fn.form.defaults,_22)});
 }
-_15(this);
+_1b(this);
 });
 };
+$.fn.form.methods={submit:function(jq,_24){
+return jq.each(function(){
+_1(this,$.extend({},$.fn.form.defaults,_24||{}));
+});
+},load:function(jq,_25){
+return jq.each(function(){
+_b(this,_25);
+});
+},clear:function(jq){
+return jq.each(function(){
+_19(this);
+});
+},validate:function(jq){
+return _1f(jq[0]);
+}};
 $.fn.form.defaults={url:null,onSubmit:function(){
-},success:function(_1e){
+},success:function(_26){
+},onBeforeLoad:function(_27){
+},onLoadSuccess:function(_28){
+},onLoadError:function(){
 }};
 })(jQuery);
 

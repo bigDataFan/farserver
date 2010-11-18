@@ -39,14 +39,21 @@ List<Role> openRoles = userService.getOpenRoles();
    						用户名<br />
  					    <input class="text" type="text" name="username"  value="" /> <font color="red"><%=session.getAttribute("username")==null?"":session.getAttribute("username")%></font>
  					</label>
+ 				
+ 				<label for="role">
+   					 用户祖<br />
+ 					    <select name="role">
+ 					    	<%for(Role role: openRoles) { %>
+ 					    		<option value="<%=role.getId() %>"> <%=role.getName() %></option>
+ 					    	<%} %> 
+ 					    </select>
+ 					</label>	
  					
- 					<input type="hidden" name="role" value="<%=openRoles.get(0).getName()%>"></input>
- 					
- 					<label for="password">
+ 					<label for="pwd">
    						密码<br />
  					    <input class="text" type="password" name="pwd"  value="" /><font color="red"><%=session.getAttribute("pwd")==null?"":session.getAttribute("pwd")%></font>
  					</label>
- 					<label for="password">
+ 					<label for="pwdcfm">
    						再输入一次密码<br />
  					    <input class="text" type="password" name="pwdcfm"  value="" /><font color="red"><%=session.getAttribute("pwdcfm")==null?"":session.getAttribute("pwdcfm")%></font>
  					</label>

@@ -16,6 +16,7 @@ import net.gqu.security.BasicUserService;
 import net.gqu.security.Role;
 import net.gqu.security.User;
 import net.gqu.service.ApplicationService;
+import net.gqu.utils.GUID;
 
 public class WebRestService {
 
@@ -138,11 +139,40 @@ public class WebRestService {
 		userService.updateRole(role);
 		return "OK";
 	}
+	
+	@RestService(method="POST", uri="/admin/user/list")
+	public Map<String, Object> filterUser(@RestParam(value="sort") String sort, @RestParam(value="order")String order, 
+			@RestParam(value="page")String page, @RestParam(value="rows")String rows) {
+		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
+		Integer p = Integer.valueOf(page);
+		Integer r = Integer.valueOf(rows);
+		return userService.getUsersJsonMap(sort, order, (p-1)*r, r);
+	}
+	
 
+	@RestService(method="POST", uri="/admin/user/save")
+	public void saveUser(@RestParam(value="name") String name, @RestParam(value="role")String role,@RestParam(value="email")String email,
+			@RestParam(value="password")String password, @RestParam(value="disabled")String disabled) {
+		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
+		
+		User user = userService.getUser(name); 
+		if (user==null) {
+			userService.createUser(name,password,role, email, new Boolean(disabled));
+		} else {
+			user.setRole(role);
+			user.setEmail(email);
+			user.setPassword(password);
+			user.setDisabled(new Boolean(disabled));
+			userService.updateUser(user);
+		}
+	}
 	
 	
-	
-	
+	@RestService(method="GET", uri="/admin/system/infos")
+	public Map<String, Object> getSystemInfos() {
+		return GUID.getSystemInfo();
+	}
+			
 	
 	
 }

@@ -22,14 +22,6 @@
 .icon-cancel{
 	background:url('icons/cancel.png') no-repeat;
 }
-
-.icon-cancel:HOVER{
-	border:1px solid;
-	cursor: pointer;
-}
-
-
-
 .icon-reload{
 	background:url('icons/reload.png') no-repeat;
 }
@@ -51,13 +43,3 @@
 .icon-back{
 	background:url('icons/back.png') no-repeat;
 }
-.icon-run{
-	background:url('icons/run.png') no-repeat;
-}
-
-
-.icon-run:HOVER{
-	border:1px solid;
-	cursor: pointer;
-}
-

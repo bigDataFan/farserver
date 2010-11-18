@@ -65,15 +65,16 @@
 	<bean id="scriptService" class="net.gqu.service.ScriptExecService" init-method="init">
 	</bean>
 	
-	<bean id="rest.applicationService" class="net.gqu.rest.ApplicationRestService">
+	<bean id="rest.services" class="net.gqu.rest.WebRestService">
 		<property name="applicationService" ref="applicationService"></property>
 		<property name="cacheService" ref="cacheService"></property>
+		<property name="userService" ref="userService"></property>
 	</bean>
 
 	<bean id="registry" class="net.gqu.rest.HttpServiceRegistry">
 		<property name="injectedServices">
 			<list>
-				<ref bean="rest.applicationService"/>
+				<ref bean="rest.services"/>
 			</list>
 		</property>
 	</bean>

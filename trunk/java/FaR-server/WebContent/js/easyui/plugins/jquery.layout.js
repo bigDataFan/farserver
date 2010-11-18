@@ -1,5 +1,5 @@
 ﻿/**
- * jQuery EasyUI 1.1.1
+ * jQuery EasyUI 1.2.1
  * 
  * Licensed under the GPL:
  *   http://www.gnu.org/licenses/gpl.txt
@@ -194,9 +194,6 @@ if(_1a.fit==true){
 _2(_d);
 }
 return false;
-});
-$(window).resize(function(){
-_2(_d);
 });
 return _19;
 };
@@ -452,18 +449,7 @@ return false;
 };
 $.fn.layout=function(_28,_29){
 if(typeof _28=="string"){
-switch(_28){
-case "panel":
-return $.data(this[0],"layout").panels[_29];
-case "collapse":
-return this.each(function(){
-_1b(this,_29);
-});
-case "expand":
-return this.each(function(){
-_21(this,_29);
-});
-}
+return $.fn.layout.methods[_28](this,_29);
 }
 return this.each(function(){
 var _2a=$.data(this,"layout");
@@ -475,5 +461,20 @@ _25(this);
 _2(this);
 });
 };
+$.fn.layout.methods={resize:function(jq){
+return jq.each(function(){
+_2(this);
+});
+},panel:function(jq,_2c){
+return $.data(jq[0],"layout").panels[_2c];
+},collapse:function(jq,_2d){
+return jq.each(function(){
+_1b(this,_2d);
+});
+},expand:function(jq,_2e){
+return jq.each(function(){
+_21(this,_2e);
+});
+}};
 })(jQuery);
 

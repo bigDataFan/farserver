@@ -13,101 +13,257 @@
 <script type="text/javascript">
 
 
+var roles = null;
+
 $(document).ready(function(){
-	$('#rolecfg').click(
-			function() {
-				$('#main').html($('#rolesDiv').html());
-				$('#main').attr("title", "Roles");
 
-				$('#save_role').click(
-						function() {
-							postForm($('#roleForm'));
-						}
-				);
 
-				
+	$.ajax(
+			{
+				type: 'post',
+			 	url:"../service/admin/role/list",
+			 	data:{},
+			 	dataType:"json",
+			 	success:function(data) {
+					roles = data;
+			 	}
 			}
 	);
 
 
+	
+		
 
+	
+	$('#rolecfg').click(
+			function() {
+				var editIndex = -1;
+				$('#main').html($('#roleDiv').html());
+    			$('#roleTable').datagrid({
+    				toolbar:[
+    		    		{
+        		    		text:"新增",
+        		    		iconCls:'icon-add',
+        		    		handler:function(){
+									$('#roleTable').datagrid('endEdit', editIndex);
+    								$('#roleTable').datagrid('appendRow',{
+	    								name:'',
+	    								open:'false',
+	    								contentSize:'1000',
+	    								totalSize:'100000',
+	    								enabled:'true'
+    								});
+    								editIndex = $('#roleTable').datagrid('getRows').length-1;
+    								$('#roleTable').datagrid('beginEdit', editIndex);
+    						}
+        				},'-',
+        				{
+        		    		text:"修改",
+        		    		iconCls:'icon-modifiy',
+        		    		handler:function(){
+        						var rowIndex = $('#roleTable').datagrid('getRowIndex', $('#roleTable').datagrid('getSelected'));
+	        					if (editIndex != rowIndex){
+	    							$('#roleTable').datagrid('cancelEdit', editIndex);
+	    							$('#roleTable').datagrid('beginEdit', rowIndex);
+	    						}
+	        					editIndex = rowIndex;
+    						}
+        				},'-',
+        				
+        				{
+        					text:'保存',
+        					iconCls:'icon-save',
+        					handler:function(){
+        						$('#roleTable').datagrid("endEdit", editIndex);
+        						editIndex = -1;
+        					}
+        				},'-',{
+    					text:'删除',
+    					iconCls:'icon-remove',
+    					handler:function(){
+    						var row = $('#roleTable').datagrid('getSelected');
+    						if (row){
+
+    							$.messager.confirm('删除角色', '当心，删除角色会使角色下的用户不可用，是否确认删除？', function(r){
+    								if (r){
+		    							var index = $('#roleTable').datagrid('getRowIndex', row);
+		    							$.post("../service/admin/role/remove", 
+		    	    							{id:row.id},
+		    	    							function(data) {
+					    							$('#roleTable').datagrid('deleteRow', index);
+		    	    					});
+    								}
+    							});
+    				    							
+        						
+    						}
+    					}
+    				}],
+    				
+    				onClickRow:function(rowIndex){
+						if (editIndex != rowIndex){
+							$('#roleTable').datagrid('cancelEdit', editIndex);
+							editIndex = -1;
+						}
+					},
+					onAfterEdit: function(rowIndex, rowData, changes) {
+						
+						$.post("../service/admin/role/save", 
+								rowData,
+								function(data){
+									if (data!="OK") {
+										$.messager.alert('My Title',data,'error');
+									}
+	        						$('#roleTable').datagrid('reload');
+								}
+						);
+					}
+    			});
+			}
+	);		
+
+
+
+
+	$('#usercfg').click(
+			function() {
+				var editIndex = -1;
+				$('#main').html($('#userDiv').html());
+				$('#userTable').datagrid({
+					toolbar:[
+		    		    		{
+		        		    		text:"新增",
+		        		    		iconCls:'icon-add',
+		        		    		handler:function(){
+											$('#userTable').datagrid('endEdit', editIndex);
+		    								$('#userTable').datagrid('appendRow',{
+			    								name:'',
+			    								email:'',
+			    								role:'',
+			    								password:'123456',
+			    								disabled:'false'
+		    								});
+		    								editIndex = $('#userTable').datagrid('getRows').length-1;
+		    								$('#userTable').datagrid('beginEdit', editIndex);
+		    						}
+		        				},'-',
+		        				{
+		        		    		text:"修改",
+		        		    		iconCls:'icon-modifiy',
+		        		    		handler:function(){
+		        						var rowIndex = $('#userTable').datagrid('getRowIndex', $('#userTable').datagrid('getSelected'));
+			        					if (editIndex != rowIndex){
+			    							$('#userTable').datagrid('cancelEdit', editIndex);
+			    							$('#userTable').datagrid('beginEdit', rowIndex);
+			    						}
+			        					editIndex = rowIndex;
+		    						}
+		        				},'-',
+		        				
+		        				{
+		        					text:'保存',
+		        					iconCls:'icon-save',
+		        					handler:function(){
+		        						$('#userTable').datagrid("endEdit", editIndex);
+		        						editIndex = -1;
+		        					}
+		        				}
+		    				],
+		    				onClickRow:function(rowIndex){
+								if (editIndex != rowIndex){
+									$('#userTable').datagrid('cancelEdit', editIndex);
+									editIndex = -1;
+								}
+							},
+							
+							onAfterEdit: function(rowIndex, rowData, changes) {
+								$.post("../service/admin/user/save", 
+										rowData,
+										function(data){
+			        						$('#userTable').datagrid('reload');
+										}
+								);
+							},
+							
+							onBeforeEdit: function(rowIndex, rowData) {
+								if (rowData.name=="") {
+									$('#userTable').datagrid('getColumnOption', 'name').editor="text";
+								} else {
+									$('#userTable').datagrid('getColumnOption', 'name').editor=null;
+								}
+							},
+							pagination:true
+				});
+			}
+	)	
 });
 
-
-
-function postForm(form) {
-
-	var params = new Object();
-
-	$(form).find('input').each(
-		function() {
-			$(this).validatebox();
-		}
-	);
+function userRoleNameFormator(value){
+	for(var i=0; i<roles.rows.length; i++){
+		if (roles.rows[i].id == value) return roles.rows[i].name;
+	}
+	return value;
 }
-
-
-$.extend($.fn.validatebox.defaults.rules, {
-    integer: {
-        validator: function(value, param){
-            return parseInt(value);
-        },
-        message: 'Please enter at least {0} characters.'
-    }
-});
-
-
 
 
 </script>
-<style type="text/css">
-
-input[type="text"], input[type="password"], textarea, select {
-	background:url("../img/shadow.gif") repeat-x scroll 0 0 #FFFFFF !important;
-	border:1px solid #ADADAD !important;
-	color:#626262;
-	font-family:"Lucida Grande","Lucida Sans","Lucida Sans Unicode","Luxi Sans",Tahoma,sans-serif;
-	font-size:1em;
-	padding:6px 5px;
-	width:120px;
-}
-
-#main {
-	padding: 5px;
-}
-
-
-
-</style>
 </head>
 
 <body class="easyui-layout">
 		<div region="west" split="true" title="&nbsp;" style="width:300px;">
+			<a href="../logout">退出</a>
 			<ul>
-				<LI><a id="servercfg" href="#">Summary</a></LI>
-				<li><a id="rolecfg" href="#" >Groups</a></li>
-				<LI><a href="">Permissions</a></LI>
+				<LI><a id="servercfg" href="#">概要</a></LI>
+				<li><a id="rolecfg" href="#" >角色</a></li>
+				<li><a id="usercfg" href="#" >用户</a></li>
+				<LI><a href="#">应用</a></LI>
+				<LI><a href="#">服务器日志</a></LI>
 			</ul>
 		</div>
+		<!-- 
 		<div id="console" region="south" icon="icon-cancel" split="true" title="日志" style="height:200px;padding:5px;background:white" >
 					
 		</div>
-		<div region="center" id="main" title="&nbsp;" >
+		 -->
+		<div region="center" id="main">
 			
 		</div>
 		
-		<div style="display: none" id="rolesDiv">
-			<form id="roleForm" method="POST" action="../admin/updaterole">
-	          	Name:<input type="text" maxlength="255" name="name" id="role_name">
-				Register:<select name="isopen">
-								<option value="1">Free</option>
-								<option value="0">Added By Admin</option>
-						 </select>
-			    LimitSize:<input type="text" maxlength="255" validType="email" name="fileSize">KB
-				TotalLimit:<input type="text" maxlength="255" name="totalSize">KB
-				
-				<a id="save_role" href="#">SAVE</a>
-			</form>
+	
+		<div style="display:none" id="roleDiv">
+			<table id="roleTable" style="width:800px;height:auto;"
+			title="角色管理" iconCls="icon-edit" singleSelect="true"
+			idField="id" url="../service/admin/role/list">
+			<thead>
+				<tr>
+					<th field="id" width="100">ID</th>
+					<th field="name" width="200" editor="text">角色名称</th>
+					<th field="open" width="100" align="right" editor="{type:'checkbox',options:{on:true,off:false}}">允许免费注册</th>
+					<th field="contentSize" width="100" align="right" editor="numberbox">单文件限制(KB)</th>
+					<th field="totalSize" width="100" editor="numberbox">总空间限制(KB)</th>
+					<th field="enabled" width="100" align="center" editor="{type:'checkbox',options:{on:true,off:false}}">启用</th>
+				</tr>
+			</thead>
+			</table>
 		</div>
+		
+		<div style="display:none" id="userDiv">
+			<table id="userTable" style="width:800px;height:auto;"
+			title="用户管理" iconCls="icon-edit" singleSelect="true"
+			idField="name" url="../service/admin/user/list">
+			<thead>
+				<tr>
+					<th field="name" width="100" sortable="true">用户名</th>
+					<th field="email" width="200" editor="text">电子邮件</th>
+					<th field="logined" width="50" sortable="true">登录次数</th>
+					<th field="password" width="50" editor="text">密码</th>
+					<th field="role" width="200" sortable="true" formatter="userRoleNameFormator" editor="{type:'combobox',options:{valueField:'id',textField:'name',data:roles.rows,required:true}}">角色</th>
+					<th field="disabled" width="100" align="right" editor="{type:'checkbox',options:{on:true,off:false}}">禁用</th>
+				</tr>
+			</thead>
+			</table>
+	    </div>
+				
+			
 </body>
 </html>

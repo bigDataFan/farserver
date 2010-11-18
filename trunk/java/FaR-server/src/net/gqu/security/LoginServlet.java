@@ -63,6 +63,7 @@ public class LoginServlet extends HttpServlet {
     			response.sendRedirect(userService.getLoginPage());
     			return;
     		} else {
+    			userService.incLogCount(username);
     			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, user);		
         		Cookie cookie = createNewCookie(response);
         		Element element = new Element(cookie.getValue(), user);
