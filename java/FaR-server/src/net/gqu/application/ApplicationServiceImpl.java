@@ -1,7 +1,9 @@
 package net.gqu.application;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.gqu.mongodb.MongoDBProvider;
@@ -14,6 +16,7 @@ import net.gqu.utils.StringUtils;
 
 import org.apache.http.HttpResponse;
 import org.bson.types.ObjectId;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,8 +53,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	public void setDbProvider(MongoDBProvider dbProvider) {
 		this.dbProvider = dbProvider;
-	}
-
+	}	
+	
 	@Override
 	public ApprovedApplication getApplication(String id) {
 		
