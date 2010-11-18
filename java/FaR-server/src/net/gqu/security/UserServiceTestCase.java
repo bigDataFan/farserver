@@ -26,16 +26,16 @@ public class UserServiceTestCase extends BasicTestCase {
 	
 	public void testAll() {
 		String userName = "TestUser" + System.currentTimeMillis();
-		userService.createUser(userName, "123456", roles, "abc@g-qu.net");
+		userService.createUser(userName, "123456", roles, "abc@g-qu.net", false);
 		
 		assertNotNull(userService.getUser(userName));
 		
 		String userNameb = "TestUser" + System.currentTimeMillis();
-		boolean result = userService.createUser(userNameb, "123456", noneopenRoles, "abc@g-qu.net");
+		boolean result = userService.createUser(userNameb, "123456", noneopenRoles, "abc@g-qu.net",false);
 		assertFalse(result);
 		
 		AuthenticationUtil.setCurrrentUserAdmin();
-		result = userService.createUser(userNameb, "123456", noneopenRoles, "abc@g-qu.net");
+		result = userService.createUser(userNameb, "123456", noneopenRoles, "abc@g-qu.net", false);
 		assertTrue(result);
 		
 		

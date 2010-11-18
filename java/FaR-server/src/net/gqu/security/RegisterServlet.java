@@ -103,7 +103,7 @@ public class RegisterServlet extends HttpServlet {
 				return;
 			}
 			
-			boolean random = userService.createUser(username, password, role, email);
+			boolean random = userService.createUser(username, password, role, email,false);
 			User user = userService.getUser(username);
 			
 			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, user);		

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import net.gqu.cache.EhCacheService;
 import net.sf.ehcache.Cache;
 
@@ -28,10 +31,13 @@ public class LogoutServlet extends HttpServlet {
     
 
     private EhCacheService cacheService;
-	
+    private BasicUserService userService;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
+		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+		cacheService = (EhCacheService) ctx.getBean("cacheService");
+		userService = (BasicUserService) ctx.getBean("userService");
 	}
 	
 
@@ -53,7 +59,7 @@ public class LogoutServlet extends HttpServlet {
 			}
     	}
     	request.getSession().removeAttribute(AuthenticationFilter.AUTHENTICATION_USER);
-    	response.sendRedirect("/index.jsp");
+    	response.sendRedirect(userService.getLoginPage());
 	}
 
 	/**
