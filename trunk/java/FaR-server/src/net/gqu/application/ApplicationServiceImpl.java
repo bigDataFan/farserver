@@ -1,9 +1,7 @@
 package net.gqu.application;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.gqu.mongodb.MongoDBProvider;
@@ -16,7 +14,6 @@ import net.gqu.utils.StringUtils;
 
 import org.apache.http.HttpResponse;
 import org.bson.types.ObjectId;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,18 +116,18 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 
 	@Override
-	public InstalledApplication install(User user, ApprovedApplication app, String mapping) {
+	public InstalledApplication install(String user, ApprovedApplication app, String mapping) {
 		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
 
 		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.put(USER, user.getName());
+		basicDBObject.put(USER, user);
 		basicDBObject.put(APPLICATION, app.getName());
 		basicDBObject.put(MAPPING, mapping==null?app.getName():mapping);
 		coll.update(basicDBObject, basicDBObject, true, false);
 		
 		InstalledApplication installedApplication = new InstalledApplication();
 		installedApplication.setApp(app.getName());
-		installedApplication.setUser(user.getName());
+		installedApplication.setUser(user);
 		installedApplication.setMapping(basicDBObject.getString(MAPPING));
 		installedApplication.setId(basicDBObject.getString(_ID));
 		return installedApplication;

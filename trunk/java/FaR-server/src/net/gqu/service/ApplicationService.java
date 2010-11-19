@@ -19,7 +19,7 @@ public interface ApplicationService {
 	public static final String DB_APP = "appsdb";
 	
 	Map<String, InstalledApplication> getUserInstalledApplications(User user);
-	InstalledApplication install(User user, ApprovedApplication app, String mapping);
+	InstalledApplication install(String user, ApprovedApplication app, String mapping);
 	boolean uninstalled(InstalledApplication installedApplication);
 	InstalledApplication getInstalledByMapping(String user, String mapping);
 	ApprovedApplication getApplication(String id);

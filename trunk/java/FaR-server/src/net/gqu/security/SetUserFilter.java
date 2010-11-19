@@ -45,11 +45,11 @@ public class SetUserFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
-		User user = (User) httpReq.getSession().getAttribute(AuthenticationFilter.AUTHENTICATION_USER);
+		String sessionedUser = (String) httpReq.getSession().getAttribute(AuthenticationFilter.AUTHENTICATION_USER);
 		AuthenticationUtil.setCurrentAsGuest();
 		
-		if (user != null) {
-			AuthenticationUtil.setCurrentUser(user);
+		if (sessionedUser != null) {
+			AuthenticationUtil.setCurrentUser(sessionedUser);
 		} else {
 			String ticket = getCookieTicket(httpReq);
 			if (ticket==null) {
@@ -59,9 +59,9 @@ public class SetUserFilter implements Filter {
         		Cache cookieCache = cacheService.getCookieCache();
         		Element element = cookieCache.get(ticket);
         		if (element!=null) {
-        			User cachedUser = (User) element.getValue();
+        			String cachedUser = (String) element.getValue();
         			httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, cachedUser);
-        			AuthenticationUtil.setCurrentUser(user);
+        			AuthenticationUtil.setCurrentUser(cachedUser);
         		}
         	}
 		}

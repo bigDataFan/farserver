@@ -18,7 +18,6 @@ public class ScriptUser {
 	public boolean isGuest() {
 		return user==null;
 	}
-
 	
 	@Override
 	public String toString() {

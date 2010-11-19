@@ -64,12 +64,12 @@ public class LoginServlet extends HttpServlet {
     			return;
     		} else {
     			userService.incLogCount(username);
-    			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, user);		
+    			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, username);		
         		Cookie cookie = createNewCookie(response);
-        		Element element = new Element(cookie.getValue(), user);
+        		Element element = new Element(cookie.getValue(),username);
         		Cache cookieCache = cacheService.getCookieCache();
         		cookieCache.put(element);
-        		AuthenticationUtil.setCurrentUser(user);
+        		AuthenticationUtil.setCurrentUser(username);
         		
         		if (request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER)!=null) {
         			String url = (String)request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER);

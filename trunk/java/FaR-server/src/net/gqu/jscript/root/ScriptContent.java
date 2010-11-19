@@ -3,16 +3,18 @@ package net.gqu.jscript.root;
 import java.io.InputStream;
 
 import net.gqu.content.ContentService;
+import net.gqu.security.BasicUserService;
 
 public class ScriptContent {
 	
 	private ContentService contentService;
-
-	public ScriptContent(ContentService contentService) {
+	public ScriptContent(ContentService contentService,
+			BasicUserService userService) {
 		super();
 		this.contentService = contentService;
 	}
-	
+
+
 	public String put(InputStream inputStream, String fileName, String mimetype) {
 		ContentFile contentFile = new ContentFile();
 		contentFile.setContent(inputStream);
@@ -33,5 +35,4 @@ public class ScriptContent {
 	public ContentFile get(String id) {
 		return contentService.getContent(id);
 	}
-	
 }

@@ -1,5 +1,7 @@
 package net.gqu.security;
 
+import net.gqu.exception.HttpStatusExceptionImpl;
+
 
 public class AuthenticationUtil
 {
@@ -12,46 +14,62 @@ public class AuthenticationUtil
          */
         Result doWork() throws Exception;
     }
-    public static ThreadLocal<User> currentUser = new ThreadLocal<User>();
+    public static ThreadLocal<String> currentUser = new ThreadLocal<String>();
+    public static ThreadLocal<String> contextUser = new ThreadLocal<String>();
     
     public static final String SYSTEM_USER_NAME = "system";
     public static final String GUEST_USER_NAME = "guest";
     public static final String ADMIN_USER_NAME = "admin";
     
     
+    public static void setContextUser(String user) {
+    	contextUser.set(user);
+    }
     
-    public static void setCurrentUser(User user) {
+    
+    public static void setCurrentUser(String user) {
     	currentUser.set(user);
     }
     
     public static boolean isCurrentUserAdmin() {
-    	return (currentUser.get()==null)? false: (currentUser.get().getName().equals(ADMIN_USER_NAME));
+    	return (currentUser.get()==null)? false: (currentUser.get().equals(ADMIN_USER_NAME));
     }
     
     public static void setCurrrentUserAdmin() {
-    	User admin = new User();
-    	admin.setName(ADMIN_USER_NAME);
-    	currentUser.set(admin);
+    	currentUser.set(ADMIN_USER_NAME);
     }
     
 	public static void setCurrentAsGuest() {
-		AuthenticationUtil.currentUser.set(null);
+		AuthenticationUtil.currentUser.set(GUEST_USER_NAME);
 	}
 	
 	public static boolean isCurrentLogon() {
-		return (currentUser.get()!=null && !currentUser.get().getName().equals(GUEST_USER_NAME)); 
+		return (currentUser.get()!=null && !currentUser.get().equals(GUEST_USER_NAME)); 
 	}
 	
-	public static User getCurrentUser() {
-    	return currentUser.get();
+	public static String getContextUser() {
+    	return contextUser.get();
     }
 	
+	
+	public static String getCurrentUser() {
+    	return currentUser.get();
+    }
   
 	public static String getCurrentUserName() {
 		if (currentUser.get()!=null) {
-			return currentUser.get().getName();
+			return currentUser.get();
 		} else {
 			return GUEST_USER_NAME;
+		}
+	}
+	
+
+	public static String getContextUserName() {
+		if (contextUser.get()!=null) {
+			return contextUser.get();
+		} else {
+			throw new HttpStatusExceptionImpl(509);
 		}
 	}
 	
@@ -79,8 +97,6 @@ public class AuthenticationUtil
     public static void clearCurrentSecurityContext()
     {
     	currentUser.set(null);
+    	contextUser.set(null);
     }
-
-
-        
 }

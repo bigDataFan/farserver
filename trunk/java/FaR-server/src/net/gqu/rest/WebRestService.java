@@ -46,14 +46,13 @@ public class WebRestService {
 			throw new HttpStatusExceptionImpl(401);
 		}
 		
-		User user = AuthenticationUtil.getCurrentUser();
 		ApprovedApplication app = applicationService.getApplication(application);
 		
 		if (app==null) {
 			throw new HttpStatusExceptionImpl(404);
 		}
 		
-		InstalledApplication installed = applicationService.install(user, app, mapping);
+		InstalledApplication installed = applicationService.install(AuthenticationUtil.getCurrentUser(), app, mapping);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		

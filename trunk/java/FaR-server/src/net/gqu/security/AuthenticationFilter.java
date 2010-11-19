@@ -95,7 +95,7 @@ public class AuthenticationFilter implements Filter
         HttpServletResponse httpResp = (HttpServletResponse) resp;
 
         // Get the user details object from the session
-        User user = (User) httpReq.getSession().getAttribute(AUTHENTICATION_USER);
+        String user = (String) httpReq.getSession().getAttribute(AUTHENTICATION_USER);
         
         if (user == null)
         {
@@ -107,9 +107,9 @@ public class AuthenticationFilter implements Filter
         		Cache cookieCache = cacheService.getCookieCache();
         		Element element = cookieCache.get(ticket);
         		if (element!=null) {
-        			User cachedUser = (User) element.getValue();
+        			String cachedUser = (String) element.getValue();
         			httpReq.getSession().setAttribute(AUTHENTICATION_USER, cachedUser);
-        			AuthenticationUtil.setCurrentUser(user);
+        			AuthenticationUtil.setCurrentUser(cachedUser);
         			chain.doFilter(req, resp);
         			return;
         		}

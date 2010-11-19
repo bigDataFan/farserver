@@ -26,7 +26,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * Servlet implementation class RegisterServlet
  */
 public class RegisterServlet extends HttpServlet {
-	private String registerPage;
 	
 	private Log logger = LogFactory.getLog(RegisterServlet.class);
 	
@@ -48,7 +47,6 @@ public class RegisterServlet extends HttpServlet {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		userService = (BasicUserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
-		registerPage = userService.getRegisterPage();
 	}
 
 
@@ -67,57 +65,54 @@ public class RegisterServlet extends HttpServlet {
 		logger.debug("register: " + username + "  " +  email + " " + password + "  " );
 		if (username==null || username.length()<4 ) {
 			request.getSession().setAttribute("error", "invalid user name");
-			response.sendRedirect(registerPage);
+			response.sendRedirect(userService.getRegisterPage());
 			return;
 		} 
 		
 		
 		if ( password==null || password.length()<6 ) {
 			request.getSession().setAttribute("error", "password strenth");
-			response.sendRedirect(registerPage);
+			response.sendRedirect(userService.getRegisterPage());
 			return;
 		} 
 		
 		if (passwordc==null || !password.equals(passwordc)) {
 			request.getSession().setAttribute("error", "password confirm");
-			response.sendRedirect(registerPage);
+			response.sendRedirect(userService.getRegisterPage());
 			return;
 		} 
 		
 		if (email==null) {
 			request.getSession().setAttribute("error", "invalid email");
-			response.sendRedirect(registerPage);
+			response.sendRedirect(userService.getRegisterPage());
 			return;
 		} 
 		
 		if (request.getParameter("randomimg")==null || !request.getParameter("randomimg").equals(rndimg)) {
 			request.getSession().setAttribute("error", "invalid random picture");
-			response.sendRedirect(registerPage);
+			response.sendRedirect(userService.getRegisterPage());
 			return;
 		}
 		
 		try {
 			if (userService.getUser(username)!=null) {
 				request.getSession().setAttribute("error", "username conflict");
-				response.sendRedirect(registerPage);
+				response.sendRedirect(userService.getRegisterPage());
 				return;
 			}
 			
 			boolean random = userService.createUser(username, password, role, email,false);
-			User user = userService.getUser(username);
 			
-			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, user);		
+			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, username);		
     		Cookie cookie = AuthenticationFilter.createNewCookie(response);
-    		Element element = new Element(cookie.getValue(), user);
+    		Element element = new Element(cookie.getValue(), username);
     		Cache cookieCache = cacheService.getCookieCache();
     		cookieCache.put(element);
-    		AuthenticationUtil.setCurrentUser(user);
-    		
-    		response.getWriter().println("register ok");
-    		response.flushBuffer();
+    		AuthenticationUtil.setCurrentUser(username);
+    		response.sendRedirect(userService.getMainPage());
     		return;
 		} catch (Exception e) {
-			response.sendRedirect(registerPage);
+			response.sendRedirect(userService.getRegisterPage());
 			return;
 		}
 	}
