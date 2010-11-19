@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.mongodb.MongoDBProvider;
 
 import com.mongodb.BasicDBObject;
@@ -306,8 +307,24 @@ public class BasicUserService {
 	}
 	
 	public void incUserUsage(String name, long size) {
+		User user = getUser(name);
+		
+		if (size>0) {
+			Role role = getRole(user.getRole());
+			if (role==null) {
+				throw new HttpStatusExceptionImpl(504);
+			}
+			if (size>role.getTotalSize() || (size + user.getContentUsed())>role.getTotalSize()) {
+				throw new HttpStatusExceptionImpl(503);
+			}
+		}
+		user.setContentUsed(user.getContentUsed()+size);
 		DB db = dbProvider.getMainDB();
-		//db.getCollection(COLL_USERS).
+		BasicDBObject inc = new BasicDBObject();
+		Map<String, Long> zz = new HashMap<String, Long>();
+		zz.put("contentused", size);
+		inc.put("$inc", zz);
+		db.getCollection(COLL_USERS).update(new BasicDBObject("name", name), inc);
 	}
 	
 	public void incLogCount(String name) {
