@@ -29,8 +29,10 @@ import net.gqu.freemarker.RepositoryTemplateLoader;
 import net.gqu.jscript.root.ContentFile;
 import net.gqu.jscript.root.ScriptContent;
 import net.gqu.jscript.root.ScriptMongoDB;
+import net.gqu.jscript.root.ScriptObjectGenerator;
 import net.gqu.jscript.root.ScriptRequest;
 import net.gqu.jscript.root.ScriptResponse;
+import net.gqu.jscript.root.ScriptSession;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
@@ -80,6 +82,8 @@ public class GQServlet extends HttpServlet {
 	private EhCacheService cacheService;
 	private MongoDBProvider dbProvider;
 	private BasicUserService userService;
+	private ScriptObjectGenerator scriptObjectGenerator;
+	
 	private Configuration freemarkerConfiguration;
 	private DiskFileItemFactory  fileItemFactory;
 	private ContentService contentService;
@@ -116,6 +120,7 @@ public class GQServlet extends HttpServlet {
     	dbProvider = (MongoDBProvider) ctx.getBean("dbProvider");
     	userService = (BasicUserService) ctx.getBean("userService");
     	contentService = (ContentService) ctx.getBean("contentService");
+    	scriptObjectGenerator = (ScriptObjectGenerator) ctx.getBean("script.object.generator");
     	
     	freemarkerConfiguration = new Configuration();
 		freemarkerConfiguration.setObjectWrapper(new DefaultObjectWrapper());
@@ -133,53 +138,17 @@ public class GQServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String[] pathLists = getPathList(request);
-		
-		if (pathLists.length<2) {
-			response.setStatus(400);
-			return;
-		}
-		
-		String user = pathLists[0];
-		String mapping = pathLists[1];
-		String[] pathArray = StringUtils.subArray(pathLists, 2);
-
-		InstalledApplication installedApplication = applicationService.getInstalledByMapping(user, mapping);
-		
 		try {
-			if (installedApplication==null) {
-				throw new HttpStatusExceptionImpl(404, null);
-			}
-			
-			ApprovedApplication application = applicationService.getApplication(installedApplication.getApp());
-			
-			if (application==null) {
-				throw new HttpStatusExceptionImpl(404, null);
-			}
-			
-			AuthenticationUtil.setContextUser(user);
-			int pos = -1;
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < pathArray.length; i++) {
-				if(pathArray[i].endsWith(WebScript.FILE_END_FIX)) {
-					pos = i;
-					break;
-				}
-				sb.append("/" + pathArray[i]);
-			}
-			if (pos!=-1) {
-				String wspath = sb.toString() + "/get." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".js";
-				String ftlpath = sb.toString() + "/get." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".ftl";
-				String remainPath = StringUtils.cancatStringArray(pathArray, pos+1, '/');
-				
-				WebScript webScript = getWebscript(application,wspath);
-				Template template = getFreeMarkerTemplate(application, ftlpath);
+			GQRequest gqrequest = new GQRequest(request);
+			AuthenticationUtil.setContextUser(gqrequest.getInstalledApplication().getUser());
+			if (gqrequest.isScript()) {
+				WebScript webScript = getWebscript(gqrequest.getApprovedApplication(), gqrequest.getJsPath());
+				Template template = getFreeMarkerTemplate(gqrequest.getApprovedApplication(), gqrequest.getFtlPath());
 				if (webScript==null && template==null){
 					throw new HttpStatusExceptionImpl(404);
 				}
 				
-				Map<String, Object> params = createScriptParameters(installedApplication, request, response, remainPath);
+				Map<String, Object> params = createScriptParameters(gqrequest.getInstalledApplication(), request, response, gqrequest.getRemainPath());
 				
 				Object wsresult = null;
 				if (webScript!=null) {
@@ -199,35 +168,26 @@ public class GQServlet extends HttpServlet {
 					}
 				}
 			} else {
-				handleStaticPage(request, response, pathArray, application);
+				handleStaticPage(request, response, gqrequest);
 			}
 		} catch (Exception e) {
-			handleException(response, pathLists, e);
+			handleException(request, response, e);
 		}
 	}
 
-	private String[] getPathList(HttpServletRequest request) {
-		String pathInfo = request.getPathInfo();
-		if (pathInfo.charAt(0)=='/') {
-			pathInfo = pathInfo.substring(1);
-		}
-		String[] pathLists = pathInfo.split("/");
-		return pathLists;
-	}
+	
 
 	private void handleStaticPage(HttpServletRequest request,
-			HttpServletResponse response, String[] pathArray,
-			ApprovedApplication application) throws IOException {
-		Cache applicationCache = cacheService.getApplicationCache(application.getName());
-		String staticFilePath = StringUtils.cancatStringArray(pathArray, 0, '/');
+			HttpServletResponse response, GQRequest gqrequest) throws IOException {
+		Cache applicationCache = cacheService.getApplicationCache(gqrequest.getApprovedApplication().getName());
+		String staticFilePath = gqrequest.getFilePath();
 		String key = "resouce." + staticFilePath;
 		PageInfo pageInfo = null;
 		Element element = applicationCache.get(key);
 		if (element == null) {
-			String filePath = null;
-			LoadResult lr = repositoryService.getRaw(application, staticFilePath);
+			LoadResult lr = repositoryService.getRaw(gqrequest.getApprovedApplication(), staticFilePath);
 			if (lr.getStatus()==404) {
-				logger.debug("Request ressource not found: " + application.getName() + "  "  + staticFilePath);
+				logger.debug("Request ressource not found: " + gqrequest.getApprovedApplication().getName() + "  "  + staticFilePath);
 				throw new HttpStatusExceptionImpl(404);
 			} else {
 				ByteArrayOutputStream outstr = new ByteArrayOutputStream();
@@ -243,7 +203,7 @@ public class GQServlet extends HttpServlet {
 		responsePageInfo(request, response, pageInfo);
 	}
 
-	private void handleException(HttpServletResponse response, String[] pathList, Exception e) throws IOException {
+	private void handleException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
 		if (e instanceof TooManyInstructionException) {
 			logger.debug("TooManyInstructionException " );
 			return;
@@ -269,47 +229,22 @@ public class GQServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String[] pathLists = getPathList(request);
-		if (pathLists.length<2) {
-			response.setStatus(400);
-			return;
-		}
-		
-		String user = pathLists[0];
-		String mapping = pathLists[1];
-		String[] pathArray = StringUtils.subArray(pathLists, 2);
-
-		InstalledApplication installedApplication = applicationService.getInstalledByMapping(user, mapping);
 		
 		try {
-			if (installedApplication==null) {
-				throw new HttpStatusExceptionImpl(404, null);
-			}
-			ApprovedApplication application = applicationService.getApplication(installedApplication.getApp());
+			GQRequest gqrequest = new GQRequest(request);
+			AuthenticationUtil.setContextUser(gqrequest.getInstalledApplication().getUser());
 			
-			if (application==null) {
-				throw new HttpStatusExceptionImpl(404, null);
-			}
-			int pos = -1;
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < pathArray.length; i++) {
+			
+			if (gqrequest.isScript()) {
+				String wspath = gqrequest.getJsPath();
+				String remainPath = gqrequest.getRemainPath();
 				
-				if(pathArray[i].endsWith(WebScript.FILE_END_FIX)) {
-					pos = i;
-					break;
-				}
-				sb.append("/" + pathArray[i]);
-			}
-			if (pos!=-1) {
-				String wspath = sb.append("/post." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".js").toString();
-				String remainPath = StringUtils.cancatStringArray(pathArray, pos+1, '/');
-				
-				WebScript webScript = getWebscript(application,wspath);
+				WebScript webScript = getWebscript(gqrequest.getApprovedApplication(),wspath);
 				if (webScript==null){
 					throw new HttpStatusExceptionImpl(404);
 				}
 				
-				Map<String, Object> params = createScriptParameters(installedApplication, request, response, remainPath);
+				Map<String, Object> params = createScriptParameters(gqrequest.getInstalledApplication(), request, response, remainPath);
 				
 				Object wsresult = null;
 				
@@ -324,7 +259,7 @@ public class GQServlet extends HttpServlet {
 				throw new HttpStatusExceptionImpl(404);
 			}
 		} catch (Exception e) {
-			handleException(response, pathLists, e);
+			handleException(request, response, e);
 		}
 
 		
@@ -362,16 +297,16 @@ public class GQServlet extends HttpServlet {
 	protected Map<String, Object> createScriptParameters(InstalledApplication installedApplication, HttpServletRequest req, HttpServletResponse response, String remainPath) {
 		Map<String, Object> params = new HashMap<String, Object>(32, 1.0f);
 		// add web script parameters
-		ScriptRequest sr = new ScriptRequest(req);
-		sr.setRemainPath(remainPath);
-		sr.setFactory(fileItemFactory);
-		params.put("params", sr.getParams());
-		params.put("request", sr);
+		ScriptRequest scriptRequest = new ScriptRequest(req);
+		scriptRequest.setRemainPath(remainPath);
+		scriptRequest.setFactory(fileItemFactory);
+		params.put("params", scriptObjectGenerator.createRequestParams(req, remainPath));
+		params.put("request", scriptRequest);
 		params.put("response", new ScriptResponse(response));
+		params.put("session", new ScriptSession(req.getSession()));
+		params.put("context", scriptObjectGenerator.createContextObject(req, installedApplication, remainPath));
 
-		params.put("user", AuthenticationUtil.getCurrentUser());
-		params.put("db", new ScriptMongoDB(dbProvider,
-				userService.getUser(installedApplication.getUser()).getDb(), installedApplication.getApp()));
+		params.put("db", new ScriptMongoDB(dbProvider, userService.getUser(AuthenticationUtil.getContextUser()).getDb(), installedApplication.getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
 		return params;
 	}
@@ -561,4 +496,111 @@ public class GQServlet extends HttpServlet {
        
     }
     
+    
+    
+    class GQRequest {
+    	private HttpServletRequest request;
+    	private ApprovedApplication approvedApplication;
+    	private String[] pathList;
+    	private boolean isScript;
+		private String jspath;
+		private String ftlpath;
+		private String remainPath;
+		private InstalledApplication installedApplication;
+		private String[] pathArray;
+    	
+    	
+		
+		public GQRequest(HttpServletRequest request) {
+			super();
+			this.request = request;
+			
+			pathList = getPathList(request);
+			if (pathList.length<2) {
+				throw new HttpStatusExceptionImpl(400);
+			}
+			
+			installedApplication = applicationService.getInstalledByMapping(pathList[0], pathList[1]);
+			if (installedApplication==null) {
+				throw new HttpStatusExceptionImpl(404, null);
+			}
+			
+			approvedApplication = applicationService.getApplication(installedApplication.getApp());
+			
+			if (approvedApplication==null) {
+				throw new HttpStatusExceptionImpl(404, null);
+			}
+			
+			
+			int pos = -1;
+			isScript = false;
+			
+			if (pathList.length==2 || (pathList.length==3&&pathList[3].equals(""))) {
+				pathArray = new String[]{approvedApplication.getStart()};
+			} else {
+				pathArray = StringUtils.subArray(pathList, 2);
+			}
+			
+			
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < pathArray.length; i++) {
+				if(pathArray[i].endsWith(WebScript.FILE_END_FIX)) {
+					pos = i;
+					isScript = true;
+					break;
+				}
+				sb.append("/" + pathArray[i]);
+			}
+			
+			if (isScript) {
+				jspath = sb.toString() + "/get." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".js";
+				ftlpath = sb.toString() + "/get." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".ftl";
+				remainPath = StringUtils.cancatStringArray(pathArray, pos+1, '/');
+			}
+		}
+
+		public boolean isScript() {
+			return isScript;
+		}
+	    	
+		public String getFilePath() {
+			String staticFilePath = StringUtils.cancatStringArray(pathArray, 0, '/');
+			return staticFilePath;
+		}
+		
+		public String[] getPathArray() {
+			return pathArray;
+		}
+
+		public ApprovedApplication getApprovedApplication() {
+			return approvedApplication;
+		}
+
+		public InstalledApplication getInstalledApplication() {
+			return installedApplication;
+		}
+
+		public String getRemainPath() {
+			return remainPath;
+		}
+		
+		
+		public String getJsPath() {
+			return jspath;
+		}
+		public String getFtlPath() {
+			return ftlpath;
+		}
+		
+		
+		private String[] getPathList(HttpServletRequest request) {
+			String pathInfo = request.getPathInfo();
+			if (pathInfo.charAt(0)=='/') {
+				pathInfo = pathInfo.substring(1);
+			}
+			String[] pathLists = pathInfo.split("/");
+			return pathLists;
+		}
+    	
+    }
 }
