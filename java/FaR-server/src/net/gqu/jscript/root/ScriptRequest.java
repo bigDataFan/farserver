@@ -216,9 +216,5 @@ public class ScriptRequest {
 	public String getRemoteAddr() {
 		return request.getRemoteAddr();
 	}
-	
-	public NativeObject getParams() {
-		return ScriptObjectGenerator.createRequestParams(request, remainPath);
-	}
-	
+		
 }

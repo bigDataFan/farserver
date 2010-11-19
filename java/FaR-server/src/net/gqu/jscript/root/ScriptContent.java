@@ -14,7 +14,6 @@ public class ScriptContent {
 		this.contentService = contentService;
 	}
 
-
 	public String put(InputStream inputStream, String fileName, String mimetype) {
 		ContentFile contentFile = new ContentFile();
 		contentFile.setContent(inputStream);
