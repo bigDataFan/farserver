@@ -27,7 +27,7 @@ public class ScriptContent {
 	}
 	
 	public void remove(String id) {
-		contentService.removeFile(id);
+		contentService.removeContent(id);
 	}
 	
 	public ContentFile get(String id) {
