@@ -40,9 +40,6 @@ if (current!=null) {
 result;
 
 
-
-
-
 function getCdc(folder) {
 	var cdc = new Array();
 	
