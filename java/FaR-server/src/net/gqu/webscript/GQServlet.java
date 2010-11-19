@@ -26,8 +26,8 @@ import net.gqu.content.ContentService;
 import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
 import net.gqu.freemarker.RepositoryTemplateLoader;
-import net.gqu.jscript.root.ScriptContent;
 import net.gqu.jscript.root.ContentFile;
+import net.gqu.jscript.root.ScriptContent;
 import net.gqu.jscript.root.ScriptMongoDB;
 import net.gqu.jscript.root.ScriptRequest;
 import net.gqu.jscript.root.ScriptResponse;
@@ -46,8 +46,6 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.io.CopyUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mozilla.javascript.RhinoException;
@@ -153,11 +151,14 @@ public class GQServlet extends HttpServlet {
 			if (installedApplication==null) {
 				throw new HttpStatusExceptionImpl(404, null);
 			}
+			
 			ApprovedApplication application = applicationService.getApplication(installedApplication.getApp());
 			
 			if (application==null) {
 				throw new HttpStatusExceptionImpl(404, null);
 			}
+			
+			AuthenticationUtil.setContextUser(user);
 			int pos = -1;
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < pathArray.length; i++) {
@@ -371,7 +372,7 @@ public class GQServlet extends HttpServlet {
 		params.put("user", AuthenticationUtil.getCurrentUser());
 		params.put("db", new ScriptMongoDB(dbProvider,
 				userService.getUser(installedApplication.getUser()).getDb(), installedApplication.getApp()));
-		params.put("content", new ScriptContent(contentService));
+		params.put("content", new ScriptContent(contentService,userService));
 		return params;
 	}
 	

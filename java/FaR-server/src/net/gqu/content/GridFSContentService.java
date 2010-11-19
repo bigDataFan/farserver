@@ -1,12 +1,9 @@
 package net.gqu.content;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.jscript.root.ContentFile;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
-import net.gqu.security.Role;
-import net.gqu.security.User;
 
 import org.bson.types.ObjectId;
 
@@ -53,10 +50,8 @@ public class GridFSContentService  implements ContentService {
 	@Override
 	public String putContent(ContentFile contentFile) {
 		DB contentDB = dbProvider.getMongo().getDB("contents");
-		User currentUser = AuthenticationUtil.getCurrentUser();
-		if (currentUser==null) return null;
-		
-		userService.incUserUsage(currentUser.getName(), contentFile.getSize());
+		String contextUser = AuthenticationUtil.getContextUser();
+		userService.incUserUsage(contextUser, contentFile.getSize());
 		
 		GridFS gridFS = new GridFS(contentDB);
 		GridFSInputFile file = gridFS.createFile(contentFile.getInputStream(), contentFile.getFileName());
@@ -69,14 +64,13 @@ public class GridFSContentService  implements ContentService {
 	@Override
 	public boolean removeContent(String id) {
 		DB contentDB = dbProvider.getMongo().getDB("contents");
-		User currentUser = AuthenticationUtil.getCurrentUser();
-		if (currentUser==null) return false;
+		String contextUser = AuthenticationUtil.getContextUser();
 		
 		GridFS gridFS = new GridFS(contentDB);
 		
 		GridFSDBFile file = gridFS.find(new ObjectId(id));
 		if (file!=null) {
-			userService.incUserUsage(currentUser.getName(), -file.getLength());
+			userService.incUserUsage(contextUser, -file.getLength());
 		}		
 		
 		gridFS.remove(new ObjectId(id));
