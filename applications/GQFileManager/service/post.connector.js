@@ -31,8 +31,6 @@ if (current!=null) {
 			};
 			db.getCollection("files").upsert({"parent":current, "name":multilparts[i].filename},newFile);		
 		}
-		
-		
 		result.cwd = getCwd(cwdNode);
 		result.cdc = getCdc(cwdNode);
 		result.tmb = true;
