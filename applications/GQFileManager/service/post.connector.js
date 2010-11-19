@@ -15,12 +15,11 @@ for each (field in request.getMultipartParams()) {
 	}
 }
 
-
 if (current!=null) {
 	var cwdNode = db.getCollection("files").getById(current);
 	if (cwdNode!=null && cwdNode.mime == "directory") {
 		for ( var i = 0; i < multilparts.length; i++) {
-			var content_id = content.put(multilparts[i].inputstream, multilparts[i].filename, multilparts[i].mimetype);
+			var content_id = content.put(multilparts[i]);
 			var newFile = {
 					"modified" : new Date(),
 					"mime": multilparts[i].mimetype,
