@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	$.get("manage/cfg.gs", {} ,
+	$.getJSON("manage/cfg.gs", {} ,
 		function(data) {
 			$('#blogname').val(data.blogname);
 			$('#desc').val(data.desc);
