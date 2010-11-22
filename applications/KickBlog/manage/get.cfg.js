@@ -12,3 +12,4 @@ if (configObj==null) {
 	configObj.quickMessage = "";
 } 
 
+configObj;
