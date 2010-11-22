@@ -74,8 +74,7 @@ function saveDraft() {
 				<h3>标题 ： <input name="title" id="title" type="text" value="<#if model.post??>${model.post.title}</#if>"></h3> <br> 
 				<div style="display:none"> <input name="id" value="<#if model.post??>${model.post.id}</#if>"></div>
 				<textarea id="content" name="content" rows="20" cols="100"><#if model.post??>${model.post.content}</#if></textarea><br>
-				<span>分类 ：
-				 或者使用新增分类 <input name="newcat" type="text"/></span> <BR>
+				<span>分类 ： <input name="categories" type="text"/></span> <BR>
 				<br>
 				<button onclick="save()">保存修改</button><button onclick="cancel()">取消修改</button> 
 				<#if model.post??>
