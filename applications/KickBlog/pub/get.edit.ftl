@@ -22,7 +22,7 @@ $(document).ready(function () {
 });
 
 function cancel() {
-	location.href="index";
+	location.href="index.gs";
 }
 
 function save() {
@@ -35,7 +35,7 @@ function remove(uuid) {
 	$.get('remove', 
 	       {'uuid':uuid},
 	       function (data) {
-	 			location.href="index";      	
+	 			location.href="index.gs";      	
 	       }
 	 );
 }
@@ -60,18 +60,11 @@ function saveDraft() {
 
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="">${model.config.name}的博客</a></h1>
+		<h1><a href="#">博文编辑</a></h1>
 		
 		<ul>
-			<li><a href="index">首页</a>
+			<li><a href="index.gs">首页</a>
 			</li>
-			
-			<#if user.isAppOwner()>
-				<li><a title="" href="new">新增文章</a>
-				</li>
-				<li><a title="" href="drafts">草稿箱</a>
-				</li>		
-			</#if>
 		</ul>
 	</div>
 </div>
