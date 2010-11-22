@@ -1,3 +1,4 @@
+
 var cur = db.getCollection("blogs").findRecent({'cat': params.cat}).skip(params.from).limit(params.max);
 var cats = db.getCollection("cats").find({}).toArray();
 

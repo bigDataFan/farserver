@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<link rel="stylesheet" href="main.css" type="text/css" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	$.get("manage/cfg.gs", {} ,
+		function(data) {
+			$('#blogname').val(data.blogname);
+			$('#desc').val(data.desc);
+			$('#quickMessage').val(data.quickMessage);
+		}
+	)
+});
+</script>
+
+</head>
+<body>
+
+<div id="header">
+	<div class="wrapper">
+		<h1>配置</h1>
+		<ul>
+			<li><a href="pub/index.gs">首页</a></li>
+		</ul>
+	</div>
+</div>
+	<div id="pagebody">
+		<div class="wrapper">
+			<div class="col-left">
+			
+				<form method="post" action="manage/savecfg.gs">
+					<table>
+						<tr>
+							<td>博客名称</td><td><input type="text" name="blogname" id="blogname"></input></td>
+						</tr>
+						<tr>
+						<td>说明</td><td><input type="text" name="desc" id="desc"></input></td>
+						</tr>
+						<tr>
+						<td>快速消息</td><td><input type="text" name="quickMessage"></input></td>
+						</tr>
+						<tr>
+						<td><input type="submit" value="保存"> </td>
+						</tr>
+					</table>
+					
+				</form>
+				<div class="feedback">
+					<table border=0 width="600px">
+					</table>
+				</div>
+			</div>		
+			
+			<div class="col-right">
+			</div>
+		</div>
+	</div>
+	
+	<div id="footer">
+		<div class="wrapper">
+			<p> 
+				<a href="../about.html">关于</a> |
+				 &copy; Copyright 2010 | 
+			</p>
+		</div>
+	</div>
+</body>
+</html>
