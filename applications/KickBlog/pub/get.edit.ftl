@@ -77,7 +77,10 @@ function saveDraft() {
 				<span>分类 ：
 				 或者使用新增分类 <input name="newcat" type="text"/></span> <BR>
 				<br>
-				<button onclick="save()">保存修改</button><button onclick="cancel()">取消修改</button> <button onclick="remove('${model.getUuid()}');return false">删除文章</button>
+				<button onclick="save()">保存修改</button><button onclick="cancel()">取消修改</button> 
+				<#if model.post??>
+				<button onclick="remove('${model.post.id}');return false">删除文章</button>
+				</#if>
 		</div>
 	</div>
 	
