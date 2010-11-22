@@ -8,18 +8,24 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import net.gqu.exception.HttpStatusExceptionImpl;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.mozilla.javascript.NativeObject;
-
-import net.gqu.exception.HttpStatusExceptionImpl;
 /**
  * Http服务处理类 
  */
 
 public class ScriptRequest {
+	public static final String NAME = "name";
+	public static final String ISFILE = "isfile";
+	public static final String SIZE = "size";
+	public static final String MIMETYPE = "mimetype";
+	public static final String INPUTSTREAM = "inputstream";
+	public static final String FILENAME = "filename";
 	private static final String GET = "get";
 	private static final String UTF_8 = "utf-8";
 	private static final String ISO_8859_1 = "ISO-8859-1";
@@ -55,6 +61,7 @@ public class ScriptRequest {
 
 	public NativeObject[] getMultipartParams() {
 		ServletFileUpload upload = new ServletFileUpload(factory);
+		
 		if (fileSizeMax!=-1) {
 			upload.setFileSizeMax(fileSizeMax);
 		}
@@ -66,17 +73,16 @@ public class ScriptRequest {
 			for (FileItem fileItem : items) {
 				NativeObject no = new NativeObject();
 				if (fileItem.isFormField()) {
-					no.put("name", no, fileItem.getFieldName());
+					no.put(NAME, no, fileItem.getFieldName());
 					no.put("value", no, fileItem.getString());
 				} else {
 					try {
 						if (fileItem.getSize()>0) {
-							no.put("filename", no, fileItem.getName());
-							no.put("inputstream", no, fileItem.getInputStream());
-							no.put("mimetype", no, fileItem.getContentType());
-							no.put("size", no, fileItem.getSize());
-							no.put("name", no, fileItem.getFieldName());
-							no.put("isfile", no, true);
+							no.put(FILENAME, no, fileItem.getName());
+							no.put(INPUTSTREAM, no, fileItem.getInputStream());
+							no.put(MIMETYPE, no, fileItem.getContentType());
+							no.put(SIZE, no, fileItem.getSize());
+							no.put(ISFILE, no, true);
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -85,10 +91,11 @@ public class ScriptRequest {
 				result.add(no);
 			}
 			return result.toArray(new NativeObject[result.size()]);
-		} catch (FileUploadException e) {
-			e.printStackTrace();
+		} catch (FileSizeLimitExceededException e) {
+			throw new HttpStatusExceptionImpl(503);
+		} catch (Exception e) {
+			throw new HttpStatusExceptionImpl(503);
 		}
-		return new NativeObject[0];
 	}
 	
 	public String getSessionId() {

@@ -1,4 +1,4 @@
-package net.gqu.service;
+package net.gqu.webscript;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -16,9 +16,6 @@ import org.mozilla.javascript.WrapFactory;
 import org.mozilla.javascript.WrappedException;
 
 import net.gqu.exception.HttpStatusExceptionImpl;
-import net.gqu.webscript.CounteredContextFactory;
-import net.gqu.webscript.ValueConverter;
-import net.gqu.webscript.WebScript;
 
 public class ScriptExecService {
 

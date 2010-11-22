@@ -1,5 +1,6 @@
 package net.gqu.jscript.root;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,7 +120,10 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public ScriptDBCursor findRecent(NativeObject o) {
-		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
+		Map<String, Object> oldMap = new HashMap<String, Object>();
+		if (o!=null) {
+			oldMap = RhinoUtils.nativeObjectToMap(o);
+		}
 		
 		DBObject orders = new BasicDBObject();
 		orders.put("$natural", -1);
@@ -127,6 +131,17 @@ public class ScriptMongoDBCollection {
 		
 		return new ScriptDBCursor(finded);
 	}
+	
+	public ScriptDBCursor findRecent() {
+		
+		DBObject orders = new BasicDBObject();
+		orders.put("$natural", -1);
+		DBCursor finded = coll.find().sort(orders);
+		
+		return new ScriptDBCursor(finded);
+	}
+	
+	
 	
 	public WriteResult insert(NativeArray na) throws MongoException {
 		Object[] nas = RhinoUtils.nativeArrayToArray(na);

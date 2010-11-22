@@ -250,6 +250,7 @@ public class BasicUserService {
 			return rolesMap.get(id);
 		}
 	}
+	
 	public void removeRole(String id) {
 		DB db = dbProvider.getMainDB();
 		db.getCollection(KEY_ROLES).remove(new BasicDBObject("_id", new ObjectId(id)));

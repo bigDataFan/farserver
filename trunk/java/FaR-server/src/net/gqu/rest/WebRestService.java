@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import net.gqu.application.ApplicationService;
 import net.gqu.application.ApprovedApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
@@ -15,7 +16,6 @@ import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
 import net.gqu.security.Role;
 import net.gqu.security.User;
-import net.gqu.service.ApplicationService;
 import net.gqu.utils.GUID;
 
 public class WebRestService {

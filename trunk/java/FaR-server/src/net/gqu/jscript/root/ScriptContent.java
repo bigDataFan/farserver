@@ -1,6 +1,9 @@
 package net.gqu.jscript.root;
 
 import java.io.InputStream;
+import java.util.Date;
+
+import org.mozilla.javascript.NativeObject;
 
 import net.gqu.content.ContentService;
 import net.gqu.security.BasicUserService;
@@ -14,11 +17,13 @@ public class ScriptContent {
 		this.contentService = contentService;
 	}
 
-	public String put(InputStream inputStream, String fileName, String mimetype) {
+	public String put(NativeObject no) {
 		ContentFile contentFile = new ContentFile();
-		contentFile.setContent(inputStream);
-		contentFile.setMimetype(mimetype);
-		contentFile.setFileName(fileName);
+		contentFile.setContent((InputStream) no.get(ScriptRequest.INPUTSTREAM, no));
+		contentFile.setMimetype((String) no.get(ScriptRequest.MIMETYPE, no));
+		contentFile.setFileName((String) no.get(ScriptRequest.FILENAME, no));
+		contentFile.setSize((Long) no.get(ScriptRequest.SIZE, no));
+		contentFile.setModified(new Date());
 		return contentService.putContent(contentFile);
 	}
 	
