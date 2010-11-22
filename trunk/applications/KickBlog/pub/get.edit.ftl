@@ -71,7 +71,7 @@ function saveDraft() {
 		</ul>
 	</div>
 </div>
-	<form method="post" action="update">
+	<form method="post" action="update.gs">
 	
 	<div id="pagebody">
 		<div class="wrapper">
