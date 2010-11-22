@@ -84,7 +84,7 @@ function saveDraft() {
 				<button onclick="saveDraft()">保存为草稿</button>
 				<button onclick="cancel()">取消 编辑</button> 
 				<#if model.post??>
-				<button onclick="remove('${model.post.id}');return false">删除文章</button>
+					<button onclick="remove('${model.post.id}');return false">删除文章</button>
 				</#if>
 		</div>
 	</div>
