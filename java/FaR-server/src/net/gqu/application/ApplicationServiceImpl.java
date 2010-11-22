@@ -7,8 +7,6 @@ import java.util.Map;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.HttpLoader;
 import net.gqu.security.BasicUserService;
-import net.gqu.security.User;
-import net.gqu.service.ApplicationService;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.StringUtils;
 
@@ -91,10 +89,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	public Map<String, InstalledApplication> getUserInstalledApplications(
-			User user) {
+			String user) {
 		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
 		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.put(USER, user.getName());
+		basicDBObject.put(USER, user);
 		
 		DBCursor cursor = coll.find(basicDBObject);
 		Map<String, InstalledApplication> result = new HashMap<String, InstalledApplication>();

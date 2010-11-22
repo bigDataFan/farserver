@@ -18,7 +18,6 @@ public class GridFSContentService  implements ContentService {
 	public void setDbProvider(MongoDBProvider dbProvider) {
 		this.dbProvider = dbProvider;
 	}
-
 	
 	public BasicUserService getUserService() {
 		return userService;

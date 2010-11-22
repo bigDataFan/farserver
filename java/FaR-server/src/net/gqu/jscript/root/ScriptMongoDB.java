@@ -15,7 +15,7 @@ public class ScriptMongoDB {
 		String[] colarray = collectionList.split("/");
 		
 		DB mongodb = dbProvider.getMongo().getDB(db);
-		collection = mongodb.getCollection(AuthenticationUtil.getCurrentUserName());
+		collection = mongodb.getCollection(AuthenticationUtil.getContextUser());
 		for (int i = 0; i < colarray.length; i++) {
 			collection = collection.getCollection(colarray[i]);
 		}

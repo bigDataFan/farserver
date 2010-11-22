@@ -1,10 +1,7 @@
-package net.gqu.service;
+package net.gqu.application;
 
 import java.util.Map;
 
-import net.gqu.application.ApprovedApplication;
-import net.gqu.application.InstalledApplication;
-import net.gqu.security.User;
 
 public interface ApplicationService {
 	
@@ -18,7 +15,7 @@ public interface ApplicationService {
 	
 	public static final String DB_APP = "appsdb";
 	
-	Map<String, InstalledApplication> getUserInstalledApplications(User user);
+	Map<String, InstalledApplication> getUserInstalledApplications(String user);
 	InstalledApplication install(String user, ApprovedApplication app, String mapping);
 	boolean uninstalled(InstalledApplication installedApplication);
 	InstalledApplication getInstalledByMapping(String user, String mapping);

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.gqu.application.ApplicationService;
 import net.gqu.application.ApprovedApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
@@ -38,8 +39,8 @@ import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
-import net.gqu.service.ApplicationService;
-import net.gqu.service.ScriptExecService;
+import net.gqu.security.Role;
+import net.gqu.security.User;
 import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.MimeTypeUtils;
@@ -64,6 +65,11 @@ import freemarker.template.TemplateException;
  */
 public class GQServlet extends HttpServlet {
 	
+
+	private static final String ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers";
+
+	private static final String ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers";
+
 	private static final long serialVersionUID = 1L;
     
 	private Log logger = LogFactory.getLog(GQServlet.class);
@@ -71,6 +77,7 @@ public class GQServlet extends HttpServlet {
 	private static final String ACCESS_CONTROL_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials";
 	private static final String ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods";
 	private static final String ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
+	private static final String ACCESS_CONTROL_MAX_AGE = "Access-Control-Max-Age";
 	
 	public static final String JSON_CONTENT_TYPE = "application/json; charset=UTF-8";
 	public static final String HTML_TYPE = "text/html; charset=UTF-8";
@@ -100,14 +107,14 @@ public class GQServlet extends HttpServlet {
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		String requestHeader = request.getHeader("Access-Control-Request-Headers");
+		String requestHeader = request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS);
 		if (requestHeader!=null) {
-			response.setHeader("Access-Control-Allow-Headers", requestHeader);
+			response.setHeader(ACCESS_CONTROL_ALLOW_HEADERS, requestHeader);
 		}
 		response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
 		response.setHeader(ACCESS_CONTROL_ALLOW_METHODS, "POST, GET, OPTIONS");
 		response.setHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-		response.setHeader("Access-Control-Max-Age", "1728000");
+		response.setHeader(ACCESS_CONTROL_MAX_AGE, "1728000");
 	}
 
 	@Override
@@ -134,21 +141,21 @@ public class GQServlet extends HttpServlet {
 	}
 	
 	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
-			GQRequest gqrequest = new GQRequest(request);
-			AuthenticationUtil.setContextUser(gqrequest.getInstalledApplication().getUser());
-			if (gqrequest.isScript()) {
-				WebScript webScript = getWebscript(gqrequest.getApprovedApplication(), gqrequest.getJsPath());
-				Template template = getFreeMarkerTemplate(gqrequest.getApprovedApplication(), gqrequest.getFtlPath());
+			GQRequest gqRequest = new GQRequest(request);
+			AuthenticationUtil.setContextUser(gqRequest.getInstalledApplication().getUser());
+			
+			if (gqRequest.isScript()) {
+				WebScript webScript = getWebscript(gqRequest.getApprovedApplication(), gqRequest.getJsPath());
+				Template template = getFreeMarkerTemplate(gqRequest.getApprovedApplication(), gqRequest.getFtlPath());
 				if (webScript==null && template==null){
 					throw new HttpStatusExceptionImpl(404);
 				}
 				
-				Map<String, Object> params = createScriptParameters(gqrequest.getInstalledApplication(), request, response, gqrequest.getRemainPath());
+				Map<String, Object> params = createScriptParameters(gqRequest, response);
 				
 				Object wsresult = null;
 				if (webScript!=null) {
@@ -160,19 +167,27 @@ public class GQServlet extends HttpServlet {
 					response.setContentType(HTML_TYPE);
 					template.process(params, response.getWriter());
 				} else {
-					if (wsresult instanceof ContentFile) {
-						handleFileDownLoad(request, response, (ContentFile)wsresult);
-					} else {
-						response.setContentType(JSON_CONTENT_TYPE);
-						response.getWriter().println(JSONUtils.toJSONString(wsresult));
+					if (!response.isCommitted()) {
+						if (wsresult instanceof ContentFile) {
+							handleFileDownLoad(request, response, (ContentFile)wsresult);
+						} else {
+							response.setContentType(JSON_CONTENT_TYPE);
+							response.getWriter().println(JSONUtils.toJSONString(wsresult));
+						}
 					}
 				}
 			} else {
-				handleStaticPage(request, response, gqrequest);
+				handleStaticPage(request, response, gqRequest);
 			}
 		} catch (Exception e) {
 			handleException(request, response, e);
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 
 	
@@ -237,24 +252,20 @@ public class GQServlet extends HttpServlet {
 			
 			if (gqrequest.isScript()) {
 				String wspath = gqrequest.getJsPath();
-				String remainPath = gqrequest.getRemainPath();
 				
 				WebScript webScript = getWebscript(gqrequest.getApprovedApplication(),wspath);
 				if (webScript==null){
 					throw new HttpStatusExceptionImpl(404);
 				}
 				
-				Map<String, Object> params = createScriptParameters(gqrequest.getInstalledApplication(), request, response, remainPath);
+				Map<String, Object> params = createScriptParameters(gqrequest, response);
 				
 				Object wsresult = null;
 				
 				wsresult = scriptExecService.executeScript(webScript, params, false);
 				params.put("model", wsresult);
 			 
-				if (!response.isCommitted()) {
-					response.setContentType(HTML_TYPE);
-					response.getWriter().println(JSONUtils.toJSONString(wsresult));
-				}
+				
 			} else {
 				throw new HttpStatusExceptionImpl(404);
 			}
@@ -294,19 +305,21 @@ public class GQServlet extends HttpServlet {
 		return webScript;
 	}
 
-	protected Map<String, Object> createScriptParameters(InstalledApplication installedApplication, HttpServletRequest req, HttpServletResponse response, String remainPath) {
+	protected Map<String, Object> createScriptParameters(GQRequest gqrequest,HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<String, Object>(32, 1.0f);
 		// add web script parameters
-		ScriptRequest scriptRequest = new ScriptRequest(req);
-		scriptRequest.setRemainPath(remainPath);
+		ScriptRequest scriptRequest = new ScriptRequest(gqrequest.getRequest());
+		scriptRequest.setRemainPath(gqrequest.getFilePath());
+		scriptRequest.setFileSizeMax(gqrequest.getRole().getContentSize());
 		scriptRequest.setFactory(fileItemFactory);
-		params.put("params", scriptObjectGenerator.createRequestParams(req, remainPath));
+		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest(), gqrequest.getTailPath()));
 		params.put("request", scriptRequest);
 		params.put("response", new ScriptResponse(response));
-		params.put("session", new ScriptSession(req.getSession()));
-		params.put("context", scriptObjectGenerator.createContextObject(req, installedApplication, remainPath));
+		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
+		params.put("context", scriptObjectGenerator.createContextObject(gqrequest.getRequest(), gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
 
-		params.put("db", new ScriptMongoDB(dbProvider, userService.getUser(AuthenticationUtil.getContextUser()).getDb(), installedApplication.getApp()));
+		params.put("db", new ScriptMongoDB(dbProvider, 
+				gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
 		return params;
 	}
@@ -508,7 +521,8 @@ public class GQServlet extends HttpServlet {
 		private String remainPath;
 		private InstalledApplication installedApplication;
 		private String[] pathArray;
-    	
+    	private User contextUser;
+    	private Role role;
     	
 		
 		public GQRequest(HttpServletRequest request) {
@@ -518,6 +532,15 @@ public class GQServlet extends HttpServlet {
 			pathList = getPathList(request);
 			if (pathList.length<2) {
 				throw new HttpStatusExceptionImpl(400);
+			}
+			
+			contextUser = userService.getUser(pathList[0]);
+			if (contextUser.isDisabled()) {
+				throw new HttpStatusExceptionImpl(410); //gone
+			}
+			role = userService.getRole(contextUser.getRole()); 
+			if (role==null || !role.isEnabled()) {
+				throw new HttpStatusExceptionImpl(410); //gone
 			}
 			
 			installedApplication = applicationService.getInstalledByMapping(pathList[0], pathList[1]);
@@ -535,7 +558,7 @@ public class GQServlet extends HttpServlet {
 			int pos = -1;
 			isScript = false;
 			
-			if (pathList.length==2 || (pathList.length==3&&pathList[3].equals(""))) {
+			if (pathList.length==2 || (pathList.length==3&&pathList[2].equals(""))) {
 				pathArray = new String[]{approvedApplication.getStart()};
 			} else {
 				pathArray = StringUtils.subArray(pathList, 2);
@@ -553,8 +576,8 @@ public class GQServlet extends HttpServlet {
 			}
 			
 			if (isScript) {
-				jspath = sb.toString() + "/get." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".js";
-				ftlpath = sb.toString() + "/get." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".ftl";
+				jspath  = sb.toString() + "/" + request.getMethod().toLowerCase() + "." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".js";
+				ftlpath = sb.toString() + "/" + request.getMethod().toLowerCase() + "." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".ftl";
 				remainPath = StringUtils.cancatStringArray(pathArray, pos+1, '/');
 			}
 		}
@@ -580,7 +603,7 @@ public class GQServlet extends HttpServlet {
 			return installedApplication;
 		}
 
-		public String getRemainPath() {
+		public String getTailPath() {
 			return remainPath;
 		}
 		
@@ -593,6 +616,19 @@ public class GQServlet extends HttpServlet {
 		}
 		
 		
+		
+		public HttpServletRequest getRequest() {
+			return request;
+		}
+
+		public User getContextUser() {
+			return contextUser;
+		}
+
+		public Role getRole() {
+			return role;
+		}
+
 		private String[] getPathList(HttpServletRequest request) {
 			String pathInfo = request.getPathInfo();
 			if (pathInfo.charAt(0)=='/') {

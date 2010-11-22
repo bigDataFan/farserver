@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import net.gqu.application.ApplicationService;
 import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
-import net.gqu.service.ApplicationService;
 import freemarker.cache.TemplateLoader;
 
 public class RepositoryTemplateLoader implements TemplateLoader {

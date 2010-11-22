@@ -40,12 +40,30 @@ public class ScriptDBCursor {
 		return new ScriptDBCursor(cursor.sort(new BasicDBObject(map)));
 	}
 	
-	public ScriptDBCursor skip(int n) {
+	
+
+	public ScriptDBCursor skip(Object obj) {
+		if (obj instanceof String){
+			return skipi(Integer.valueOf((String)obj));
+		} else if (obj instanceof Integer) {
+			return skipi((Integer)obj);
+		} else {
+			return this;
+		}
+	}
+	
+	private ScriptDBCursor skipi(int n) {
 		return new ScriptDBCursor(cursor.skip(n));
 	}
 	
-	public ScriptDBCursor limit(int l) {
-		return new ScriptDBCursor(cursor.limit(l));
+	public ScriptDBCursor limit(Object j) {
+		if (j instanceof String){
+			return new ScriptDBCursor(cursor.limit(Integer.valueOf((String)j)));
+		} else if (j instanceof Integer) {
+			return new ScriptDBCursor(cursor.limit((Integer)j));
+		} else {
+			return this;
+		}
 	}
 	
 	public int count() throws MongoException {
