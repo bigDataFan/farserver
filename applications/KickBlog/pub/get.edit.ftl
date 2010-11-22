@@ -44,8 +44,7 @@ function saveDraft() {
 	$.post("savedraft",
 	{
 	    "title": $('#title').val(),
-	    "content": $('#content').val(),
-	    'tag':'${model.getUuid()}'
+	    "content": $('#content').val()
 	},
 	function(data) {
 	   alert("草稿保存成功");
