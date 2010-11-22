@@ -4,8 +4,10 @@ var config = db.getCollection("config").findOne({});
 
 var model = new Object();
 
-model.post = post;
+if (post!=null) {
+	model.post = post;
+}
 model.config = config;
 
-post;
+model;
 
