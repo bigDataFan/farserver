@@ -1,4 +1,9 @@
-var configObj = db.getCollection("config").findOne();
+if (user!=owner) {
+	response.sendError(403);
+}
+
+
+var configObj = db.getCollection("config").findOne({});
 
 if (configObj==null) {
 	configObj = new Object();

@@ -1,4 +1,4 @@
-db.getCollection("config").upsert(params);
+db.getCollection("config").upsert({},params);
 
 response.sendRedirect("config.html");
 
