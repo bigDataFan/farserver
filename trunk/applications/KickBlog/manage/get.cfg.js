@@ -1,4 +1,4 @@
-if (user!=owner) {
+if (!user.equals(owner)) {
 	response.sendError(403);
 }
 
