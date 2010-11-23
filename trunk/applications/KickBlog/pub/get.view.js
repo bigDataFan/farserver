@@ -1,6 +1,6 @@
 
 var arrays = request.getPath().split("/");
-if (arrays!=2) response.sendError(400);
+if (arrays.length!=2) response.sendError(400);
 
 var blog = db.getCollection("blogs").findOne({'id':arrays[1]});
 
