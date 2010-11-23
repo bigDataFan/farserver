@@ -9,7 +9,7 @@
 
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="">${model.config.name}</a></h1>
+		<h1><a href="">${model.config.blogname}</a></h1>
 		
 		<ul>
 			<li><a href="index.gs">首页</a>
@@ -31,13 +31,13 @@
 				<#list model.blogs as blog>
 					<h2 class="fancy"><a href="view?uuid=${blog.id}">${blog.title}</a></h2>
 			
-				<div class="meta">发表于 ${blog.created} by <a href="">${blog.creator}</a>. 分类：
-					<#list blog.categories as category>
-						 <a rel="category tag" href="index?cat=${category}">${category}</a>. 
+				<div class="meta">发表于 ${blog.modified} by <a href="">${blog.modifier}</a>. 分类：
+					<#list blog.tags as tag>
+						 <a rel="category tag" href="index?tag=${tag}">${tag}</a>. 
 					</#list>
 				</div>
 				<div class="storycontent">
-					${blog.description}
+					${blog.desc}
 				</div>
 				
 				<div class="feedback">
