@@ -42,9 +42,8 @@
 				
 				<div class="feedback">
 					<#if user.isAppOwner()>
-						<span><a href="edit?uuid=${blog.getUuid()}">修改</a> | <a href="remove?uuid=${blog.getUuid()}">删除</a></span>
+						<span><a href="edit?id=${blog.id}">修改</a> | <a href="remove?id=${blog.id}">删除</a></span>
 					</#if>	
-					<span>${blog.getChildrenCount()} 个回复</span> 
 				</div>								
 				</#list>
 				
