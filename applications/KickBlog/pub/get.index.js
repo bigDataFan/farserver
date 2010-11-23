@@ -1,4 +1,14 @@
 
+
+if (params.from==null) {
+	params.from = 0;
+}
+
+if (params.max==null) {
+	params.max = 10;
+}
+
+
 var cur = db.getCollection("blogs").find(
 			{'tags': params.tag},
 			{
@@ -12,7 +22,8 @@ var model = new Object();
 
 model.total = cur.count();
 model.config = config;
-
+model.from = params.from;
+model.max = params.to;
 model.blogs = new Array();
 while (cur.hasNext()) {
 	model.blogs.push(cur.next());

@@ -5,7 +5,7 @@ if (!user.equals(owner)) {
 
 params.tags = params.tags.split(" "); 
 
-params.mofifier = user.getName();
+params.modifier = user.getName();
 params.modified = new Date();
 
 db.getCollection("blogs").upsert(params);
