@@ -4,8 +4,7 @@ var cur = db.getCollection("blogs").find(
 			{
 				"content":0
 			}
-		).sort({"modified":-1})skip(params.from).limit(params.max);
-
+		).sort({"modified":-1}).skip(params.from).limit(params.max);
 
 var config = db.getCollection("config").findOne({});
 
