@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${model.getTitle()}</title>
+<title>${model.blog.title}</title>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
@@ -18,71 +18,63 @@ var tag = date.getTime();
 <body>
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="">${application.getOwner()}的博客</a></h1>
+		<h1><a href="">${model.config.blogname}</a></h1>
 		
 		<ul>
-			<li><a href="index">首页</a>
+			<li><a href="index.gs">首页</a>
 			</li>
-			
-			<#if user.isAppOwner()>
-				<li><a title="" href="new">新增文章</a>
-				</li>
-				<li><a title="" href="viewfolder">文章管理</a>
-				</li>
-				<li><a title="" href="viewfolder?folder=drafts">草稿箱</a>
-				</li>		
-			</#if>
 		</ul>
 	</div>
 	
 </div>
 	<div id="pagebody">
 		<div class="wrapper">
-				<h3>标题 ： ${model.getTitle()} </h3>
+				<h3>标题 ： ${model.blog.title} </h3>
 				<br>
 				
-				<div class="meta">发表于 ${model.getModified()} by <a href="http://www.andrewnacin.com/">${model.getOwner()}</a>. 分类：
-					<#list model.getCategories() as category>
-						 <a rel="category tag" title="View all posts in Releases" href="http://wordpress.org/news/category/releases/">${category.getName()}</a>. 
+				<div class="meta">发表于 ${model.blog.modified?datetime} by <a href="#">${model.blog.modifier}</a>. 分类：
+					<#list model.blog.tags as tag>
+						 <a rel="category tag" title="查看此标签的所有文章" href="index.gs/${tag}/">${tag}</a>. 
 					</#list>
 				</div>
 				
 				<div class="content" style="min-height: 400px;">
-					${model.getContent()}
+					${model.blog.content}
 				</div> 
 				
 				<div class="feedback">
-					<#if user.isAppOwner()>
-						<span><a href="edit?uuid=${model.getUuid()}">修改</a> | <a href="remove?uuid=${model.getUuid()}">删除</a></span>
+					<#if user.equals(model.blog.modifier)>
+						<span><a href="edit.gs?id=${model.blog.id}">修改</a> | <a href="remove.gs?id=${model.blog.id}">删除</a></span>
 					</#if>	
 				</div>
 				
+
 				<div class="nextprev">
-					<#if model.getPreviousBlog()??>
-						<span class="prev"> 上一篇: <a href="view?uuid=${model.getPreviousBlog().getUuid()}">${model.getPreviousBlog().getTitle()}</a></span>
+					<#if model.previous??>
+						<span class="prev"> 上一篇: <a href="view.gs/${model.previous.id}">${model.previous.title}</a></span>
 					</#if>
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<#if model.getNextBlog()??>
-						下一篇 <span class="next"> <a href="view?uuid=${model.getNextBlog().getUuid()}">${model.getNextBlog().getTitle()}</a></span> 
+					<#if model.next??>
+						下一篇 <span class="next"> <a href="view.gs/${model.next.id}">${model.next.title}</a></span> 
 					</#if>
 				</div>
-				
+
 				<br>
-				
-				<#list model.getComments() as comment>
+				<#list model.comments as comment>
 					<div class="feedback">
-						<div>${comment.getCreator()}说: ${comment.getTitle()}</div>
-						<div>发表于： ${comment.getCreated()}</div>
-						<div> ${comment.getDescription()}</div>						
+						<div>${comment.modifier}说: ${comment.title}</div>
+						<div>发表于： ${comment.modified}</div>
+						<div> ${comment.desc}</div>						
 					</div>
 				</#list>
 				<div class="comment_wrap">
 					<#if user.isGuest()>
 						请 <a href="/login.jsp">登录</a> 以发表评论信息
 					<#else>
-						<form method="POST" action="addcomment?uuid=${model.getUuid()}">
+						<form method="POST" action="addcomment.gs">
+							<input name="id" value="${model.blog.id}" type="hidden">
 							<p><input type="text" name="title" id="title"></p>
-							<p><textarea tabindex="4" rows="10" cols="100%" id="description" name="description"></textarea></p>
+							<p><textarea tabindex="4" rows="10" cols="100%" id="comment_desc" name="desc"></textarea></p>
 							<br>
 							<button type="submit">发表评论</button>
 					    </form>
