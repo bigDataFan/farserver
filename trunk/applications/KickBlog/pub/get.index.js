@@ -23,7 +23,7 @@ var model = new Object();
 model.total = cur.count();
 model.config = config;
 model.from = params.from;
-model.to = params.from + params.max;
+model.to = params.from + cursor.size();
 model.blogs = new Array();
 while (cur.hasNext()) {
 	model.blogs.push(cur.next());
