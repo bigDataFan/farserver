@@ -1,3 +1,8 @@
+if (!user.equals(owner)) {
+	response.sendError(403);
+}
+
+
 var post = db.getCollection("blogs").findOne({'id': params.id});
 
 var config = db.getCollection("config").findOne({});
