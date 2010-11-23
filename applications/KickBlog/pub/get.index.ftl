@@ -29,7 +29,7 @@
 		<div class="wrapper">
 			<div class="col-left">
 				<#list model.blogs as blog>
-					<h2 class="fancy"><a href="view?uuid=${blog.id}">${blog.title}</a></h2>
+					<h2 class="fancy"><a href="view.gs/${blog.id}">${blog.title}</a></h2>
 			
 				<div class="meta">发表于 ${blog.modified?datetime} by <a href="">${blog.modifier}</a>. 分类：
 					<#list blog.tags as tag>
