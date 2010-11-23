@@ -82,7 +82,7 @@ function saveDraft() {
 				<textarea id="desc" name="desc" rows="6" cols="100"><#if model.post??>${model.post.desc}</#if></textarea>
 				<br>
 				<textarea id="content" name="content" rows="20" cols="100"><#if model.post??>${model.post.content}</#if></textarea><br>
-				<span>分类 ： <input name="categories" type="text"/></span> <BR>
+				<span>分类 ： <input name="tags" type="text"/></span> <BR>
 				<br>
 				<button onclick="save()">发布</button>
 				<button onclick="saveDraft()">保存为草稿</button>

@@ -3,9 +3,9 @@ if (!user.equals(owner)) {
 	response.sendError(403);
 }
 
-params.categories = params.categories.split(" "); 
+params.tags = params.tags.split(" "); 
 
-params.creator = user.getName();
+params.mofifier = user.getName();
 params.modified = new Date();
 
 db.getCollection("blogs").upsert(params);
