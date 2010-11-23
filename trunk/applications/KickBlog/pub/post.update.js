@@ -5,6 +5,9 @@ if (!user.equals(owner)) {
 
 params.categories = params.categories.split(" "); 
 
+params.creator = user.getName();
+params.modified = new Date();
+
 db.getCollection("blogs").upsert(params);
 response.sendRedirect("index.gs");
 

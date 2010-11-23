@@ -9,14 +9,14 @@
 
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="">${application.getOwner()}的博客</a></h1>
+		<h1><a href="">${model.config.name}</a></h1>
 		
 		<ul>
-			<li><a href="index">首页</a>
+			<li><a href="index.gs">首页</a>
 			</li>
 			
-			<#if user.isAppOwner()>
-				<li><a title="" href="new">新增文章</a>
+			<#if user.equals(owner)>
+				<li><a title="" href="edit.gs">新增文章</a>
 				</li>
 				<li><a title="" href="drafts">草稿箱</a>
 				</li>		
@@ -29,15 +29,15 @@
 		<div class="wrapper">
 			<div class="col-left">
 				<#list model.blogs as blog>
-					<h2 class="fancy"><a href="view?uuid=${blog.getUuid()}">${blog.getTitle()}</a></h2>
+					<h2 class="fancy"><a href="view?uuid=${blog.id}">${blog.title}</a></h2>
 			
-				<div class="meta">发表于 ${blog.getModified()} by <a href="">${blog.getOwner()}</a>. 分类：
-					<#list blog.getCategories() as category>
-						 <a rel="category tag" href="index?cat=${category.getName()}&from=${model.from-5}&max=5">${category.getName()}</a>. 
+				<div class="meta">发表于 ${blog.created} by <a href="">${blog.creator}</a>. 分类：
+					<#list blog.categories as category>
+						 <a rel="category tag" href="index?cat=${category}">${category}</a>. 
 					</#list>
 				</div>
 				<div class="storycontent">
-					${blog.getDescription()}
+					${blog.description}
 				</div>
 				
 				<div class="feedback">
