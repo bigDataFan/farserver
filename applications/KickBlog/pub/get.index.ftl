@@ -31,7 +31,7 @@
 				<#list model.blogs as blog>
 					<h2 class="fancy"><a href="view?uuid=${blog.id}">${blog.title}</a></h2>
 			
-				<div class="meta">发表于 ${blog.modified} by <a href="">${blog.modifier}</a>. 分类：
+				<div class="meta">发表于 ${blog.modified?datetime} by <a href="">${blog.modifier}</a>. 分类：
 					<#list blog.tags as tag>
 						 <a rel="category tag" href="index?tag=${tag}">${tag}</a>. 
 					</#list>
@@ -41,7 +41,7 @@
 				</div>
 				
 				<div class="feedback">
-					<#if user.isAppOwner()>
+					<#if user.equals(blog.modifier)>
 						<span><a href="edit?id=${blog.id}">修改</a> | <a href="remove?id=${blog.id}">删除</a></span>
 					</#if>	
 				</div>								
