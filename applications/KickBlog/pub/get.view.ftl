@@ -6,7 +6,7 @@
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
-<link rel="stylesheet" href="../main.css" type="text/css" />
+<link rel="stylesheet" href="../../main.css" type="text/css" />
 
 <script>
 
@@ -68,17 +68,13 @@ var tag = date.getTime();
 					</div>
 				</#list>
 				<div class="comment_wrap">
-					<#if user.isGuest()>
-						请 <a href="/login.jsp">登录</a> 以发表评论信息
-					<#else>
-						<form method="POST" action="addcomment.gs">
-							<input name="id" value="${model.blog.id}" type="hidden">
-							<p><input type="text" name="title" id="title"></p>
-							<p><textarea tabindex="4" rows="10" cols="100%" id="comment_desc" name="desc"></textarea></p>
-							<br>
-							<button type="submit">发表评论</button>
-					    </form>
-					</#if>
+					<form method="POST" action="addcomment.gs">
+						<input name="id" value="${model.blog.id}" type="hidden">
+						<p><input type="text" name="title" id="title"></p>
+						<p><textarea tabindex="4" rows="10" cols="100%" id="comment_desc" name="desc"></textarea></p>
+						<br>
+						<button type="submit">发表评论</button>
+				    </form>
 				</div>
 				
 		</div>
