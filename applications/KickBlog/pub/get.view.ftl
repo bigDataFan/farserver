@@ -29,13 +29,16 @@ var tag = date.getTime();
 </div>
 	<div id="pagebody">
 		<div class="wrapper">
-				<h3>标题 ： ${model.blog.title} </h3>
-				<br>
-				
+				<h2>标题 ： ${model.blog.title} </h2>
 				<div class="meta">发表于 ${model.blog.modified?datetime} by <a href="#">${model.blog.modifier}</a>. 分类：
 					<#list model.blog.tags as tag>
 						 <a rel="category tag" title="查看此标签的所有文章" href="index.gs/${tag}/">${tag}</a>. 
 					</#list>
+				</div>
+				
+				
+				<div class="description">
+					${model.blog.desc}
 				</div>
 				
 				<div class="content" style="min-height: 400px;">
