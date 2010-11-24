@@ -2,7 +2,7 @@
 var arrays = request.getPath().split("/");
 if (arrays.length!=2) response.sendError(400);
 
-var blog = db.getCollection("blogs").findOne({'id':arrays[1]});
+var blog = db.getCollection("blogs").findOne({'_id':arrays[1]});
 
 if (blog==null) {
 	response.sendError(404);
