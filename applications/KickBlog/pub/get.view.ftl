@@ -18,10 +18,10 @@ var tag = date.getTime();
 <body>
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="">${model.config.blogname}</a></h1>
+		<h1><a href="../index.gs">${model.config.blogname}</a></h1>
 		
 		<ul>
-			<li><a href="index.gs">首页</a>
+			<li><a href="../index.gs">首页</a>
 			</li>
 		</ul>
 	</div>
@@ -30,7 +30,7 @@ var tag = date.getTime();
 	<div id="pagebody">
 		<div class="wrapper">
 				<h2>标题 ： ${model.blog.title} </h2>
-				<div class="meta">发表于 ${model.blog.modified?datetime} by <a href="#">${model.blog.modifier}</a>. 分类：
+				<div class="meta">发表于 ${model.blog.modified?datetime} by ${model.blog.modifier}. 分类：
 					<#list model.blog.tags as tag>
 						 <a rel="category tag" title="查看此标签的所有文章" href="index.gs/${tag}/">${tag}</a>. 
 					</#list>

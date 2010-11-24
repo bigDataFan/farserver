@@ -3,13 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
-<link rel="stylesheet" href="../main.css" type="text/css" />
+<link rel="stylesheet" href="${context.basePath}/main.css" type="text/css" />
 </head>
 <body>
 
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="">${model.config.blogname}</a></h1>
+		<h1><a href="#">${model.config.blogname}</a></h1>
 		
 		<ul>
 			<li><a href="index.gs">首页</a>
