@@ -21,6 +21,7 @@ var model = new Object();
 
 model.total = cur.count();
 model.config = config;
+model.tags = [];
 model.from = params.from;
 model.to = params.from + cur.size();
 model.blogs = new Array();

@@ -33,7 +33,7 @@
 			
 				<div class="meta">发表于 ${blog.modified?datetime} 作者 ${blog.modifier}. 分类：
 					<#list blog.tags as tag>
-						 <a rel="category tag" href="index?tag=${tag}">${tag}</a>. 
+						 <a rel="category tag" href="index.gs/tag/${tag}">${tag}</a>. 
 					</#list>
 					阅读： ${blog.visited} 回复：${blog.replied}
 				</div>
@@ -71,8 +71,8 @@
 				<div class="blog-categories">
 					<h4>分类</h4>
 					<ul>
-						<#list model.categories as cat>
-							<li><a href="index?cat=${cat}&from=0&max=5">${cat}</a> 
+						<#list model.tags as tag>
+							<li><a href="index.gs/tag/${tag}">${tag}</a> 
 							</li>
 						</#list>
 					</ul>
