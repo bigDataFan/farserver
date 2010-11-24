@@ -8,6 +8,16 @@ if (blog==null) {
 	response.sendError(404);
 }
 
+db.getCollections("blogs").upsert(
+		{
+			"id": blog.id,
+			"$inc": {
+						"visited":1
+					}
+		}
+);
+
+
 var config = db.getCollection("config").findOne({});
 
 var model = new Object();
