@@ -31,10 +31,11 @@
 				<#list model.blogs as blog>
 					<h2 class="fancy"><a href="view.gs/${blog.id}">${blog.title}</a></h2>
 			
-				<div class="meta">发表于 ${blog.modified?datetime} by <a href="">${blog.modifier}</a>. 分类：
+				<div class="meta">发表于 ${blog.modified?datetime} 作者 ${blog.modifier}. 分类：
 					<#list blog.tags as tag>
 						 <a rel="category tag" href="index?tag=${tag}">${tag}</a>. 
 					</#list>
+					阅读： ${blog.visited} 回复：${blog.replied}
 				</div>
 				<div class="storycontent">
 					${blog.desc}
