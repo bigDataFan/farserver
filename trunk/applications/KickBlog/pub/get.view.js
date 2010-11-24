@@ -8,7 +8,7 @@ if (blog==null) {
 	response.sendError(404);
 }
 
-db.getCollections("blogs").upsert(
+db.getCollection("blogs").upsert(
 		{
 			"id": blog.id,
 			"$inc": {
