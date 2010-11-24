@@ -8,11 +8,13 @@ if (blog==null) {
 	response.sendError(404);
 }
 
+var config = db.getCollection("config").findOne({});
+
 var model = new Object();
 model.blog = blog;
 model.next = db.getCollection("blogs").findOne({"modified":{"$gt":blog.modified}});
 model.previous = db.getCollection("blogs").findOne({"modified":{"$lt":blog.modified}});
-
+model.config = config;
 model.comments = db.getCollection("comments").find({"blogid":blog.id}).limit(20).toArray();
 
 
