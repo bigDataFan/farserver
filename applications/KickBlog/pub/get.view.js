@@ -8,10 +8,7 @@ if (blog==null) {
 	response.sendError(404);
 }
 
-
-blog.$inc = {"visited":1};
-
-db.getCollection("blogs").upsert(blog);
+db.getCollection("blogs").upsert({"id":blog.id}, {"$inc":{"visited":1}});
 
 var config = db.getCollection("config").findOne({});
 
