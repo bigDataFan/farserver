@@ -76,7 +76,10 @@ function saveDraft() {
 	<div id="pagebody">
 		<div class="wrapper">
 				<h3>标题 ： <input name="title" id="title" type="text" value="<#if model.post??>${model.post.title}</#if>"></h3> <br> 
-				<div style="display:none"> <input name="id" value="<#if model.post??>${model.post.id}</#if>"></div>
+				
+				<#if model.post??>
+					<div style="display:none"> <input name="id" value="${model.post.id}"></div>
+				</#if>
 				
 				概要：<br>
 				<textarea id="desc" name="desc" rows="6" cols="100"><#if model.post??>${model.post.desc}</#if></textarea>
