@@ -8,7 +8,6 @@ if (params.max==null) {
 	params.max = 10;
 }
 
-
 var cur = db.getCollection("blogs").find(
 			{'tags': params.tag},
 			{
