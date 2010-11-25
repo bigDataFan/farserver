@@ -12,44 +12,35 @@ model.from = 0;
 var max = config.perpage;
 
 
+
+
 switch (pathArray.length) {
-	case 2:
-		var page = parseInt(pathArray[1]); 
-		if (page) {
-			model.from = config.perpage * page;
-		}
+	case 2:  //default view  
+		model.page = parseInt(pathArray[1])? parseInt(pathArray[1]):0; 
 		break;
-	case 3:
-		if (pathArray[1]=="date") {
+	case 4:
+		if (pathArray[1]=="tag") {  //view by tag
+			queryObject.tag = pathArray[2];
+		}
+		if (pathArray[1]=="date") { //view by date
 			queryObject.datetag = pathArray[2];
 		}
-	case 4:
-		if (pathArray[1]=="tag") {
-			queryObject.tag = pathArray[2];
-			var page = parseInt(pathArray[3]);
-			if (page) {
-				model.from = config.perpage * page;
-			}
-		}
+		model.page = parseInt(pathArray[3])? parseInt(pathArray[3]):0;
 	default:
+		model.page = 0;
 		break;
 }
 
-var cur = db.getCollection("blogs").find(
-			queryObject,
-			{
-				"content":0
-			}
-		).sort({"modified":-1}).skip(model.from).limit(max);
-
-
-
+var cur = db.getCollection("blogs").find( queryObject, { "content":0 })
+		.sort({"modified":-1})
+		.skip(model.from).limit(max);
 
 model.total = cur.count();
 model.tags = db.getCollection("blogs").distinct("tags");
 model.datetags = db.getCollection("blogs").distinct("datetag");
-model.to = model.from + cur.size();
 
+model.from = config.perpage * model.page;
+model.to = model.from + cur.size();
 
 
 model.blogs = new Array();
