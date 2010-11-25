@@ -35,13 +35,14 @@ h2 {
 }
 
 
-#header h1 a {
+#header h1 {
 	display:block;
-	float:left;
-	height:88px;
 	padding-left:20px;
 	padding-top:20px;
 }
+
+
+
 #header ul {
 	float:right;
 	list-style:none outside none;
