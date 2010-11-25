@@ -55,12 +55,22 @@
 						<td width="400px">列举第(${model.from}-${model.to})篇文章  -- 共 ${model.total}篇</td>
 						<td width="100px"> 
 					
-					<#if (model.page &gt; 0)>
-						<a href="${model.page-1}">上一页</a>	
-					</#if>
-					</td> <td width="100px">
-					<#if (model.to &lt; model.total)>
-						<a href="${model.page+1}">下一页</a>
+					<#if model.raw??>
+						<#if (model.page &gt; 0)>
+							<a href="index.gs/${model.page-1}">上一页</a>	
+						</#if>
+						</td> <td width="100px">
+						<#if (model.to &lt; model.total)>
+							<a href="index.gs/${model.page+1}">下一页</a>
+						</#if>
+					<#else>
+						<#if (model.page &gt; 0)>
+							<a href="${model.page-1}">上一页</a>	
+						</#if>
+						</td> <td width="100px">
+						<#if (model.to &lt; model.total)>
+							<a href="${model.page+1}">下一页</a>
+						</#if>	
 					</#if>
 					</td></tr>
 					</table>
