@@ -10,7 +10,7 @@
 <div id="header">
 	<div class="wrapper">
 		<h1><a href="#">${model.config.blogname}</a></h1>
-		<h3>${model.slogan}</h3>
+		<h3>${model.config.slogan}</h3>
 		<ul>
 			<li><a href="index.gs">首页</a>
 			</li>
