@@ -5,13 +5,22 @@ var model = new Object();
 
 
 var config = db.getCollection("config").findOne({});
+
+
+if (config==null) {
+	config = new Object();
+	config.blogname = owner.getName() + "的博客";
+	config.slogan = "";
+	config.quickMessage = "";
+	config.perpage = 10;
+	db.getCollection("config").insert(config);
+}
+
 model.config = config;
 
 var queryObject = {};
 model.from = 0;
 var max = config.perpage;
-
-
 
 
 switch (pathArray.length) {
