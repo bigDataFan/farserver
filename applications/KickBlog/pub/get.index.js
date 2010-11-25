@@ -1,31 +1,48 @@
 var path = request.getPath();
 var pathArray = path.split("/");
 
+var config = db.getCollection("config").findOne({});
 
 var queryObject = {};
 var from = 0;
+var max = config.perpage;
 
 
-if (path.length==2) {
-	
+switch (pathArray.length) {
+	case 2:
+		var page = parseInt(pathArray[1]); 
+		if (page) {
+			from = config.perpage * page;
+		}
+		break;
+	case 3:
+		if (pathArray[1]=="date") {
+			queryObject.datetag = pathArray[2];
+		}
+	case 4:
+		if (pathArray[1]=="tag") {
+			queryObject.tag = pathArray[2];
+			var page = parseInt(pathArray[3]);
+			if (page) {
+				from = config.perpage * page;
+			}
+		}
+	default:
+		break;
 }
 
-if (params.from==null) {
-	params.from = 0;
-}
 
-if (params.max==null) {
-	params.max = 10;
-}
+
+
+
 
 var cur = db.getCollection("blogs").find(
-			{'tags': params.tag},
+			queryObject,
 			{
 				"content":0
 			}
-		).sort({"modified":-1}).skip(params.from).limit(params.max);
+		).sort({"modified":-1}).skip(from).limit(max);
 
-var config = db.getCollection("config").findOne({});
 
 var model = new Object();
 
