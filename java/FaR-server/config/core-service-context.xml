@@ -16,12 +16,13 @@
 	</bean>
 	
 	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl">
-		<property name="mainServer" value="http://127.0.0.1:8080/GQMain/"></property>
+		<property name="mainServer" value="http://127.0.0.1:8080/FaR-server/"></property>
 		<property name="dbProvider" ref="dbProvider"></property>
 	</bean>
 	
 	<bean id="contentService" class="net.gqu.content.GridFSContentService">
 		<property name="dbProvider" ref="dbProvider"></property>
+		<property name="userService" ref="userService"></property>
 	</bean>
 	
 	<bean id="repositoryService" class="net.gqu.repository.RepositoryServiceImpl">
@@ -62,7 +63,11 @@
 		</property>
 	</bean>
 	
-	<bean id="scriptService" class="net.gqu.service.ScriptExecService" init-method="init">
+	<bean id="script.object.generator" class="net.gqu.jscript.root.ScriptObjectGenerator">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	
+	<bean id="scriptService" class="net.gqu.webscript.ScriptExecService" init-method="init">
 	</bean>
 	
 	<bean id="rest.services" class="net.gqu.rest.WebRestService">
@@ -75,6 +80,7 @@
 		<property name="injectedServices">
 			<list>
 				<ref bean="rest.services"/>
+				<ref bean="rest.global.appservice"/>
 			</list>
 		</property>
 	</bean>

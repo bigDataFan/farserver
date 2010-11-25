@@ -4,6 +4,7 @@
         <wb-resource deploy-path="/" source-path="/WebContent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/gqmain"/>
         <property name="java-output-path" value="/NewGQ/build/classes"/>
         <property name="context-root" value="FaR-server"/>
     </wb-module>

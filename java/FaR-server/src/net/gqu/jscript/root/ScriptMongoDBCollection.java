@@ -46,15 +46,15 @@ public class ScriptMongoDBCollection {
 		Map<String, Object> newMap = RhinoUtils.nativeObjectToMap(n);
 		
 		BasicDBObject newobj = new BasicDBObject(newMap);
-		if (oldMap.get("id")!=null && !oldMap.get("id").equals("")) {
+		if (oldMap.get("id")!=null && !oldMap.get("id").equals("")) {//update with exsiting id
 			try {
 				BasicDBObject query = new BasicDBObject("_id", new ObjectId((String)oldMap.get("id")));
 				WriteResult wr = coll.update(query, newobj, true, false);
-				return wr.toString();
+				return  (String)oldMap.get("id");
 			} catch (Exception e) {
 				return "error";
 			}
-		} else {
+		} else { //update with query
 			WriteResult wr = coll.update(new BasicDBObject(oldMap), newobj, true, false);
 			if ((Boolean)wr.getField("updatedExisting")) {
 				DBObject one = coll.findOne(new BasicDBObject(oldMap));

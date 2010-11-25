@@ -34,8 +34,6 @@
 		<filter-class>net.gqu.security.SetUserFilter</filter-class>
 	</filter>
 	<filter>
-		<description>
-		</description>
 		<display-name>AuthenticationFilter</display-name>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>net.gqu.security.AuthenticationFilter</filter-class>
@@ -62,12 +60,12 @@
 		<filter-name>SetUserFilter</filter-name>
 		<url-pattern>/user/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
-		<filter-name>AuthenticationFilter</filter-name>
-		<servlet-name>RestServiceServlet</servlet-name>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>SetUserFilter</filter-name>
+		<url-pattern>/user/*</url-pattern>
+	</filter-mapping>
+	
 	<filter-mapping>
 		<filter-name>AuthenticationFilter</filter-name>
 		<url-pattern>/manage/*</url-pattern>
@@ -110,7 +108,6 @@
 		<servlet-name>RestServiceServlet</servlet-name>
 		<url-pattern>/service/*</url-pattern>
 	</servlet-mapping>
-	
 	
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>

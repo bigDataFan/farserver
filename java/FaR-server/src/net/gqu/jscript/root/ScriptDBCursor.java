@@ -48,20 +48,18 @@ public class ScriptDBCursor {
 				if (obj.equals("undefined")) {
 					return this;
 				} else {
-					return skipi(Integer.valueOf((String)obj));
+					cursor.skip(Integer.valueOf((String)obj));
+					return this;
 				}
-			} else if (obj instanceof Integer) {
-				return skipi((Integer)obj);
+			} else if (obj instanceof Number) {
+				cursor.skip(((Number)obj).intValue());
+				return this;
 			} else {
 				return this;
 			}
 		} catch (Exception e) {
 			return this;
 		}
-	}
-	
-	private ScriptDBCursor skipi(int n) {
-		return new ScriptDBCursor(cursor.skip(n));
 	}
 	
 	public ScriptDBCursor limit(Object j) {
@@ -72,8 +70,9 @@ public class ScriptDBCursor {
 				} else {
 					return new ScriptDBCursor(cursor.limit(Integer.valueOf((String)j)));
 				}
-			} else if (j instanceof Integer) {
-				return new ScriptDBCursor(cursor.limit((Integer)j));
+			} else if (j instanceof Number) {
+				cursor.limit(((Number)j).intValue());
+				return this;
 			} else {
 				return this;
 			}
