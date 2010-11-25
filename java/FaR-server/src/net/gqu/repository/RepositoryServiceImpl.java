@@ -1,13 +1,12 @@
 package net.gqu.repository;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-
 import net.gqu.application.ApprovedApplication;
+
+import org.apache.http.HttpResponse;
 
 public class RepositoryServiceImpl implements RepositoryService {
 	

@@ -16,7 +16,7 @@
 	</bean>
 	
 	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl">
-		<property name="mainServer" value="http://127.0.0.1:8080/FaR-server/"></property>
+		<property name="mainServer" value="www.g-qu.net"></property>
 		<property name="dbProvider" ref="dbProvider"></property>
 	</bean>
 	

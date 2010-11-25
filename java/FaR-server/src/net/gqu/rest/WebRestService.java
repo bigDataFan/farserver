@@ -66,7 +66,7 @@ public class WebRestService {
 	}
 	
 	@RestService(method="GET", uri="/application/clean")
-	public String cleanAppCache(@RestParam(value="application")String application) {
+	public String cleanAppCache(@RestParam(value="name")String application) {
 		cacheService.getApplicationCache(application).removeAll();
 		return "OK";
 	}
