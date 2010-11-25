@@ -1,10 +1,14 @@
 var path = request.getPath();
 var pathArray = path.split("/");
 
+var model = new Object();
+
+
 var config = db.getCollection("config").findOne({});
+model.config = config;
 
 var queryObject = {};
-var from = 0;
+model.from = 0;
 var max = config.perpage;
 
 
@@ -12,7 +16,7 @@ switch (pathArray.length) {
 	case 2:
 		var page = parseInt(pathArray[1]); 
 		if (page) {
-			from = config.perpage * page;
+			model.from = config.perpage * page;
 		}
 		break;
 	case 3:
@@ -24,7 +28,7 @@ switch (pathArray.length) {
 			queryObject.tag = pathArray[2];
 			var page = parseInt(pathArray[3]);
 			if (page) {
-				from = config.perpage * page;
+				model.from = config.perpage * page;
 			}
 		}
 	default:
@@ -39,17 +43,16 @@ var cur = db.getCollection("blogs").find(
 		).sort({"modified":-1}).skip(from).limit(max);
 
 
-var model = new Object();
+
 
 model.total = cur.count();
-model.config = config;
 model.tags = db.getCollection("blogs").distinct("tags");
 model.datetags = db.getCollection("blogs").distinct("datetag");
-model.from = params.from;
-model.to = params.from + cur.size();
+model.to = model.from + cur.size();
+
+
+
 model.blogs = new Array();
-
-
 while (cur.hasNext()) {
 	model.blogs.push(cur.next());
 }
