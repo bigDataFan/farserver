@@ -14,6 +14,7 @@ $(document).ready(function () {
 			$('#blogname').val(data.blogname);
 			$('#desc').val(data.desc);
 			$('#quickMessage').val(data.quickMessage);
+			$('#perpage').val(data.perpage);
 		}
 	)
 });
@@ -44,6 +45,9 @@ $(document).ready(function () {
 						</tr>
 						<tr>
 						<td>快速消息</td><td><input type="text" name="quickMessage"></input></td>
+						</tr>
+						<tr>
+						<td>每页条数</td><td><input type="text" name="perpage"></input></td>
 						</tr>
 						<tr>
 						<td><input type="submit" value="保存"> </td>
