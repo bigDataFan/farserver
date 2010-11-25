@@ -567,7 +567,7 @@ public class GQServlet extends HttpServlet {
 				throw new HttpStatusExceptionImpl(404, null);
 			}
 			
-			basePath = "/FaR-server/user/" + pathList[0] + "/" + pathList[1];
+			basePath = "/user/" + pathList[0] + "/" + pathList[1];
 			approvedApplication = applicationService.getApplication(installedApplication.getApp());
 			
 			if (approvedApplication==null) {

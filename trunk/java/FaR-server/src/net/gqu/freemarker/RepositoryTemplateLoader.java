@@ -1,12 +1,13 @@
 package net.gqu.freemarker;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 
 import net.gqu.application.ApplicationService;
 import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
+import net.gqu.utils.StringUtils;
 import freemarker.cache.TemplateLoader;
 
 public class RepositoryTemplateLoader implements TemplateLoader {
@@ -48,7 +49,8 @@ public class RepositoryTemplateLoader implements TemplateLoader {
 		if (lr.getStatus()==404) {
 			throw new IOException();
 		} else {
-			return new InputStreamReader(lr.getInputStream());
+			String content = StringUtils.getText(lr.getInputStream());
+			return new StringReader(content);
 		}
 	}
 

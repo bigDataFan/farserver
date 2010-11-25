@@ -54,7 +54,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public ApprovedApplication getApplication(String id) {
 		
 		if (applicationMap.get(id)==null) {
-			HttpResponse response = HttpLoader.load(mainServer + "/service/application/get?name=" + id);
+			HttpResponse response = HttpLoader.load("http://www.g-qu.net/service/application/get?name=" + id);
 			if (response!=null && response.getStatusLine().getStatusCode()==200) {
 				try {
 					JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
