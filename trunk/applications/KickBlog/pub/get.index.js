@@ -1,4 +1,14 @@
+var path = request.getPath();
+var pathArray = path.split("/");
 
+
+var queryObject = {};
+var from = 0;
+
+
+if (path.length==2) {
+	
+}
 
 if (params.from==null) {
 	params.from = 0;

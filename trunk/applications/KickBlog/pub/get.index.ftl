@@ -43,7 +43,7 @@
 				
 				<div class="feedback">
 					<#if user.equals(blog.modifier)>
-						<span><a href="edit?id=${blog.id}">修改</a> | <a href="remove?id=${blog.id}">删除</a></span>
+						<span><a href="edit.gs?id=${blog.id}">修改</a> | <a href="remove.gs?id=${blog.id}">删除</a></span>
 					</#if>	
 				</div>								
 				</#list>
@@ -55,7 +55,7 @@
 						<td width="400px">列举第(${model.from}-${model.to})篇文章  -- 共 ${model.total}篇</td>
 						<td width="100px"> 
 					<#if (model.from &gt; 0)>
-						<a href="index?cat=${model.cat}&from=${model.from-5}&max=5">上一页</a>	
+						<a href="index.gs?cat=${model.cat}&from=${model.from-5}&max=5">上一页</a>	
 					</#if>
 					</td> <td width="100px">
 					<#if (model.to &lt; model.total)>
