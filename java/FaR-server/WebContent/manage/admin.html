@@ -17,7 +17,6 @@ var roles = null;
 
 $(document).ready(function(){
 
-
 	$.ajax(
 			{
 				type: 'post',
@@ -30,9 +29,6 @@ $(document).ready(function(){
 			}
 	);
 
-
-	
-		
 
 	
 	$('#rolecfg').click(
@@ -59,7 +55,7 @@ $(document).ready(function(){
         				},'-',
         				{
         		    		text:"修改",
-        		    		iconCls:'icon-modifiy',
+        		    		iconCls:'icon-edit',
         		    		handler:function(){
         						var rowIndex = $('#roleTable').datagrid('getRowIndex', $('#roleTable').datagrid('getSelected'));
 	        					if (editIndex != rowIndex){
@@ -149,7 +145,7 @@ $(document).ready(function(){
 		        				},'-',
 		        				{
 		        		    		text:"修改",
-		        		    		iconCls:'icon-modifiy',
+		        		    		iconCls:'icon-edit',
 		        		    		handler:function(){
 		        						var rowIndex = $('#userTable').datagrid('getRowIndex', $('#userTable').datagrid('getSelected'));
 			        					if (editIndex != rowIndex){
@@ -166,6 +162,13 @@ $(document).ready(function(){
 		        					handler:function(){
 		        						$('#userTable').datagrid("endEdit", editIndex);
 		        						editIndex = -1;
+		        					}
+		        				}, "-",
+		        				{
+		        					text:'导入',
+		        					iconCls:'icon-cut',
+		        					handler:function(){
+		        						$('#main').html($('#importUserDiv').html());
 		        					}
 		        				}
 		    				],
@@ -206,6 +209,18 @@ function userRoleNameFormator(value){
 }
 
 
+
+function importUser() {
+	$.post("../service/admin/user/import", 
+			{
+			"data":$('#importUserText').val(),
+			"role":$('#importUserRole').val()
+			},
+			function(data) {
+				alert(data);
+			}
+	);
+}
 </script>
 </head>
 
@@ -228,7 +243,6 @@ function userRoleNameFormator(value){
 		<div region="center" id="main">
 			
 		</div>
-		
 	
 		<div style="display:none" id="roleDiv">
 			<table id="roleTable" style="width:800px;height:auto;"
@@ -263,7 +277,16 @@ function userRoleNameFormator(value){
 			</thead>
 			</table>
 	    </div>
-				
+		
+		<div style="display:none" id="importUserDiv">
+			角色
+			<input name="role" id="importUserRole"><br>
+			列表
+			<textarea rows="20" cols="100" id="importUserText"></textarea>
+			<br>
+			<a href="#" onclick="importUser()">导入</a>
+		
+		</div>			
 			
 </body>
 </html>
