@@ -9,14 +9,11 @@
 
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="#">${model.config.blogname}</a></h1>
+		<h1><a href="${context.basePath}/index.gs/0">${model.config.blogname}</a></h1>
 		
 		<h3>${model.config.slogan}</h3>
 		
 		<ul>
-			<li><a href="${context.basePath}/index.gs/0">首页</a>
-			</li>
-			
 			<#if user.equals(owner)>
 				<li><a title="" href="${context.basePath}/edit.gs">新增文章</a>
 				</li>
