@@ -3,7 +3,7 @@ if (!user.equals(owner)) {
 }
 
 
-var post = db.getCollection("blogs").findOne({'id': params.id});
+var post = db.getCollection("blogs").getById(params.id);
 
 var config = db.getCollection("config").findOne({});
 
