@@ -34,6 +34,7 @@ import net.gqu.jscript.root.ScriptObjectGenerator;
 import net.gqu.jscript.root.ScriptRequest;
 import net.gqu.jscript.root.ScriptResponse;
 import net.gqu.jscript.root.ScriptSession;
+import net.gqu.jscript.root.ScriptUser;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
@@ -44,6 +45,7 @@ import net.gqu.security.User;
 import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.MimeTypeUtils;
+import net.gqu.utils.RhinoUtils;
 import net.gqu.utils.StringUtils;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -51,6 +53,7 @@ import net.sf.ehcache.Element;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.RhinoException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -164,6 +167,7 @@ public class GQServlet extends HttpServlet {
 				}
 				
 				if (template!=null) {
+					params = getFtlParameters(params);
 					response.setContentType(HTML_TYPE);
 					template.process(params, response.getWriter());
 				} else {
@@ -223,7 +227,11 @@ public class GQServlet extends HttpServlet {
 			logger.debug("TooManyInstructionException " );
 			return;
 		} else if (e instanceof HttpStatusExceptionImpl) {
-			response.setStatus(((HttpStatusExceptionImpl)e).getCode());
+			if (((HttpStatusExceptionImpl) e).getCode() == 307) {
+				response.sendRedirect(((HttpStatusExceptionImpl) e).getDescription());
+			} else {
+				response.setStatus(((HttpStatusExceptionImpl)e).getCode());
+			}
 			return;
 		} else if (e instanceof RhinoException) {
 			e.printStackTrace();
@@ -272,8 +280,6 @@ public class GQServlet extends HttpServlet {
 		} catch (Exception e) {
 			handleException(request, response, e);
 		}
-
-		
 	}
 	
 	private WebScript getWebscript(ApprovedApplication application, String path) {
@@ -309,20 +315,32 @@ public class GQServlet extends HttpServlet {
 		Map<String, Object> params = new HashMap<String, Object>(32, 1.0f);
 		// add web script parameters
 		ScriptRequest scriptRequest = new ScriptRequest(gqrequest.getRequest());
-		scriptRequest.setRemainPath(gqrequest.getFilePath());
+		scriptRequest.setRemainPath(gqrequest.getTailPath());
 		scriptRequest.setFileSizeMax(gqrequest.getRole().getContentSize());
 		scriptRequest.setFactory(fileItemFactory);
 		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest(), gqrequest.getTailPath()));
 		params.put("request", scriptRequest);
 		params.put("response", new ScriptResponse(response));
 		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
-		params.put("context", scriptObjectGenerator.createContextObject(gqrequest.getRequest(), gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
+		params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
 
 		params.put("db", new ScriptMongoDB(dbProvider, 
 				gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
+		
+		params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
+		params.put("owner", new ScriptUser(AuthenticationUtil.getContextUser(),userService));
 		return params;
 	}
+	
+	
+	protected Map<String, Object> getFtlParameters(Map<String, Object> scriptObjects) {
+		scriptObjects.put("params", RhinoUtils.nativeObjectToMap((NativeObject) scriptObjects.get("params")));
+		scriptObjects.put("context", RhinoUtils.nativeObjectToMap((NativeObject) scriptObjects.get("context")));
+		
+		return scriptObjects;
+	}
+	
 	
 
 	private Template getFreeMarkerTemplate(ApprovedApplication application,
@@ -511,12 +529,13 @@ public class GQServlet extends HttpServlet {
     
     
     
-    class GQRequest {
+    public class GQRequest {
     	private HttpServletRequest request;
     	private ApprovedApplication approvedApplication;
     	private String[] pathList;
     	private boolean isScript;
 		private String jspath;
+		private String basePath;
 		private String ftlpath;
 		private String remainPath;
 		private InstalledApplication installedApplication;
@@ -548,6 +567,7 @@ public class GQServlet extends HttpServlet {
 				throw new HttpStatusExceptionImpl(404, null);
 			}
 			
+			basePath = "/FaR-server/user/" + pathList[0] + "/" + pathList[1];
 			approvedApplication = applicationService.getApplication(installedApplication.getApp());
 			
 			if (approvedApplication==null) {
@@ -559,7 +579,11 @@ public class GQServlet extends HttpServlet {
 			isScript = false;
 			
 			if (pathList.length==2 || (pathList.length==3&&pathList[2].equals(""))) {
-				pathArray = new String[]{approvedApplication.getStart()};
+				if (approvedApplication.getStart()==null) {
+					throw new HttpStatusExceptionImpl(404);
+				} else {
+					throw new HttpStatusExceptionImpl(307, approvedApplication.getStart());
+				}
 			} else {
 				pathArray = StringUtils.subArray(pathList, 2);
 			}
@@ -581,6 +605,14 @@ public class GQServlet extends HttpServlet {
 				remainPath = StringUtils.cancatStringArray(pathArray, pos+1, '/');
 			}
 		}
+
+		
+		
+		public String getBasePath() {
+			return basePath;
+		}
+
+
 
 		public boolean isScript() {
 			return isScript;

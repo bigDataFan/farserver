@@ -30,40 +30,81 @@ public class ScriptMongoDBCollection {
 		return bo.getString("_id");
 	}
 	
+	public Object[] distinct(String key) {
+		List<Object> list = coll.distinct(key);
+		return list.toArray(new Object[list.size()]);
+	}
+	
+	public Object[] distinct(String key, NativeObject n) {
+		Map<String, Object> newMap = RhinoUtils.nativeObjectToMap(n);
+		List list = coll.distinct(key, new BasicDBObject(newMap));
+		return list.toArray(new Object[list.size()]);
+	}
+	
 	public String upsert(NativeObject o, NativeObject n) throws MongoException {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 		Map<String, Object> newMap = RhinoUtils.nativeObjectToMap(n);
+		
 		BasicDBObject newobj = new BasicDBObject(newMap);
-		WriteResult wr = coll.update(new BasicDBObject(oldMap), newobj, true, false);
-		if ((Boolean)wr.getField("updatedExisting")) {
-			DBObject one = coll.findOne(new BasicDBObject(oldMap));
-			return one.get("_id").toString();
+		if (oldMap.get("id")!=null && !oldMap.get("id").equals("")) {
+			try {
+				BasicDBObject query = new BasicDBObject("_id", new ObjectId((String)oldMap.get("id")));
+				WriteResult wr = coll.update(query, newobj, true, false);
+				return wr.toString();
+			} catch (Exception e) {
+				return "error";
+			}
+		} else {
+			WriteResult wr = coll.update(new BasicDBObject(oldMap), newobj, true, false);
+			if ((Boolean)wr.getField("updatedExisting")) {
+				DBObject one = coll.findOne(new BasicDBObject(oldMap));
+				return one.get("_id").toString();
+			} else {
+				return wr.toString();
+			}
 		}
 		
-		Object upserted = wr.getField("upserted");
-		return upserted.toString();
+	}
+	
+	public void incField(String id, String field, Long incs) {
+
+		BasicDBObject inc = new BasicDBObject();
+		Map<String, Long> zz = new HashMap<String, Long>();
+		zz.put(field, incs);
+		inc.put("$inc", zz);
+		
+		BasicDBObject query = new BasicDBObject();
+		query.put("_id", new ObjectId(id));	
+		
+		coll.update(query, inc);
 	}
 	
 	public String upsert(NativeObject o) throws MongoException {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 		
 		WriteResult wr; 
-		if (oldMap.get("id")!=null) {
-			DBObject query = new BasicDBObject();
-			query.put("_id", new ObjectId((String)oldMap.get("id")));
-			wr = coll.update(query, new BasicDBObject(oldMap), true, false);
+		if (oldMap.get("id")!=null && !oldMap.get("id").equals("")) {
+			try {
+				DBObject query = new BasicDBObject();
+				query.put("_id", new ObjectId((String)oldMap.get("id")));
+				oldMap.remove("id");
+				wr = coll.update(query, new BasicDBObject(oldMap), true, false);
+				if (wr.getField("updatedExisting")!=null) {
+					if ((Boolean)wr.getField("updatedExisting")) {
+						DBObject one = coll.findOne(new BasicDBObject(oldMap));
+						return one.get("_id").toString();
+					}
+				}
+				Object upserted = wr.getField("upserted");
+				return upserted.toString();
+				
+			}  catch (Exception e) {
+				return null;
+			}
 		} else {
 			wr = coll.insert(new BasicDBObject(oldMap), WriteConcern.SAFE);
+			return wr.getError();
 		}
-		
-		if ((Boolean)wr.getField("updatedExisting")) {
-			DBObject one = coll.findOne(new BasicDBObject(oldMap));
-			return one.get("_id").toString();
-		}
-		
-		Object upserted = wr.getField("upserted");
-		return upserted.toString();
-		
 	}
 
 	public void save(NativeObject o) {
@@ -76,13 +117,15 @@ public class ScriptMongoDBCollection {
 			return null;
 		}
 		DBObject dbo = new BasicDBObject();
-		dbo.put("_id", new ObjectId(id));	
-		DBObject result = coll.findOne(dbo);
-		if(result!=null) {
-			return RhinoUtils.mapToNativeObject(result.toMap());
-		} else {
-			return null;
+		try {
+			dbo.put("_id", new ObjectId(id));	
+			DBObject result = coll.findOne(dbo);
+			if(result!=null) {
+				return RhinoUtils.mapToNativeObject(result.toMap());
+			} 
+		} catch (Exception e) {
 		}
+		return null;
 	}
 	
 	public NativeObject findOne(NativeObject o) {
@@ -112,12 +155,15 @@ public class ScriptMongoDBCollection {
 		return new ScriptDBCursor(coll.find(new BasicDBObject(oldMap)));
 	}
 	
-	public ScriptDBCursor find(NativeObject o, NativeObject orders, int numToSkip , int batchSize) {
+	public ScriptDBCursor find(NativeObject o, NativeObject keys) {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
+		Map<String, Object> keysMap = RhinoUtils.nativeObjectToMap(keys);
 		BasicDBObject bdo = new BasicDBObject();
-		
-		return new ScriptDBCursor(coll.find(new BasicDBObject(oldMap)));
+		return new ScriptDBCursor(coll.find(new BasicDBObject(oldMap),new BasicDBObject(keysMap)));
 	}
+	
+	
+	
 	
 	public ScriptDBCursor findRecent(NativeObject o) {
 		Map<String, Object> oldMap = new HashMap<String, Object>();
@@ -183,32 +229,6 @@ public class ScriptMongoDBCollection {
 
 	public final void createIndex(DBObject keys) throws MongoException {
 		coll.createIndex(keys);
-	}
-
-	public List distinct(String key, DBObject query) {
-		return coll.distinct(key, query);
-	}
-
-	public List distinct(String key) {
-		return coll.distinct(key);
-	}
-
-	public final DBCursor find(DBObject ref, DBObject fields, int numToSkip,
-			int batchSize, int options) throws MongoException {
-		return coll.find(ref, fields, numToSkip, batchSize, options);
-	}
-
-	public final DBCursor find(DBObject ref, DBObject fields, int numToSkip,
-			int batchSize) {
-		return coll.find(ref, fields, numToSkip, batchSize);
-	}
-
-	public final DBCursor find(DBObject ref, DBObject keys) {
-		return coll.find(ref, keys);
-	}
-
-	public final DBCursor find(DBObject ref) {
-		return coll.find(ref);
 	}
 
 	public DBObject findAndModify(DBObject query, DBObject fields,
