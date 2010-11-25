@@ -31,11 +31,6 @@ switch (pathArray.length) {
 		break;
 }
 
-
-
-
-
-
 var cur = db.getCollection("blogs").find(
 			queryObject,
 			{
