@@ -179,7 +179,7 @@ public class WebRestService {
 				String l = br.readLine();
 				if (l==null) break;
 				String[] a = l.split(",");
-				userService.createUser(a[0], a[1], role, a[3], false);
+				userService.createUser(a[0], a[1], role, a[2], false);
 				result.append(a[0]).append(',');
 				
 			} catch (Throwable e) {
