@@ -76,7 +76,7 @@
 					</table>
 				</div>
 			</div>		
-			
+
 			<div class="col-right">
 				
 				<div class="blog-categories">

@@ -7,54 +7,16 @@
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
-<script type="text/javascript" src="../editor/jquery.wysiwyg.js"></script>
-<link rel="stylesheet" href="../editor/jquery.wysiwyg.css" type="text/css" />
-<link rel="stylesheet" href="../main.css" type="text/css" />
+<script type="text/javascript" src="editor/jquery.wysiwyg.js"></script>
+<link rel="stylesheet" href="editor/jquery.wysiwyg.css" type="text/css" />
+<link rel="stylesheet" href="main.css" type="text/css" />
 
 <script>
-
-
-var date = new Date();
-var tag = date.getTime();
-
-var id = null;
-<#if model.post??>id = "${model.post.id}"</#if>
 
 $(document).ready(function () {
    $('#content').wysiwyg();
    $('#content').wysiwyg('setContent',$('#content').val());
 });
-
-function cancel() {
-	location.href="index.gs";
-}
-
-function save() {
-	document.forms[0].submit();	
-}
-
-
-function remove(uuid) {
-
-	$.get('remove', 
-	       {'uuid':uuid},
-	       function (data) {
-	 			location.href="index.gs";      	
-	       }
-	 );
-}
-
-function saveDraft() {
-	$.post("savedraft",
-	{
-	    "title": $('#title').val(),
-	    "content": $('#content').val()
-	},
-	function(data) {
-	   alert("草稿保存成功");
-	})
-}
-
 
 </script>
 
@@ -66,7 +28,7 @@ function saveDraft() {
 		<h1><a href="#">博文编辑</a></h1>
 		
 		<ul>
-			<li><a href="index.gs">首页</a>
+			<li><a href="${context.basePath}/index.gs/0">首页</a>
 			</li>
 		</ul>
 	</div>
@@ -87,12 +49,7 @@ function saveDraft() {
 				<textarea id="content" name="content" rows="20" cols="100"><#if model.post??>${model.post.content}</#if></textarea><br>
 				<span>分类 ： <input name="tags" type="text"/></span> <BR>
 				<br>
-				<button onclick="save()">发布</button>
-				<button onclick="saveDraft()">保存为草稿</button>
-				<button onclick="cancel()">取消 编辑</button> 
-				<#if model.post??>
-					<button onclick="remove('${model.post.id}');return false">删除文章</button>
-				</#if>
+				<input type="submit" value="先发布">
 		</div>
 	</div>
 	
