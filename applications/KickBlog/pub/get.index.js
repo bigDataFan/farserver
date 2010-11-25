@@ -40,7 +40,7 @@ var cur = db.getCollection("blogs").find(
 			{
 				"content":0
 			}
-		).sort({"modified":-1}).skip(from).limit(max);
+		).sort({"modified":-1}).skip(model.from).limit(max);
 
 
 
