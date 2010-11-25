@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form method="POST" action="service/application/create">
+<form method="POST" action="../service/global/application/create">
 	<p> 应用名称 <input name="name"> 
 	</p>
 	<p> 别名 <input name="alias"> 
@@ -41,10 +41,6 @@
 	<p> 起始页
 		 <input name="start">
 	</p>
-	
-	
-	
-	
 	
 	<p><input type="submit"></input></p>
 </form>

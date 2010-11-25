@@ -4,17 +4,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Install App</title>
+<title>Install Application</title>
 </head>
 <body>
 
-<form method="POST" action="service/application/install">
 
-应用名称 <input name="application"> <br>
-
+<form method="POST" action="../service/application/install">
+   应用名称  <input name="application"  value="<%=request.getParameter("app")%>"> <br>
 <input type="submit">
 </form>
-
 
 </body>
 </html>
