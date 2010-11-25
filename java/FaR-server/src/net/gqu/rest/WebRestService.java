@@ -1,5 +1,7 @@
 package net.gqu.rest;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -166,6 +168,26 @@ public class WebRestService {
 		}
 	}
 	
+	@RestService(method="POST", uri="/admin/user/import")
+	public String importUser(@RestParam(value="data") String data, @RestParam(value="role") String role) {
+		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
+		
+		BufferedReader br = new BufferedReader(new StringReader(data));
+		StringBuffer result = new StringBuffer();
+		while (true) {
+			try {
+				String l = br.readLine();
+				if (l==null) break;
+				String[] a = l.split(",");
+				userService.createUser(a[0], a[1], role, a[3], false);
+				result.append(a[0]).append(',');
+				
+			} catch (Throwable e) {
+			}
+		}
+		
+		return result.toString();
+	}
 	
 	@RestService(method="GET", uri="/admin/system/infos")
 	public Map<String, Object> getSystemInfos() {
