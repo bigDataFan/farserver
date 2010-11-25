@@ -5,6 +5,12 @@ if (!user.equals(owner)) {
 
 var now = new Date();
 params.tags = params.tags.split(" "); 
+
+if (params.tags.length==1 && params.tags[0]=="") {
+	params.tags = [];
+}
+
+
 params.datetag = now.getFullYear() + "-" + (now.getMonth()+1);
 params.modifier = user.getName();
 params.modified = now;

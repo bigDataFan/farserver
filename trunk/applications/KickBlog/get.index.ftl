@@ -83,7 +83,7 @@
 					<h4>分类</h4>
 					<ul>
 						<#list model.tags as tag>
-							<li><a href="index.gs/tag/${tag}">${tag}</a> 
+							<li><a href="${context.basePath}/index.gs/tag/${tag}/0">${tag}</a> 
 							</li>
 						</#list>
 					</ul>
@@ -94,7 +94,7 @@
 					<h4>时间视图</h4>
 					<ul>
 						<#list model.datetags as tag>
-							<li><a href="index.gs/tag/${tag}">${tag}</a> 
+							<li><a href="${context.basePath}/index.gs/tag/${tag}">${tag}</a> 
 							</li>
 						</#list>
 					</ul>
