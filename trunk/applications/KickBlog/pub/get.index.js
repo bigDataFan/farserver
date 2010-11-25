@@ -40,6 +40,8 @@ switch (pathArray.length) {
 		break;
 }
 
+model.from = model.page * config.perpage;
+
 var cur = db.getCollection("blogs").find( queryObject, { "content":0 })
 		.sort({"modified":-1})
 		.skip(model.from).limit(max);
@@ -48,7 +50,6 @@ model.total = cur.count();
 model.tags = db.getCollection("blogs").distinct("tags");
 model.datetags = db.getCollection("blogs").distinct("datetag");
 
-model.from = config.perpage * model.page;
 model.to = model.from + cur.size();
 
 
