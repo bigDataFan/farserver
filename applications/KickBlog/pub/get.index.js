@@ -44,6 +44,7 @@ var model = new Object();
 model.total = cur.count();
 model.config = config;
 model.tags = db.getCollection("blogs").distinct("tags");
+model.datetags = db.getCollection("blogs").distinct("datetag");
 model.from = params.from;
 model.to = params.from + cur.size();
 model.blogs = new Array();
