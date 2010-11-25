@@ -10,8 +10,12 @@ import org.mozilla.javascript.IdScriptableObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.Undefined;
 
 public class RhinoUtils {
+
+	public static final String MONGODB_MAP_ID = "id";
+
 
 	/**
      * Build java array from a native array
@@ -74,7 +78,9 @@ public class RhinoUtils {
 		for (Object id : ids) {
 	    	String key = id.toString();
 	    	Object value = no.get(key, no);
-	    	result.put(key, nativeToObject(value));
+	    	if (value!=null && !(value instanceof Undefined)) {
+	    		result.put(key, nativeToObject(value));
+	    	}
 		}
 		return result;
     }
@@ -93,9 +99,10 @@ public class RhinoUtils {
 	    NativeObject object = new NativeObject();
 	    
 	    for (String key : map.keySet()) {
+	    	if (key.equals(MONGODB_MAP_ID)) continue;
 	    	Object value = map.get(key);
 	    	if (value instanceof ObjectId) {
-	    		object.put("id", object, ((ObjectId)value).toString());
+	    		object.put(MONGODB_MAP_ID, object, ((ObjectId)value).toString());
 	    	} else {
 	    		object.put(key, object, value);
 	    	}

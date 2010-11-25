@@ -40,6 +40,7 @@ public class ApprovedApplication {
 		this.type = map.get("type")==null? 0: (Integer) map.get("type");
 		this.details = map.get("details")==null? null: (String) map.get("details");
 		
+		this.start = map.get("start")==null? null: (String) map.get("start");
 		this.categories = map.get("categories")==null? (new String[0]) : (String[]) map.get("categories");
 		//this.created = ((String) map.get("created"));
 		

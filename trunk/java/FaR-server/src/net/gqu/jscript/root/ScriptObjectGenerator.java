@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.gqu.application.InstalledApplication;
 import net.gqu.security.BasicUserService;
+import net.gqu.webscript.GQServlet.GQRequest;
 
 import org.mozilla.javascript.NativeObject;
 
@@ -43,13 +44,14 @@ public class ScriptObjectGenerator {
 	
 	
 	
-	public NativeObject createContextObject(HttpServletRequest request,InstalledApplication installedApplication, String remains) {
+	public NativeObject createContextObject(GQRequest request,InstalledApplication installedApplication, String remains) {
 		NativeObject object = new NativeObject();
 		object.put("user", object, installedApplication.getUser());
 		object.put("application", object, installedApplication.getUser());
 		object.put("fileSize", object, installedApplication.getUser());
 		object.put("totalSize", object, installedApplication.getUser());
-		object.put("reqestPath", object, request.getRequestURI());
+		object.put("reqestPath", object, request.getRequest().getRequestURI());
+		object.put("basePath", object, request.getBasePath());
 		object.put("gsPath", object, remains);
 		
 		return object;

@@ -1106,6 +1106,12 @@ public abstract class StringUtils {
 		for (int i = 0; i < t.length; i++) {
 			System.out.println(t[i]);
 		}
+		System.out.println("---");
+		String[] ss = StringUtils.delimitedListToStringArray("/cc/dd/", "/");
+		for (int i = 0; i < ss.length; i++) {
+			System.out.println(ss[i]);
+		}
+		System.out.println("---");
 		//System.out.println(StringUtils.getParentPath("/abfd/cfdsf/ddeer/", "/"));
 	}
 

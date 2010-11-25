@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import net.gqu.exception.HttpStatusExceptionImpl;
+import net.gqu.utils.StringUtils;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;

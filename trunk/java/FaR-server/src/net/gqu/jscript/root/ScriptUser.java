@@ -1,27 +1,55 @@
 package net.gqu.jscript.root;
 
 import net.gqu.security.AuthenticationUtil;
-import net.gqu.security.User;
+import net.gqu.security.BasicUserService;
+
 
 public class ScriptUser {
 	
-	private User user;
-	public ScriptUser(User user) {
+	private String name;
+	private BasicUserService userService;
+	
+	
+	public ScriptUser(String name, BasicUserService userService) {
 		super();
-		this.user = user;
+		this.name = name;
+		this.userService = userService;
+	}
+
+	public ScriptUser(String name) {
+		super();
+		this.name = name;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getName() {
-		return user==null?AuthenticationUtil.getGuestUserName():user.getName();
+		return name;
 	}
 	
 	public boolean isGuest() {
-		return user==null;
+		return AuthenticationUtil.GUEST_USER_NAME.equals(name);
 	}
 	
-	@Override
-	public String toString() {
-		return this.getName();
+	public long getFileLimit() {
+		if (AuthenticationUtil.GUEST_USER_NAME.equals(name)) {
+			return 0;
+		} else {
+			return userService.getRole(userService.getUser(name).getRole()).getContentSize();
+		}
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ScriptUser) {
+			return ((ScriptUser) obj).getName().equals(name);
+		} else {
+			return super.equals(obj);
+		}
+	}
+
+
+	
 	
 }

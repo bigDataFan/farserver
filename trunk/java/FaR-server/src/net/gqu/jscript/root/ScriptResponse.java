@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import net.gqu.exception.HttpStatusExceptionImpl;
+
 
 public class ScriptResponse {
 	private HttpServletResponse response;
@@ -29,10 +31,15 @@ public class ScriptResponse {
 	}
 
 	public void sendError(int arg0) throws IOException {
-		response.sendError(arg0);
+		throw new HttpStatusExceptionImpl(arg0);
 	}
 
 	public void sendRedirect(String arg0) throws IOException {
 		response.sendRedirect(arg0);
 	}
+	
+	
+	
+	
+	
 }
