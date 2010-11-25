@@ -6,7 +6,7 @@
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
-<link rel="stylesheet" href="../../main.css" type="text/css" />
+<link rel="stylesheet" href="${context.basePath}/main.css" type="text/css" />
 
 <script>
 
@@ -18,12 +18,7 @@ var tag = date.getTime();
 <body>
 <div id="header">
 	<div class="wrapper">
-		<h1><a href="../index.gs">${model.config.blogname}</a></h1>
-		
-		<ul>
-			<li><a href="../index.gs">首页</a>
-			</li>
-		</ul>
+		<h1><a href="${context.basePath}/index.gs/0">${model.config.blogname}</a></h1>
 	</div>
 	
 </div>
@@ -32,7 +27,7 @@ var tag = date.getTime();
 				<h2>标题 ： ${model.blog.title} </h2>
 				<div class="meta">发表于 ${model.blog.modified?datetime} by ${model.blog.modifier}. 分类：
 					<#list model.blog.tags as tag>
-						 <a rel="category tag" title="查看此标签的所有文章" href="index.gs/${tag}/">${tag}</a>. 
+						 <a rel="category tag" title="查看此标签的所有文章" href="${context.basePath}/index.gs/${tag}/0">${tag}</a>. 
 					</#list>
 				</div>
 				
@@ -47,18 +42,18 @@ var tag = date.getTime();
 				
 				<div class="feedback">
 					<#if user.equals(model.blog.modifier)>
-						<span><a href="edit.gs?id=${model.blog.id}">修改</a> | <a href="remove.gs?id=${model.blog.id}">删除</a></span>
+						<span><a href="${context.basePath}/edit.gs?id=${model.blog.id}">修改</a> | <a href="${context.basePath}/remove.gs?id=${model.blog.id}">删除</a></span>
 					</#if>	
 				</div>
 				
 
 				<div class="nextprev">
 					<#if model.previous??>
-						<span class="prev"> 上一篇: <a href="view.gs/${model.previous.id}">${model.previous.title}</a></span>
+						<span class="prev"> 上一篇: <a href="${context.basePath}/view.gs/${model.previous.id}">${model.previous.title}</a></span>
 					</#if>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<#if model.next??>
-						下一篇 <span class="next"> <a href="view.gs/${model.next.id}">${model.next.title}</a></span> 
+						下一篇 <span class="next"> <a href="${context.basePath}/view.gs/${model.next.id}">${model.next.title}</a></span> 
 					</#if>
 				</div>
 
