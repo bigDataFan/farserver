@@ -5,7 +5,7 @@ if (!user.equals(owner)) {
 
 var now = new Date();
 params.tags = params.tags.split(" "); 
-params.datetags = now.getFullYear() + "-" + (now.getMonth()+1);
+params.datetag = now.getFullYear() + "-" + (now.getMonth()+1);
 params.modifier = user.getName();
 params.modified = now;
 params.visited = 0;
