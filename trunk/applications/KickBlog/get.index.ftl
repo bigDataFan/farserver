@@ -42,7 +42,7 @@
 				</div>
 				
 				<div class="feedback">
-					<#if user.getName().equals(blog.modifier)>
+					<#if user.equals(owner)>
 						<span><a href="${context.basePath}/edit.gs/${blog.id}">修改</a> | <a href="${context.basePath}/remove.gs/${blog.id}">删除</a></span>
 					</#if>	
 				</div>								
