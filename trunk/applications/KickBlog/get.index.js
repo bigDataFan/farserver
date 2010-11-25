@@ -35,6 +35,7 @@ switch (pathArray.length) {
 		}
 		model.page = parseInt(pathArray[3])? parseInt(pathArray[3]):0;
 	default:
+		model.raw = 1;
 		model.page = 0;
 		break;
 }
