@@ -10,16 +10,16 @@
 <div id="header">
 	<div class="wrapper">
 		<h1><a href="#">${model.config.blogname}</a></h1>
+		
 		<h3>${model.config.slogan}</h3>
+		
 		<ul>
-			<li><a href="index.gs">首页</a>
+			<li><a href="${context.basePath}/index.gs/0">首页</a>
 			</li>
 			
 			<#if user.equals(owner)>
-				<li><a title="" href="edit.gs">新增文章</a>
+				<li><a title="" href="${context.basePath}/edit.gs">新增文章</a>
 				</li>
-				<li><a title="" href="drafts">草稿箱</a>
-				</li>		
 			</#if>
 		</ul>
 	</div>
@@ -29,11 +29,11 @@
 		<div class="wrapper">
 			<div class="col-left">
 				<#list model.blogs as blog>
-					<h2 class="fancy"><a href="view.gs/${blog.id}">${blog.title}</a></h2>
+					<h2 class="fancy"><a href="${context.basePath}/view.gs/${blog.id}">${blog.title}</a></h2>
 			
 				<div class="meta">发表于 ${blog.modified?datetime} 作者 ${blog.modifier}. 分类：
 					<#list blog.tags as tag>
-						 <a rel="category tag" href="index.gs/tag/${tag}">${tag}</a>. 
+						 <a rel="category tag" href="${context.basePath}/index.gs/tag/${tag}/0">${tag}</a>. 
 					</#list>
 					阅读： ${blog.visited} 回复：${blog.replied}
 				</div>
@@ -42,8 +42,8 @@
 				</div>
 				
 				<div class="feedback">
-					<#if user.equals(blog.modifier)>
-						<span><a href="edit.gs?id=${blog.id}">修改</a> | <a href="remove.gs?id=${blog.id}">删除</a></span>
+					<#if user.getName().equals(blog.modifier)>
+						<span><a href="${context.basePath}/edit.gs/${blog.id}">修改</a> | <a href="${context.basePath}/remove.gs/${blog.id}">删除</a></span>
 					</#if>	
 				</div>								
 				</#list>

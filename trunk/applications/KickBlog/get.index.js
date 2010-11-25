@@ -3,7 +3,6 @@ var pathArray = path.split("/");
 
 var model = new Object();
 
-
 var config = db.getCollection("config").findOne({});
 
 
@@ -29,7 +28,7 @@ switch (pathArray.length) {
 		break;
 	case 4:
 		if (pathArray[1]=="tag") {  //view by tag
-			queryObject.tag = pathArray[2];
+			queryObject.tags = pathArray[2];
 		}
 		if (pathArray[1]=="date") { //view by date
 			queryObject.datetag = pathArray[2];
