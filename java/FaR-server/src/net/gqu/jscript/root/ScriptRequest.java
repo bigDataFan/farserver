@@ -79,6 +79,7 @@ public class ScriptRequest {
 				} else {
 					try {
 						if (fileItem.getSize()>0) {
+							no.put(NAME, no, fileItem.getFieldName());
 							no.put(FILENAME, no, fileItem.getName());
 							no.put(INPUTSTREAM, no, fileItem.getInputStream());
 							no.put(MIMETYPE, no, fileItem.getContentType());
