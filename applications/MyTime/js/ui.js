@@ -18,7 +18,7 @@ function uiDraw(content) {
 	uidiv_global_popup.append('<h1>My Time&Work <a class="list" href="#">&nbsp;</a> <a class="graph" href="#">&nbsp;</a> <a class="new" href="#">&nbsp;</a></h1>');
 
 	uidiv_global_popup.append('<div class="list"></div>');
-	uidiv_global_popup.append('<div class="graph" id="' + CHART_ID + '" style="width:340px; height:320px;display:none"></div>');
+	uidiv_global_popup.append('<div class="graph" id="' + CHART_ID + '"></div>');
 		
 	uidiv_global_popup.append('<div class="additem" style="display: none">' 
 			+ '<input class="inputarea"></input><a class="run" href="#">&nbsp;</a>'
