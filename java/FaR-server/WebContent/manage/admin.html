@@ -155,13 +155,35 @@ $(document).ready(function(){
 			        					editIndex = rowIndex;
 		    						}
 		        				},'-',
-		        				
 		        				{
 		        					text:'保存',
 		        					iconCls:'icon-save',
 		        					handler:function(){
 		        						$('#userTable').datagrid("endEdit", editIndex);
 		        						editIndex = -1;
+		        					}
+		        				}, "-",
+		        				{
+		        					text:'应用',
+		        					iconCls:'icon-print',
+		        					handler:function(data){
+		        						var rowIndex = $('#userTable').datagrid('getRowIndex', $('#userTable').datagrid('getSelected'));
+		        						if (rowIndex>-1) {
+		        							var userName = $('#userTable').datagrid('getData').rows[rowIndex].name;
+		        							$.getJSON("../service/admin/user/apps", 
+				        							{"username":userName},
+				        							function(data) {
+					        							var ul_element = $('#listInfo');
+					        							var shtml = '';
+					        							for(var i=0; i<data.length; i++) {
+						        							shtml += '<li><a href="/user/' + userName + '/' + data[i] + '/">' + data[i] + '</a></li>';
+					        							}
+					        							ul_element.html(shtml);
+					        							//ul.html("ccdd");
+				        							});
+		        						}
+		        						//$('#userTable').datagrid("endEdit", editIndex);
+		        						//editIndex = -1;
 		        					}
 		        				}, "-",
 		        				{
@@ -199,6 +221,49 @@ $(document).ready(function(){
 				});
 			}
 	)	
+
+
+
+
+
+
+	$('#appscfg').click(
+			function() {
+				var editIndex = -1;
+				$('#main').html($('#applistDiv').html());
+				$('#appTable').datagrid({
+					toolbar:[
+						{
+							text:'重新加载',
+							iconCls:'icon-print',
+							handler:function(data){
+								var rowIndex = $('#appTable').datagrid('getRowIndex', $('#appTable').datagrid('getSelected'));
+								if (rowIndex>-1) {
+									var appName = $('#appTable').datagrid('getData').rows[rowIndex].name;
+									$.getJSON("../service/admin/application/clean", 
+											{"name":appName},
+											function(data) {
+												alert(data);
+											});
+								}
+							}
+						}
+							
+					],
+					pagination:false
+				});
+			}
+	)	
+
+
+
+
+
+	
+
+	
+
+	
 });
 
 function userRoleNameFormator(value){
@@ -206,6 +271,11 @@ function userRoleNameFormator(value){
 		if (roles.rows[i].id == value) return roles.rows[i].name;
 	}
 	return value;
+}
+
+
+function userApplicationsFormator(value){
+	return '<span style="color:red">Edit Delete</span>';
 }
 
 
@@ -231,7 +301,7 @@ function importUser() {
 				<LI><a id="servercfg" href="#">概要</a></LI>
 				<li><a id="rolecfg" href="#" >角色</a></li>
 				<li><a id="usercfg" href="#" >用户</a></li>
-				<LI><a href="#">应用</a></LI>
+				<LI><a id="appscfg" href="#">应用</a></LI>
 				<LI><a href="#">服务器日志</a></LI>
 			</ul>
 		</div>
@@ -241,8 +311,13 @@ function importUser() {
 		</div>
 		 -->
 		<div region="center" id="main">
-			
 		</div>
+	
+		<div region="east" split="true" title="&nbsp;" style="width:120px;padding:10px;">
+			<ul id="listInfo">
+			</ul>
+		</div>
+	
 	
 		<div style="display:none" id="roleDiv">
 			<table id="roleTable" style="width:800px;height:auto;"
@@ -262,9 +337,10 @@ function importUser() {
 		</div>
 		
 		<div style="display:none" id="userDiv">
+			<div>
 			<table id="userTable" style="width:800px;height:auto;"
 			title="用户管理" iconCls="icon-edit" singleSelect="true"
-			idField="name" url="../service/admin/user/list">
+			 url="../service/admin/user/list">
 			<thead>
 				<tr>
 					<th field="name" width="100" sortable="true">用户名</th>
@@ -276,7 +352,9 @@ function importUser() {
 				</tr>
 			</thead>
 			</table>
+			</div>
 	    </div>
+		
 		
 		<div style="display:none" id="importUserDiv">
 			角色
@@ -285,8 +363,23 @@ function importUser() {
 			<textarea rows="20" cols="100" id="importUserText"></textarea>
 			<br>
 			<a href="#" onclick="importUser()">导入</a>
-		
 		</div>			
 			
+			
+			
+		<div style="display:none" id="applistDiv">
+			<table id="appTable" style="width:800px;height:auto;"
+			title="安装的应用" iconCls="icon-edit" singleSelect="true"
+			idField="name" url="../service/admin/application/list">
+			<thead>
+				<tr>
+					<th field="name" width="100" sortable="true">应用名称</th>
+					<th field="alias" width="200" editor="text">别名</th>
+					<th field="owner" width="100" editor="text">开发人员</th>
+					<th field="installed" width="300" sortable="true">安装次数</th>
+				</tr>
+			</thead>
+			</table>
+	    </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package net.gqu.application;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -20,5 +21,8 @@ public interface ApplicationService {
 	boolean uninstalled(InstalledApplication installedApplication);
 	InstalledApplication getInstalledByMapping(String user, String mapping);
 	ApprovedApplication getApplication(String id);
-	
+	List<ApprovedApplication> getAllInCurrentServer();
+
+	List<InstalledApplication> getInstalled(String name);
+	long getInstallCount(String name);
 }

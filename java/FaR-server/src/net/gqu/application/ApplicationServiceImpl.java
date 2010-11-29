@@ -1,7 +1,9 @@
 package net.gqu.application;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.gqu.mongodb.MongoDBProvider;
@@ -66,11 +68,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 					e.printStackTrace();
 				}
 			}
-			
-				
 		}
 		return applicationMap.get(id);
 	}
+	
+	
+	
 
 	@Override
 	public InstalledApplication getInstalledByMapping(String user, String mapping) {
@@ -136,4 +139,42 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return false;
 	}
 
+	@Override
+	public List<ApprovedApplication> getAllInCurrentServer() {
+		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
+		List<String> apps = coll.distinct(APPLICATION);
+		
+		List<ApprovedApplication> result = new ArrayList<ApprovedApplication>();
+		
+		for (String appName : apps) {
+			result.add(getApplication(appName));
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<InstalledApplication> getInstalled(String name) {
+		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
+		DBCursor cursor = coll.find(new BasicDBObject(APPLICATION, name));
+		
+		List<InstalledApplication> result = new ArrayList<InstalledApplication>();
+		
+		while (cursor.hasNext()) {
+			DBObject dbo = cursor.next();
+			InstalledApplication ia = new InstalledApplication();
+			ia.setUser((String) dbo.get(USER));
+			ia.setMapping((String) dbo.get(MAPPING));
+			ia.setApp((String) dbo.get(APPLICATION));
+			result.add(ia);
+		}
+		return result;
+	}
+
+	@Override
+	public long getInstallCount(String name) {
+		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
+		DBCursor cursor = coll.find(new BasicDBObject(APPLICATION, name));
+		return cursor.count();
+	}
 }

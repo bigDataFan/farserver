@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
+
+import com.mongodb.DBObject;
 
 import net.gqu.application.ApplicationService;
 import net.gqu.application.ApprovedApplication;
@@ -65,11 +68,7 @@ public class WebRestService {
 		return result;
 	}
 	
-	@RestService(method="GET", uri="/application/clean")
-	public String cleanAppCache(@RestParam(value="name")String application) {
-		cacheService.getApplicationCache(application).removeAll();
-		return "OK";
-	}
+
 
 	@RestService(method="POST", uri="/admin/role/list")
 	public Map<String, Object> getRoles() {
@@ -149,7 +148,6 @@ public class WebRestService {
 		Integer r = Integer.valueOf(rows);
 		return userService.getUsersJsonMap(sort, order, (p-1)*r, r);
 	}
-	
 
 	@RestService(method="POST", uri="/admin/user/save")
 	public void saveUser(@RestParam(value="name") String name, @RestParam(value="role")String role,@RestParam(value="email")String email,
@@ -194,6 +192,35 @@ public class WebRestService {
 		return GUID.getSystemInfo();
 	}
 			
+	@RestService(method="GET", uri="/admin/user/apps")
+	public Set<String> getUserApps(@RestParam(value="username") String name) {
+		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
+		Map<String, InstalledApplication> installed = applicationService.getUserInstalledApplications(name);
+		return installed.keySet();
+	}
 	
+	@RestService(method="POST", uri="/admin/application/list")
+	public Map<String, Object> showAllApps() {
+		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
+		List<ApprovedApplication> all = applicationService.getAllInCurrentServer();
+		List<Map> jsoned = new ArrayList<Map>();
+		for (ApprovedApplication aa : all) {
+			Map<String, Object> map = aa.getMaps();
+			map.put("installed", applicationService.getInstallCount(aa.getName()));
+			jsoned.add(map);
+		}
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("total", all.size());
+		result.put("rows", jsoned);
+		return result;
+		
+	}
 	
+	@RestService(method="GET", uri="/admin/application/clean")
+	public String cleanAppCache(@RestParam(value="name")String application) {
+		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
+		cacheService.getApplicationCache(application).removeAll();
+		return "OK";
+	}
 }
