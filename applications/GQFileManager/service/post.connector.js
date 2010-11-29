@@ -10,7 +10,7 @@ for each (field in request.getMultipartParams()) {
 		current = field.value;
 	}
 	
-	if (field.name == "upload[]") {
+	if (field.isfile) {
 		multilparts.push(field);
 	}
 }
