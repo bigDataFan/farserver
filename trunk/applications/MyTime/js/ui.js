@@ -35,7 +35,6 @@ function uiDraw(content) {
 	
 	TimeStore.Init(content);
 	
-	
 	uidiv_global_popup.find('h1 a').css("padding-top","1px");
 	uidiv_global_popup.find('h1 a').css("padding-left","10px");
 	uidiv_global_popup.find('h1 a').css("margin-lef","10px");
@@ -99,6 +98,8 @@ function uiDraw(content) {
 		}
 	);
 	uidiv_global_popup.slideDown();
+	
+	setTimeout("scheduleUpdate()",60000);
 }
 
 
@@ -183,6 +184,8 @@ function addUiItem(item) {
 
 function run(parentDiv) {
 	TimeStore.runItem(parentDiv);
+	setTimeout("scheduleUpdate()",60000);
+	
 	uidiv_global_popup.find('div.running').removeClass("running").addClass("normal").css("margin", "0px").css("padding", "8px");
 	parentDiv.removeClass("normal").addClass("running").css("padding","25px").css("margin", "0px -30px");
 
@@ -221,6 +224,11 @@ function formatDate(mill) {
 	+ ((d3.getMinutes()<10)?("0"+d3.getMinutes()):d3.getMinutes()); 
 }
 
+function formatedToMill(formated) {
+	var sr = formated.split(":");
+	return parseInt(sr[0])*60*60*1000 + parseInt(sr[1].charAt(0)=='0'?sr[1].charAt(1):sr[1])*60*1000;
+}
+
 
 
 function showEditBox(srcDiv) {
@@ -253,6 +261,25 @@ function saveEditBox() {
 	$('div.list').slideDown();
 	$('div.running').fadeIn(1500);
 }
+
+
+	//setTimeout("scheduleUpdate()",60000);
+
+function scheduleUpdate() {
+	
+	if (uidiv_global_popup) {
+		var durhtml = uidiv_global_popup.find("div.list div.running a.rs");
+		if (durhtml) {
+			var totalhtml = uidiv_global_popup.find('div.summary').find('h4 a');
+			$(durhtml).html(formatDate(formatedToMill($(durhtml).html()) + 60*1000));
+			$(totalhtml).html(formatDate(formatedToMill($(totalhtml).html()) + 60*1000))
+		}
+	}
+	
+	setTimeout("scheduleUpdate()",60000);
+}
+
+
 
 
 function drawChart() {
