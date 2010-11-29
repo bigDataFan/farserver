@@ -11,7 +11,7 @@ if (pathArray.length==2 && pathArray[1]!="") {
 }
 
 
-var doc = db.getCollection("worktimes").find({"dateStr": dateStr});
+var doc = db.getCollection("worktimes").findOne({"dateStr": dateStr});
 
 if (doc==null) {
 	doc = new Object();
