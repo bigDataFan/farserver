@@ -5,7 +5,7 @@ function uiDraw(content) {
 	
 	uidiv_global_popup = $('#gq_extension_wrapper');
 	if ($('#gq_extension_wrapper').length==0) {
-		var gqwrapdiv = $('<div id="gq_extension_wrapper" class="extension_wrapper" style="width: 350px; display:none; z-index: 9999; position: absolute; right: 10px; top:10px"></div>');
+		var gqwrapdiv = $('<div id="gq_extension_wrapper" class="extension_wrapper"></div>');
 		$('body').append(gqwrapdiv);
 		uidiv_global_popup = $('#gq_extension_wrapper'); 
 	} else {
@@ -30,7 +30,7 @@ function uiDraw(content) {
 	additemdiv.css("margin", "0px -30px");
 	
 	uidiv_global_popup.append('<div class="summary">'
-			+ '<h4>Total<a>12:02</a></h4>'
+			+ '<h4>Total<a>00:00</a></h4>'
 			+ '</div>');   
 	
 	TimeStore.Init(content);

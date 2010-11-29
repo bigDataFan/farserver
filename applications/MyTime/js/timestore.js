@@ -11,8 +11,6 @@ TimeStore.Init = function(content) {
 	cleanUi();
 	if (!this.isLogon) {
 		TimeStore._items = content;
-		
-		
 		var total = 0;
 		for(var i=0;i<TimeStore._items.length; i++) {
               addUiItem(TimeStore._items[i]);
@@ -21,6 +19,7 @@ TimeStore.Init = function(content) {
             	  total += new Date().getTime()-TimeStore._items[i].begins;
               }
 		}
+		
 		updateUiTotal(total);
 		
 	} else {
