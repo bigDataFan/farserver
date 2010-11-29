@@ -248,39 +248,6 @@ public class GQServlet extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		try {
-			GQRequest gqrequest = new GQRequest(request);
-			AuthenticationUtil.setContextUser(gqrequest.getInstalledApplication().getUser());
-			
-			
-			if (gqrequest.isScript()) {
-				String wspath = gqrequest.getJsPath();
-				
-				WebScript webScript = getWebscript(gqrequest.getApprovedApplication(),wspath);
-				if (webScript==null){
-					throw new HttpStatusExceptionImpl(404);
-				}
-				
-				Map<String, Object> params = createScriptParameters(gqrequest, response);
-				
-				Object wsresult = null;
-				
-				wsresult = scriptExecService.executeScript(webScript, params, false);
-				params.put("model", wsresult);
-			 
-				
-			} else {
-				throw new HttpStatusExceptionImpl(404);
-			}
-		} catch (Exception e) {
-			handleException(request, response, e);
-		}
-	}
 	
 	private WebScript getWebscript(ApprovedApplication application, String path) {
 		Cache appcache = cacheService.getApplicationCache(application.getName());

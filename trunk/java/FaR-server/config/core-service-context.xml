@@ -80,7 +80,6 @@
 		<property name="injectedServices">
 			<list>
 				<ref bean="rest.services"/>
-				<ref bean="rest.global.appservice"/>
 			</list>
 		</property>
 	</bean>
