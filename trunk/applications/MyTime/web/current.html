@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>我的每日时间</title>
+
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<script type="text/javascript" src="js/timestore.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+	var item = $.get("../service/data.gs/", null, 
+			function(data) {
+				uiDraw(data);
+			});
+});
+
+
+function saveItemToStore(content) {
+	$.post("../service/data.gs/", 
+			{"content":content}, 
+			function(data) {
+									
+			});
+}
+
+
+
+</script>
+
+</head>
+<body>
+<div id="bokehs" style="width: 350px">
+<!-- Bokeh will get injected dynamically using jQuery -->
+</div>
+
+<div id="wrapper">
+	<h1>My Time&Work <a class="new" href="#">+</a></h1>
+
+	<div class="list">
+		<!-- 
+		<div id="a1" class="normal entry">
+		     <h4><b>浏览网页</b><small>7:22</small> <a class="timer_running" href="stop">1:02</a></h4>
+		</div>    
+		<div id="a2" class="entry running">
+		     <h4><b>从新的地方工资</b><small>开始于7:22</small> <a class="timer_running" href="stop">1:02</a></h4>
+		</div>
+		 -->
+	</div>
+	
+	<div class="additem" style="display: none"> 
+		<input class="inputarea"></input> <a class="run" href="#"><img border="0" alt="" src="images/accept.png"> </a>
+		 <a class="cancel" href="#"><img border="0" alt="删除这个条目" src="images/delete.png"></img></a>
+	</div>
+		
+	<div class="summary">
+	        <h4>Total<a>12:02</a></h4>
+	</div>   
+
+</div>
+</body>
+</html>
