@@ -46,6 +46,7 @@ import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.MimeTypeUtils;
 import net.gqu.utils.RhinoUtils;
+import net.gqu.utils.ScriptUtils;
 import net.gqu.utils.StringUtils;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -291,6 +292,7 @@ public class GQServlet extends HttpServlet {
 		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
 		params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
 
+		params.put("utils", new ScriptUtils());
 		params.put("db", new ScriptMongoDB(dbProvider, 
 				gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
