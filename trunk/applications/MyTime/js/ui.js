@@ -4,13 +4,25 @@ var CHART_ID = "gq_extension_timer_chart";
 function uiDraw(content) {
 	
 	uidiv_global_popup = $('#gq_extension_wrapper');
-	if ($('#gq_extension_wrapper').length==0) {
+	
+	if (uidiv_global_popup.length!=0) {
+		uidiv_global_popup.remove();
+	}
+	
+	/*
+	if (uidiv_global_popup.length==0) {
 		var gqwrapdiv = $('<div id="gq_extension_wrapper" class="extension_wrapper"></div>');
 		$('body').append(gqwrapdiv);
 		uidiv_global_popup = $('#gq_extension_wrapper'); 
 	} else {
 		return;
 	}
+	*/
+	uidiv_global_popup = $('<div id="gq_extension_wrapper" class="extension_wrapper"></div>');
+	$('body').append(uidiv_global_popup);
+	
+	
+	
 	uidiv_global_popup.css("padding","20px");
 	
 	uidiv_global_popup.append('<div class="close"><a class="close" href="#">&nbsp;</a></div>');
