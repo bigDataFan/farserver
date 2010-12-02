@@ -3,15 +3,18 @@ package net.gqu.jscript.root.google;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+
+import sun.util.resources.TimeZoneNames_zh_CN;
 
 import net.gqu.exception.HttpStatusExceptionImpl;
 
 import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.DateTime;
-import com.google.gdata.data.Feed;
 import com.google.gdata.data.PlainTextConstruct;
-import com.google.gdata.data.Source;
 import com.google.gdata.data.calendar.CalendarEntry;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarEventFeed;
@@ -24,14 +27,14 @@ import com.google.gdata.util.ServiceException;
 
 public class ScriptCalendar {
 	
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private String username;
 	private String password;
 	private String token;
 	
-	
 	CalendarService calService; 
 	
-	private void checkLogin() {
+	public void checkLogin() {
 		if (username!=null && password!=null) {
 			calService = new CalendarService("gqu.net-cal-service");
 			try {
@@ -42,6 +45,12 @@ public class ScriptCalendar {
 		} else if (token!=null) {
 			calService = new CalendarService("gqu.net-cal-service");
 			calService.setAuthSubToken(token);
+		}
+	}
+	
+	private void isLogin() {
+		if (calService == null) {
+			throw new HttpStatusExceptionImpl(412, "checkLogin() first");
 		}
 	}
 	
@@ -71,8 +80,8 @@ public class ScriptCalendar {
 	
 	
 	public CalendarEntry[] getAllCalendarEntries() {
-		checkLogin();
 		try {
+			isLogin();
 			URL feedUrl = new URL("https://www.google.com/calendar/feeds/default/allcalendars/full");
 			CalendarFeed resultFeed = calService.getFeed(feedUrl, CalendarFeed.class);
 			return resultFeed.getEntries().toArray(new CalendarEntry[resultFeed.getEntries().size()]);
@@ -84,8 +93,8 @@ public class ScriptCalendar {
 	}
 	
 	public CalendarEntry[] getOwnedCalendarEntries() {
-		checkLogin();
 		try {
+			isLogin();
 			URL feedUrl = new URL("https://www.google.com/calendar/feeds/default/owncalendars/full");
 			CalendarFeed resultFeed = calService.getFeed(feedUrl, CalendarFeed.class);
 			return resultFeed.getEntries().toArray(new CalendarEntry[resultFeed.getEntries().size()]);
@@ -98,6 +107,8 @@ public class ScriptCalendar {
 	
 	
 	public CalendarEntry createCalendarEntry(String title, String summary, String timezone) {
+		isLogin();
+
 		CalendarEntry calendar = new CalendarEntry();
 		calendar.setTitle(new PlainTextConstruct(title));
 		calendar.setSummary(new PlainTextConstruct(summary));
@@ -138,17 +149,26 @@ public class ScriptCalendar {
 	
 	
 	public void createEvent(String title, String content, String start, String end) {
+		
 		CalendarEventEntry myEntry = new CalendarEventEntry();
 		myEntry.setTitle(new PlainTextConstruct(title));
 		myEntry.setContent(new PlainTextConstruct(content));
-		if (start!=null && end!=null) {
-			DateTime startTime = DateTime.parseDateTime(start);
-			DateTime endTime = DateTime.parseDateTime(end);
-			When eventTimes = new When();
-			eventTimes.setStartTime(startTime);
-			eventTimes.setEndTime(endTime);
-			myEntry.addTime(eventTimes);
+		if (start!=null) {
+			try {
+				When eventTimes = new When();
+				DateTime startTime = new DateTime(dateFormat.parse(start), TimeZone.getDefault());
+				
+				eventTimes.setStartTime(startTime);
+				if (end!=null) {
+					DateTime endTime = new DateTime(dateFormat.parse(end));
+					eventTimes.setEndTime(endTime);
+				}
+				myEntry.addTime(eventTimes);
+			} catch (ParseException e) {
+			}
 		}
+		
+		
 		try {
 			//URL postUrl = new URL("https://www.google.com/calendar/feeds/" + username + "/private/full");
 			URL postUrl = new URL("https://www.google.com/calendar/feeds/default/private/full");
@@ -163,16 +183,18 @@ public class ScriptCalendar {
 	}
 	
 	public static void main(String[] args) {
-		
 		ScriptCalendar sc = new ScriptCalendar("liuhann@gmail.com", "Alfresco123");
+		sc.checkLogin();
+		sc.createEvent("今天去吃饭了", "xxxxx", "2010-12-05 16:00:00",null);
 
-		sc.createEvent("今天去吃饭", "xxxxx", "2010-12-01T00:00", "2010-12-01T00:00");
-
-		CalendarEventEntry[] events = sc.getEvent("2009-12-01", "2010-12-01");
 		
+		//CalendarEventEntry[] events = sc.getEvent("2008-12-01T00:00:00-18:00", "2010-12-05T00:00:00-18:00");
+		
+		/*
 		for (int i = 0; i < events.length; i++) {
 			System.out.println(events[i].getTimes().get(0).getValueString() + "  " + events[i].getTitle());
 		}
+		*/
 	}
 	
 	

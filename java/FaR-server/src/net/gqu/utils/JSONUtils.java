@@ -179,12 +179,27 @@ public class JSONUtils
         throws JSONException
     {
         // TODO deal with json array stirngs
-        
         // Parse JSON string
         JSONObject jsonObject = new JSONObject(jsonString);
         
         // Create native object 
         return toObject(jsonObject);
+    }
+    
+    public static NativeObject[] toObjectArray(String jsonString) {
+    	
+    	
+		try {
+			JSONArray jsonArray = new JSONArray(jsonString);
+			NativeObject[] result = new NativeObject[jsonArray.length()];
+			
+			for (int i = 0; i < jsonArray.length(); i++) {
+				result[i] = toObject(jsonArray.getJSONObject(i));
+			}
+			return result;
+		} catch (JSONException e) {
+		}
+		return new NativeObject[0];
     }
     
     /**
