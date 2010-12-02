@@ -5,9 +5,10 @@ var today = new Date();
 
 dateStr = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
 
-
+var isToday = true;
 if (pathArray.length==2 && pathArray[1]!="") {
 	dateStr = pathArray[1];
+	isToday = false;
 }
 
 
@@ -20,5 +21,9 @@ if (doc==null) {
 	db.getCollection("worktimes").insert(doc);
 }
 
+var result = new Object();
 
-doc.data;
+result.data = doc.data;
+result.isToday = isToday;
+
+result;

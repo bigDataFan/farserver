@@ -9,6 +9,7 @@
 	margin:0 auto;
 	padding:20px;
 	width:500px;
+	display: none;
 }
 
 .extension_wrapper h1 {
