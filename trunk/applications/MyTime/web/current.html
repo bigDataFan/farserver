@@ -23,8 +23,15 @@ $(document).ready(function(){
 	$.getJSON("../service/recents.gs", null, 
 			function(data) {
 				for(var i=0; i<data.length; i++) {
-					$('ul.recent_view').append('<li><a href="#">' + data[i] + "</a></li>");
-				}		
+					$('ul.recent_view').append('<li><a date="' + data[i] + '" href="#">' + data[i] + "</a></li>");
+				}
+
+				$('ul.recent_view li a').click(function(){
+					$.get("../service/data.gs/" + $(this).attr("date"), null,
+					function(data) {
+						uiDraw(data);
+					})
+				});
 			}
 	);
 });
@@ -48,10 +55,9 @@ function saveItemToStore(content) {
 
 <div class="widget">
 	
-		<div class="item_title">最近的时间记录<br><span>10次</span></div>
+		<div class="item_title">最近的时间记录<span>10次</span></div>
 
 		<ul class="recent_view">
-			<li><a href="http://www.iplaysoft.com/winmend-folder-hidden.html">WinMend Folder Hidden 支持U盘/移动硬盘的免费文件夹隐藏工具</a><span>热度 13153 ℃&nbsp;&nbsp;</span></li>
 		</ul>
 		</div>
 				
