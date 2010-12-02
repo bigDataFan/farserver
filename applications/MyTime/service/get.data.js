@@ -7,8 +7,12 @@ dateStr = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate
 
 var isToday = true;
 if (pathArray.length==2 && pathArray[1]!="") {
-	dateStr = pathArray[1];
-	isToday = false;
+	if (dateStr==pathArray[1]) {
+		//ok is today
+	} else {
+		dateStr = pathArray[1];
+		isToday = false;
+	}
 }
 
 

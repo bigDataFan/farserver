@@ -9,7 +9,7 @@ function uiDraw(content) {
 	uidiv_global_popup = $('#gq_extension_wrapper');
 	
 	if (uidiv_global_popup.length!=0) {
-		uidiv_global_popup.remove();
+		closeUi();
 	}
 	
 	/*
