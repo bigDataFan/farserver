@@ -1,8 +1,11 @@
 var uidiv_global_popup = null;
 var CHART_ID = "gq_extension_timer_chart";
 
+var loadedData;
+
+
 function uiDraw(content) {
-	
+	loadedData = content;
 	uidiv_global_popup = $('#gq_extension_wrapper');
 	
 	if (uidiv_global_popup.length!=0) {
@@ -21,9 +24,6 @@ function uiDraw(content) {
 	uidiv_global_popup = $('<div id="gq_extension_wrapper" class="extension_wrapper"></div>');
 	$('body').append(uidiv_global_popup);
 	
-	
-	
-	uidiv_global_popup.css("padding","20px");
 	
 	uidiv_global_popup.append('<div class="close"><a class="close" href="#">&nbsp;</a></div>');
 	//draw  content
@@ -45,7 +45,7 @@ function uiDraw(content) {
 			+ '<h4>Total<a>00:00</a></h4>'
 			+ '</div>');   
 	
-	TimeStore.Init(content);
+	TimeStore.Init(loadedData.data);
 	
 	uidiv_global_popup.find('h1 a').css("padding-top","1px");
 	uidiv_global_popup.find('h1 a').css("padding-left","10px");
@@ -141,7 +141,7 @@ function cleanUi() {
 function addUiItem(item) {
 	
 	var dura = item.dura;
-	if (item.running) {
+	if (item.running && loadedData.isToday) {
 		dura = item.dura + (new Date().getTime() - item.begins);
 	}
 	
@@ -152,15 +152,18 @@ function addUiItem(item) {
 			+ formatDate(dura) + '</a></h4></div>');
 	uidiv_global_popup.find('div.list').append(entryDiv);
 	
-	if (item.running) {
+	if (item.running && loadedData.isToday) {
 		entryDiv.css("padding", "25px");
 		entryDiv.css("margin", "0px -30px");
 	} else {
 		entryDiv.css("margin", "0px");
 		entryDiv.css("padding", "8px");
 	}
-	entryDiv.find('span.config').hide();
 	
+	
+	entryDiv.find('span.config').hide();
+
+	if (!loadedData.isToday) return;
 	
 	entryDiv.find('span.config').click(
 		function(){ 
