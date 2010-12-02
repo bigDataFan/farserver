@@ -10,6 +10,9 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
+import com.google.gdata.client.GoogleService;
+import com.google.gdata.client.calendar.CalendarService;
+import com.google.gdata.util.AuthenticationException;
 import com.mongodb.DBObject;
 
 import net.gqu.application.ApplicationService;
@@ -68,6 +71,19 @@ public class WebRestService {
 		return result;
 	}
 	
+	
+	@RestService(method="POST", uri="/user/googlepwd")
+	public void saveGooglePwd(@RestParam(value="googleuser")String user, @RestParam(value="googlepwd")String pwd) {
+		GoogleService googleService = new CalendarService("gqu-web");
+		try {
+			googleService.setUserCredentials(user, pwd);
+			User duser = userService.getUser(AuthenticationUtil.getCurrentUserName());
+			duser.getAttrs().put(User.ATTR_GOOGLE_USER, user);
+			duser.getAttrs().put(User.ATTR_GOOGLE_PWD, pwd);
+			userService.updateUser(duser);
+		} catch (AuthenticationException e) {
+		}
+	}
 
 
 	@RestService(method="POST", uri="/admin/role/list")

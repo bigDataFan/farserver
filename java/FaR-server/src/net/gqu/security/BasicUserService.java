@@ -10,6 +10,7 @@ import org.bson.types.ObjectId;
 import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.mongodb.MongoDBProvider;
 
+import com.google.gdata.client.http.AuthSubUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -22,6 +23,7 @@ public class BasicUserService {
 	
 	private static final String KEY_ROLES = "roles";
 	private static final String COLL_USERS = "users";
+
 	private Map<String, User> usersMap = new HashMap<String, User>();
 	private Map<String, Role> rolesMap = new HashMap<String, Role>();
 	
@@ -328,6 +330,7 @@ public class BasicUserService {
 		db.getCollection(COLL_USERS).update(new BasicDBObject("name", name), inc);
 	}
 	
+	
 	public void incLogCount(String name) {
 		DB db = dbProvider.getMainDB();
 		BasicDBObject inc = new BasicDBObject();
@@ -336,4 +339,16 @@ public class BasicUserService {
 		inc.put("$inc", zz);
 		db.getCollection(COLL_USERS).update(new BasicDBObject("name", name), inc);
 	}
+	
+	
+	public String getUserCalToken(String server) {
+		String requestUrl =
+			  AuthSubUtil.getRequestUrl(server + "/service/user/retrievetoken",
+			                            "https://www.google.com/calendar/feeds/",
+			                            false,
+			                            false);
+		return requestUrl;
+	}
+	
+	
 }

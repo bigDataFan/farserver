@@ -297,6 +297,8 @@ public class GQServlet extends HttpServlet {
 		
 		params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
 		params.put("owner", new ScriptUser(AuthenticationUtil.getContextUser(),userService));
+		
+		params.put("google", scriptObjectGenerator.createGoogleServiceObject());
 		return params;
 	}
 	

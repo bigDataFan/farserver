@@ -121,8 +121,11 @@ public class RestServiceServlet extends HttpServlet {
 			
 			
 			Object result = handler.execute(args);
-			if (result==null) return;
-			render(response, result);
+			if (result==null) {
+				response.sendRedirect(userService.getMainPage());
+			} else {
+				render(response, result);
+			}
 		} catch (HttpStatusExceptionImpl e) {
 			if (e.getCode()==401) {
 				response.sendRedirect(userService.getLoginPage());
