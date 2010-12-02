@@ -10,7 +10,7 @@ TimeStore.Init = function(content) {
 	this._items = [];
 	cleanUi();
 	if (!this.isLogon) {
-		TimeStore._items = content;
+		TimeStore._items = JSON.parse(content);
 		var total = 0;
 		for(var i=0;i<TimeStore._items.length; i++) {
               addUiItem(TimeStore._items[i]);
