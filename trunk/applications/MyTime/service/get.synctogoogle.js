@@ -1,6 +1,10 @@
 google.calendar.checkLogin();
 
-var cur = db.getCollection("worktimes").find({"sync": null});
+var today = new Date();
+
+dateStr = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
+
+var cur = db.getCollection("worktimes").find({"sync": null,"dateStr":{"$ne":dateStr}});
 
 while(cur.hasNext()) {
 	var o = cur.next();
@@ -11,8 +15,7 @@ while(cur.hasNext()) {
 		//sync to google calendar
 		var std = new Date(item.start);
 		google.calendar.createEvent(item.desc, "", std.getFullYear()+"-"+(std.getMonth()+1)+"-" + std.getDate()
-				+ " " + std.getHours() + ":" + std.getMinutes() + ":" + std.getSeconds());
-		" yyyy-MM-dd HH:mm:ss";
+				+ " " + std.getHours() + ":" + std.getMinutes() + ":" + std.getSeconds(), null);
 	}
 	o.sync = true;
 	db.getCollection("worktimes").upsert(o);
