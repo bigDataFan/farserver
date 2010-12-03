@@ -9,7 +9,10 @@ function uiDraw(content) {
 	uidiv_global_popup = $('#gq_extension_wrapper');
 	
 	if (uidiv_global_popup.length!=0) {
-		closeUi();
+		uidiv_global_popup.html('');
+	} else {
+		uidiv_global_popup = $('<div id="gq_extension_wrapper" class="extension_wrapper"></div>');
+		$('body').append(uidiv_global_popup);
 	}
 	/*
 	if (uidiv_global_popup.length==0) {
@@ -20,8 +23,6 @@ function uiDraw(content) {
 		return;
 	}
 	*/
-	uidiv_global_popup = $('<div id="gq_extension_wrapper" class="extension_wrapper"></div>');
-	$('body').append(uidiv_global_popup);
 	
 	
 	uidiv_global_popup.append('<div class="close"><a class="close" href="#">&nbsp;</a></div>');
