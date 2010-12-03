@@ -1,4 +1,4 @@
-var cursor = db.getCollection("worktimes").find({}).limit(10);
+var cursor = db.getCollection("worktimes").find({}).sort({"dateStr":-1}).limit(10);
 
 var result = new Array();
 while (cursor.hasNext()) {
