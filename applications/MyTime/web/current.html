@@ -17,8 +17,15 @@ $(document).ready(function(){
 	var item = $.getJSON("../service/data.gs/", null, 
 			function(data) {
 				uiDraw(data);
-			});
+	});
 
+	$('ul.recent_view li a').click(function(){
+		$.getJSON("../service/data.gs/" + $(this).attr("date"), null,
+		function(data) {
+			uiDraw(data);
+		})
+	});
+	
 
 	$.getJSON("../service/recents.gs", null, 
 			function(data) {
@@ -35,12 +42,7 @@ $(document).ready(function(){
 			}
 	);
 
-	$('ul.recent_view li a').click(function(){
-		$.getJSON("../service/data.gs/" + $(this).attr("date"), null,
-		function(data) {
-			uiDraw(data);
-		})
-	});
+
 
 	
 });
