@@ -242,6 +242,7 @@ function formatDate(mill) {
 }
 
 function formatedToMill(formated) {
+	if (formated==null) return;
 	var sr = formated.split(":");
 	return parseInt(sr[0])*60*60*1000 + parseInt(sr[1].charAt(0)=='0'?sr[1].charAt(1):sr[1])*60*1000;
 }
