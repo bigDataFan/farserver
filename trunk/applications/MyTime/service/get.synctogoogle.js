@@ -4,7 +4,7 @@ var cur = db.getCollection("worktimes").find({"sync": null});
 
 while(cur.hasNext()) {
 	var o = cur.next();
-	var evarray = evalJsonArray(o.data);
+	var evarray = utils.evalJsonArray(o.data);
 	
 	for(var i=0; i<evarray.length; i++) {
 		var item = evarray[i];
