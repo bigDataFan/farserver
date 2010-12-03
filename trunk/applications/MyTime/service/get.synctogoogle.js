@@ -4,7 +4,7 @@ var today = new Date();
 
 dateStr = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
 
-var cur = db.getCollection("worktimes").find({"sync": null,"dateStr":{"$ne":dateStr}});
+var cur = db.getCollection("worktimes").find({"sync": {"$ne":true},"dateStr":{"$ne":dateStr}});
 
 while(cur.hasNext()) {
 	var o = cur.next();
