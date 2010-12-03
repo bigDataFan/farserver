@@ -11,7 +11,6 @@ function uiDraw(content) {
 	if (uidiv_global_popup.length!=0) {
 		closeUi();
 	}
-	
 	/*
 	if (uidiv_global_popup.length==0) {
 		var gqwrapdiv = $('<div id="gq_extension_wrapper" class="extension_wrapper"></div>');
@@ -141,18 +140,20 @@ function cleanUi() {
 function addUiItem(item) {
 	
 	var dura = item.dura;
-	if (item.running && loadedData.isToday) {
+	
+	var showRunning = item.running && loadedData.isToday;
+	if (showRunning) {
 		dura = item.dura + (new Date().getTime() - item.begins);
 	}
 	
-	var entryDiv = $('<div id="' + item.start + '" class="entry ' + (item.running?"running":"normal") + '"><h4><b>'
+	var entryDiv = $('<div id="' + item.start + '" class="entry ' + (showRunning?"running":"normal") + '"><h4><b>'
 			+ item.desc + '</b> <span class="config">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>' 
 			//+ '<small>' + new DateFormat(new Date(item.start)).format('hh:mi')  + '</small>'
 			+ '<a class="rs" href="#">'
 			+ formatDate(dura) + '</a></h4></div>');
 	uidiv_global_popup.find('div.list').append(entryDiv);
 	
-	if (item.running && loadedData.isToday) {
+	if (showRunning) {
 		entryDiv.css("padding", "25px");
 		entryDiv.css("margin", "0px -30px");
 	} else {
@@ -160,11 +161,11 @@ function addUiItem(item) {
 		entryDiv.css("padding", "8px");
 	}
 	
-	
 	entryDiv.find('span.config').hide();
 
 	if (!loadedData.isToday) return;
-	
+
+	//add controls for today items
 	entryDiv.find('span.config').click(
 		function(){ 
 			showEditBox(entryDiv);
