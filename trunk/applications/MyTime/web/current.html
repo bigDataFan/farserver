@@ -19,13 +19,14 @@ $(document).ready(function(){
 				uiDraw(data);
 	});
 
+	/*
 	$('ul.recent_view li a').click(function(){
 		$.getJSON("../service/data.gs/" + $(this).attr("date"), null,
 		function(data) {
 			uiDraw(data);
 		})
 	});
-	
+	*/
 
 	$.getJSON("../service/recents.gs", null, 
 			function(data) {
@@ -69,7 +70,7 @@ function saveItemToStore(content) {
 		<div class="item_title">最近的时间记录<span>10次</span></div>
 
 		<ul class="recent_view">
-			<li><a date="" href="#">今日</a></li>
+			<!-- <li><a date="" href="#">今日</a></li>  -->
 		</ul>
 		</div>
 				
