@@ -3,6 +3,27 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 	
+	<bean id="repository-properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+		<property name="locations">
+			<list>
+				<value>classpath:farserver.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="loggingService" class="net.gqu.logging.LoggingService">
+		<property name="dbProvider" ref="dbProvider"></property>
+		<property name="level">
+			<value>${logger.level}</value>
+		</property>
+		<property name="max">
+			<value>${logger.maxsize}</value>
+		</property>
+	</bean>
+	
 	<bean id="dbProvider" class="net.gqu.mongodb.MongoDBProvider" init-method="init">
 		<property name="ip">
 			<value>${mongodb.ip}</value>
@@ -63,7 +84,7 @@
 		</property>
 	</bean>
 	
-	<bean id="script.object.generator" class="net.gqu.jscript.root.ScriptObjectGenerator">
+	<bean id="script.object.generator" class="net.gqu.webscript.object.ScriptObjectGenerator">
 		<property name="userService" ref="userService"></property>
 	</bean>
 	
@@ -80,22 +101,11 @@
 		<property name="injectedServices">
 			<list>
 				<ref bean="rest.services"/>
-				<ref bean="global.applicationService"/>
 			</list>
 		</property>
 	</bean>
 
 
-	<bean id="repository-properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="ignoreUnresolvablePlaceholders">
-			<value>true</value>
-		</property>
-		<property name="locations">
-			<list>
-				<value>classpath:farserver.properties</value>
-			</list>
-		</property>
-	</bean>
 	
 	<!-- 
 	<bean name="image.transformer.exe" class="net.gqu.utils.RuntimeExec">
