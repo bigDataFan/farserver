@@ -1,15 +1,15 @@
-package net.gqu.jscript.root;
+package net.gqu.webscript.object;
 
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.gqu.application.InstalledApplication;
-import net.gqu.jscript.root.google.ScriptCalendar;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
 import net.gqu.security.User;
 import net.gqu.webscript.GQServlet.GQRequest;
+import net.gqu.webscript.object.google.ScriptCalendar;
 
 import org.mozilla.javascript.NativeObject;
 

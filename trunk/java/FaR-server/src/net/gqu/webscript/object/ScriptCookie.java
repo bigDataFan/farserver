@@ -1,4 +1,4 @@
-package net.gqu.jscript.root;
+package net.gqu.webscript.object;
 
 import javax.servlet.http.Cookie;
 

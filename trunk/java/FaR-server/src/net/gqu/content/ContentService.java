@@ -1,6 +1,6 @@
 package net.gqu.content;
 
-import net.gqu.jscript.root.ContentFile;
+import net.gqu.webscript.object.ContentFile;
 
 public interface ContentService {
 	

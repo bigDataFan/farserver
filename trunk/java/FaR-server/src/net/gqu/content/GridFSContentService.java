@@ -1,9 +1,9 @@
 package net.gqu.content;
 
-import net.gqu.jscript.root.ContentFile;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
+import net.gqu.webscript.object.ContentFile;
 
 import org.bson.types.ObjectId;
 

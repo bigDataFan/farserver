@@ -1,4 +1,4 @@
-package net.gqu.jscript.root;
+package net.gqu.webscript.object;
 
 import java.util.ArrayList;
 import java.util.List;
