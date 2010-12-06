@@ -279,7 +279,7 @@ function getDirs(folder, getsub) {
 
 function getParams() {
 	var z = new Object();
-	z.uplMaxSize = "10M";
+	z.uplMaxSize = owner.getFileLimit()/(1024*1024) + "M";
 	z.archives = [];
 	z.extract = z.archives;
 	z.url = "/service/upload";	
