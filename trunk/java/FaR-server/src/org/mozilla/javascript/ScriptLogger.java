@@ -14,7 +14,6 @@ import com.mongodb.DBCollection;
 
 public class ScriptLogger {
 	
-	
 	private int level;
 	private DBCollection collection;
 	
