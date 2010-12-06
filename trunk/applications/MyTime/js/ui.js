@@ -88,7 +88,6 @@ function uiDraw(content) {
 			}
 		}
 	);
-		
 	
 	
 	uidiv_global_popup.find('a.run').click(
