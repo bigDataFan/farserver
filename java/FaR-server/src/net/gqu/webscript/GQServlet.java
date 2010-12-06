@@ -27,6 +27,7 @@ import net.gqu.content.ContentService;
 import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
 import net.gqu.freemarker.RepositoryTemplateLoader;
+import net.gqu.logging.LoggingService;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
@@ -56,6 +57,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.ScriptLogger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -87,12 +89,16 @@ public class GQServlet extends HttpServlet {
 	public static final String HTML_TYPE = "text/html; charset=UTF-8";
 	public static final String FTL_END_FIX = ".ftl";
 	
+	
+	public static ThreadLocal<GQRequest> threadlocalRequest = new ThreadLocal<GQRequest>();
+	
 	private ApplicationService applicationService;
 	private RepositoryService repositoryService;
 	private ScriptExecService scriptExecService;
 	private EhCacheService cacheService;
 	private MongoDBProvider dbProvider;
 	private BasicUserService userService;
+	private LoggingService loggingService;
 	private ScriptObjectGenerator scriptObjectGenerator;
 	
 	private Configuration freemarkerConfiguration;
@@ -132,6 +138,7 @@ public class GQServlet extends HttpServlet {
     	userService = (BasicUserService) ctx.getBean("userService");
     	contentService = (ContentService) ctx.getBean("contentService");
     	scriptObjectGenerator = (ScriptObjectGenerator) ctx.getBean("script.object.generator");
+    	loggingService = (LoggingService) ctx.getBean("loggingService");
     	
     	freemarkerConfiguration = new Configuration();
 		freemarkerConfiguration.setObjectWrapper(new DefaultObjectWrapper());
@@ -150,6 +157,9 @@ public class GQServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			GQRequest gqRequest = new GQRequest(request);
+			
+			threadlocalRequest.set(gqRequest);
+			
 			AuthenticationUtil.setContextUser(gqRequest.getInstalledApplication().getUser());
 			
 			if (gqRequest.isScript()) {
@@ -224,10 +234,7 @@ public class GQServlet extends HttpServlet {
 	}
 
 	private void handleException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
-		if (e instanceof TooManyInstructionException) {
-			logger.debug("TooManyInstructionException " );
-			return;
-		} else if (e instanceof HttpStatusExceptionImpl) {
+		if (e instanceof HttpStatusExceptionImpl) {
 			if (((HttpStatusExceptionImpl) e).getCode() == 307) {
 				response.sendRedirect(((HttpStatusExceptionImpl) e).getDescription());
 			} else {
@@ -281,6 +288,9 @@ public class GQServlet extends HttpServlet {
 
 	protected Map<String, Object> createScriptParameters(GQRequest gqrequest,HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<String, Object>(32, 1.0f);
+		
+		loggingService.getLogger().info("abc");
+		
 		// add web script parameters
 		ScriptRequest scriptRequest = new ScriptRequest(gqrequest.getRequest());
 		scriptRequest.setRemainPath(gqrequest.getTailPath());
@@ -300,6 +310,7 @@ public class GQServlet extends HttpServlet {
 		params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
 		params.put("owner", new ScriptUser(AuthenticationUtil.getContextUser(),userService));
 		
+		params.put("logger", loggingService.getScriptLogger());
 		params.put("google", scriptObjectGenerator.createGoogleServiceObject(gqrequest.getInstalledApplication().getUser()));
 		return params;
 	}
@@ -498,9 +509,13 @@ public class GQServlet extends HttpServlet {
        
     }
     
-    
-    
-    public class GQRequest {
+    public static GQRequest getThreadlocalRequest() {
+		return threadlocalRequest.get();
+	}
+
+
+
+	public class GQRequest {
     	private HttpServletRequest request;
     	private ApprovedApplication approvedApplication;
     	private String[] pathList;
@@ -514,7 +529,6 @@ public class GQServlet extends HttpServlet {
     	private User contextUser;
     	private Role role;
     	
-		
 		public GQRequest(HttpServletRequest request) {
 			super();
 			this.request = request;
