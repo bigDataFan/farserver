@@ -33,12 +33,11 @@ public class GloabalRestApplicationService {
 			@RestParam(value="type")String type,
 			@RestParam(value="details")String details,
 			@RestParam(value="categories")String categories,
-			@RestParam(value="start")String start,
-			@RestParam(value="user")String user
+			@RestParam(value="start")String start
 	) {
 		if (AuthenticationUtil.isCurrentLogon()) {
 			Application app = applicationService.createApplication(name, alias, description, repository, start,
-					Integer.parseInt(stage), Integer.parseInt(type), details, categories.split(" "), user);
+					Integer.parseInt(stage), Integer.parseInt(type), details, categories.split(" "), AuthenticationUtil.getCurrentUser());
 			return app.getMaps();
 		}
 		return null;
