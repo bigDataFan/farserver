@@ -73,7 +73,7 @@ public class ScriptExecService {
 		// check that rhino script engine is available
 		Context cx = Context.enter();
 		try {
-			cx.setInstructionObserverThreshold(CounteredContextFactory.COUNTER_INTERVAL);
+			//cx.setInstructionObserverThreshold(CounteredContextFactory.COUNTER_INTERVAL);
 			// Create a thread-specific scope from one of the shared scopes.
 			// See http://www.mozilla.org/rhino/scopes.html
 			cx.setWrapFactory(wrapFactory);
@@ -82,7 +82,7 @@ public class ScriptExecService {
 			Scriptable scope = cx.newObject(sharedScope);
 			scope.setPrototype(sharedScope);
 			scope.setParentScope(null);
-
+			
 			// there's always a model, if only to hold the util objects
 			if (model == null) {
 				model = new HashMap<String, Object>();
