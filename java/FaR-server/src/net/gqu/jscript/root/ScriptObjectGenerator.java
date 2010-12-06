@@ -24,13 +24,9 @@ public class ScriptObjectGenerator {
 		return userService;
 	}
 
-
-
 	public void setUserService(BasicUserService userService) {
 		this.userService = userService;
 	}
-
-
 
 	public NativeObject createRequestParams(HttpServletRequest request, String remains) {
 
@@ -41,24 +37,22 @@ public class ScriptObjectGenerator {
 			String name = (String) names.nextElement();
 			object.put(name, object,  request.getParameter(name));
 		}
-		
 		return object;
 	}
 	
 	
 	
-	public NativeObject createGoogleServiceObject() {
+	public NativeObject createGoogleServiceObject(String username) {
 		NativeObject object = new NativeObject();
-		User user = userService.getUser(AuthenticationUtil.getCurrentUserName());
+		User user = userService.getUser(username);
 		
-		if (!user.getAttr(User.ATTR_GOOGLE_CAL_TOKEN).equals("")) {
-			object.put("calendar", object, new ScriptCalendar(user.getAttr(User.ATTR_GOOGLE_CAL_TOKEN)));
-		} else if (!user.getAttr(User.ATTR_GOOGLE_USER).equals("") && !user.getAttr(User.ATTR_GOOGLE_PWD).equals("")) {
+		object.put("online", object, false);
+		if (!user.getAttr(User.ATTR_GOOGLE_USER).equals("") && !user.getAttr(User.ATTR_GOOGLE_PWD).equals("")) {
+			object.put("online", object, true);
 			object.put("calendar", object, new ScriptCalendar(user.getAttr(User.ATTR_GOOGLE_USER),user.getAttr(User.ATTR_GOOGLE_PWD)));
-		} else {
-			object.put("calendar", object, new ScriptCalendar());
-		}
-		
+		} else if (!user.getAttr(User.ATTR_GOOGLE_CAL_TOKEN).equals("")) {
+			object.put("calendar", object, new ScriptCalendar(user.getAttr(User.ATTR_GOOGLE_CAL_TOKEN)));
+		} 
 		
 		return object;
 	}

@@ -141,7 +141,11 @@ public class JSONUtils
     	}
     	if (object instanceof Collection) {
 			return new JSONArray((Collection)object).toString();
-		}
+		} 
+    	
+    	if (object instanceof Number) {
+			return ((Number) object).toString();
+		} 
     	
     	if (object instanceof String) {
     		return (String)object;
