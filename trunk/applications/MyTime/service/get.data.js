@@ -30,4 +30,7 @@ var result = new Object();
 result.data = doc.data;
 result.isToday = isToday;
 
+
+result.google = google.online;
+
 result;
