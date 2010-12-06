@@ -6,7 +6,6 @@ import net.gqu.rest.RestParam;
 import net.gqu.rest.RestService;
 import net.gqu.security.AuthenticationUtil;
 
-
 public class GloabalRestApplicationService {
 
 	private GlobalApplicationService applicationService;
