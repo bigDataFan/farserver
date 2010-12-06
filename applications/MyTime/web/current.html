@@ -60,6 +60,22 @@
 $(document).ready(function(){
 	var item = $.getJSON("../service/data.gs/", null, 
 			function(data) {
+				if (data.google) {
+					$('ul.syncs').append('<li><a href="#">同步到Google日历</a></li>');
+					
+					$('ul.syncs li a').click(function(){
+						var alink = $(this); 
+						alink.html('正在同步到您的google日历....');
+						$.get('../service/synctogoogle.gs',null, function(data) {
+							alink.html('同步已完成,共同步 '+ data + "条记录");	
+						});
+					});
+					
+				} else {
+					$('ul.syncs').append('<li><a href="/manage/index.jsp">设置Google同步账号以进行数据同步</a></li>');
+				}
+
+				
 				uiDraw(data);
 	});
 
@@ -118,7 +134,7 @@ function saveItemToStore(content) {
 		</ul>
 		
 		<ul class="syncs">
-			<li><a href="../service/synctogoogle.gs">同步到Google日历</a></li>
+			
 		</ul>
 		</div>
 				
