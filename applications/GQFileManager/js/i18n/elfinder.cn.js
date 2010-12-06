@@ -1,6 +1,6 @@
 (function($) {
 if (elFinder && elFinder.prototype.options && elFinder.prototype.options.i18n) 
-	elFinder.prototype.options.i18n.ru = {
+	elFinder.prototype.options.i18n.cn = {
 		/* errors */
 		'Root directory does not exists'       : 'Корневая директория не существует',
 		'Unable to connect to backend'         : 'Не удалось соединиться с сервером',
