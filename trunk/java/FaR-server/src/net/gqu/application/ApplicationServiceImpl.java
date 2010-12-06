@@ -23,10 +23,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 public class ApplicationServiceImpl implements ApplicationService {
-
 	
 	public static final String INSTALLED_COLL_NAME = "installed";
-	private String mainServer = null; //"http://127.0.0.1:8080/GQMain/";
+	private String mainServer = null; ;
 	private MongoDBProvider dbProvider;
 	private BasicUserService userService;
 	
@@ -54,7 +53,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 	
 	@Override
 	public ApprovedApplication getApplication(String id) {
-		
+		if (applicationMap.containsKey(id)) {
+			return applicationMap.get(id);
+		}
 		if (applicationMap.get(id)==null) {
 			HttpResponse response = HttpLoader.load("http://www.g-qu.net/service/global/application/get?name=" + id);
 			if (response!=null && response.getStatusLine().getStatusCode()==200) {
@@ -63,9 +64,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 					ApprovedApplication application = new ApprovedApplication(JSONUtils.jsonObjectToMap(json));
 					applicationMap.put(id, application);
 				} catch (JSONException e) {
-					e.printStackTrace();
+					applicationMap.put(id, null);
 				} catch (IOException e) {
 					e.printStackTrace();
+					applicationMap.put(id, null);
 				}
 			}
 		}
