@@ -62,7 +62,7 @@ public class GloabalRestApplicationService {
 		return null;
 	}
 	
-	@RestService(method="GET", uri="/application/get")
+	@RestService(method="GET", uri="/global/application/get")
 	public Map<String, Object> getApp(@RestParam(value="name")String name) {
 		return applicationService.getApplication(name);
 	}
