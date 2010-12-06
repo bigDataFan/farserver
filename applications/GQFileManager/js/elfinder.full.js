@@ -649,7 +649,7 @@
 		/* connector url. Required! */
 		url            : '',
 		/* interface language */
-		lang           : 'en',
+		lang           : 'ru',
 		/* additional css class for filemanager container */
 		cssClass       : '',
 		/* characters number to wrap file name in icons view. set to 0 to disable wrap */
