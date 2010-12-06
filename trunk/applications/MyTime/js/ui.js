@@ -31,7 +31,7 @@ function uiDraw(content) {
 
 	uidiv_global_popup.append('<div class="list"></div>');
 	uidiv_global_popup.append('<div class="graph" id="' + CHART_ID + '"></div>');
-		
+	
 	uidiv_global_popup.append('<div class="additem" style="display: none">' 
 			+ '<input class="inputarea"></input><a class="run" href="#">&nbsp;</a>'
 			+ '<a class="cancel" href="#">&nbsp;</a>'
@@ -83,10 +83,14 @@ function uiDraw(content) {
 	
 	uidiv_global_popup.find('a.new').click(
 		function() {
-			showEditBox(null);
+			if (loadedData.isToday) {
+				showEditBox(null);
+			}
 		}
 	);
-
+		
+	
+	
 	uidiv_global_popup.find('a.run').click(
 			function() {
 				saveEditBox();
