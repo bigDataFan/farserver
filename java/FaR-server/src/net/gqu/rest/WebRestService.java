@@ -8,13 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bson.types.ObjectId;
-
-import com.google.gdata.client.GoogleService;
-import com.google.gdata.client.calendar.CalendarService;
-import com.google.gdata.util.AuthenticationException;
-import com.mongodb.DBObject;
-
 import net.gqu.application.ApplicationService;
 import net.gqu.application.ApprovedApplication;
 import net.gqu.application.InstalledApplication;
@@ -25,6 +18,12 @@ import net.gqu.security.BasicUserService;
 import net.gqu.security.Role;
 import net.gqu.security.User;
 import net.gqu.utils.GUID;
+
+import org.bson.types.ObjectId;
+
+import com.google.gdata.client.GoogleService;
+import com.google.gdata.client.calendar.CalendarService;
+import com.google.gdata.util.AuthenticationException;
 
 public class WebRestService {
 
