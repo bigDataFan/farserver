@@ -1,4 +1,4 @@
-package net.gqu.jscript.root.google;
+package net.gqu.webscript.object.google;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

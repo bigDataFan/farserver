@@ -1,4 +1,4 @@
-package net.gqu.jscript.root;
+package net.gqu.webscript.object;
 
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
