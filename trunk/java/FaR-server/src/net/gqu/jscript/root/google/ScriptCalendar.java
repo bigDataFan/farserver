@@ -7,8 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import sun.util.resources.TimeZoneNames_zh_CN;
-
 import net.gqu.exception.HttpStatusExceptionImpl;
 
 import com.google.gdata.client.calendar.CalendarQuery;

@@ -71,7 +71,9 @@ public class LoginServlet extends HttpServlet {
         		cookieCache.put(element);
         		AuthenticationUtil.setCurrentUser(username);
         		
-        		if (request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER)!=null) {
+        		if (AuthenticationUtil.isCurrentUserAdmin()) {
+        			response.sendRedirect("/manage/admin.html");
+        		} else if (request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER)!=null) {
         			String url = (String)request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER);
         			request.getSession().removeAttribute(AuthenticationFilter.LOGIN_REFERER);
         			response.sendRedirect(url);
