@@ -35,6 +35,11 @@ public class LoggingService {
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	
+	public void cleanLog() {
+		dbProvider.getMainDB().getCollection(SCRIPT_LOGS).drop();
+		dbProvider.getMainDB().getCollection(SYSTEM_LOGS).drop();
+	}
 
 	public void init() {
 		if (!dbProvider.getMainDB().collectionExists(SCRIPT_LOGS)) {
@@ -56,7 +61,6 @@ public class LoggingService {
 		
 		
 		scriptLogger = new ScriptLogger(scriptLogColls, level);
-		logger = new Logger();
 	}
 	
 	
