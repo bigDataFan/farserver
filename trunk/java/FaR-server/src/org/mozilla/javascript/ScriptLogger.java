@@ -4,46 +4,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.gqu.logging.LoggingService;
+import net.gqu.logging.Logger;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.webscript.GQServlet;
 import net.gqu.webscript.GQServlet.GQRequest;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
-public class ScriptLogger {
-	
-	private int level;
-	private DBCollection collection;
+public class ScriptLogger  extends Logger {
 	
 	public ScriptLogger(DBCollection collection, int level) {
 		this.collection = collection;
 		this.level = level;
 	}
 	
-	public void log(String log) {
-		if (level >= LoggingService.BASIC) {
-			save(log, "BASIC");
-		}
-	}
-	public void debug(String debug) {
-		if (level >= LoggingService.DEBUG) {
-			save(debug, "DEBUG");
-		}
-	}
-	public void info(String info) {
-		if (level >= LoggingService.INFO) {
-			save(info, "INFO");
-		}
-	}
-	
-	private void save(String message, String type) {
-		int[] linep = { 0 };
-		String z = Context.getSourcePositionFromStack(linep);
-		Map<String, Object> map = getMap(linep[0], message, type);
-		collection.insert(new BasicDBObject(map));
-	}
 	
 	
 	
@@ -61,6 +35,22 @@ public class ScriptLogger {
 		result.put("time", new Date());
 		result.put("level", level);
 		return result;
+	}
+
+	@Override
+	public String getCurrentLineInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+
+	@Override
+	public Map<String, Object> getMap(String message, String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
