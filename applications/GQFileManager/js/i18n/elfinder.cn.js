@@ -110,6 +110,16 @@ if (elFinder && elFinder.prototype.options && elFinder.prototype.options.i18n)
 		'Select next file' : '选择下一个文件',
 		'Return into previous folder' : '返回到上一个文件夹',
 		'Increase/decrease files selection' : '增加/减少文件选择',
+		'Authors'                       : 'Автори',
+		'Sponsors'  : 'Спонсори',
+		'elFinder: Web file manager'    : 'elFinder: 网络文件管理器',
+		'Version'                       : '版本',
+		'Copyright: Studio 42 LTD'      : '版权所有：Studio 42 LTD',
+		'Donate to support project development' : '捐赠以支持项目开发',
+		'Simple and usefull Content Management System' : '简单易用的网站管理系统',
+		'Support project development and we will place here info about you' : '支持产品开发，我们将在这里发布您的信息',
+		'Contacts us if you need help integrating elFinder in you products' : '如果你想在产品中集成elFinder，请与我们联系',
+		'helpText' : 'elFinder的工作方式类似于文件管理器您的计算机上。 <br />操作使用上的顶栏，上下文菜单上的按钮或键盘快捷方式的文件。移动文件/文件夹，只要将其移动到所需的文件夹图标。如果是文件夹Shift键将被复制。 <br/> <br/> ElFinder支持以下键盘快捷键：'
 		
 	};
 	
