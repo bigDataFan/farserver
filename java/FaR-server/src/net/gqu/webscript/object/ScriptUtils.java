@@ -25,19 +25,4 @@ public class ScriptUtils extends StringUtils {
 		return org.springframework.util.StringUtils.trimArrayElements(srcAry);
 	}
 	
-	
-	
-	
-	
-	public static void main(String[] args) {
-		String[] src = new String[]{"", "dsfd","","fd"};
-		
-		String[] bb = ScriptUtils.getInstance().trimArrayString(src);
-		src = ScriptUtils.getInstance().trimArrayString(src);
-		
-		System.out.println(src.length);
-		
-		
-	}
-	
 }

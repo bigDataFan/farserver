@@ -32,6 +32,16 @@ public class LoggingService {
 	private DBCollection systemLogColls;
 	private MongoDBProvider dbProvider;
 	
+	
+	
+	public void setScriptMax(int scriptMax) {
+		this.scriptMax = scriptMax;
+	}
+
+	public void setSystemMax(int systemMax) {
+		this.systemMax = systemMax;
+	}
+
 	public void setLevel(int level) {
 		this.level = level;
 	}
