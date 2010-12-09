@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.gqu.application.ApprovedApplication;
+import net.gqu.application.RegisteredApplication;
 
 import org.apache.http.HttpResponse;
 
@@ -22,13 +22,13 @@ public class RepositoryServiceImpl implements RepositoryService {
 	}
 
 	@Override
-	public String clean(ApprovedApplication application) {
+	public String clean(RegisteredApplication application) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public LoadResult getRaw(ApprovedApplication application, String path) {
+	public LoadResult getRaw(RegisteredApplication application, String path) {
 		
 		LoadResult lr = new LoadResult();
 		for (Loader loader : loaders) {

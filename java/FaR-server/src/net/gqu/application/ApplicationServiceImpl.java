@@ -28,8 +28,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private String mainServer = null; ;
 	private MongoDBProvider dbProvider;
 	private BasicUserService userService;
+	private String registryLocation;
 	
-	private Map<String, ApprovedApplication> applicationMap = new HashMap<String, ApprovedApplication>();
+	public void setRegistryLocation(String registryLocation) {
+		this.registryLocation = registryLocation;
+	}
+
+	private Map<String, RegisteredApplication> applicationMap = new HashMap<String, RegisteredApplication>();
 	
 	public String getMainServer() {
 		return mainServer;
@@ -52,16 +57,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}	
 	
 	@Override
-	public ApprovedApplication getApplication(String id) {
+	public RegisteredApplication getApplication(String id) {
 		if (applicationMap.containsKey(id)) {
 			return applicationMap.get(id);
 		}
 		if (applicationMap.get(id)==null) {
-			HttpResponse response = HttpLoader.load("http://www.g-qu.net/service/global/application/get?name=" + id);
+			HttpResponse response = HttpLoader.load(registryLocation + id + ".json");
 			if (response!=null && response.getStatusLine().getStatusCode()==200) {
 				try {
 					JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
-					ApprovedApplication application = new ApprovedApplication(JSONUtils.jsonObjectToMap(json));
+					RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
 					applicationMap.put(id, application);
 				} catch (JSONException e) {
 					applicationMap.put(id, null);
@@ -119,7 +124,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 
 	@Override
-	public InstalledApplication install(String user, ApprovedApplication app, String mapping) {
+	public InstalledApplication install(String user, RegisteredApplication app, String mapping) {
 		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
 
 		BasicDBObject basicDBObject = new BasicDBObject();
@@ -142,11 +147,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 
 	@Override
-	public List<ApprovedApplication> getAllInCurrentServer() {
+	public List<RegisteredApplication> getAllInCurrentServer() {
 		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
 		List<String> apps = coll.distinct(APPLICATION);
 		
-		List<ApprovedApplication> result = new ArrayList<ApprovedApplication>();
+		List<RegisteredApplication> result = new ArrayList<RegisteredApplication>();
 		
 		for (String appName : apps) {
 			result.add(getApplication(appName));

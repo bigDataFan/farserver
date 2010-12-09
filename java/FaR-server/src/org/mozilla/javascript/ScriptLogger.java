@@ -11,46 +11,31 @@ import net.gqu.webscript.GQServlet.GQRequest;
 
 import com.mongodb.DBCollection;
 
-public class ScriptLogger  extends Logger {
+public class ScriptLogger extends Logger {
 	
-	public ScriptLogger(DBCollection collection, int level) {
-		this.collection = collection;
-		this.level = level;
+	public ScriptLogger(int level, DBCollection collection) {
+		super(level, collection);
 	}
-	
-	
-	
-	
-	public Map<String, Object> getMap(int line, String message, String level) {
-		Map<String, Object> result = new HashMap<String, Object>();
+
+	@Override
+	public Map<String, Object> getMap(String message, String type) {
+		int[] linep = { 0 };
+		String z = Context.getSourcePositionFromStack(linep);
 		
+		Map<String, Object> result = new HashMap<String, Object>();
 		GQRequest request = GQServlet.getThreadlocalRequest();
 		result.put("current", AuthenticationUtil.getCurrentUser());
-		result.put("owner", request.getInstalledApplication().getUser());
-		result.put("app", request.getInstalledApplication().getApp());
+		if (request.getInstalledApplication()!=null) {
+			result.put("owner", request.getInstalledApplication().getUser());
+			result.put("app", request.getInstalledApplication().getApp());
+		}
 		result.put("script", request.getJsPath());
 		result.put("queryPath", request.getTailPath());
-		result.put("line", line);
+		result.put("line", linep[0]);
 		result.put("message", message);
 		result.put("time", new Date());
 		result.put("level", level);
 		return result;
-	}
-
-	@Override
-	public String getCurrentLineInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
-
-	@Override
-	public Map<String, Object> getMap(String message, String type) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

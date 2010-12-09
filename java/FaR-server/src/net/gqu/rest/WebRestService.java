@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.application.ApprovedApplication;
+import net.gqu.application.RegisteredApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
 import net.gqu.exception.HttpStatusExceptionImpl;
@@ -53,7 +53,7 @@ public class WebRestService {
 			throw new HttpStatusExceptionImpl(401);
 		}
 		
-		ApprovedApplication app = applicationService.getApplication(application);
+		RegisteredApplication app = applicationService.getApplication(application);
 		
 		if (app==null) {
 			throw new HttpStatusExceptionImpl(404);
@@ -214,12 +214,13 @@ public class WebRestService {
 		return installed.keySet();
 	}
 	
+	/*
 	@RestService(method="POST", uri="/admin/application/list")
 	public Map<String, Object> showAllApps() {
 		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
-		List<ApprovedApplication> all = applicationService.getAllInCurrentServer();
+		List<RegisteredApplication> all = applicationService.getAllInCurrentServer();
 		List<Map> jsoned = new ArrayList<Map>();
-		for (ApprovedApplication aa : all) {
+		for (RegisteredApplication aa : all) {
 			Map<String, Object> map = aa.getMaps();
 			map.put("installed", applicationService.getInstallCount(aa.getName()));
 			jsoned.add(map);
@@ -231,6 +232,7 @@ public class WebRestService {
 		return result;
 		
 	}
+	*/
 	
 	@RestService(method="GET", uri="/admin/application/clean")
 	public String cleanAppCache(@RestParam(value="name")String application) {
