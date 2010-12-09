@@ -19,7 +19,10 @@
 		<property name="level">
 			<value>${logger.level}</value>
 		</property>
-		<property name="max">
+		<property name="scriptMax">
+			<value>${logger.maxsize}</value>
+		</property>
+		<property name="systemMax">
 			<value>${logger.maxsize}</value>
 		</property>
 	</bean>

@@ -47,6 +47,7 @@ import net.gqu.webscript.object.ScriptRequest;
 import net.gqu.webscript.object.ScriptResponse;
 import net.gqu.webscript.object.ScriptSession;
 import net.gqu.webscript.object.ScriptUser;
+import net.gqu.webscript.object.ScriptUtils;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
@@ -68,13 +69,10 @@ import freemarker.template.TemplateException;
  */
 public class GQServlet extends HttpServlet {
 	
-
 	private static final String ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers";
-
 	private static final String ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers";
 
 	private static final long serialVersionUID = 1L;
-    
 	private Log logger = LogFactory.getLog(GQServlet.class);
 
 	private static final String ACCESS_CONTROL_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials";
@@ -297,19 +295,20 @@ public class GQServlet extends HttpServlet {
 		scriptRequest.setRemainPath(gqrequest.getTailPath());
 		scriptRequest.setFileSizeMax(gqrequest.getRole().getContentSize());
 		scriptRequest.setFactory(fileItemFactory);
+		
+		
 		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest(), gqrequest.getTailPath()));
 		params.put("request", scriptRequest);
 		params.put("response", new ScriptResponse(response));
 		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
 		params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
 
-		params.put("db", new ScriptMongoDB(dbProvider, 
-				gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
+		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
 		
 		params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
 		params.put("owner", new ScriptUser(AuthenticationUtil.getContextUser(),userService));
-		
+		params.put("utils", ScriptUtils.getInstance());
 		params.put("logger", loggingService.getScriptLogger());
 		params.put("google", scriptObjectGenerator.createGoogleServiceObject(gqrequest.getInstalledApplication().getUser()));
 		return params;
