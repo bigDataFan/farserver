@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.security.BasicUserService;
 import net.gqu.security.LoginServlet;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

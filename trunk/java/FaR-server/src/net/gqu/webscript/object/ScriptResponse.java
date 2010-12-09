@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 
 public class ScriptResponse {

@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.mongodb.MongoDBProvider;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import com.google.gdata.client.http.AuthSubUtil;
 import com.mongodb.BasicDBObject;

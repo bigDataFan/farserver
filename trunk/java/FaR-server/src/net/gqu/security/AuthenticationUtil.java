@@ -1,6 +1,6 @@
 package net.gqu.security;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 
 public class AuthenticationUtil

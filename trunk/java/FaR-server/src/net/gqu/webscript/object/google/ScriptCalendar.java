@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;

@@ -24,7 +24,6 @@ import net.gqu.application.RegisteredApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
 import net.gqu.content.ContentService;
-import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
 import net.gqu.freemarker.RepositoryTemplateLoader;
 import net.gqu.logging.LoggingService;
