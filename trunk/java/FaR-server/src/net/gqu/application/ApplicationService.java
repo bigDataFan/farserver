@@ -17,11 +17,11 @@ public interface ApplicationService {
 	public static final String DB_APP = "appsdb";
 	
 	Map<String, InstalledApplication> getUserInstalledApplications(String user);
-	InstalledApplication install(String user, ApprovedApplication app, String mapping);
+	InstalledApplication install(String user, RegisteredApplication app, String mapping);
 	boolean uninstalled(InstalledApplication installedApplication);
 	InstalledApplication getInstalledByMapping(String user, String mapping);
-	ApprovedApplication getApplication(String id);
-	List<ApprovedApplication> getAllInCurrentServer();
+	RegisteredApplication getApplication(String id);
+	List<RegisteredApplication> getAllInCurrentServer();
 
 	List<InstalledApplication> getInstalled(String name);
 	long getInstallCount(String name);

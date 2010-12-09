@@ -4,7 +4,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApprovedApplication {
+
+/**
+ * A registered application which is loaded remotely
+ * @author liuhan
+ */
+
+public class RegisteredApplication {
 
 	private String owner;
 	private String name;
@@ -12,53 +18,31 @@ public class ApprovedApplication {
 	private String alias;
 	
 	private String start;
-	private int stage;
 	private int type;
 	
 	public static Integer STAGE_UNDER_DEV = 0;
 	public static Integer STAGE_RELEASED = 1; 
 	public static Integer STAGE_COMMERTIAL = 2;
 	
-	public static Integer TYPE_STATIC_WEBAPP = 0; //static site
-	public static Integer GQU_WEBAPP = 1; //g qu web app for multi user
-	public static Integer GQU_WEBAPP_ALONE = 2; //g qu web app but can't be installed;
-	
 	private String details;
 	private String[] categories;
 	private Date created;
 	
-	private boolean suspend;
 	private String repository;
+	private String version;
 	
-	public ApprovedApplication(Map map) {
-		//this.id = ((ObjectId) map.get("_id")).toString();
+	public RegisteredApplication(Map map) {
 		this.name = (String) map.get("name");
 		this.owner = (String) map.get("owner");
 		this.description = map.get("description")==null ? null : (String)map.get("description");
 		this.alias = map.get("alias")==null? null : (String) map.get("alias");
-		this.stage = map.get("stage")==null? 0 : (Integer) map.get("stage");
 		this.type = map.get("type")==null? 0: (Integer) map.get("type");
 		this.details = map.get("details")==null? null: (String) map.get("details");
-		
 		this.start = map.get("start")==null? null: (String) map.get("start");
 		this.categories = map.get("categories")==null? (new String[0]) : (String[]) map.get("categories");
-		//this.created = ((String) map.get("created"));
-		
-		this.suspend = (Boolean) (map.get("suspend")==null)?false:(Boolean)map.get("suspend");
 		this.repository = (String) map.get("repository");
+		this.version = (map.get("version")==null)?"1.0":(String) map.get("version");
 	}
-	
-	public int getStage() {
-		return stage;
-	}
-
-
-
-	public void setStage(int stage) {
-		this.stage = stage;
-	}
-
-
 
 	public int getType() {
 		return type;
@@ -78,7 +62,7 @@ public class ApprovedApplication {
 		this.details = details;
 	}
 
-	public ApprovedApplication() {
+	public RegisteredApplication() {
 	}
 	
 	public String getRepository() {
@@ -105,6 +89,10 @@ public class ApprovedApplication {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getVersion() {
+		return version;
 	}
 
 	public String getDescription() {
@@ -139,14 +127,6 @@ public class ApprovedApplication {
 		this.created = created;
 	}
 
-	public boolean isSuspend() {
-		return suspend;
-	}
-
-	public void setSuspend(boolean suspend) {
-		this.suspend = suspend;
-	}
-	
 	public String getStart() {
 		return start;
 	}
@@ -154,15 +134,13 @@ public class ApprovedApplication {
 	public void setStart(String start) {
 		this.start = start;
 	}
-	
-	
 
+	/*
 	public Map<String, Object> getMaps() {
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("owner", owner);
 		maps.put("alias", getAlias());
 		maps.put("name", name);
-		maps.put("stage", stage);
 		maps.put("type", type);
 		maps.put("description", description);
 		maps.put("category",categories);
@@ -172,6 +150,6 @@ public class ApprovedApplication {
 		maps.put("repository", repository);
 		return maps;
 	}
-	
+	*/
 
 }

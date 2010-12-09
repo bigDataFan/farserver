@@ -26,7 +26,7 @@ public class LoggingService {
 	private int systemMax;
 	
 	private ScriptLogger scriptLogger;
-	private Logger logger;
+	private SystemLogger systemLogger;
 	
 	private DBCollection scriptLogColls;
 	private DBCollection systemLogColls;
@@ -58,9 +58,8 @@ public class LoggingService {
 		}
 		
 		systemLogColls = dbProvider.getMainDB().getCollection(SYSTEM_LOGS);
-		
-		
-		scriptLogger = new ScriptLogger(scriptLogColls, level);
+		scriptLogger = new ScriptLogger(level, scriptLogColls);
+		systemLogger = new SystemLogger(level, systemLogColls);
 	}
 	
 	
@@ -69,8 +68,8 @@ public class LoggingService {
 		
 	}
 
-	public Logger getLogger() {
-		return logger;
+	public SystemLogger getLogger() {
+		return systemLogger;
 	}
 	
 	

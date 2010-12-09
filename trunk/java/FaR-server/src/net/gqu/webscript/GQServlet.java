@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.application.ApprovedApplication;
+import net.gqu.application.RegisteredApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
 import net.gqu.content.ContentService;
@@ -257,7 +257,7 @@ public class GQServlet extends HttpServlet {
 	}
 
 	
-	private WebScript getWebscript(ApprovedApplication application, String path) {
+	private WebScript getWebscript(RegisteredApplication application, String path) {
 		Cache appcache = cacheService.getApplicationCache(application.getName());
 		String key = "webscript." + path;
 		Element element = appcache.get(key);
@@ -275,7 +275,7 @@ public class GQServlet extends HttpServlet {
 		return (element==null||element.getObjectValue()==null)?null:(WebScript) element.getObjectValue();
 	}
 
-	private WebScript loadWebScript(ApprovedApplication application,String path) throws IOException {
+	private WebScript loadWebScript(RegisteredApplication application,String path) throws IOException {
 		LoadResult lr = repositoryService.getRaw(application, path);
 		if (lr.getStatus()==404) {
 			return null;
@@ -325,7 +325,7 @@ public class GQServlet extends HttpServlet {
 	
 	
 
-	private Template getFreeMarkerTemplate(ApprovedApplication application,
+	private Template getFreeMarkerTemplate(RegisteredApplication application,
 			String path) {
 		Cache appcache = cacheService.getApplicationCache(application.getName());
 		String key = "ftl." + path;
@@ -517,7 +517,7 @@ public class GQServlet extends HttpServlet {
 
 	public class GQRequest {
     	private HttpServletRequest request;
-    	private ApprovedApplication approvedApplication;
+    	private RegisteredApplication approvedApplication;
     	private String[] pathList;
     	private boolean isScript;
 		private String jspath;
@@ -612,7 +612,7 @@ public class GQServlet extends HttpServlet {
 			return pathArray;
 		}
 
-		public ApprovedApplication getApprovedApplication() {
+		public RegisteredApplication getApprovedApplication() {
 			return approvedApplication;
 		}
 

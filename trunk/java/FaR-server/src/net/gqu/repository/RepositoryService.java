@@ -1,10 +1,10 @@
 package net.gqu.repository;
 
-import net.gqu.application.ApprovedApplication;
+import net.gqu.application.RegisteredApplication;
 
 public interface RepositoryService {
 
-	LoadResult getRaw(ApprovedApplication application, String path);
-	String clean(ApprovedApplication application);
+	LoadResult getRaw(RegisteredApplication application, String path);
+	String clean(RegisteredApplication application);
 	
 }
