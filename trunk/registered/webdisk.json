@@ -1,0 +1,1 @@
+{"alias":"G网盘","installed":0,"type":2,"stage":1,"category":["网盘","存储"],"_id":"4cef0f6d85619fb0391cfaf9","details":null,"repository":"http://farserver.googlecode.com /svn/trunk/applications/GQFileManager /","start":"test.html","created":1290735469299,"description":"一个基本的网盘应用。目前提供Web方式的内容访问， 将来还会提供各种同步客户端。","name":"webdisk","owner":null}
