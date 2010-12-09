@@ -39,6 +39,9 @@
 	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl">
 		<property name="mainServer" value="www.g-qu.net"></property>
 		<property name="dbProvider" ref="dbProvider"></property>
+		<property name="registryLocation">
+			<value>${application.registry}</value>
+		</property>
 	</bean>
 	
 	<bean id="contentService" class="net.gqu.content.GridFSContentService">
