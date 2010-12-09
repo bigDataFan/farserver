@@ -98,9 +98,12 @@ public class GQServlet extends HttpServlet {
 	private LoggingService loggingService;
 	private ScriptObjectGenerator scriptObjectGenerator;
 	
+	
 	private Configuration freemarkerConfiguration;
 	private DiskFileItemFactory  fileItemFactory;
 	private ContentService contentService;
+	
+	
 	
 	
 	/**
@@ -232,6 +235,7 @@ public class GQServlet extends HttpServlet {
 
 	private void handleException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
 		if (e instanceof HttpStatusExceptionImpl) {
+			loggingService.getSystemLogger().debug("HttpStatusExceptionImpl code=" + ((HttpStatusExceptionImpl) e).getCode());
 			if (((HttpStatusExceptionImpl) e).getCode() == 307) {
 				response.sendRedirect(((HttpStatusExceptionImpl) e).getDescription());
 			} else {
@@ -286,7 +290,7 @@ public class GQServlet extends HttpServlet {
 	protected Map<String, Object> createScriptParameters(GQRequest gqrequest,HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<String, Object>(32, 1.0f);
 		
-		loggingService.getLogger().info("abc");
+		loggingService.getSystemLogger().info("abc");
 		
 		// add web script parameters
 		ScriptRequest scriptRequest = new ScriptRequest(gqrequest.getRequest());
