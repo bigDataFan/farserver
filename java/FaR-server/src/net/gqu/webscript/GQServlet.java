@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.application.RegisteredApplication;
 import net.gqu.application.InstalledApplication;
+import net.gqu.application.RegisteredApplication;
 import net.gqu.cache.EhCacheService;
 import net.gqu.content.ContentService;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
@@ -38,7 +38,6 @@ import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.MimeTypeUtils;
 import net.gqu.utils.RhinoUtils;
-import net.gqu.utils.ScriptUtils;
 import net.gqu.utils.StringUtils;
 import net.gqu.webscript.object.ContentFile;
 import net.gqu.webscript.object.ScriptContent;
@@ -56,7 +55,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.RhinoException;
-import org.mozilla.javascript.ScriptLogger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -301,7 +299,6 @@ public class GQServlet extends HttpServlet {
 		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
 		params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
 
-		params.put("utils", new ScriptUtils());
 		params.put("db", new ScriptMongoDB(dbProvider, 
 				gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
