@@ -68,7 +68,7 @@ public class LoggingService {
 		
 	}
 
-	public SystemLogger getLogger() {
+	public SystemLogger getSystemLogger() {
 		return systemLogger;
 	}
 	
