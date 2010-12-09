@@ -1,15 +1,12 @@
 package net.gqu.application;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-
 
 /**
  * A registered application which is loaded remotely
  * @author liuhan
  */
-
 public class RegisteredApplication {
 
 	private String owner;

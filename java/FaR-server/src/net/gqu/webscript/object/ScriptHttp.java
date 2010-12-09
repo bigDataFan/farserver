@@ -2,7 +2,7 @@ package net.gqu.webscript.object;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 /**
  * Http服务处理类 

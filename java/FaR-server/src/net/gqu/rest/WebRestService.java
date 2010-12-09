@@ -12,12 +12,12 @@ import net.gqu.application.ApplicationService;
 import net.gqu.application.RegisteredApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
-import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
 import net.gqu.security.Role;
 import net.gqu.security.User;
 import net.gqu.utils.GUID;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 

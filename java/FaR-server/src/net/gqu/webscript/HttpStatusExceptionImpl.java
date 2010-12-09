@@ -1,4 +1,4 @@
-package net.gqu.exception;
+package net.gqu.webscript;
 
 public class HttpStatusExceptionImpl extends RuntimeException {
 	

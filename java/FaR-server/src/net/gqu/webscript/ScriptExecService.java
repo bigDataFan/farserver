@@ -15,7 +15,6 @@ import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.WrapFactory;
 import org.mozilla.javascript.WrappedException;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
 
 public class ScriptExecService {
 

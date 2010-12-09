@@ -4,7 +4,10 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.constructs.blocking.BlockingCache;
 
-
+/**
+ * 
+ * @author liuhan
+ */
 public class EhCacheService {
 
 	private CacheManager manager = CacheManager.create();
@@ -51,17 +54,6 @@ public class EhCacheService {
 			cache.removeAll();
 		}
 	}
-	
-	/*
-	public Cache getWebCache() {
-		Cache cache = manager.getCache("webcache");
-		if (cache==null) {
-			cache = new Cache("webcache", 100000, false, false, 10*60, 0); //10 minutes
-			manager.addCache(cache);
-		}
-		return cache;
-	}
-	*/
 	
 	public Cache getUserMappingCache() {
 		Cache cache = manager.getCache("usermapping");

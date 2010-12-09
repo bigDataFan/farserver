@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.gqu.exception.HttpStatusExceptionImpl;
 import net.gqu.utils.RhinoUtils;
+import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 import org.mozilla.javascript.NativeArray;
