@@ -233,10 +233,10 @@ public class GQServlet extends HttpServlet {
 
 	private void handleException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
 		if (e instanceof HttpStatusExceptionImpl) {
-			loggingService.getSystemLogger().debug("HttpStatusExceptionImpl code=" + ((HttpStatusExceptionImpl) e).getCode());
 			if (((HttpStatusExceptionImpl) e).getCode() == 307) {
 				response.sendRedirect(((HttpStatusExceptionImpl) e).getDescription());
 			} else {
+				loggingService.getSystemLogger().debug("HttpStatusExceptionImpl code=" + ((HttpStatusExceptionImpl) e).getCode());
 				response.setStatus(((HttpStatusExceptionImpl)e).getCode());
 			}
 			return;
