@@ -2,10 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"  href="jquery.mobile-1.0a1/jquery.mobile-1.0a1.min.css" />
-<script src="jquery-1.4.3.min.js"></script>
-<script src="jquery.mobile-1.0a1/jquery.mobile-1.0a1.min.js"></script>
+<title></title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.css" />
+<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.js"></script>
+
 </head>
 <body>
 
