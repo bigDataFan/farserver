@@ -26,7 +26,7 @@
 				<li data-role="list-divider">最近10次支出</li>
 				<#list model.recents as one>
 					<li>
-						<h3><a href="editoutcome.gs?id=${one._id}">${one.name}</a></h3>
+						<h3><a href="editoutcome.gs?id=${one.id}">${one.name}</a></h3>
 						<p>分类:${one.category}</p>
 						<p class="ui-li-aside"><strong>${one.mount}</strong></p>
 					</li>
