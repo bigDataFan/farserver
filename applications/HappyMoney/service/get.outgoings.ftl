@@ -12,7 +12,7 @@
 <div data-role="page" id="main">
 
 	<div data-role="header" data-theme="c">
-		<!--<a href="../service/index.gs" rel="external" data-icon="home">首页</a> -->
+		<a href="javascript:history.back()" data-icon="home">首页</a>
 		<h1>支出列表</h1>
 		<a href="editoutcome.gs" data-icon="add">新增支出</a>
 	</div><!-- /header -->
