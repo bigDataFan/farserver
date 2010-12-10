@@ -14,7 +14,7 @@
 	<div data-role="header" data-theme="c">
 		<a href="javascript:history.back()" data-icon="home">首页</a>
 		<h1>支出列表</h1>
-		<a href="editoutcome.gs" data-icon="add">新增支出</a>
+		<a href="editoutcome.gs" data-icon="add" data-transition="slideup">新增支出</a>
 	</div><!-- /header -->
 	<div data-role="content">
 		<h3>按时间查看:</h3>

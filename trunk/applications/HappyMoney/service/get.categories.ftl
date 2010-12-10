@@ -12,16 +12,16 @@
 <div data-role="page" id="main">
 
 	<div data-role="header" data-theme="c">
-		<a href="index.gs" data-icon="home">首页</a>
+		<a href="javascript:history.back()" data-icon="home">首页</a>
 		<h1>分类设置</h1>
-		<a href="editcat.gs" data-icon="add">新增分类</a>
+		<a href="editcat.gs" data-icon="add" data-transition="slideup">新增分类</a>
 	</div><!-- /header -->
 	
 	<div data-role="content">
 		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
 				<#list model as cat>
 					<li>
-						<a href="editcat.gs?id=${cat._id}">${cat.name}</a>  
+						<a href="editcat.gs?id=${cat.id}">${cat.name}</a>  
 					</li>
 				</#list>
 			</ul>
