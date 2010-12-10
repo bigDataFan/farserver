@@ -13,7 +13,7 @@
 <div data-role="page">
 
 	<div data-role="header" data-theme="c">
-		<h1>Page Title</h1>
+		<h1>编辑支出</h1>
 	</div><!-- /header -->
 
 		<div data-role="content">	
