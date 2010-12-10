@@ -14,7 +14,7 @@
 <div data-role="page">
 
 	<div data-role="header" data-theme="c">
-		<a href="../about.html" data-icon="star">关于</a>
+		<a href="../about.html" data-icon="star" data-transition="slideup">关于</a>
 		<h1>聪明小管家</h1>
 	</div><!-- /header -->
 	<div data-role="content">
