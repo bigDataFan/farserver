@@ -14,7 +14,7 @@
 		</property>
 	</bean>
 	
-	<bean id="loggingService" class="net.gqu.logging.LoggingService">
+	<bean id="loggingService" class="net.gqu.logging.LoggingService" init-method="init">
 		<property name="dbProvider" ref="dbProvider"></property>
 		<property name="level">
 			<value>${logger.level}</value>
