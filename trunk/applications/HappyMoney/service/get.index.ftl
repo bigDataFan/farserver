@@ -25,7 +25,7 @@
 		</div>
 		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
 			<li data-role="list-divider">操作列表</li>
-			<li><a href="outgoings.gs">支出</a></li>
+			<li><a href="../service/outgoings.gs">支出</a></li>
 			<li><a href="categories.gs">分类及预算</a></li>
 			<li><a href="summaries.gs">统计信息 </a></li>
 			<li><a href="docs/about/intro.html">设定目标</a></li>
