@@ -51,7 +51,6 @@ public class LoginServlet extends HttpServlet {
     	
     	if (username==null || pwd==null ) {
     		response.sendError(401);
-    		//response.getWriter().println(1);
     		return;
     	}
     	
