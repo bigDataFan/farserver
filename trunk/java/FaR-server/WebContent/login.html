@@ -5,247 +5,172 @@
 <title>登录界面</title>
 <style type="text/css">
 body {
-	background: #285a73 url(img/body-bg.jpg) top left repeat-x;
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	max-width: 2000px;
-}
-
+  background:#285a73  url(img/body-bg.jpg) top left repeat-x    ;
+  margin:0;
+  padding:0;
+  width:100%;
+  max-width:2000px;
+  }
 div.top {
-	margin: 0 auto;
-	width: 980px;
-	height: 4em;
+  margin:0 auto;
+  width: 980px;
+  height:4em;
+ }
+#nav{
+  margin:0 0 0 9em;
+  list-style:none;
+  width:100%;
+ }
+#nav li{
+  float:left;
+  padding:0;
+  padding-left:0;
+  padding-right:2px;
+  position:relative;
+  background: url(img/nav_separator.png) no-repeat scroll right 0 transparent;
 }
-
-#nav {
-	margin: 0 0 0 9em;
-	list-style: none;
-	width: 100%;
-}
-
-#nav li {
-	float: left;
-	padding: 0;
-	padding-left: 0;
-	padding-right: 2px;
-	position: relative;
-	background: url(img/nav_separator.png) no-repeat scroll right 0
-		transparent;
-}
-
-#nav a {
-	float: left;
-	display: block;
-	padding: 1em 1.5em;
-	font-size: 85%;
-	font-family: "宋体";
-	font-weight: bold;
-	color: #787878;
-	text-decoration: none;
-}
-
+#nav a{
+  float:left;
+  display:block;
+  padding:1em 1.5em;
+  font-size:85%;
+  font-family:"宋体";
+  font-weight:bold;
+  color:#787878;
+  text-decoration:none;
+} 
 #nav a:hover {
-	padding: 1em 1.5em;
-	color: #6D6D6D;
-}
+  padding:1em 1.5em;
+  color: #6D6D6D;
+ }
+#content{
+  margin:0 auto;
+  width:980px;
+  font-size:95%;
+  line-height:1em;
+  color:#333;
+  height:520px;
 
-#content {
-	margin: 0 auto;
-	width: 980px;
-	font-size: 95%;
-	line-height: 1em;
-	color: #333;
-	height: 520px;
-	background: url(img/bjt.png) no-repeat scroll 0 360px;
-}
+  }
 
-#cotenter .gutter {
-	background: url(img/tab-backg.png) no-repeat scroll 0 50px;
-}
-
-#content .gutter img {
-	float: right;
-	margin: 0 0 .5em 0;
-	padding: .5em .5em;
-}
-
-#content .gutter ul {
-	margin: 0 0 1em 0;
-	padding: 1em 0 .5em 0;
-	background: url(img/tab-bg.png) no-repeat scroll 3em 6em;
-}
-
-#sidebar {
-	margin: -5px auto;
-	width: 980px;
-	overflow: hidden;
-}
 
 form {
-	-moz-border-radius: 5px 5px 5px 5px;
-	-moz-box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
-	margin: 0 1em;
-	background: url(img/dlbcg-section.gif) repeat-x scroll 0 0
-		rgba(255, 255, 255, 0.9);
-}
+  -moz-border-radius:5px 5px 5px 5px;
+  -moz-box-shadow:0 0 6px 1px rgba(0, 0, 0, 0.1);
 
-#name,#email {
-	width: 200px;
-}
-
+  background: url(img/dlbcg-section.gif) repeat-x scroll 0 0 rgba(255, 255, 255, 0.9); 
+  } 
+#name, #email{
+   width:200px;
+ }
 #thisform {
-	margin: 20px 7em;
-	padding: 6px 15px;
-	float: left;
-	width: 550px;
-	height: 300px;
-}
-
-#thisform .tout {
-	padding: 5px 15px;
-}
-
-#thisform input {
-	margin: 0 10px;
-	padding: 5px 5px;
-}
-
-#thisform p {
-	margin: 15px;
-	padding: 5px 15px;
-	font-family: "微软雅黑";
-	font-size: 95%;
-	font-weight: bold;
-	color: #333;
-}
-
+  margin:210px auto;
+  padding:6px 15px;
+ 
+  width:550px;
+  height:300px;
+ } 
+#thisform .tout{
+  padding:5px 15px;
+	} 
+#thisform input{
+  margin:0 10px;
+  padding:5px 5px;
+ 
+  } 
+#thisform p{
+  margin:15px;
+  padding:5px 15px;
+  font-family: "微软雅黑";
+  font-size:95%;
+  font-weight:bold;
+  color:#333;
+	 }
 p #submit {
-	margin: 5px 150px;
-	padding: 5px 25px;
-}
+  margin:5px 150px;
+  padding:5px 25px;
+	 } 	  
+#thisform label{ 
+  padding:3px 10px;
+  font-family: "微软雅黑";
+  font-weight:bold;
+  color:#333;
+  }
+#thisform fieldest{
+  padding:0 20px;
+  font-size:90%;
+  font-weight:bold;
+  color:#333;
+	 }  
 
-#thisform label {
-	padding: 3px 10px;
-	font-family: "微软雅黑";
-	font-weight: bold;
-	color: #333;
-}
+#footer{
+  width:980px;
+  clear:both;
+  height:60px;
+  margin:20px auto;
+ }
+#footer ul {
+  margin:10px auto;
+  list-style:none;
+  width:360px
+  }
+#footer a{
+  float:left;
+  margin:60px 0 0 1em;
+  padding:10px 5px;
+  display:block;
+  font-size:85%;
+  font-family:"微软雅黑";
+  text-decoration:none;
+  color: #FFFFFF;
+ }
+#footer a:hover{
+  float:left;
+  margin:60px 0 0 1em;
+  padding:10px 5px; 
+  color: #D1D1D1;
+  font-size:85%;  
+  }  
+  
 
-#thisform fieldest {
-	padding: 0 20px;
-	font-size: 90%;
-	font-weight: bold;
-	color: #333;
-}
 
-.box {
-	-moz-border-radius: 5px 5px 5px 5px;
-	-moz-box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
-	background: url(img/bg-section.gif) repeat-x scroll 0 0
-		rgba(255, 255, 255, 0.9);
-	margin: 0 auto;
-	float: left;
-	width: 85%;
-	padding: 0 0 2em 0;
-	line-height: 1.5em;
-}
+  
 
-.box h3 {
-	margin: 0;
-	padding: .5em 1em;
-	font-family: "微软雅黑";
-	font-size: 140%;
-	font-weight: normal;
-	color: #693;
-}
-
-.box ul {
-	margin: 1em 0 0 .5em;
-	padding: 1em 0 0 1em;
-}
-
-.box ul li {
-	margin: 0 0 0 1em;
-	padding: 0 0 0 1.5em;
-	list-style: none;
-}
-
-#sidebar .gutter {
-	padding: .5em;
-}
-
-#footer {
-	float: left;
-	clear: both;
-	height: 1%;
-}
-
-#footer ul li {
-	list-style: none;
-	width: 100%;
-	margin: 0 10em 0 10em;
-	padding: 0;
-	font-size: 85%;
-	font-family: "微软雅黑";
-	color: #fff;
-}
-
-#footer a {
-	float: left;
-	margin: 0 .5em;
-	padding: .5em 1em;
-	display: block;
-	font-size: 85%;
-	text-decoration: none;
-	color: #F2F2F2;
-}
-
-#footer a:hover {
-	float: left;
-	margin: 0 .5em;
-	padding: .5em .5em;
-	color: #FFFFFF;
-	font-size: 85%;
-}
 </style>
 </head>
 <body>
 <div class="top">
-<ul id="nav">
-	<li><a href="/hom/">首页</a></li>
-	<li><a href="/rec/">最新推荐</a></li>
-	<li><a href="/app/">榜首应用</a></li>
-	<li><a href="/for/">论坛</a></li>
-	<li><a href="/com/">社区</a></li>
-</ul>
+    <ul id="nav">
+      <li><a href="/hom/">首页</a></li>
+      <li><a href="/rec/">最新推荐</a></li>
+      <li><a href="/app/">榜首应用</a></li>
+      <li><a href="/for/">论坛</a></li>
+      <li><a href="/com/">社区</a></li>
+    </ul>
 </div>
-<div id="content">
-<div class="gutter" id="slider">
-<form action="login" id="thisform" method="post">
-<p class="tout">请在此登录</p>
-	<p><label for="name" accesskey="9">用户名：</label> 
-	<input type="text" id="name" name="username" /></p>
-	<p><label for="password">密&nbsp;&nbsp;&nbsp;码：</label> 
-	<input type="password" id="email" name="password" tabindex="2" /></p>
-	
-	<p><input type="checkbox" id="remember" name"remember" tabindex="3" />
-	<labelfor"remember">记住本次登录？</label></p>
-	<p><input id="submit" type="submit" value="登 录" tabindex="4" /></p>
+    <div id="content">
+       <form action="login" id="thisform" method="post">
+          <p class="tout">请在此登录</p>
+           <p><label for="name" accesskey="9">用户名：</label>
+            <input type="text" id="name" name="name" /></p>
+            <p><label for="password">密码：</label>
+            <input type="password" id="email" name="password" tabindex="2"/></p>
+            <p><input id="submit" type="submit" value="登 录" tabindex="4"/></p>
+          
+        </form>   
+                  </div>
+          
+          
+    </div>
 
-</form>
-</div>
-</div>
 
-<div>
-<div id="footer">
-<ul>
-	<li><a href="/hom/">页脚</a></li>
-	<li><a href="/rec/">联系</a></li>
-	<li><a href="/app/">关于</a></li>
-</ul>
-</div>
-</div>
-</div>
+   <div id="footer">
+     <ul>
+      <li><a href="/hom/">页脚</a></li>
+      <li><a href="/rec/">联系</a></li>
+      <li><a href="/app/">关于</a></li>
+      </ul>
+   </div>
+
 </body>
 </html>
