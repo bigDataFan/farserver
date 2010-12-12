@@ -70,11 +70,7 @@ Role role = userService.getRole(user.getRole());
 	
 	<li>google用户名： <input type="text" value="<%=user.getAttr(user.ATTR_GOOGLE_USER) %>" name="googleuser"></li>
 	<li>google密码： <input type="text" value="<%=user.getAttr(user.ATTR_GOOGLE_PWD) %>" name="googlepwd"> <input type="submit" value="保存"></input></li>
-	<li>注：设置用户名密码到服务器可以完整使用google服务。否则只能通过google的标识认证流程来使用google服务</li>
-	<li>
-	google日历状态：   
-	已获取[ <%=user.getAttr(user.ATTR_GOOGLE_CAL_TOKEN) %>] 您可以<a href="<%=userService.getUserCalToken("http:" + request.getServerName()+ ":" +request.getServerPort()) %>">向google申请标识</a>
-	</li>
+	<li>设置用户名密码到服务器可以完整使用google服务。<font color="red">注：使用此项服务需要对当前网站的信任，因为需要保存密码到网站中 </font></li>
 	</ul>
 	</form>
 
@@ -82,9 +78,11 @@ Role role = userService.getRole(user.getRole());
 
 <div class="box left">
 <h3>安装应用</h3>
+
 	<form method="POST" action="../service/application/install">
-	输入应用的ID <input name="application"> <br>
-				<input type="submit" value="安装">
+	<ul>
+		<li>输入应用的ID <input name="application">  <input type="submit" value="安装"></li>
+	</ul>
 	</form>
 </div>
 
