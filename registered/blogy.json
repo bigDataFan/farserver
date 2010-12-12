@@ -1,7 +1,7 @@
 {
     "name": "blogy",
     "alias": "简博客",
-    "description": "",
+    "description": "提供了最基本的博客功能。 可以用它来分享您的知识和心得",
     "category": [
         "个人",
         "管理",
