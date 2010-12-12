@@ -5,9 +5,10 @@ body {
   padding:0;
   width:100%;
   max-width:2000px;
- }
+  font-size: small;
+}
   
- a { 
+a { 
    color: #0088CC;
    text-decoration: none;
    font-size: small;
@@ -39,7 +40,6 @@ div.top {
   float:left;
   display:block;
   padding:1em 1.5em;
-  font-size:85%;
   font-family:"宋体";
   font-weight:bold;
   color:#787878;
