@@ -16,7 +16,7 @@
 <title>我的首页</title>
 
 
-<link rel="stylesheet" type="text/css" href="../css/main.css"/>
+<link rel="stylesheet" type="text/css" href="../main.css"/>
 
 <%
 
@@ -31,16 +31,24 @@ Role role = userService.getRole(user.getRole());
 
 %>
 
+
+
 </head>
 <body>
 
 
-
-
 <div class="top">
+<ul id="nav">
+	<li><a href="/index.html">挑选应用</a></li>
+	<li><a href="/logout">退出</a></li>
+</ul>
+</div>
 
+<div class="container">
+
+<div class="box left">
+<h3>基本信息</h3>
 <ul id="userAttrs">
-	<li class="title">基本信息</li>
 	<li>帐号： <%=AuthenticationUtil.getCurrentUserName() %>  </li>
 	<li>电子邮件： <%=user.getEmail() %>  </li>
 	<li>文件已使用： <%=user.getContentUsed() %>   </li>
@@ -52,39 +60,42 @@ Role role = userService.getRole(user.getRole());
 		<li>您所在的群组已经被限制使用 </li>
 	<%} %>
 </ul>
+</div>
 
+<div class="box left">
 
-<form action="/service/user/googlepwd" method="POST">
-<ul id="googleServices">
-<li class="title">google服务状态<br></li>
-<li>google用户名： <input type="text" value="<%=user.getAttr(user.ATTR_GOOGLE_USER) %>" name="googleuser"></li>
-<li>google密码： <input type="text" value="<%=user.getAttr(user.ATTR_GOOGLE_PWD) %>" name="googlepwd"> <input type="submit" value="保存"></input></li>
+	<form action="/service/user/googlepwd" method="POST">
+	<h3>Google服务状态</h3>
+	<ul id="googleServices">
+	
+	<li>google用户名： <input type="text" value="<%=user.getAttr(user.ATTR_GOOGLE_USER) %>" name="googleuser"></li>
+	<li>google密码： <input type="text" value="<%=user.getAttr(user.ATTR_GOOGLE_PWD) %>" name="googlepwd"> <input type="submit" value="保存"></input></li>
+	<li>注：设置用户名密码到服务器可以完整使用google服务。否则只能通过google的标识认证流程来使用google服务</li>
+	<li>
+	google日历状态：   
+	已获取[ <%=user.getAttr(user.ATTR_GOOGLE_CAL_TOKEN) %>] 您可以<a href="<%=userService.getUserCalToken("http:" + request.getServerName()+ ":" +request.getServerPort()) %>">向google申请标识</a>
+	</li>
+	</ul>
+	</form>
 
+</div>
 
-<li>注：设置用户名密码到服务器可以完整使用google服务。否则只能通过google的标识认证流程来使用google服务</li>
-<li>
-google日历状态：   
-已获取[ <%=user.getAttr(user.ATTR_GOOGLE_CAL_TOKEN) %>] 您可以<a href="<%=userService.getUserCalToken("http:" + request.getServerName()+ ":" +request.getServerPort()) %>">向google申请标识</a>
-
-</li>
-</ul>
-</form>
-
-<ul id="nav">
-	<li><a href="installForm.jsp">应用安装</a></li>
-</ul>
+<div class="box left">
+<h3>安装应用</h3>
+	<form method="POST" action="../service/application/install">
+	输入应用的ID <input name="application"> <br>
+				<input type="submit" value="安装">
+	</form>
 </div>
 
 
-<div id="sidebar">
-	<div class="box">
+<div class="box left">
 	<h3>我安装的应用</h3>
 	<ul>
 		<%for (InstalledApplication ia: installed.values()) { %>
-					<li><a href="../user/<%=ia.getUser() %>/<%=ia.getMapping() %>/"><%=ia.getMapping() %></a></li>
+					<li><a target="_blank" href="../user/<%=ia.getUser() %>/<%=ia.getMapping() %>/"><%=ia.getMapping() %></a></li>
 		<%} %>
 	</ul>
-	</div>
 </div>
 
 	
