@@ -60,8 +60,8 @@ public class Role {
 	public Map<String, Object> getMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(KEY_NAME, name);
-		map.put(KEY_CONTENT_SIZE, contentSize/(1024*1024));
-		map.put(KEY_TOTAL_SIZE, totalSize/(1024*1024));
+		map.put(KEY_CONTENT_SIZE, contentSize);
+		map.put(KEY_TOTAL_SIZE, totalSize);
 		map.put(KEY_OPEN, open);
 		map.put(KEY_ENABLED, enabled);
 		if (id!=null) {
