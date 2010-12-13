@@ -47,6 +47,11 @@ public class WebRestService {
 		this.userService = userService;
 	}
 
+	@RestService(method="GET", uri="/application/install")
+	public Map<String, Object> installApp2(@RestParam(value="application")String application, @RestParam(value="mapping")String mapping) {
+		return this.installApp(application, mapping);
+	}
+	
 	@RestService(method="POST", uri="/application/install")
 	public Map<String, Object> installApp(@RestParam(value="application")String application, @RestParam(value="mapping")String mapping) {
 		if (!AuthenticationUtil.isCurrentLogon()) {
@@ -98,6 +103,8 @@ public class WebRestService {
 		List<Map<String, Object>> rolesMap = new ArrayList<Map<String,Object>>();
 		
 		for (Role role : roles) {
+			role.setContentSize(role.getContentSize()/(1024*1024));
+			role.setTotalSize(role.getTotalSize()/(1024*1024));
 			rolesMap.add(role.getMap());
 		}
 		result.put("total", roles.size());

@@ -94,18 +94,21 @@ List<Role> openRoles = userService.getOpenRoles();
 	<%if (openRoles.size()==0) { %>
 				抱歉，当前服务器不允许匿名注册，请联系服务器管理员
 	<%} else { %>
-		<form action="register" id="thisform" method="post">
+		<form action="/reg" id="thisform" method="post">
 		<p class="tout">请在此注册</p>
 		<p><label for="name" accesskey="9">用户名：</label></p>
 		 <input class="text" type="text" name="username"  value="" /> <font color="red"><%=session.getAttribute("username")==null?"":session.getAttribute("username")%></font>
-		
+		<p>用户组：<select name="role">
+			<% for(Role role: openRoles) {%>
+				<option value="<%=role.getId().toString() %>"><%=role.getName() %></option>
+			<% }%>
+		</select> </p>
 		<p><label for="password">密&nbsp;&nbsp;&nbsp;码：</label></p>
 		<input class="text" type="password" name="pwd"  value="" /><font color="red"><%=session.getAttribute("pwd")==null?"":session.getAttribute("pwd")%></font>
 		
 		<p><label for="password">请再输一次密码：</label><br>
 		</p>
 		<input class="text" type="password" name="pwdcfm"  value="" /><font color="red"><%=session.getAttribute("pwdcfm")==null?"":session.getAttribute("pwdcfm")%></font>
-		
 		
 		<p><label for="email">Email ：</label></p>
 		<input class="text" type="text"  name="email"  value="" /><font color="red"><%=session.getAttribute("email")==null?"":session.getAttribute("email")%></font>

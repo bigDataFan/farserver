@@ -51,11 +51,11 @@ Role role = userService.getRole(user.getRole());
 <ul id="userAttrs">
 	<li>帐号： <%=AuthenticationUtil.getCurrentUserName() %>  </li>
 	<li>电子邮件： <%=user.getEmail() %>  </li>
-	<li>文件已使用： <%=user.getContentUsed() %>   </li>
+	<li>文件已使用： <%=(new Double(user.getContentUsed()/(1024*1024))).intValue() %>M   </li>
 	<%if (role !=null && role.isEnabled() && !user.isDisabled()) { %>
 	<li>群组： <%=role.getName() %>  </li>
-	<li>单个文件大小限制   <%=role.getContentSize() %></li>
-	<li>文件 总限制 <%=role.getTotalSize() %></li>
+	<li>单个文件大小限制   <%=role.getContentSize()/(1024*1024) %>M</li>
+	<li>文件 总限制 <%=role.getTotalSize()/(1024*1024)  %>M</li>
 	<%} else { %>
 		<li>您所在的群组已经被限制使用 </li>
 	<%} %>

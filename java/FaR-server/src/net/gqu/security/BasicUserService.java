@@ -239,6 +239,7 @@ public class BasicUserService {
 	}
 	
 	public Role getRole(String id) {
+		if (id==null) return null;
 		if (rolesMap.get(id)!=null) {
 			return rolesMap.get(id);
 		} else {
