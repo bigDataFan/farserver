@@ -1,13 +1,7 @@
-var uuid = request.getParameter("uuid");
-
-var page = request.getParameter("page", "index");
-
-var blogService = extension.getBlogService();
-
-var blog = blogService.getBlog(uuid);
-
-if (blog!=null) {
-	blog.remove();
+if (!user.equals(owner)) {
+	response.sendError(403);
 }
+db.getCollection("blogs").remove({"id":params.id});
 
-response.sendRedirect(page);
+
+"Removed!";
