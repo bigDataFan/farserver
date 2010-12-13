@@ -1,6 +1,7 @@
 package net.gqu.application;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -132,7 +133,7 @@ public class RegisteredApplication {
 		this.start = start;
 	}
 
-	/*
+	
 	public Map<String, Object> getMaps() {
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("owner", owner);
@@ -147,6 +148,6 @@ public class RegisteredApplication {
 		maps.put("repository", repository);
 		return maps;
 	}
-	*/
+	
 
 }

@@ -214,7 +214,7 @@ public class WebRestService {
 		return installed.keySet();
 	}
 	
-	/*
+	
 	@RestService(method="POST", uri="/admin/application/list")
 	public Map<String, Object> showAllApps() {
 		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
@@ -232,7 +232,7 @@ public class WebRestService {
 		return result;
 		
 	}
-	*/
+	
 	
 	@RestService(method="GET", uri="/admin/application/clean")
 	public String cleanAppCache(@RestParam(value="name")String application) {
