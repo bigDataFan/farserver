@@ -61,13 +61,15 @@ public class WebRestService {
 		
 		InstalledApplication installed = applicationService.install(AuthenticationUtil.getCurrentUser(), app, mapping);
 		
+		/*
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		result.put(ApplicationService.APPLICATION, installed.getApp());
 		result.put(ApplicationService.USER, installed.getUser());
 		result.put(ApplicationService._ID, installed.getId());
 		result.put(ApplicationService.MAPPING, installed.getMapping());
-		return result;
+		*/
+		return null;
 	}
 	
 	
@@ -126,8 +128,8 @@ public class WebRestService {
 		long filesize = 0;
 		long total  = 0;
 		try{
-			filesize = new Integer(contentSize);
-			total = new Integer(totalSize);
+			filesize = new Integer(contentSize)*1024*1024;
+			total = new Integer(totalSize)*1024*1024;
 		} catch (Exception e) {
 			return "size should be integer";
 		}

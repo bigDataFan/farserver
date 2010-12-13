@@ -83,11 +83,9 @@ List<Role> openRoles = userService.getOpenRoles();
 <body>
 <div class="top">
 <ul id="nav">
-	<li><a href="/hom/">首页</a></li>
-	<li><a href="/rec/">最新推荐</a></li>
-	<li><a href="/app/">榜首应用</a></li>
-	<li><a href="/for/">论坛</a></li>
-	<li><a href="/com/">社区</a></li>
+	<li><a href="/index.html">首页</a></li>
+	<li><a href="/login.html">登陆</a></li>
+	<li><a href="/register.jsp">注册</a></li>
 </ul>
 </div>
 
