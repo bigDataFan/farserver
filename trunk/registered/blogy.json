@@ -8,6 +8,7 @@
         "发布"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/KickBlog/",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/KickBlog/images/logo.jpg",
     "start": "index.gs",
     "version": "1.0",
     "owner": "liuhann@gmail.com"
