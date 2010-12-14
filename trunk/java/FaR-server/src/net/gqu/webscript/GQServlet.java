@@ -184,7 +184,7 @@ public class GQServlet extends HttpServlet {
 						if (wsresult instanceof ContentFile) {
 							handleFileDownLoad(request, response, (ContentFile)wsresult);
 						} else {
-							response.setContentType(JSON_CONTENT_TYPE);
+							response.setContentType(HTML_TYPE);
 							response.getWriter().println(JSONUtils.toJSONString(wsresult));
 						}
 					}
