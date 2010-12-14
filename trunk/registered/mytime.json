@@ -7,6 +7,7 @@
         "管理"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/MyTime/",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/MyTime/images/logo.jpg",
     "start": "web/current.html",
     "version": "1.0",
     "owner": "liuhann@gmail.com"
