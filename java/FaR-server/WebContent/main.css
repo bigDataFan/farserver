@@ -90,7 +90,7 @@ div.top {
 	margin:10px auto;
 }
 
-  .box{
+.box{
   -moz-border-radius:5px 5px 5px 5px;
   -moz-box-shadow:0 0 6px 1px rgba(0, 0, 0, 0.1);
   background: url(img/bg-section.gif) repeat-x scroll 0 0 rgba(255, 255, 255, 0.9);
@@ -102,14 +102,11 @@ div.top {
  }
 
 .box ul{
-  margin: 1em 0 0 .5em;
-  padding:1em 0 0 1em;
+  padding:5px;
  }
 .box ul li{ 
-  margin:0 0 0 1em;
-  padding:0 0 0 1.5em;
   list-style:none;
-  }
+ }
   
 .full {
 	width: 100%;
@@ -124,7 +121,7 @@ div.top {
 	width: 36%;
 }
 
-div h3 {
+div.box h3 {
 	padding-left: 5px;
 }
 	
@@ -136,7 +133,7 @@ div.apprecom {
 }
 
 div.apprecom img {
-float: left;
+	float: left;
     margin: 2px 20px 16px 0;
 }
   
@@ -149,4 +146,20 @@ div.apprecom h3 {
 div.apprecom p {
 	font-size: small;
 }
-  
+
+
+ul.iconlist {
+	list-style: square outside none;
+}
+
+
+ul.iconlist li {
+    color: #686F74;
+    float: left;
+    font-family: "Helvetica Neue",sans-serif;
+    line-height: 17px;
+    margin: 10px 0 0 10px;
+    overflow: hidden;
+    text-align: center;
+    width: 128px;
+}
