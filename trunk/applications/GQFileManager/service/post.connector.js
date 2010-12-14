@@ -22,7 +22,7 @@ if (current!=null) {
 			var content_id = content.put(multilparts[i]);
 			var newFile = {
 					"modified" : new Date(),
-					"mime": multilparts[i].mimetype,
+					"mime": multilparts[i].mimetype==null?"application/octet-stream":multilparts[i].mimetype,
 					"name": multilparts[i].filename,
 					"rel": "/",
 					"parent":current,
