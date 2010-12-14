@@ -28,6 +28,7 @@ public class RegisteredApplication {
 	
 	private String repository;
 	private String version;
+	private String icon;
 	
 	public RegisteredApplication(Map map) {
 		this.name = (String) map.get("name");
@@ -40,6 +41,7 @@ public class RegisteredApplication {
 		this.categories = map.get("categories")==null? (new String[0]) : (String[]) map.get("categories");
 		this.repository = (String) map.get("repository");
 		this.version = (map.get("version")==null)?"1.0":(String) map.get("version");
+		this.icon = (map.get("icon")==null)?"/icondefault.png":(String) map.get("icon");
 	}
 
 	public int getType() {
@@ -67,7 +69,16 @@ public class RegisteredApplication {
 		return repository;
 	}
 
+	
 
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
 	public void setRepository(String repository) {
 		this.repository = repository;
@@ -146,6 +157,7 @@ public class RegisteredApplication {
 		maps.put("start", start);
 		maps.put("details", details);
 		maps.put("repository", repository);
+		maps.put("icon", icon);
 		return maps;
 	}
 	
