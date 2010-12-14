@@ -1036,7 +1036,7 @@ elFinder.prototype.view = function(fm, el) {
 	 * Convert mimetype into css class
 	*/
 	this.mime2class = function(mime) {
-		return mime.replace('/' , ' ').replace(/\./g, '-');
+		return (mime==null)?"unknown": mime.replace('/' , ' ').replace(/\./g, '-');
 	}
 
 	/*
