@@ -142,7 +142,7 @@ public class RestServiceServlet extends HttpServlet {
 	private void render(HttpServletResponse response, Object result)
 			throws IOException {
 		if (result==null) {
-			response.setStatus(409);
+			response.sendRedirect(userService.getMainPage());
 			return;
 		}
 		response.setContentType(CONTENT_TYPE);
