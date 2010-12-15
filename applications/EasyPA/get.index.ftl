@@ -14,11 +14,11 @@
 
 	<div region="west" split="true" title="&nbsp;" style="width:300px;">
 		<ul>
-			<LI><a id="servercfg" href="#">概要</a></LI>
-			<li><a id="rolecfg" href="#" >角色</a></li>
-			<li><a id="usercfg" href="#" >用户</a></li>
-			<LI><a id="appscfg" href="#">应用</a></LI>
-			<LI><a href="#">服务器日志</a></LI>
+			<#if model.owner>
+				<LI><a href="#">员工管理</a></LI>
+				<LI><a href="#">考评记录</a></LI>
+			</#if>
+			<li><a id="rolecfg" href="#" >考评列表</a></li>
 		</ul>
 	</div>
 		
