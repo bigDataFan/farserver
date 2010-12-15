@@ -1,3 +1,9 @@
+if (!user.equals(owner)) {
+	response.sendError(403);
+}
+
+
+
 var df = new Date(params.from);
 var dt = new Date(params.to);
 

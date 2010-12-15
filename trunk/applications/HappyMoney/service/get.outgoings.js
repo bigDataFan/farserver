@@ -1,3 +1,8 @@
+if (!user.equals(owner)) {
+	response.sendError(403);
+}
+
+
 
 var model = new Object();
 var recents = db.getCollection("outcomes").findRecent({}).limit(10);
