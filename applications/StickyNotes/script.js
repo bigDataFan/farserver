@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 	var tmp;
 	
-	$.get("pub/list.gs", {},
+	$.getJSON("pub/list.gs", {},
 		function (data) {
 			for ( var i = 0; i < data.length; i++) {
 				$("#main").append('<div class="note ' + data[i].color + '" style="left:' + data[i].left 
