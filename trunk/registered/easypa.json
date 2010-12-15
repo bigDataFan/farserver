@@ -1,0 +1,16 @@
+{
+    "name": "easypa",
+    "alias": "易得绩效考评管理",
+    "description": "对于中小公司来说，绩效考评非常关键，良好的有助于管理者对企业管理和企业活动进行整体把握。易得绩效考评管理基于以下的理念助力企业发展：1考评的形式比考评的内容重要 2 让员工知道公司在考评他，本身就能促进员工的工作3 考评的结果为人事部门处理员工不满提供了依据 4 考评不宜过于繁杂，要把握考评的目的",
+    "category": [
+        "企业",
+        "管理",
+        "制度",
+        "绩效考评"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/EasyPA/",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/EasyPA/images/logo.jpg",
+    "start": "index.gs",
+    "version": "1.0",
+    "owner": "liuhann@gmail.com"
+}
