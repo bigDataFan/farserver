@@ -1,0 +1,14 @@
+{
+    "name": "stickynotes",
+    "alias": "快捷小便签",
+    "description": "一个简单的小黄纸条应用。",
+    "category": [
+        "个人",
+        "管理"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/StickyNotes/",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/StickyNotes/img/logo.png",
+    "start": "index.html",
+    "version": "1.0",
+    "owner": "liuhann@gmail.com"
+}
