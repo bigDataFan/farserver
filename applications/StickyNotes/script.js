@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 	var tmp;
 	
-	$.get("pub/list", {},
+	$.get("pub/list.gs", {},
 		function (data) {
 			for ( var i = 0; i < data.length; i++) {
 				$("#main").append('<div class="note ' + data[i].color + '" style="left:' + data[i].left 
@@ -52,15 +52,15 @@ $(document).ready(function(){
 	/* The submit button: */
 	$('#note-submit').live('click',function(e){
 		
-		if($('.pr-body').val().length<4)
+		if($('.pr-body').val().length<1)
 		{
-			alert("The note text is too short!")
+			alert("内容过于简短")
 			return false;
 		}
 		
 		if($('.pr-author').val().length<1)
 		{
-			alert("You haven't entered your name!")
+			alert("签名不能为空哦!")
 			return false;
 		}
 		
@@ -74,7 +74,7 @@ $(document).ready(function(){
 		
 		
 		/* Sending an AJAX POST request: */
-		$.post('pub/add',data,function(msg){
+		$.post('pub/add.gs',data,function(msg){
 						 
 			if(parseInt(msg))
 			{
@@ -110,7 +110,7 @@ function make_draggable(elements)
 			
 			/* Sending the z-index and positon of the note to update_position.php via AJAX GET: */
 
-			$.post('pub/updateposition',{
+			$.post('pub/updateposition.gs',{
 				  'left'	: ui.position.left,
 				  'top'	: ui.position.top,
 				  'id'		: ui.helper.find('span.data').html()
@@ -121,7 +121,7 @@ function make_draggable(elements)
 	elements.dblclick( function () {
 		var uiobj = $(this);
 	
-		$.post("pub/delete",
+		$.post("pub/delete.gs",
 				{'id':$(this).find('span.data').html()},
 				function (data) {
 					uiobj.fadeOut("normal"); 
