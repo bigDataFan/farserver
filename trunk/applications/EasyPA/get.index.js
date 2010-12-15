@@ -5,7 +5,7 @@ if (user.equals(owner)) {
 } else {
 	model.owner = false;
 }
-var subordinates = db.getCollection("users").find({"reportingto": user}).toArray();
+var subordinates = db.getCollection("users").find({"reportingto": user.getName()}).toArray();
 
 model.subordinates = subordinates;
 
