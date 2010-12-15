@@ -20,16 +20,16 @@
 			<form id="outcomeForm" method="POST" action="savecat.gs">
 				<div data-role="fieldcontain">
 					<label for="name">分类名称:</label>
-					<#if model._id??>
-						<input type="hidden" name="id"  value="${model._id}">
+					<#if model.id??>
+						<input type="hidden" name="id"  value="${model.id}">
 					</#if>
 				    <input type="text" name="name" value="${model.name}"  />
 				    <label for="name">每月预算: </label>
 				    <input type="text" name="predict" value="${model.predict}"  />
 				</div>
 				<fieldset class="ui-grid-c">
-					<#if model._id??>
-                            <div class="ui-block-a"><a href="deletecat.gs?id=${model._id}" id="cancel" data-role="button">删除</a></div>
+					<#if model.id??>
+                            <div class="ui-block-a"><a href="deletecat.gs?id=${model.id}" id="cancel" data-role="button">删除</a></div>
                     </#if>
                             <div class="ui-block-b"><button data-theme="c" type="submit" id="submit" >保存</button></div>
                  </fieldset>	
