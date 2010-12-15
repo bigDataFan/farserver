@@ -95,7 +95,7 @@ $(document).ready(function(){
 				}
 
 				$('ul.recent_view li a').click(function(){
-					$.get("../service/data.gs/" + $(this).attr("date"), null,
+					$.getJSON("../service/data.gs/" + $(this).attr("date"), null,
 					function(data) {
 						uiDraw(data);
 					})
