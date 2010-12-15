@@ -1,3 +1,8 @@
+if (!user.equals(owner)) {
+	response.sendError(403);
+}
+
+
 
 var n = new Number(params.mount);
 params.mount = isNaN(n)?0:n.valueOf();

@@ -1,3 +1,9 @@
+
+if (!user.equals(owner)) {
+	response.sendError(403);
+}
+
+
 var obj; 
 
 if (params.id!=null) {
