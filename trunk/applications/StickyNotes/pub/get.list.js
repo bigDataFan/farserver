@@ -3,5 +3,3 @@ if (!user.equals(owner)) {
 }
 
 db.getCollection("stickynotes").find({}).toArray();
-
-
