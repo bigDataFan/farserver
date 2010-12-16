@@ -3,10 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
+<#if request.getAgent().isMozilla5()>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.css" />
 <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.js"></script>
-
+</#if>
 </head>
 <body>
 <div data-role="page" id="main">
