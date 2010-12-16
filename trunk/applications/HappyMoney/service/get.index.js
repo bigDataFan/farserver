@@ -2,7 +2,6 @@ if (!user.equals(owner)) {
 	response.sendError(403);
 }
 
-
 var d = new Date();
 
 var monthd = new Date();
