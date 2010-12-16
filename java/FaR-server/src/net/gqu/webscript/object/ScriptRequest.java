@@ -225,7 +225,7 @@ public class ScriptRequest {
 		return request.getRemoteAddr();
 	}
 	
-	public ScriptAgent getScriptAgent() {
+	public ScriptAgent getAgent() {
 		return new ScriptAgent(this.request);
 	}
 }
