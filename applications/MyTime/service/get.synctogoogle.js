@@ -1,3 +1,7 @@
+if (!user.equals(owner) && "test"!=user.getName()) {
+	response.sendError(403);
+}
+
 google.calendar.checkLogin();
 
 var today = new Date();

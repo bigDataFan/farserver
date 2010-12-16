@@ -1,4 +1,9 @@
+if (!user.equals(owner) && "test"!=user.getName()) {
+	response.sendError(403);
+}
+
 var path = request.getPath();
+
 var pathArray = path.split("/");
 
 var today = new Date();
