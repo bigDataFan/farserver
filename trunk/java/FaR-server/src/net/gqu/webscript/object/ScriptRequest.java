@@ -8,7 +8,6 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import net.gqu.utils.StringUtils;
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.apache.commons.fileupload.FileItem;
@@ -225,5 +224,8 @@ public class ScriptRequest {
 	public String getRemoteAddr() {
 		return request.getRemoteAddr();
 	}
-		
+	
+	public ScriptAgent getScriptAgent() {
+		return new ScriptAgent(this.request);
+	}
 }

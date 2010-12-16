@@ -8,14 +8,23 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ScriptAgent {
 	
+	private static final String ANDROID = "Android";
+	private static final String MOZILLA_5_0 = "Mozilla/5.0";
 	private HttpServletRequest request;
-	
-	
+	private String userAgent;
 	
 	private static Map<String, Analyser> analysers = new HashMap<String, Analyser>();
 	
 	{
 		analysers.put(BlackBerryAnalyser.BLACK_BERRY, new BlackBerryAnalyser());
+	}
+	
+	public boolean isMozilla5() {
+		return userAgent.startsWith(MOZILLA_5_0);
+	}
+	
+	public boolean isAndroid() {
+		return userAgent.indexOf(ANDROID)>0;
 	}
 	
 	
