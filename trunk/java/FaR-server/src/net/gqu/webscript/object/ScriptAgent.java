@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ScriptAgent {
 	
+	private static final String USER_AGENT = "User-Agent";
 	private static final String ANDROID = "Android";
 	private static final String MOZILLA_5_0 = "Mozilla/5.0";
 	private HttpServletRequest request;
@@ -20,10 +21,16 @@ public class ScriptAgent {
 	}
 	
 	public boolean isMozilla5() {
+		if (userAgent==null) {
+			return false;
+		}
 		return userAgent.startsWith(MOZILLA_5_0);
 	}
 	
 	public boolean isAndroid() {
+		if (userAgent==null) {
+			return false;
+		}
 		return userAgent.indexOf(ANDROID)>0;
 	}
 	
@@ -31,11 +38,12 @@ public class ScriptAgent {
 	public ScriptAgent(HttpServletRequest request) {
 		super();
 		this.request = request;
+		userAgent = request.getHeader(USER_AGENT);
 	}
 
 	public String getAgentType() {
-
-		String uagent = request.getHeader("User-Agent");
+		
+		String uagent = request.getHeader(USER_AGENT);
 		
 		
 		Set<String> keys = analysers.keySet();
