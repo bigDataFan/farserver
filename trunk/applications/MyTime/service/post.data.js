@@ -1,3 +1,6 @@
+if (!user.equals(owner) && "test"!=user.getName()) {
+	response.sendError(403);
+}
 var today = new Date();
 
 dateStr = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
