@@ -34,7 +34,7 @@ var types = {
 }
 var model;
 if (params.id!=null) {
-	model = db.getCollection(params.type).getById(params.id))
+	model = db.getCollection(params.type).getById(params.id);
 } else {
 	model = types[params.type];
 }
