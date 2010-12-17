@@ -32,11 +32,11 @@ $(document).ready(function(){
 				requestObj,
 				function(data) {
 					var kform = $('div.kform');
-					 for(var type in obj){
+					 for(var type in data){
 						var catdiv = $('<div class="cats"><h3>' + type +'</h3></div>');
 						
-						for(var prop in obj[type]) {
-							catdiv.append('<INPUT name="' + prop + '" value="' + obj[type][prop] + '">');
+						for(var prop in data[type]) {
+							catdiv.append('<INPUT name="' + prop + '" value="' + data[type][prop] + '">');
 						}
 
 						kform.append(catdiv);
