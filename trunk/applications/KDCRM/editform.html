@@ -16,18 +16,22 @@
 var type = getParam("type");
 var id = getParam("id");
 
+var requestObj = null;
+if (type!=null) {
+	requestObj.type = type;
+	if (id!=null) {
+		requestObj.id = id;
+	}
+}
+
 $(document).ready(function(){
 	
-	if (type!=null) {
-		
-		
+	if (requestObj!=null) {		
 		$.getJSON("service/edit.gs", 
-				{"type":type,
-				"id":id},
+				requestObj,
 				function(data) {
 
 					var kform = $('div.kform');
-					
 					 for(var type in obj){
 						var catdiv = $('<div class="cats"><h3>' + type +'</h3></div>');
 						
@@ -39,8 +43,7 @@ $(document).ready(function(){
 					 }
 				}
 		);
-	}		
-	
+	}
 	
 	
 });
