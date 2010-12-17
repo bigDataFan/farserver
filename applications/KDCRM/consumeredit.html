@@ -78,11 +78,15 @@ function getParam(strname) {
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, h, td {
     background: none repeat scroll 0 0 transparent;
     border: 0 none;
-    font-size: 100%;
+    font-size: small;
     margin: 0;
     outline: 0 none;
     padding: 0;
     vertical-align: baseline;
+}
+
+body {
+	background: url("img/bg_content.jpg") repeat-y scroll 50% 0 transparent;
 }
 
 .header {
@@ -169,7 +173,7 @@ div.header div.container980 {
 }
 
 .mainbody {
-    background: url("img/bg_content.jpg") repeat-y scroll 50% 0 transparent;
+    
 }
 
 .footer {
@@ -202,15 +206,29 @@ div.header div.container980 {
 }
 
 
-.kform input {
+.columns3 {
+    float: left;
+    width: 33%;
+}
+
+.columns2 {
+    float: left;
+    width: 50%;
+}
+
+.columns1 {
+    float: left;
+    width: 100%;
+}
+
+.kform input, .kform select {
     background: url("img/contact-sprite.png") no-repeat scroll 0 0 transparent;
     border: 1px solid #E7E7E7;
     clear: both;
-    font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
-    font-size: 11px;
+    font-size: small;
     height: 33px;
     line-height: 22px;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
     padding: 0 5px 0 30px;
     width: 82%;
 }
@@ -218,10 +236,11 @@ div.header div.container980 {
 div.kform div.cats {
 	margin-top:20px;
 	border: 1px solid #D1CFCF;
+	overflow:auto; 
+	zoom:1;
 }
 
 div.kform div.cats h3{
-
 	border-bottom: 1px solid #FBB829;
     height: 25px;
     color: #FBB829;
@@ -274,11 +293,76 @@ div.kform div.cats h3{
 	<div class="container980 kform">
 		<div class="cats">
 			<h3>基本信息</h3>
-			<label >名称</label> <input name="名称">
+			<div class="columns2">
+				<label >名称</label> <input name="name">
+			</div>
+			<div class="columns2">
+				<label >简称</label> <input name="alias">
+			</div>
+			
+			<div class="columns3">
+			<label >客户类型</label> <select name="type"><option value="企业客户">企业客户</option><option value="个人客户">个人客户</option></select>
+			</div>
+			
+			
+			<div class="columns3">
+			<label >信用等级</label> <select name="credit"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
+			</div>
+			<div class="columns3">
+			<label >价值评估</label> <select name="worth"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
+			</div>
+			<div class="columns3">
+			<label >客户热度</label> <select name="hot"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
+			</div>
+			<div class="columns3">
+			<label >关系等级</label> <select name="relation"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
+			</div>
+			
 		</div> 
-				<div class="cats">
-			<h3>基本信息</h3>
-			<label >名称</label> <input name="名称">
+		<div class="cats">
+			<h3>联系方式</h3>
+			<div class="columns3">
+				<label >地址</label> <input name="location">
+			</div>
+			<div class="columns3">
+				<label >邮编</label> <input name="postcode">
+			</div>
+			<div class="columns3">
+				<label >固定电话</label> <input name="phone">
+			</div>
+			<div class="columns3">
+				<label >移动电话</label> <input name="mobile">
+			</div>
+			<div class="columns3">
+				<label >即时通讯</label> <input name="im">
+			</div>
+			<div class="columns3">
+				<label >电子邮件</label> <input name="email">
+			</div>
+			<div class="columns3">
+				<label >网址</label> <input name="url">
+			</div>			
+		</div> 
+		
+		<div class="cats">
+			<h3>个人信息</h3>
+			<div class="columns3">
+				<label >姓名</label> <input name="personname">
+			</div>
+			<div class="columns3">
+				<label >性别</label> <select name="sex"><option value="男">男</option><option value="女">女</option></select>
+			</div>
+		</div> 
+		
+		
+		<div class="cats">
+			<h3>企业信息</h3>
+			<div class="columns3">
+				<label >行业</label> <input name="industry">
+			</div>
+			<div class="columns3">
+				<label >规模</label> <input name="scale">
+			</div>
 		</div> 
 	</div>
 	
