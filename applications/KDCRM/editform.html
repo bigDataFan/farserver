@@ -17,8 +17,10 @@ var type = getParam("type");
 var id = getParam("id");
 
 $(document).ready(function(){
-
+	
 	if (type!=null) {
+		
+		
 		$.getJSON("service/edit.gs", 
 				{"type":type,
 				"id":id},
