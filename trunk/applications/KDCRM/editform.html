@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+
+
+<link rel="stylesheet" type="text/css" href="js/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="js/easyui/themes/icon.css">
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script language="Javascript" type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+
+
+
+<style type="text/css">
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, h, td {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    font-size: 100%;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+.header {
+    border-bottom: 1px solid #5A6064;
+    background: url("img/bg_header.jpg") repeat scroll 0 0 transparent;
+}
+
+.container980 {
+    margin: 0 auto;
+    width: 980px;
+}
+
+div.header div.container980 {
+    height: 90px;
+    background: url("img/bg_header_shine.png") no-repeat scroll 50% 100% transparent;
+}
+
+
+#logo {
+    display: block;
+    float: left;
+    height: 80px;
+    margin: 8px 0 0 -5px;
+    width: 250px;
+}
+
+
+.header ul {
+    list-style: none outside none;
+    float: right;
+}
+
+
+.header ul li {
+    background: url("img/navi_seperator.png") no-repeat scroll 100% 1px transparent;
+    float: left;
+    position: relative;
+}
+
+.header ul li span {
+    display: block;
+    height: 45px;
+    left: 50%;
+    margin-left: -25px;
+    position: absolute;
+    top: 12px;
+    width: 50px;
+}
+
+.header ul li a {
+    color: #FFFFFF;
+    display: block;
+    font-size: 13px;
+    height: 90px;
+    line-height: 130px;
+    padding: 0 18px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: 0 1px 1px #9D9999;
+}
+
+.header ul li:HOVER {
+    background: url("img/bg_navi_hover.png") no-repeat scroll 50% 100% transparent;
+}
+
+#c_list{
+    background: url("img/sprite.png") no-repeat scroll -50px -44px transparent;
+}
+
+#c_actvity {
+   background: url("img/sprite.png") no-repeat scroll -250px -44px transparent;
+}
+
+#c_pre{
+    background: url("img/sprite.png") no-repeat scroll -100px -44px transparent;
+}
+
+#c_center{
+    background: url("img/sprite.png") no-repeat scroll 0 -44px transparent;
+}
+
+#c_after{
+	background: url("img/sprite.png") no-repeat scroll -200px -44px transparent;
+}
+
+.mainbody {
+    background: url("img/bg_content.jpg") no-repeat scroll 50% 0 transparent;
+}
+
+.footer {
+    background: url("img/bg_header.jpg") repeat scroll 0 0 transparent;
+    padding-top: 50px;
+    position: relative;
+}
+
+#copyright {
+    padding-bottom: 30px;
+    text-align: center;
+    width: 100%;
+	border-top: 1px solid #424C54;
+}
+
+#copyright span {
+    color: #6F7E8A;
+    font-family: Georgia,serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    text-shadow: 0 1px 1px #000000;
+    word-spacing: 0.1em;
+}
+
+#copyright span a {
+    color: #6F7E8A;
+    text-decoration: none;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="header">
+	<div class="container980">
+		<a id="logo"></a>
+		<ul class="menu">
+			<li>
+				<span id="c_list">&nbsp;</span>
+				<a href="#">客户列表</a>
+			</li>
+			<li>
+				<span id="c_actvity">&nbsp;</span>
+				<a>客户动态</a>
+			</li>
+			<li>
+				<span id="c_pre">&nbsp;</span>
+				<a>售前跟踪</a>
+			</li>
+			<li>
+				<span id="c_center">&nbsp;</span>
+				<a>售中管理</a>
+			</li>
+			<li>
+				<span id="c_after">&nbsp;</span>
+				<a>售后信息</a>
+			</li>
+		</ul>
+		
+	</div>
+</div>
+
+<div class="mainbody">
+	<div class="container980">
+			<table id="userTable" style="width:100%;height:auto;"
+			title="客户管理" iconCls="icon-edit" singleSelect="true"
+			 url="service/list.gs">
+			<thead>
+				<tr>
+					<th field="name" width="100" sortable="true">客户名称</th>
+					<th field="email" width="200" editor="text">简称</th>
+					<th field="logined" width="50" sortable="true">客户类型</th>
+					<th field="password" width="50" editor="text">简介</th>
+					<th field="password" width="50" editor="text">价值</th>
+					<th field="password" width="50" editor="text">成单量</th>
+				</tr>
+
+			</thead>
+			</table>
+
+	</div>
+</div>
+
+<div class="footer">
+
+<div id="copyright">
+    <span>&copy;2010 <a title="1stwebdesigner &ndash; Graphic and Web Design Blog - 1stwebdesigner is a design blog dedicated to bloggers, freelancers, web-developers and designers. Topics focus on web design and inspirational articles." href="http://www.1stwebdesigner.com">1stwebdesigner &ndash; Graphic and Web Design Blog</a>. Design by <a title="Dainis Graveris on deviantART" href="http://dainix.deviantart.com/">Dainis Graveris</a>. WordPress Theme by <a title="Daniel Kurdoghlian on Twitter" href="http://twitter.com/derblub">Daniel Kurdoghlian</a></span>
+</div>
+
+</div>
+
+</body>
+</html>
