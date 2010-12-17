@@ -1,5 +1,5 @@
 
-var cosumer = {
+var consumer = {
 	"基本信息":  {
 		"名称": "",
 		"简称":"",
@@ -30,7 +30,7 @@ var cosumer = {
 }
 
 var types = {
-		"cosumer":cosumer
+		"consumer":consumer
 }
 var model;
 if (params.id!=null) {
