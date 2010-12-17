@@ -2,51 +2,56 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
-
-
-<link rel="stylesheet" type="text/css" href="js/easyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="js/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-<script language="Javascript" type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
 
+
+</head>
 
 <script type="text/javascript">
-
-var type = getParam("type");
 var id = getParam("id");
+var collections = "consumers";
 
-var requestObj = null;
-if (type!=null) {
-	requestObj = new Object();
-	requestObj.type = type;
-	if (id!=null) {
-		requestObj.id = id;
-	}
+
+
+if (id!=null) {
+	$.getJSON("service/get.gs",
+			{
+				"collection": collections,
+				"id": id
+			},
+			function(data) {
+				for(var o in data) {
+					$('input[name="' + o + '"]').val(data[o]);
+				}
+			}
+	);
 }
 
-$(document).ready(function(){
-	
-	if (requestObj!=null) {		
-		$.getJSON("service/edit.gs", 
-				requestObj,
-				function(data) {
-					var kform = $('div.kform');
-					 for(var type in data){
-						var catdiv = $('<div class="cats"><h3>' + type +'</h3></div>');
-						
-						for(var prop in data[type]) {
-							catdiv.append('<label >' + prop + '</label><INPUT name="' + prop + '" value="' + data[type][prop] + '">');
-						}
-						kform.append(catdiv);
-					 }
-				}
-		);
-	}
-	
-	
-});
 
+
+function saveObj(create) {
+	var req = new Object();
+	req.collection = collections;
+	if (id!=null) req.id = id;
+
+	$('input,select').each(
+			function() {
+				req[$(this).attr("name")] = $(this).val();
+			}
+	);
+
+	$.post("service/save.gs",
+			req,
+			function(data) {
+				if (create) {
+					location.href=location.href;
+				} else {
+					alert("保存完成");
+				}
+			}
+	);
+}
 
 
 function getParam(strname) {
@@ -69,195 +74,9 @@ function getParam(strname) {
 
 
 
-
 </script>
 
 
-<style type="text/css">
-
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, h, td {
-    background: none repeat scroll 0 0 transparent;
-    border: 0 none;
-    font-size: small;
-    margin: 0;
-    outline: 0 none;
-    padding: 0;
-    vertical-align: baseline;
-}
-
-body {
-	background: url("img/bg_content.jpg") repeat-y scroll 50% 0 transparent;
-}
-
-.header {
-    border-bottom: 1px solid #5A6064;
-    background: url("img/bg_header.jpg") repeat scroll 0 0 transparent;
-}
-
-.container980 {
-    margin: 0 auto;
-    width: 980px;
-}
-
-div.header div.container980 {
-    height: 90px;
-    background: url("img/bg_header_shine.png") no-repeat scroll 50% 100% transparent;
-}
-
-
-#logo {
-    display: block;
-    float: left;
-    height: 80px;
-    margin: 8px 0 0 -5px;
-    width: 250px;
-}
-
-
-.header ul {
-    list-style: none outside none;
-    float: right;
-}
-
-
-.header ul li {
-    background: url("img/navi_seperator.png") no-repeat scroll 100% 1px transparent;
-    float: left;
-    position: relative;
-}
-
-.header ul li span {
-    display: block;
-    height: 45px;
-    left: 50%;
-    margin-left: -25px;
-    position: absolute;
-    top: 12px;
-    width: 50px;
-}
-
-.header ul li a {
-    color: #FFFFFF;
-    display: block;
-    font-size: 13px;
-    height: 90px;
-    line-height: 130px;
-    padding: 0 18px;
-    position: relative;
-    text-decoration: none;
-    text-shadow: 0 1px 1px #9D9999;
-}
-
-.header ul li:HOVER {
-    background: url("img/bg_navi_hover.png") no-repeat scroll 50% 100% transparent;
-}
-
-#c_list{
-    background: url("img/sprite.png") no-repeat scroll -50px -44px transparent;
-}
-
-#c_actvity {
-   background: url("img/sprite.png") no-repeat scroll -250px -44px transparent;
-}
-
-#c_pre{
-    background: url("img/sprite.png") no-repeat scroll -100px -44px transparent;
-}
-
-#c_center{
-    background: url("img/sprite.png") no-repeat scroll 0 -44px transparent;
-}
-
-#c_after{
-	background: url("img/sprite.png") no-repeat scroll -200px -44px transparent;
-}
-
-.mainbody {
-    
-}
-
-.footer {
-    background: url("img/bg_header.jpg") repeat scroll 0 0 transparent;
-    padding-top: 50px;
-    position: relative;
-}
-
-#copyright {
-    padding-bottom: 30px;
-    text-align: center;
-    width: 100%;
-	border-top: 1px solid #424C54;
-}
-
-#copyright span {
-    color: #6F7E8A;
-    font-family: Georgia,serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    letter-spacing: 0.05em;
-    text-shadow: 0 1px 1px #000000;
-    word-spacing: 0.1em;
-}
-
-#copyright span a {
-    color: #6F7E8A;
-    text-decoration: none;
-}
-
-
-.columns3 {
-    float: left;
-    width: 33%;
-}
-
-.columns2 {
-    float: left;
-    width: 50%;
-}
-
-.columns1 {
-    float: left;
-    width: 100%;
-}
-
-.kform input, .kform select {
-    background: url("img/contact-sprite.png") no-repeat scroll 0 0 transparent;
-    border: 1px solid #E7E7E7;
-    clear: both;
-    font-size: small;
-    height: 33px;
-    line-height: 22px;
-    margin-bottom: 5px;
-    padding: 0 5px 0 30px;
-    width: 82%;
-}
-
-div.kform div.cats {
-	margin-top:20px;
-	border: 1px solid #D1CFCF;
-	overflow:auto; 
-	zoom:1;
-}
-
-div.kform div.cats h3{
-	border-bottom: 1px solid #FBB829;
-    height: 25px;
-    color: #FBB829;
-    text-shadow: 0 1px 0 #8F6100;
-    font-size: medium;
-    font-style: normal;
-    font-weight: 900;
-    left: 120px;
-    letter-spacing: 0.02em;
-    top: 0;
-    padding:5px;
-    word-spacing: 0.15em;
-}
-
-</style>
-
-</head>
 <body>
 
 <div class="header">
@@ -290,6 +109,8 @@ div.kform div.cats h3{
 </div>
 
 <div class="mainbody">
+
+	<form action="service/update.gs" method="POST">
 	<div class="container980 kform">
 		<div class="cats">
 			<h3>基本信息</h3>
@@ -364,8 +185,14 @@ div.kform div.cats h3{
 				<label >规模</label> <input name="scale">
 			</div>
 		</div> 
+		
+		<div class="cats">
+			<div class="columns3">
+				<input type="button" value="保存" onclick="saveObj()">
+			</div>
+		</div>
 	</div>
-	
+	</form>
 </div>
 
 <div class="footer">
