@@ -18,6 +18,7 @@ var id = getParam("id");
 
 var requestObj = null;
 if (type!=null) {
+	requestObj = new Object();
 	requestObj.type = type;
 	if (id!=null) {
 		requestObj.id = id;
@@ -30,7 +31,6 @@ $(document).ready(function(){
 		$.getJSON("service/edit.gs", 
 				requestObj,
 				function(data) {
-
 					var kform = $('div.kform');
 					 for(var type in obj){
 						var catdiv = $('<div class="cats"><h3>' + type +'</h3></div>');
