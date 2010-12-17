@@ -11,6 +11,63 @@
 <script language="Javascript" type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
 
 
+<script type="text/javascript">
+
+var type = getParams("type");
+var id = getParams("id");
+
+$(document).ready(function(){
+
+	if (type!=null) {
+		$.getJSON("service/edit.gs", 
+				{"type":type,
+				"id":id},
+				function(data) {
+
+					var kform = $('div.kform');
+					
+					 for(var type in obj){
+						var catdiv = $('<div class="cats"><h3>' + type +'</h3></div>');
+						
+						for(var prop in obj[type]) {
+							catdiv.append('<INPUT name="' + prop + '" value="' + obj[type][prop] + '">');
+						}
+
+						kform.append(catdiv);
+					 }
+				}
+		);
+	}		
+	
+	
+	
+});
+
+
+
+function getParam(strname) {
+	var hrefstr, pos, parastr, para, tempstr;
+	hrefstr = window.location.href;
+	pos = hrefstr.indexOf("?")
+	parastr = hrefstr.substring(pos + 1);
+	para = parastr.split("&");
+	tempstr = "";
+	for (i = 0; i < para.length; i++)
+	{
+		tempstr = para[i];
+		pos = tempstr.indexOf("=");
+		if (tempstr.substring(0, pos) == strname) {
+			return tempstr.substring(pos + 1);
+		}
+	}
+	return null;
+}
+
+
+
+
+</script>
+
 
 <style type="text/css">
 
@@ -108,7 +165,7 @@ div.header div.container980 {
 }
 
 .mainbody {
-    background: url("img/bg_content.jpg") no-repeat scroll 50% 0 transparent;
+    background: url("img/bg_content.jpg") repeat-y scroll 50% 0 transparent;
 }
 
 .footer {
@@ -138,6 +195,41 @@ div.header div.container980 {
 #copyright span a {
     color: #6F7E8A;
     text-decoration: none;
+}
+
+
+.kform input {
+    background: url("img/contact-sprite.png") no-repeat scroll 0 0 transparent;
+    border: 1px solid #E7E7E7;
+    clear: both;
+    font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    height: 33px;
+    line-height: 22px;
+    margin-bottom: 25px;
+    padding: 0 5px 0 30px;
+    width: 82%;
+}
+
+div.kform div.cats {
+	margin-top:20px;
+	border: 1px solid #D1CFCF;
+}
+
+div.kform div.cats h3{
+
+	border-bottom: 1px solid #FBB829;
+    height: 25px;
+    color: #FBB829;
+    text-shadow: 0 1px 0 #8F6100;
+    font-size: medium;
+    font-style: normal;
+    font-weight: 900;
+    left: 120px;
+    letter-spacing: 0.02em;
+    top: 0;
+    padding:5px;
+    word-spacing: 0.15em;
 }
 
 </style>
@@ -175,24 +267,17 @@ div.header div.container980 {
 </div>
 
 <div class="mainbody">
-	<div class="container980">
-			<table id="userTable" style="width:100%;height:auto;"
-			title="客户管理" iconCls="icon-edit" singleSelect="true"
-			 url="service/list.gs">
-			<thead>
-				<tr>
-					<th field="name" width="100" sortable="true">客户名称</th>
-					<th field="email" width="200" editor="text">简称</th>
-					<th field="logined" width="50" sortable="true">客户类型</th>
-					<th field="password" width="50" editor="text">简介</th>
-					<th field="password" width="50" editor="text">价值</th>
-					<th field="password" width="50" editor="text">成单量</th>
-				</tr>
-
-			</thead>
-			</table>
-
+	<div class="container980 kform">
+		<div class="cats">
+			<h3>基本信息</h3>
+			<label >名称</label> <input name="名称">
+		</div> 
+				<div class="cats">
+			<h3>基本信息</h3>
+			<label >名称</label> <input name="名称">
+		</div> 
 	</div>
+	
 </div>
 
 <div class="footer">
