@@ -2,8 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="js/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="js/themes/icon.css">
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script language="Javascript" type="text/javascript" src="js/jquery.easyui.min.js"></script>
+
 
 
 </head>
@@ -12,18 +15,35 @@
 var id = getParam("id");
 var collections = "presales";
 
-if (id!=null) {
-	$.getJSON("service/edit.gs",
-			{
-				"collection": collections,
-				"id": id
-			},
-			function(data) {
-				for(var o in data) {
-					$('*[name="' + o + '"]').val(data[o]);
+
+
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	
+	
+	if (id!=null) {
+		$.getJSON("service/edit.gs",
+				{
+					"collection": collections,
+					"id": id
+				},
+				function(data) {
+					for(var o in data) {
+						$('*[name="' + o + '"]').val(data[o]);
+					}
 				}
-			}
-	);
+		);
+	}
+});
+
+
+function show_select() {
+	$('#consumerSelect').dialog();
 }
 
 function saveObj(create) {
@@ -121,7 +141,7 @@ function getParam(strname) {
 				<label >时间</label> <input name="time">
 			</div>
 			<div class="columns3">
-				<label >涉及客户</label> <input name="consumers">
+				<label >涉及客户</label> <input name="consumers" onclick="show_select();">
 			</div>
 			<div class="columns1">
 				<label >客户需求</label>
@@ -160,6 +180,22 @@ function getParam(strname) {
 	</div>
 	</form>
 </div>
+
+
+<div id="consumerSelect" icon="icon-save" style="padding:5px;width:400px;height:200px; display: none">
+
+		<p>dialog content.</p>
+		<p>dialog content.</p>
+		<p>dialog content.</p>
+		<p>dialog content.</p>
+		<p>dialog content.</p>
+		<p>dialog content.</p>
+
+		<p>dialog content.</p>
+		<p>dialog content.</p>
+	</div>
+
+
 
 <div class="footer">
 
