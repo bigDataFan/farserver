@@ -1,7 +1,7 @@
 
 if (params.collection!=null) {
 	
-	if (params.collection=="consumers" && params.name>0) {
+	if (params.collection=="consumers" && params.name.length>0) {
 		params.firstLetter = utils.getFirstLetter(params.name.substring(0,1));
 	}
 	
