@@ -20,7 +20,7 @@ if (id!=null) {
 			},
 			function(data) {
 				for(var o in data) {
-					$('input[name="' + o + '"]').val(data[o]);
+					$('*[name="' + o + '"]').val(data[o]);
 				}
 			}
 	);
