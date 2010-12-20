@@ -95,6 +95,9 @@ div.header div.container980 {
 	background: url("img/sprite.png") no-repeat scroll -200px -44px transparent;
 }
 
+#c_ana{
+	background: url("img/sprite.png") no-repeat scroll -300px -44px transparent;
+}
 
 .footer {
     background: url("img/bg_header.jpg") repeat scroll 0 0 transparent;
