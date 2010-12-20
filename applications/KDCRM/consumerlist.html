@@ -14,7 +14,11 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$('#consumerTable').datagrid();
+	$('#consumerTable').datagrid(
+			onClickRow:function(rowIndex, rowData) {
+				location.href="cosumeredit.html?id=" + rowData.id;
+			}
+	);
 });
 
 </script>
@@ -61,6 +65,10 @@ $(document).ready(function(){
 					<th field="alias" width="200" editor="text">简称</th>
 					<th field="type" width="100" editor="text">类型</th>
 					<th field="credit" width="50" sortable="true">信用</th>
+					<th field="worth" width="50" sortable="true">价值</th>
+					<th field="hot" width="50" sortable="true">客户热度</th>
+					<th field="relation" width="50" sortable="true">关系等级</th>
+					<th field="worth" width="50" sortable="true">价值</th>
 					<th field="worth" width="50" sortable="true">价值</th>
 				</tr>
 			</thead>
