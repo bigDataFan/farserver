@@ -8,4 +8,6 @@ while (cursor.hasNext()) {
 	result.push(cursor.next());
 }
 
+var s="";
+s.
 result;
