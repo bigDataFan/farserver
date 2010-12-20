@@ -41,7 +41,7 @@ function saveObj(create) {
 			req,
 			function(data) {
 				if (create) {
-					location.href="consumeredit.html";
+					location.href= location.pathname;
 				} else {
 					alert("保存完成");
 				}
@@ -120,69 +120,13 @@ function getParam(strname) {
 			<div class="columns3">
 				<label >时间</label> <input name="alias">
 			</div>
+			<div class="columns3">
+				<label >涉及客户</label> <input name="consumers">
+			</div>
 			
 			<div class="columns1">
 			<label >备忘信息</label>
 			 <textarea tabindex="4" rows="8" cols="40" name="info"></textarea>
-			</div>
-			
-			
-			<div class="columns3">
-			<label >信用等级</label> <select name="credit"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
-			</div>
-			<div class="columns3">
-			<label >价值评估</label> <select name="worth"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
-			</div>
-			<div class="columns3">
-			<label >客户热度</label> <select name="hot"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
-			</div>
-			<div class="columns3">
-			<label >关系等级</label> <select name="relation"><option value="低">低</option><option value="中">中</option><option value="高">高</option></select>
-			</div>
-			
-		</div> 
-		<div class="cats">
-			<h3>联系方式</h3>
-			<div class="columns3">
-				<label >地址</label> <input name="location">
-			</div>
-			<div class="columns3">
-				<label >邮编</label> <input name="postcode">
-			</div>
-			<div class="columns3">
-				<label >固定电话</label> <input name="phone">
-			</div>
-			<div class="columns3">
-				<label >移动电话</label> <input name="mobile">
-			</div>
-			<div class="columns3">
-				<label >即时通讯</label> <input name="im">
-			</div>
-			<div class="columns3">
-				<label >电子邮件</label> <input name="email">
-			</div>
-			<div class="columns3">
-				<label >网址</label> <input name="url">
-			</div>			
-		</div> 
-		
-		<div class="cats">
-			<h3>个人信息</h3>
-			<div class="columns3">
-				<label >姓名</label> <input name="personname">
-			</div>
-			<div class="columns3">
-				<label >性别</label> <select name="sex"><option value="男">男</option><option value="女">女</option></select>
-			</div>
-		</div> 
-		
-		<div class="cats">
-			<h3>企业信息</h3>
-			<div class="columns3">
-				<label >行业</label> <input name="industry">
-			</div>
-			<div class="columns3">
-				<label >规模</label> <input name="scale">
 			</div>
 		</div> 
 		
