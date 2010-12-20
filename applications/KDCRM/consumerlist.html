@@ -15,6 +15,14 @@
 
 $(document).ready(function(){
 	$('#consumerTable').datagrid({
+			toolbar:[
+		    	{
+ 		    		text:"新增",
+ 		    		iconCls:'icon-add',
+ 		    		handler:function(){
+		    			location.href="consumeredit.html";					
+					}
+ 				},'-'],
 			onClickRow:function(rowIndex, rowData) {
 				location.href="consumeredit.html?id=" + rowData.id;
 			}
