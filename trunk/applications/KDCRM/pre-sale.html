@@ -27,7 +27,7 @@ $(document).ready(function(){
 						var l = data[i].firstLetter.toLowerCase();
 						var group = $('#' + l);
 						if (group.length==0) {
-							group = $('<li id="' + dl + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
+							group = $('<li id="' + l + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
 							wul.append(group);
 						}
 						group.find('ul').append('<li><a href="#">' + data[i].name + "(" + data[i].alias + ')</a></li>');
