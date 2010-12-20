@@ -31,7 +31,7 @@ function saveObj(create) {
 	req.collection = collections;
 	if (id!=null) req.id = id;
 
-	$('input,select').each(
+	$('input,select,textarea').each(
 			function() {
 				req[$(this).attr("name")] = $(this).val();
 			}
