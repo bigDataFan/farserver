@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+
+<link rel="stylesheet" type="text/css" href="js/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="js/themes/icon.css">
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script language="Javascript" type="text/javascript" src="js/jquery.easyui.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$('#presalesTable').datagrid({
+			toolbar:[
+		    	{
+ 		    		text:"新增",
+ 		    		iconCls:'icon-add',
+ 		    		handler:function(){
+		    			location.href="pre-sale.html";					
+					}
+ 				},'-'],
+			onClickRow:function(rowIndex, rowData) {
+				location.href="pre-sale.html?id=" + rowData.id;
+			}
+	});
+});
+
+</script>
+
+</head>
+<body>
+
+<div class="header">
+	<div class="container980">
+		<a id="logo"></a>
+		<ul>
+			<li>
+				<span id="c_list">&nbsp;</span>
+				<a href="consumerlist.html">客户列表</a>
+			</li>
+			<li>
+				<span id="c_actvity">&nbsp;</span>
+				<a href="activities.html">客户动态</a>
+			</li>
+			<li>
+				<span id="c_pre">&nbsp;</span>
+				<a href="pre-sales.html">售前跟踪</a>
+			</li>
+			<li>
+				<span id="c_center">&nbsp;</span>
+				<a href="sales.html">售中管理</a>
+			</li>
+			<li>
+				<span id="c_after">&nbsp;</span>
+				<a href="after-sales.html">售后信息</a>
+			</li>
+			<li>
+				<span id="c_ana">&nbsp;</span>
+				<a href="analysis.html">分析</a>
+			</li>			
+		</ul>
+	</div>
+</div>
+
+<div class="mainbody">
+	<div class="container980" style="padding-top: 10px;">
+	
+		<table id="presalesTable" style="width:980px;height:800px;"
+			singleSelect="true" idField="name" url="service/list.gs?collection=consumers">
+			<thead>
+				<tr>
+					<th field="name" width="100" sortable="true">客户名</th>
+					<th field="alias" width="200" editor="text">简称</th>
+					<th field="type" width="100" editor="text">类型</th>
+					<th field="credit" width="50" sortable="true">信用</th>
+					<th field="worth" width="50" sortable="true">价值</th>
+					<th field="hot" width="50" sortable="true">客户热度</th>
+					<th field="relation" width="50" sortable="true">关系等级</th>
+					<th field="worth" width="50" sortable="true">价值</th>
+					<th field="worth" width="50" sortable="true">价值</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	
+</div>
+
+<div class="footer">
+
+<div id="copyright">
+    <span>&copy;2010 <a title="1stwebdesigner &ndash; Graphic and Web Design Blog - 1stwebdesigner is a design blog dedicated to bloggers, freelancers, web-developers and designers. Topics focus on web design and inspirational articles." href="http://www.1stwebdesigner.com">1stwebdesigner &ndash; Graphic and Web Design Blog</a>. Design by <a title="Dainis Graveris on deviantART" href="http://dainix.deviantart.com/">Dainis Graveris</a>. WordPress Theme by <a title="Daniel Kurdoghlian on Twitter" href="http://twitter.com/derblub">Daniel Kurdoghlian</a></span>
+</div>
+
+</div>
+
+</body>
+</html>
