@@ -35,6 +35,14 @@ $(document).ready(function(){
 
 function show_select() {
 	$('#consumerSelect').dialog();
+
+	$('#consumerTable').datagrid({
+		onClickRow:function(rowIndex, rowData) {
+			rowData.name;
+		}
+});
+
+	
 }
 
 function saveObj(create) {
@@ -173,18 +181,17 @@ function getParam(strname) {
 </div>
 
 
-<div id="consumerSelect" icon="icon-save" style="padding:5px;width:400px;height:200px;">
-
-		<p>dialog content.</p>
-		<p>dialog content.</p>
-		<p>dialog content.</p>
-		<p>dialog content.</p>
-		<p>dialog content.</p>
-		<p>dialog content.</p>
-
-		<p>dialog content.</p>
-		<p>dialog content.</p>
-	</div>
+<div id="consumerSelect" icon="icon-save" style="padding:5px;width:400px;height:200px; display: none">
+	<table id="consumerTable"
+			singleSelect="true" idField="name" url="service/list.gs?collection=consumers">
+			<thead>
+				<tr>
+					<th field="name" width="100" sortable="true">客户名</th>
+					<th field="alias" width="200" editor="text">简称</th>
+				</tr>
+			</thead>
+		</table>
+</div>
 
 
 
