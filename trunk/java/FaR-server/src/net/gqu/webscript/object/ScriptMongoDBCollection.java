@@ -266,7 +266,7 @@ public class ScriptMongoDBCollection {
 	public long getCount(DBObject query) throws MongoException {
 		return coll.getCount(query);
 	}
-
+	
 	public DBObject group(DBObject key, DBObject cond, DBObject initial,
 			String reduce) throws MongoException {
 		return coll.group(key, cond, initial, reduce);
