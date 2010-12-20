@@ -24,15 +24,16 @@ $(document).ready(function(){
 				var wul = $('#slider ul');
 				for(var i=0; i<data.length; i++) {
 					if (data[i].firstLetter) {
-						var group = $('#' + data[i].firstLetter);
+						var l = data[i].firstLetter.toLowerCase();
+						var group = $('#' + l);
 						if (group.length==0) {
-							group = $('<li id="' + data[i].firstLetter + '"><a name="' + data[i].firstLetter + '" class="title">' + data[i].firstLetter + '</a><ul></ul></li>');
+							group = $('<li id="' + dl + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
 							wul.append(group);
 						}
 						group.find('ul').append('<li><a href="#">' + data[i].name + "(" + data[i].alias + ')</a></li>');
 					} 
 				}
-				$('#slider').sliderNav();
+				$('#slider').sliderNav({height:'300'});
 			}
 	);
 
