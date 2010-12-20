@@ -17,6 +17,14 @@ var id = getParam("id");
 var collections = "presales";
 
 $(document).ready(function(){
+
+	$.getJSON("service/coselect.gs", 
+			{},
+			function(data) {
+			}
+	);
+
+		
 	if (id!=null) {
 		$.getJSON("service/edit.gs",
 				{
@@ -133,38 +141,27 @@ function getParam(strname) {
 	<div class="container980 kform">
 		<div class="cats">
 			<h3>基本信息</h3>
-			<div class="columns1">
-				<label >信息</label> <input name="name">
-			</div>
 			<div class="columns3">
-				<label >时间</label> <input name="time">
+				涉及客户
+				<div id="slider">
+					<div class="slider-content">
+						<ul>
+						</ul>
+					</div>
+					
+				</div>
 			</div>
-			<div class="columns3">
-				<label >涉及客户</label> <input name="consumers" onclick="show_select();">
-			</div>
-			<div class="columns1">
-				<label >客户需求</label>
-			 	<textarea tabindex="4" rows="8" cols="60" name="requirement"></textarea>
-			</div>
-			
-			<div class="columns3">
-				<label >预计签单时间</label> <input name="predict">
-			</div>
-			<div class="columns3">
-				<label >预计金额</label> <input name="amount">
-			</div>
-			<div class="columns3">
-				<label >阶段</label> <input name="stage">
-			</div>
-			<div class="columns3">
-				<label >可行性(%)</label> <input name="posibilities">
-			</div>
-			<div class="columns3">
-				<label >状态</label> <input name="status">
-			</div>
-			<div class="columns1">
-				<label >备注</label>
-			 	<textarea tabindex="4" rows="8" cols="60" name="info"></textarea>
+			<div class="columns2">
+				<label >信息</label> <input name="name"> <br>
+				<label >时间</label> <input name="time"> <br>
+				<label >客户需求</label> <textarea tabindex="4" rows="2" cols="60" name="requirement"></textarea> <br>
+				<label >预计签单时间</label> <input name="predict"><br>
+				<label >预计金额</label> <input name="amount"><br>
+				<label >阶段</label> <input name="stage"><br>
+				<label >可行性(%)</label> <input name="posibilities"><br>
+				<label >状态</label> <input name="status"><br>
+				<label >备注</label><br>
+			 	<textarea tabindex="4" rows="2" cols="60" name="info"></textarea><br>
 			</div>
 		</div> 
 		
@@ -179,20 +176,6 @@ function getParam(strname) {
 	</div>
 	</form>
 </div>
-
-
-<div id="consumerSelect" icon="icon-save" style="padding:5px;width:400px;height:200px; display: none">
-	<table id="consumerTable"
-			singleSelect="true" idField="name" url="service/list.gs?collection=consumers">
-			<thead>
-				<tr>
-					<th field="name" width="100" sortable="true">客户名</th>
-					<th field="alias" width="200" editor="text">简称</th>
-				</tr>
-			</thead>
-		</table>
-</div>
-
 
 
 <div class="footer">
