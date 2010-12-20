@@ -1,15 +1,7 @@
-
-
-var types = {
-		"consumer":consumer
-}
-var model;
+var model = new Object();
 if (params.id!=null) {
-	model = db.getCollection(params.type).getById(params.id);
-} else {
-	model = types[params.type];
-}
-
+	model = db.getCollection(params.collection).getById(params.id);
+} 
 
 model;
 
