@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
 var id = getParam("id");
-var collections = "activity";
+var collections = "activities";
 
 if (id!=null) {
 	$.getJSON("service/edit.gs",
@@ -118,7 +118,7 @@ function getParam(strname) {
 				<label >信息</label> <input name="name">
 			</div>
 			<div class="columns3">
-				<label >时间</label> <input name="alias">
+				<label >时间</label> <input name="time">
 			</div>
 			<div class="columns3">
 				<label >涉及客户</label> <input name="consumers">
