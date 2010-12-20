@@ -18,9 +18,21 @@ var collections = "presales";
 
 $(document).ready(function(){
 
-	$.getJSON("service/coselect.gs", 
+	$.getJSON("service/conselect.gs", 
 			{},
 			function(data) {
+
+				var wul = $('#slider ul');
+				for(var i=0; i<data.length; i++) {
+					if (data[i].firstLetter) {
+						var group = $('#' + data[i].firstLetter);
+						if (group.length==0) {
+							group = $('<li id="' + data[i].firstLetter + '"><a name="' + data[i].firstLetter + '" class="title">' + data[i].firstLetter + '</a><ul></ul></li>');
+							wul.append(group);
+						}
+						group.find('ul').append('<li><a href="/">' + data[i].name + "(" + data[i].alias + ')</a></li>');
+					} 
+				}
 			}
 	);
 
