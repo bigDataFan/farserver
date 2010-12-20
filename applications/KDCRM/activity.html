@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
 var id = getParam("id");
-var collections = "consumers";
+var collections = "activity";
 
 if (id!=null) {
 	$.getJSON("service/edit.gs",
@@ -25,8 +25,6 @@ if (id!=null) {
 			}
 	);
 }
-
-
 
 function saveObj(create) {
 	var req = new Object();
@@ -116,15 +114,16 @@ function getParam(strname) {
 	<div class="container980 kform">
 		<div class="cats">
 			<h3>基本信息</h3>
-			<div class="columns2">
-				<label >名称</label> <input name="name">
+			<div class="columns1">
+				<label >信息</label> <input name="name">
 			</div>
-			<div class="columns2">
-				<label >简称</label> <input name="alias">
+			<div class="columns3">
+				<label >时间</label> <input name="alias">
 			</div>
 			
-			<div class="columns3">
-			<label >客户类型</label> <select name="type"><option value="企业客户">企业客户</option><option value="个人客户">个人客户</option></select>
+			<div class="columns1">
+			<label >备忘信息</label>
+			 <textarea tabindex="4" rows="8" cols="40" name="info"></textarea>
 			</div>
 			
 			
