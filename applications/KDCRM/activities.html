@@ -70,18 +70,12 @@ $(document).ready(function(){
 	<div class="container980" style="padding-top: 10px;">
 	
 		<table id="activitiesTable" style="width:980px;height:800px;"
-			singleSelect="true" idField="name" url="service/list.gs?collection=consumers">
+			singleSelect="true" idField="name" url="service/list.gs?collection=activities">
 			<thead>
 				<tr>
-					<th field="name" width="100" sortable="true">客户名</th>
-					<th field="alias" width="200" editor="text">简称</th>
-					<th field="type" width="100" editor="text">类型</th>
-					<th field="credit" width="50" sortable="true">信用</th>
-					<th field="worth" width="50" sortable="true">价值</th>
-					<th field="hot" width="50" sortable="true">客户热度</th>
-					<th field="relation" width="50" sortable="true">关系等级</th>
-					<th field="worth" width="50" sortable="true">价值</th>
-					<th field="worth" width="50" sortable="true">价值</th>
+					<th field="time" width="100" sortable="true">时间</th>
+					<th field="name" width="200" editor="text">信息</th>
+					<th field="consumers" width="500" editor="text">类型</th>
 				</tr>
 			</thead>
 		</table>
