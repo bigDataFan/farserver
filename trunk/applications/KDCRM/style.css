@@ -141,7 +141,7 @@ div.header div.container980 {
 
 .columns1 {
     float: left;
-    width: 100%;
+    width: 95%;
 }
 
 .kform input {
@@ -219,6 +219,7 @@ div.kform textarea {
     font-size: small;
     height: 200px;
     line-height: 22px;
+    width:90%
     margin: 0;
 }
 
