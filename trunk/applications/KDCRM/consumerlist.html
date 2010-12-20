@@ -14,11 +14,11 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$('#consumerTable').datagrid(
+	$('#consumerTable').datagrid({
 			onClickRow:function(rowIndex, rowData) {
 				location.href="cosumeredit.html?id=" + rowData.id;
 			}
-	);
+	});
 });
 
 </script>
@@ -56,7 +56,7 @@ $(document).ready(function(){
 
 <div class="mainbody">
 	<div class="container980 kform">
-		<table id="consumerTable" style="width:950px;height:auto;"
+		<table id="consumerTable" style="width:950px;height:1000px;"
 			title="客户列表" iconCls="icon-edit" singleSelect="true"
 			idField="name" url="service/list.gs?collection=consumers">
 			<thead>
