@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<link rel="stylesheet" type="text/css" href="js/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="js/easyui/themes/icon.css">
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script language="Javascript" type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$('#roleTable').datagrid(
+	);
+});
+
+</script>
+
+</head>
+<body>
+
+<div class="header">
+	<div class="container980">
+		<a id="logo"></a>
+		<ul class="menu">
+			<li>
+				<span id="c_list">&nbsp;</span>
+				<a href="#">客户列表</a>
+			</li>
+			<li>
+				<span id="c_actvity">&nbsp;</span>
+				<a>客户动态</a>
+			</li>
+			<li>
+				<span id="c_pre">&nbsp;</span>
+				<a>售前跟踪</a>
+			</li>
+			<li>
+				<span id="c_center">&nbsp;</span>
+				<a>售中管理</a>
+			</li>
+			<li>
+				<span id="c_after">&nbsp;</span>
+				<a>售后信息</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="mainbody">
+	<div class="container980 kform">
+		<table id="appTable" style="width:950px;height:auto;"
+			title="客户列表" iconCls="icon-edit" singleSelect="true"
+			idField="name" url="service/consumerlist.gs">
+			<thead>
+				<tr>
+					<th field="name" width="100" sortable="true">客户名</th>
+					<th field="alias" width="200" editor="text">简称</th>
+					<th field="type" width="100" editor="text">类型</th>
+					<th field="credit" width="50" sortable="true">信用</th>
+					<th field="worth" width="50" sortable="true">价值</th>
+				</tr>
+			</thead>
+			</table>
+	</div>
+	
+</div>
+
+<div class="footer">
+
+<div id="copyright">
+    <span>&copy;2010 <a title="1stwebdesigner &ndash; Graphic and Web Design Blog - 1stwebdesigner is a design blog dedicated to bloggers, freelancers, web-developers and designers. Topics focus on web design and inspirational articles." href="http://www.1stwebdesigner.com">1stwebdesigner &ndash; Graphic and Web Design Blog</a>. Design by <a title="Dainis Graveris on deviantART" href="http://dainix.deviantart.com/">Dainis Graveris</a>. WordPress Theme by <a title="Daniel Kurdoghlian on Twitter" href="http://twitter.com/derblub">Daniel Kurdoghlian</a></span>
+</div>
+
+</div>
+
+</body>
+</html>
