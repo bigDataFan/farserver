@@ -1,5 +1,8 @@
 package net.gqu.repository;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +15,17 @@ public class RepositoryServiceImpl implements RepositoryService {
 	
 	private List<Loader> loaders = new ArrayList<Loader>();
 
+	private boolean develop = false;
+	private String basePath;
 	
-	
+	public void setDevelop(boolean develop) {
+		this.develop = develop;
+	}
+
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
+
 	public void setLoaders(List<Loader> loaders) {
 		this.loaders = loaders;
 	}
@@ -23,7 +35,6 @@ public class RepositoryServiceImpl implements RepositoryService {
 
 	@Override
 	public String clean(RegisteredApplication application) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -31,22 +42,36 @@ public class RepositoryServiceImpl implements RepositoryService {
 	public LoadResult getRaw(RegisteredApplication application, String path) {
 		
 		LoadResult lr = new LoadResult();
-		for (Loader loader : loaders) {
-			if (loader.canload(application.getRepository())) {
-				HttpResponse response = loader.getStream(application.getRepository(), path);
+		if (develop) {
+			File file = new File(basePath + "/" + application.getName() + "/" + path);
+			if (file.exists()) {
+				lr.setStatus(200);
 				try {
-					lr.setStatus(response.getStatusLine().getStatusCode());
-					lr.setInputStream(response.getEntity().getContent());
-					lr.setLength(response.getEntity().getContentLength());
-				} catch (IllegalStateException e) {
-					lr.setStatus(404);
-				} catch (IOException e) {
-					lr.setStatus(404);
-				} catch (Throwable e) {
-					lr.setStatus(404);
+					lr.setInputStream(new FileInputStream(file));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				lr.setLength(file.length());
+			}
+		} else {
+			for (Loader loader : loaders) {
+				if (loader.canload(application.getRepository())) {
+					HttpResponse response = loader.getStream(application.getRepository(), path);
+					try {
+						lr.setStatus(response.getStatusLine().getStatusCode());
+						lr.setInputStream(response.getEntity().getContent());
+						lr.setLength(response.getEntity().getContentLength());
+					} catch (IllegalStateException e) {
+						lr.setStatus(404);
+					} catch (IOException e) {
+						lr.setStatus(404);
+					} catch (Throwable e) {
+						lr.setStatus(404);
+					}
 				}
 			}
 		}
+		
 		return lr;
 	}
 	

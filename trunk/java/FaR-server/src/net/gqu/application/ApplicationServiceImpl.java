@@ -29,6 +29,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private MongoDBProvider dbProvider;
 	private BasicUserService userService;
 	private String registryLocation;
+	private boolean develop;
 	
 	public void setRegistryLocation(String registryLocation) {
 		this.registryLocation = registryLocation;
@@ -39,7 +40,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public String getMainServer() {
 		return mainServer;
 	}
-
+	public void setDevelop(boolean develop) {
+		this.develop = develop;
+	}
 	public void setMainServer(String mainServer) {
 		this.mainServer = mainServer;
 	}
@@ -58,25 +61,34 @@ public class ApplicationServiceImpl implements ApplicationService {
 	
 	@Override
 	public RegisteredApplication getApplication(String id) {
-		if (applicationMap.containsKey(id)) {
-			return applicationMap.get(id);
-		}
-		if (applicationMap.get(id)==null) {
-			HttpResponse response = HttpLoader.load(registryLocation + id + ".json");
-			if (response!=null && response.getStatusLine().getStatusCode()==200) {
-				try {
-					JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
-					RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
-					applicationMap.put(id, application);
-				} catch (JSONException e) {
-					applicationMap.put(id, null);
-				} catch (IOException e) {
-					e.printStackTrace();
-					applicationMap.put(id, null);
+		
+		if (develop) {
+			RegisteredApplication ra = new RegisteredApplication();
+			ra.setName(id);
+			ra.setOwner("");
+			return ra;
+		} else {
+			if (applicationMap.containsKey(id)) {
+				return applicationMap.get(id);
+			}
+			if (applicationMap.get(id)==null) {
+				HttpResponse response = HttpLoader.load(registryLocation + id + ".json");
+				if (response!=null && response.getStatusLine().getStatusCode()==200) {
+					try {
+						JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
+						RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
+						applicationMap.put(id, application);
+					} catch (JSONException e) {
+						applicationMap.put(id, null);
+					} catch (IOException e) {
+						e.printStackTrace();
+						applicationMap.put(id, null);
+					}
 				}
 			}
+			return applicationMap.get(id);
 		}
-		return applicationMap.get(id);
+		
 	}
 	
 	
