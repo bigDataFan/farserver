@@ -28,9 +28,9 @@ $(document).ready(function(){
  				},'-',
  				{
  		    		text:"删除",
- 		    		iconCls:'icon-delete',
+ 		    		iconCls:'icon-remove',
  		    		handler:function(){
- 						var rows = $('#roleTable').datagrid('getSelections');
+ 						var rows = $('#infoTable').datagrid('getSelections');
 						var ids = "";
  						for(var i=0; i<rows.length; i++) {
  	 						ids += rows[i].id + "-";
@@ -52,7 +52,8 @@ $(document).ready(function(){
 			},
 			pagination:true,
 			rownumbers:true,
-			pageSize: 15
+			pageSize: 20,
+			singleSelect:false
 	});
 });
 
