@@ -20,11 +20,14 @@ $(document).ready(function(){
 			function(data) {
 				var wul = $('#slider ul');
 
+				/*
 				for (var i='a'.charCodeAt(0); i<='z'.charCodeAt(0); i++) {
 					var l = String.fromCharCode(i);
 					group = $('<li id="' + l + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
 					wul.append(group);
 				}
+				*/
+
 				
 				for(var i=0; i<data.length; i++) {
 					if (data[i].firstLetter) {

@@ -16,6 +16,8 @@ $.fn.sliderNav = function(options) {
 	if(o.debug) $(slider).append('<div id="debug">Scroll Offset: <span>0</span></div>');
 	$('.slider-nav a', slider).click(function(event){
 		var target = $(this).attr('alt');
+		
+		if ($('.slider-content '+target, slider).length==0) return;
 		var cOffset = $('.slider-content', slider).offset().top;
 		var tOffset = $('.slider-content '+target, slider).offset().top;
 		var height = $('.slider-nav', slider).height(); if(o.height) height = o.height;
