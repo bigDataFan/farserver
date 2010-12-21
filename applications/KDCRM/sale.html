@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
 var id = getParam("id");
-var collections = "presales";
+var collections = "sales";
 
 $(document).ready(function(){
 
@@ -19,7 +19,6 @@ $(document).ready(function(){
 			{},
 			function(data) {
 				var wul = $('#slider ul');
-				
 				for(var i=0; i<data.length; i++) {
 					if (data[i].firstLetter) {
 						var l = data[i].firstLetter.toLowerCase();
@@ -32,7 +31,7 @@ $(document).ready(function(){
 					} 
 				}
 				$('.slider-content ul ul li a').click(function(){
-					$('input[name="consumer"]').val($(this).html());
+					$('input[name="consumers"]').val($('input[name="consumers"]').val() + " " + $(this).html());
 				});
 				
 				$('#slider').sliderNav();
@@ -56,19 +55,6 @@ $(document).ready(function(){
 		);
 	}
 });
-
-
-function show_select() {
-	$('#consumerSelect').dialog();
-
-	$('#consumerTable').datagrid({
-		onClickRow:function(rowIndex, rowData) {
-			rowData.name;
-		}
-});
-
-	
-}
 
 function saveObj(create) {
 	var req = new Object();
@@ -160,21 +146,32 @@ function getParam(strname) {
 			<h3>基本信息</h3>
 			
 			<div class="bigleft">
-				<label >信息</label> <input name="name"> <br>
-				<label >时间</label> <input name="time"> <br>
-				<label >客户需求</label> <textarea tabindex="4" rows="2" cols="60" name="requirement"></textarea> <br>
-				<label >预计签单时间</label> <input name="predict"><br>
-				<label >预计金额</label> <input name="amount"><br>
-				<label >阶段</label> <input name="stage"><br>
-				<label >可行性(%)</label> <input name="posibilities"><br>
-				<label >状态</label> <input name="status"><br>
+				<label >订单名</label> <input name="name"> <br>
+				<label >总金额</label> <input name="total"> <br>
+				<label >付款方式</label> 
+					<select name="paymethod">
+						<option value="支票">支票</option>
+						<option value="现金">现金</option>
+						<option value="邮政汇款">邮政汇款</option>
+						<option value="电汇">电汇</option>
+						<option value="网上银行">网上银行</option>
+						<option value="其他">其他</option>
+					</select><br>
+				<label >发货日期</label> <input name="senddate"><br>
+				<label >收货人地址</label> <input name="location"><br>
+				<label >阶段</label> 
+					<select name="stage">
+						<option value="处理中">处理中</option>
+						<option value="完成">完成</option>
+						<option value="中止">中止</option>
+					</select><br>
 				<label >备注</label><br>
 			 	<textarea tabindex="4" rows="2" cols="60" name="info"></textarea><br>
 			</div>
 			
 			<div class="smallright" style="padding: 0px" >
-				涉及客户
-				<input name="consumers"><br>
+				客户
+				<input name="consumer"><br>
 				<div id="slider" style="padding: 0px">
 					<div class="slider-content" style="padding: 0px">
 						<ul>
