@@ -19,6 +19,12 @@ $(document).ready(function(){
 			{},
 			function(data) {
 				var wul = $('#slider ul');
+
+				for (var i='A'.charCodeAt(0); i<='Z'.charCodeAt(0); i++) {
+					var l = String.fromCharCode(i);
+					group = $('<li id="' + l + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
+				}
+				
 				for(var i=0; i<data.length; i++) {
 					if (data[i].firstLetter) {
 						var l = data[i].firstLetter.toLowerCase();
