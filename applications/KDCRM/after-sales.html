@@ -13,22 +13,46 @@
 
 <script type="text/javascript">
 
+var editpage = "after-sale.html";
+var collections = "aftersales";
+
 $(document).ready(function(){
-	$('#salesTable').datagrid({
+	$('#infoTable').datagrid({
 			toolbar:[
 		    	{
  		    		text:"新增",
  		    		iconCls:'icon-add',
  		    		handler:function(){
-		    			location.href="after-sale.html";					
+		    			location.href= editpage;					
 					}
- 				},'-'],
+ 				},'-',
+ 				{
+ 		    		text:"删除",
+ 		    		iconCls:'icon-delete',
+ 		    		handler:function(){
+ 						var rows = $('#roleTable').datagrid('getSelections');
+						var ids = "";
+ 						for(var i=0; i<rows.length; i++) {
+ 	 						ids += rows[i].id + "-";
+ 						}
+
+ 						$.get("service/delete.gs", 
+ 		 						{
+		 							'ids':ids,
+		 						 	'collections': collections
+			 					},
+ 		 						function(data) {
+ 	 		 						location.href = location.href; 	
+ 		 						});
+					}
+ 				}
+ 				],
  			onDblClickRow:function(rowIndex, rowData) {
-				location.href="after-sale.html?id=" + rowData.id;
+				location.href= editpage + "?id=" + rowData.id;
 			},
 			pagination:true,
 			rownumbers:true,
-			pageSize: 20
+			pageSize: 15
 	});
 });
 
