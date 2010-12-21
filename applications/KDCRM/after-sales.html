@@ -27,7 +27,8 @@ $(document).ready(function(){
 				location.href="after-sale.html?id=" + rowData.id;
 			},
 			pagination:true,
-			rownumbers:true
+			rownumbers:true,
+			pageSize: 20
 	});
 });
 
@@ -71,7 +72,7 @@ $(document).ready(function(){
 <div class="mainbody">
 	<div class="container980" style="padding-top: 10px;">
 	
-		<table id="salesTable" style="width:980px;height:800px;"
+		<table id="salesTable" style="width:980px;height:500px;"
 			singleSelect="true" idField="name" url="service/list.gs?collection=aftersales">
 			<thead>
 				<tr>
