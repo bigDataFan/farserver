@@ -2,6 +2,7 @@ package net.gqu.application;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 		if (develop) {
 			RegisteredApplication ra = new RegisteredApplication();
 			ra.setName(id);
-			ra.setOwner("");
+			ra.setOwner("system");
+			ra.setAlias("");
+			ra.setCategories(new String[]{});
+			ra.setCreated(new Date());
 			return ra;
 		} else {
 			if (applicationMap.containsKey(id)) {
