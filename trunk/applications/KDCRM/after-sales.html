@@ -53,7 +53,7 @@ $(document).ready(function(){
 			pagination:true,
 			rownumbers:true,
 			pageSize: 20,
-			singleSelect:false
+			url: "service/list.gs?collection=" + collections
 	});
 });
 
@@ -97,8 +97,7 @@ $(document).ready(function(){
 <div class="mainbody">
 	<div class="container980" style="padding-top: 10px;">
 	
-		<table id="infoTable" style="width:980px;height:500px;"
-			singleSelect="true" idField="name" url="service/list.gs?collection=aftersales">
+		<table id="infoTable" style="width:980px;height:500px;" idField="id">
 			<thead>
 				<tr>
 					<th field="name" width="200" sortable="true">标题</th>
