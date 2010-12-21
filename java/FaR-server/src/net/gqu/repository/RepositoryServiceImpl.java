@@ -52,6 +52,8 @@ public class RepositoryServiceImpl implements RepositoryService {
 					e.printStackTrace();
 				}
 				lr.setLength(file.length());
+			} else {
+				lr.setStatus(404);
 			}
 		} else {
 			for (Loader loader : loaders) {
