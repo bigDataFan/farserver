@@ -4,7 +4,7 @@
  *  Released under the MIT, BSD, and GPL Licenses.
  *  More information: http://devgrow.com/slidernav
  */
-.slider { width: 300px; min-height: 250px; display: block; position: relative; background: #fff; overflow: hidden; }
+.slider { width: 270px; min-height: 250px; display: block; position: relative; background: #fff; overflow: hidden; }
 .slider ul { list-style: none; }
 .slider-content { float: left; width: 100%; display: block; overflow: auto; min-height: 250px; }
 .slider-content ul { float: left; width: 100%; display: block; position: relative; }
