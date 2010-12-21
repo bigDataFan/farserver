@@ -40,10 +40,15 @@
 	</bean>
 	
 	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl">
-		<property name="mainServer" value="www.g-qu.net"></property>
+		<property name="mainServer">
+			<value>${main.server}</value>
+		</property>
 		<property name="dbProvider" ref="dbProvider"></property>
 		<property name="registryLocation">
 			<value>${application.registry}</value>
+		</property>
+		<property name="develop">
+			<value>${application.isdev}</value>
 		</property>
 	</bean>
 	
@@ -59,6 +64,8 @@
 				<ref bean="loader.googlecode"/>
 			</list>
 		</property>
+		<property name="develop"><value>${application.isdev}</value></property>
+		<property name="basePath"><value>${application.localpath}</value></property>
 	</bean>
 	
 	<bean id="loader.github" class="net.gqu.repository.GitHubLoader">
