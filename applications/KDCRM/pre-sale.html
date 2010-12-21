@@ -37,7 +37,7 @@ $(document).ready(function(){
 						group.find('ul').append('<li><a href="#">' + data[i].name + "(" + data[i].alias + ')</a></li>');
 					} 
 				}
-				$('#slider').sliderNav({height:'300'});
+				$('#slider').sliderNav();
 			}
 	);
 
@@ -160,7 +160,7 @@ function getParam(strname) {
 			<h3>基本信息</h3>
 			<div class="columns3" >
 				涉及客户
-				<div id="slider">
+				<div id="slider" style="padding: 0px">
 					<div class="slider-content" style="padding: 0px">
 						<ul>
 						</ul>
