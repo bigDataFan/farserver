@@ -23,7 +23,6 @@ $(document).ready(function(){
 				for (var i='a'.charCodeAt(0); i<='z'.charCodeAt(0); i++) {
 					var l = String.fromCharCode(i);
 					group = $('<li id="' + l + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
-					group.css('height', '0px');
 					wul.append(group);
 				}
 				
@@ -34,13 +33,17 @@ $(document).ready(function(){
 						if (group.length==0) {
 							group = $('<li id="' + l + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
 							wul.append(group);
-						} else {
-							group.css('height', '15px');
 						}
-						group.find('ul').append('<li><a href="javascript:void(0)">' + data[i].name + "(" + data[i].alias + ')</a></li>');
+						group.find('ul').append('<li><a href="javascript:void(0)" id="' + data[i].id + '">' + data[i].name + "(" + data[i].alias + ')</a></li>');
 					} 
 				}
+				('.slider-content ul ul li a').click(function(){
+					$('input[name="consumers"]').val($('input[name="consumers"]').val() + " " + $(this).html());
+				});
+				
 				$('#slider').sliderNav();
+
+				
 			}
 	);
 
@@ -161,16 +164,7 @@ function getParam(strname) {
 	<div class="container980 kform">
 		<div class="cats">
 			<h3>基本信息</h3>
-			<div class="columns3" style="padding: 0px" >
-				涉及客户
-				<div id="slider" style="padding: 0px">
-					<div class="slider-content" style="padding: 0px">
-						<ul>
-						</ul>
-					</div>
-					
-				</div>
-			</div>
+			
 			<div class="columns2">
 				<label >信息</label> <input name="name"> <br>
 				<label >时间</label> <input name="time"> <br>
@@ -183,6 +177,19 @@ function getParam(strname) {
 				<label >备注</label><br>
 			 	<textarea tabindex="4" rows="2" cols="60" name="info"></textarea><br>
 			</div>
+			
+			<div class="columns3" style="padding: 0px" >
+				涉及客户
+				<input name="consumers"><br>
+				<div id="slider" style="padding: 0px">
+					<div class="slider-content" style="padding: 0px">
+						<ul>
+						</ul>
+					</div>
+					
+				</div>
+			</div>
+			
 		</div> 
 		
 		<div class="cats">
