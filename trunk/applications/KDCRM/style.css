@@ -146,7 +146,7 @@ div.header div.container980 {
 
 .kform input {
     /*background: url("img/contact-sprite.png") no-repeat scroll 0 0 transparent;*/
-    border: 1px solid #373E44;
+    border: 1px solid #E7E7E7;;
     /*#E7E7E7;*/
     clear: both;
     font-size: small;
@@ -158,7 +158,7 @@ div.header div.container980 {
 }
 
 div.kform select {
-	border: 1px solid #373E44;
+	border: 1px solid #E7E7E7;;
 	color:#646464;
 	font-size:small;
 	letter-spacing:0.02em;
