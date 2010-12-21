@@ -31,12 +31,9 @@ $(document).ready(function(){
 					} 
 				}
 				$('.slider-content ul ul li a').click(function(){
-					$('input[name="consumers"]').val($('input[name="consumers"]').val() + " " + $(this).html());
+					$('input[name="consumer"]').val($('input[name="consumer"]').val() + " " + $(this).html());
 				});
-				
 				$('#slider').sliderNav();
-
-				
 			}
 	);
 
