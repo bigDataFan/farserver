@@ -37,7 +37,7 @@ $(document).ready(function(){
 						group.find('ul').append('<li><a href="javascript:void(0)" id="' + data[i].id + '">' + data[i].name + "(" + data[i].alias + ')</a></li>');
 					} 
 				}
-				('.slider-content ul ul li a').click(function(){
+				$('.slider-content ul ul li a').click(function(){
 					$('input[name="consumers"]').val($('input[name="consumers"]').val() + " " + $(this).html());
 				});
 				
