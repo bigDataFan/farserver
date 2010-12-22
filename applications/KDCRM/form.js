@@ -20,10 +20,8 @@ $(document).ready(function(){
 						} 
 					}
 					$('.slider-content ul ul li a').click(function(){
-						var mulinput = $('input.multiconsumerselectinput');
-						mulinput.val(mulinput.val() + " " + $(this).html());
-						var singleinput = $('input.singleconsumerselectinput');
-						singleinput.val($(this).html());
+						$('#consumer').val($(this).attr("id"));
+						$('#consumerdisplay').val($(this).html());
 					});
 					$('.multiconsumerselect').sliderNav();
 				}

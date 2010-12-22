@@ -3,8 +3,144 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>客户分析</title>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="js/slidernav/slidernav.css" media="screen, projection" />
+<script type="text/javascript" src="js/slidernav/slidernav.js"></script>
+
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+		$.getJSON("service/conselect.gs", 
+				{},
+				function(data) {
+					var wul = $('#slider div.slider-content ul');
+					for(var i=0; i<data.length; i++) {
+						if (data[i].firstLetter) {
+							var l = data[i].firstLetter.toLowerCase();
+							var group = $('#' + l);
+							if (group.length==0) {
+								group = $('<li id="' + l + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
+								wul.append(group);
+							}
+							group.find('ul').append('<li><a href="javascript:void(0)" id="' + data[i].id + '">' + data[i].name + "(" + data[i].alias + ')</a></li>');
+						} 
+					}
+					$('.slider-content ul ul li a').click(function(){
+						$('#activityTable').datagrid(
+								{
+									pagination:false,
+								 	rownumbers:true,
+								 	url: "service/userde.gs?collection=activities&user=" + $(this).html() + "&field=consumers",
+								 	method:"get"
+								}
+						);
+						
+					});
+					$('#slider').sliderNav();
+
+					$('head').append('<link rel="stylesheet" type="text/css" href="js/themes/gray/easyui.css">');
+					$('head').append('<link rel="stylesheet" type="text/css" href="js/themes/icon.css">');
+					$('head').append('<script language="Javascript" type="text\/javascript" src="js\/jquery.easyui.min.js"><\/script>');
+					
+				}
+		);
+});
+
+
+
+</script>
+
 </head>
 <body>
+
+
+<div class="header">
+	<div class="container980">
+		<a id="logo"></a>
+		<ul>
+			<li>
+				<span id="c_list">&nbsp;</span>
+				<a href="consumerlist.html">客户列表</a>
+			</li>
+			<li>
+				<span id="c_actvity">&nbsp;</span>
+				<a href="activities.html">客户动态</a>
+			</li>
+			<li>
+				<span id="c_pre">&nbsp;</span>
+				<a href="pre-sales.html">售前跟踪</a>
+			</li>
+			<li>
+				<span id="c_center">&nbsp;</span>
+				<a href="sales.html">售中管理</a>
+			</li>
+			<li>
+				<span id="c_after">&nbsp;</span>
+				<a href="after-sales.html">售后信息</a>
+			</li>
+			<li>
+				<span id="c_ana">&nbsp;</span>
+				<a href="analysis.html">分析</a>
+			</li>			
+		</ul>
+		
+	</div>
+</div>
+
+<div class="mainbody">
+
+	<form action="service/update.gs" method="POST">
+	<div class="container980">
+		<div class="cats" style="display: block; height: 1000px;">
+			<h3>用户分析</h3>
+			<div class="bigleft">
+				<table id="activityTable" style="width:620px;height:200px;" idField="id">
+					<thead>
+						<tr>
+							<th field="time" width="100" sortable="true">时间</th>
+							<th field="name" width="200" editor="text">信息</th>
+							<th field="consumers" width="500" editor="text">类型</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="smallright">
+				<label >选择客户</label> <br>
+				<div id="slider"  style="padding: 0px">
+					<div class="slider-content" style="padding: 0px">
+						<ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div> 
+		
+		<div class="cats">
+			<div class="columns3">
+				<input type="button" value="保存" onclick="saveObj()">
+			</div>
+			<div class="columns3">
+				<input type="button" value="保存并新建" onclick="saveObj(true)">
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="footer">
+
+<div id="copyright">
+    <span>&copy;2010 <a title="1stwebdesigner &ndash; Graphic and Web Design Blog - 1stwebdesigner is a design blog dedicated to bloggers, freelancers, web-developers and designers. Topics focus on web design and inspirational articles." href="http://www.1stwebdesigner.com">1stwebdesigner &ndash; Graphic and Web Design Blog</a>. Design by <a title="Dainis Graveris on deviantART" href="http://dainix.deviantart.com/">Dainis Graveris</a>. WordPress Theme by <a title="Daniel Kurdoghlian on Twitter" href="http://twitter.com/derblub">Daniel Kurdoghlian</a></span>
+</div>
+
+</div>
+
 
 
 
