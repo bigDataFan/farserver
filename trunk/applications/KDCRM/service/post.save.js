@@ -5,9 +5,6 @@ if (params.collection!=null) {
 		params.firstLetter = utils.getFirstLetter(params.name.substring(0,1));
 	}
 	
-	if (params.consumers) {
-		params.consumers = utils.trimWhitespace(params.consumers).split(" ");
-	}
 	d = new Date();
 	params.modified = {
 			"d": d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(),
