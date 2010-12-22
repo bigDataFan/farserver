@@ -8,6 +8,7 @@ if (params.collection!=null) {
 	if (params.consumers) {
 		params.consumers = utils.trimWhitespace(params.consumers).split(" ");
 	}
+	params.modified = new Date();
 	db.getCollection(params.collection).upsert(params);
 }
 
