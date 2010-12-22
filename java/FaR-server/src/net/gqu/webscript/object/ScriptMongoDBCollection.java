@@ -9,6 +9,7 @@ import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeFunction;
 import org.mozilla.javascript.NativeObject;
 
 import com.mongodb.BasicDBObject;
@@ -267,9 +268,15 @@ public class ScriptMongoDBCollection {
 		return coll.getCount(query);
 	}
 	
-	public DBObject group(DBObject key, DBObject cond, DBObject initial,
+	public NativeObject group(NativeObject nkey,NativeObject ncond, NativeObject ninitial,
 			String reduce) throws MongoException {
-		return coll.group(key, cond, initial, reduce);
+		Map<String, Object> key = RhinoUtils.nativeObjectToMap(nkey);;
+		Map<String, Object> cond = RhinoUtils.nativeObjectToMap(ncond);;
+		Map<String, Object> initial = RhinoUtils.nativeObjectToMap(ninitial);;
+		
+		DBObject result = coll.group(new BasicDBObject(key), new BasicDBObject(cond), new BasicDBObject(initial), reduce);
+		
+		return RhinoUtils.mapToNativeObject(result.toMap());
 	}
 
 	public DBCollection rename(String newName) throws MongoException {
