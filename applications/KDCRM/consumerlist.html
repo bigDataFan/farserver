@@ -8,30 +8,12 @@
 <link rel="stylesheet" type="text/css" href="js/themes/icon.css">
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script language="Javascript" type="text/javascript" src="js/jquery.easyui.min.js"></script>
-
+<script language="Javascript" type="text/javascript" src="js/main.js"></script>
 <link rel="stylesheet" type="text/css" href="style.css">
-
 <script type="text/javascript">
-
-$(document).ready(function(){
-	$('#consumerTable').datagrid({
-			toolbar:[
-		    	{
- 		    		text:"新增",
- 		    		iconCls:'icon-add',
- 		    		handler:function(){
-		    			location.href="consumeredit.html";					
-					}
- 				},'-'],
-			onClickRow:function(rowIndex, rowData) {
-				location.href="consumeredit.html?id=" + rowData.id;
-			},
-			pagination:true
-	});
-});
-
+var editpage = "consumeredit.html";
+var collections = "consumers";
 </script>
-
 </head>
 <body>
 
@@ -70,8 +52,7 @@ $(document).ready(function(){
 <div class="mainbody">
 	<div class="container980" style="padding-top: 10px;">
 	
-		<table id="consumerTable" style="width:980px;height:800px;"
-			singleSelect="true" idField="name" url="service/list.gs?collection=consumers">
+		<table id="infoTable" style="width:980px;height:500px;" idField="id">
 			<thead>
 				<tr>
 					<th field="firstLetter" width="100" sortable="true">-</th>

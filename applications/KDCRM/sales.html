@@ -8,28 +8,13 @@
 <link rel="stylesheet" type="text/css" href="js/themes/icon.css">
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script language="Javascript" type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script language="Javascript" type="text/javascript" src="js/main.js"></script>
 
 <link rel="stylesheet" type="text/css" href="style.css">
 
 <script type="text/javascript">
-
-$(document).ready(function(){
-	$('#salesTable').datagrid({
-			toolbar:[
-		    	{
- 		    		text:"新增",
- 		    		iconCls:'icon-add',
- 		    		handler:function(){
-		    			location.href="sale.html";					
-					}
- 				},'-'],
-			onClickRow:function(rowIndex, rowData) {
-				location.href="sale.html?id=" + rowData.id;
-			},
-			pagination:true
-	});
-});
-
+var editpage = "sale.html";
+var collections = "sales";
 </script>
 
 </head>
@@ -70,8 +55,7 @@ $(document).ready(function(){
 <div class="mainbody">
 	<div class="container980" style="padding-top: 10px;">
 	
-		<table id="salesTable" style="width:980px;height:800px;"
-			singleSelect="true" idField="name" url="service/list.gs?collection=sales">
+		<table id="infoTable" style="width:980px;height:500px;" idField="id">
 			<thead>
 				<tr>
 					<th field="name" width="200" sortable="true">订单名</th>

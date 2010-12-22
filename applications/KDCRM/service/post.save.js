@@ -6,7 +6,7 @@ if (params.collection!=null) {
 	}
 	
 	if (params.consumers) {
-		params.consumers = params.consumers.split(" ");
+		params.consumers = utils.trimWhitespace(params.consumers).split(" ");
 	}
 	db.getCollection(params.collection).upsert(params);
 }

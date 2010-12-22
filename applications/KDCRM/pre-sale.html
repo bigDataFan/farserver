@@ -6,115 +6,9 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 <link rel="stylesheet" type="text/css" href="js/slidernav/slidernav.css" media="screen, projection" />
 <script type="text/javascript" src="js/slidernav/slidernav.js"></script>
-
+<script type="text/javascript" src="form.js"></script>
 </head>
 
-<script type="text/javascript">
-var id = getParam("id");
-var collections = "presales";
-
-$(document).ready(function(){
-
-	$.getJSON("service/conselect.gs", 
-			{},
-			function(data) {
-				var wul = $('#slider ul');
-				
-				for(var i=0; i<data.length; i++) {
-					if (data[i].firstLetter) {
-						var l = data[i].firstLetter.toLowerCase();
-						var group = $('#' + l);
-						if (group.length==0) {
-							group = $('<li id="' + l + '"><a name="' + l + '" class="title">' + l + '</a><ul></ul></li>');
-							wul.append(group);
-						}
-						group.find('ul').append('<li><a href="javascript:void(0)" id="' + data[i].id + '">' + data[i].name + "(" + data[i].alias + ')</a></li>');
-					} 
-				}
-				$('.slider-content ul ul li a').click(function(){
-					$('input[name="consumer"]').val($(this).html());
-				});
-				
-				$('#slider').sliderNav();
-
-				
-			}
-	);
-
-		
-	if (id!=null) {
-		$.getJSON("service/edit.gs",
-				{
-					"collection": collections,
-					"id": id
-				},
-				function(data) {
-					for(var o in data) {
-						$('*[name="' + o + '"]').val(data[o]);
-					}
-				}
-		);
-	}
-});
-
-
-function show_select() {
-	$('#consumerSelect').dialog();
-
-	$('#consumerTable').datagrid({
-		onClickRow:function(rowIndex, rowData) {
-			rowData.name;
-		}
-});
-
-	
-}
-
-function saveObj(create) {
-	var req = new Object();
-	req.collection = collections;
-	if (id!=null) req.id = id;
-
-	$('input,select,textarea').each(
-			function() {
-				req[$(this).attr("name")] = $(this).val();
-			}
-	);
-
-	$.post("service/save.gs",
-			req,
-			function(data) {
-				if (create) {
-					location.href= location.pathname;
-				} else {
-					alert("保存完成");
-				}
-			}
-	);
-}
-
-
-function getParam(strname) {
-	var hrefstr, pos, parastr, para, tempstr;
-	hrefstr = window.location.href;
-	pos = hrefstr.indexOf("?")
-	parastr = hrefstr.substring(pos + 1);
-	para = parastr.split("&");
-	tempstr = "";
-	for (i = 0; i < para.length; i++)
-	{
-		tempstr = para[i];
-		pos = tempstr.indexOf("=");
-		if (tempstr.substring(0, pos) == strname) {
-			return tempstr.substring(pos + 1);
-		}
-	}
-	return null;
-}
-
-
-
-</script>
 
 
 <body>
@@ -174,8 +68,8 @@ function getParam(strname) {
 			
 			<div class="smallright" style="padding: 0px" >
 				涉及客户
-				<input name="consumers"><br>
-				<div id="slider" style="padding: 0px">
+				<input name="consumers" class="singleconsumerselectinput"><br>
+				<div id="slider" style="padding: 0px" class="multiconsumerselect">
 					<div class="slider-content" style="padding: 0px">
 						<ul>
 						</ul>

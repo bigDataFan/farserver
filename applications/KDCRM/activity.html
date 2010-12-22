@@ -4,73 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="style.css">
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="js/slidernav/slidernav.css" media="screen, projection" />
+<script type="text/javascript" src="js/slidernav/slidernav.js"></script>
+<script type="text/javascript" src="form.js"></script>
 
 </head>
-
-<script type="text/javascript">
-var id = getParam("id");
-var collections = "activities";
-
-if (id!=null) {
-	$.getJSON("service/edit.gs",
-			{
-				"collection": collections,
-				"id": id
-			},
-			function(data) {
-				for(var o in data) {
-					$('*[name="' + o + '"]').val(data[o]);
-				}
-			}
-	);
-}
-
-function saveObj(create) {
-	var req = new Object();
-	req.collection = collections;
-	if (id!=null) req.id = id;
-
-	$('input,select,textarea').each(
-			function() {
-				req[$(this).attr("name")] = $(this).val();
-			}
-	);
-
-	$.post("service/save.gs",
-			req,
-			function(data) {
-				if (create) {
-					location.href= location.pathname;
-				} else {
-					alert("保存完成");
-				}
-			}
-	);
-}
-
-function getParam(strname) {
-	var hrefstr, pos, parastr, para, tempstr;
-	hrefstr = window.location.href;
-	pos = hrefstr.indexOf("?")
-	parastr = hrefstr.substring(pos + 1);
-	para = parastr.split("&");
-	tempstr = "";
-	for (i = 0; i < para.length; i++)
-	{
-		tempstr = para[i];
-		pos = tempstr.indexOf("=");
-		if (tempstr.substring(0, pos) == strname) {
-			return tempstr.substring(pos + 1);
-		}
-	}
-	return null;
-}
-
-
-
-</script>
-
 
 <body>
 
@@ -113,19 +51,21 @@ function getParam(strname) {
 	<div class="container980 kform">
 		<div class="cats">
 			<h3>基本信息</h3>
-			<div class="columns1">
-				<label >信息</label> <input name="name">
+			<div class="bigleft">
+				<label >信息</label> <input name="name"><br>
+				<label >时间</label> <input name="time"><br>
+				<label >备忘信息</label><br>
+				 <textarea tabindex="4" rows="3" cols="60" name="info"></textarea><br>
 			</div>
-			<div class="columns3">
-				<label >时间</label> <input name="time">
-			</div>
-			<div class="columns3">
-				<label >涉及客户</label> <input name="consumers">
-			</div>
-			
-			<div class="columns1">
-			<label >备忘信息</label>
-			 <textarea tabindex="4" rows="8" cols="40" name="info"></textarea>
+			<div class="smallright">
+				<label >涉及客户</label> <br>
+				 <input name="consumers" class="multiconsumerselectinput"><br>
+				<div id="slider" class="multiconsumerselect" style="padding: 0px">
+					<div class="slider-content" style="padding: 0px">
+						<ul>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div> 
 		

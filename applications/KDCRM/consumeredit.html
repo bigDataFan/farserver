@@ -4,76 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="style.css">
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-
+<script type="text/javascript" src="form.js"></script>
 
 </head>
-
-<script type="text/javascript">
-var id = getParam("id");
-var collections = "consumers";
-
-if (id!=null) {
-	$.getJSON("service/edit.gs",
-			{
-				"collection": collections,
-				"id": id
-			},
-			function(data) {
-				for(var o in data) {
-					$('input[name="' + o + '"]').val(data[o]);
-				}
-			}
-	);
-}
-
-
-
-function saveObj(create) {
-	var req = new Object();
-	req.collection = collections;
-	if (id!=null) req.id = id;
-
-	$('input,select').each(
-			function() {
-				req[$(this).attr("name")] = $(this).val();
-			}
-	);
-
-	$.post("service/save.gs",
-			req,
-			function(data) {
-				if (create) {
-					location.href="consumeredit.html";
-				} else {
-					alert("保存完成");
-				}
-			}
-	);
-}
-
-
-function getParam(strname) {
-	var hrefstr, pos, parastr, para, tempstr;
-	hrefstr = window.location.href;
-	pos = hrefstr.indexOf("?")
-	parastr = hrefstr.substring(pos + 1);
-	para = parastr.split("&");
-	tempstr = "";
-	for (i = 0; i < para.length; i++)
-	{
-		tempstr = para[i];
-		pos = tempstr.indexOf("=");
-		if (tempstr.substring(0, pos) == strname) {
-			return tempstr.substring(pos + 1);
-		}
-	}
-	return null;
-}
-
-
-
-</script>
-
 
 <body>
 
