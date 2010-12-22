@@ -1,7 +1,7 @@
 var obj = new Object();
-obj.rows = db.getCollection("activities").find(
+obj.rows = db.getCollection(params.collection).find(
 		{
-			'consumers' : params.user
+			'consumer' : params.user
 		}
 		).toArray();
 
