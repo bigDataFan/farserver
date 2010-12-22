@@ -8,7 +8,13 @@ if (params.collection!=null) {
 	if (params.consumers) {
 		params.consumers = utils.trimWhitespace(params.consumers).split(" ");
 	}
-	params.modified = new Date();
+	d = new Date();
+	params.modified = {
+			"d": d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(),
+			"t": d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds(),
+			"mill": d.getMilliseconds()
+	};
+	
 	db.getCollection(params.collection).upsert(params);
 }
 
