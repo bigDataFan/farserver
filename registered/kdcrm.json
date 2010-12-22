@@ -8,8 +8,8 @@
         "发布"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/KDCRM/",
-    "icon":"http://farserver.googlecode.com/svn/trunk/applications/KDCRM/images/logo.jpg",
-    "start": "index.gs",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/KDCRM/img/logo.jpg",
+    "start": "consumerlist.html",
     "version": "1.0",
     "owner": "liuhann@gmail.com"
 }
