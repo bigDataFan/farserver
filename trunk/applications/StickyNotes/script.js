@@ -76,8 +76,8 @@ $(document).ready(function(){
 		/* Sending an AJAX POST request: */
 		$.post('pub/add.gs',data,function(msg){
 						 
-			if(parseInt(msg))
-			{
+			//if(parseInt(msg))
+			//{
 				/* msg contains the ID of the note, assigned by MySQL's auto increment: */
 				
 				var tmp = $('#fancy_ajax .note').clone();
@@ -86,7 +86,7 @@ $(document).ready(function(){
 				tmp.appendTo($('#main'));
 				
 				make_draggable(tmp);
-			}
+			//}
 			
 			$("#addButton").fancybox.close();
 		});
