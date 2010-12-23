@@ -24,6 +24,10 @@ public class ScriptMongoDBCollection {
 
 	private  DBCollection coll;
 	
+	public void ensureIndex(String field) {
+		coll.ensureIndex(field);
+	}
+	
 	public String insert(NativeObject no) throws MongoException {
 		Map<String, Object> map = RhinoUtils.nativeObjectToMap(no);
 		BasicDBObject bo = new BasicDBObject(map);
