@@ -5,5 +5,4 @@ params.left = 0;
 params.top = 0;
 db.getCollection("stickynotes").insert(params);
 
-1;
 
