@@ -9,6 +9,8 @@ if (params.id) {
 		note.top = params.top;
 		db.getCollection("stickynotes").upsert(note);
 	}
+	note.id;
+} else {
+	"";
 }
-note.id;
 
