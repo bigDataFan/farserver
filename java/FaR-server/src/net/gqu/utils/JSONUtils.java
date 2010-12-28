@@ -1,5 +1,6 @@
 package net.gqu.utils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -115,6 +116,11 @@ public class JSONUtils
     	if (object instanceof Map) {
     		return new JSONObject((Map)object).toString();
     	}
+    	
+    	if (object instanceof Object[]) {
+    		return new JSONArray((Object[])object).toString();
+    	}
+    	
     	if (object instanceof Collection) {
 			return new JSONArray((Collection)object).toString();
 		} 
