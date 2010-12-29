@@ -124,9 +124,6 @@
 	
 	
 	<bean name="image.transformer.exe" class="net.gqu.utils.RuntimeExec">
-            <property name="processDirectory">
-            	<value>${image.converter.dir}</value>
-            </property>
             <property name="defaultProperties">
                <props>
                   <prop key="options"></prop>
