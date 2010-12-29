@@ -92,7 +92,7 @@ public class RuntimeExec
         this.waitForCompletion = true;
         defaultProperties = Collections.emptyMap();
         processProperties = null;
-        processDirectory = null;
+        processDirectory = new File(System.getProperty("user.dir"));
         
         // set default error codes
         this.errCodes = new HashSet<Integer>(2);

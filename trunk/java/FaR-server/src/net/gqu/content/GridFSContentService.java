@@ -1,10 +1,13 @@
 package net.gqu.content;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.security.AuthenticationUtil;
@@ -91,6 +94,7 @@ public class GridFSContentService  implements ContentService {
 		gridFS.remove(new ObjectId(id));
 		return true;
 	}
+	
 
 	@Override
 	public ContentFile getImageThumbnail(String srcId, long w, long h) {
@@ -110,7 +114,7 @@ public class GridFSContentService  implements ContentService {
 				if (!tempdir.exists()) {
 					tempdir.mkdirs();
 				}
-				File originFile = new File(dir + File.pathSeparator + srcId);
+				File originFile = new File(dir + "\\" + srcId);
 				if(!originFile.exists()) {
 					try {
 						originFile.createNewFile();
@@ -120,8 +124,8 @@ public class GridFSContentService  implements ContentService {
 					}
 				}
 			
-				String tempfile = dir + File.pathSeparator + targetFileName;
-			
+				String tempfile = dir + "\\" + targetFileName;
+				//"-thumbnail 100x100^";
 				String[] command = new String[5];
 				command[0] = "convert";
 				command[1] = originFile.getAbsolutePath();
@@ -141,6 +145,75 @@ public class GridFSContentService  implements ContentService {
 						target.delete();
 					} catch (FileNotFoundException e) {
 					}
+				} else {
+					return null;
+				}
+			}
+			targetGridFsFile = gridFS.findOne(targetFileName);
+		}
+		ContentFile contentFile = new ContentFile();
+		contentFile.setModified(targetGridFsFile.getUploadDate());
+		contentFile.setMimetype(targetGridFsFile.getContentType());
+		contentFile.setContent(targetGridFsFile.getInputStream());
+		contentFile.setFileName(targetGridFsFile.getFilename());
+		contentFile.setSize(targetGridFsFile.getLength());
+		return contentFile;
+	}
+
+	@Override
+	public ContentFile getImageThumbnail(String srcId, long s) {
+		String targetFileName = srcId + "-w" + s + "h" + s;
+		DB contentDB = dbProvider.getMongo().getDB("contents");
+		GridFS gridFS = new GridFS(contentDB);
+		
+		GridFSDBFile targetGridFsFile = gridFS.findOne(targetFileName);
+		
+		if (targetGridFsFile==null) {
+			GridFSDBFile originGridFSFile = gridFS.find(new ObjectId(srcId));
+
+			if (originGridFSFile!=null) {
+				//extract file first
+				String dir = System.getProperty("java.io.tmpdir");
+				File tempdir = new File(dir);
+				if (!tempdir.exists()) {
+					tempdir.mkdirs();
+				}
+				File originFile = new File(dir + "\\" + srcId);
+				
+				boolean isx = true;
+				if(!originFile.exists()) {
+					try {
+						originFile.createNewFile();
+						FileCopyUtils.copy(originGridFSFile.getInputStream(), new FileOutputStream(originFile));
+						BufferedImage image = ImageIO.read(originFile);  
+						isx = image.getWidth()>image.getHeight();
+					} catch (IOException e) {
+						return null;
+					}
+				}
+			
+				String tempfile = dir + "\\" + targetFileName;
+				//"-thumbnail 100x100^";
+				String[] command = new String[5];
+				command[0] = "convert";
+				command[1] = originFile.getAbsolutePath();
+				command[2] = " -resize";
+				command[3] = isx?(s + "x"):("x" + s);//((w!=0)?(w + "x "):("x" + h));
+				command[4] = " -gravity center -crop " + s + "x" + s + "+0+0 +repage ";
+				command[4] = tempfile;
+				runtimeExec.execute(command);
+				File target = new File(tempfile);
+				if (target.exists()) {
+					GridFSInputFile gridfsthumbfile;
+					try {
+						gridfsthumbfile = gridFS.createFile(new FileInputStream(target), targetFileName);
+						gridfsthumbfile.save();
+						gridfsthumbfile.setContentType(originGridFSFile.getContentType());
+						target.delete();
+					} catch (FileNotFoundException e) {
+					}
+				} else {
+					return null;
 				}
 			}
 			targetGridFsFile = gridFS.findOne(targetFileName);

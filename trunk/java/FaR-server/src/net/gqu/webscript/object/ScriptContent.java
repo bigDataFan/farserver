@@ -43,4 +43,9 @@ public class ScriptContent {
 	public ContentFile getSmallImage(String id, long w, long h) {
 		return contentService.getImageThumbnail(id, w, h);
 	}
+	
+	public ContentFile getSmallImage(String id, long s) {
+		return contentService.getImageThumbnail(id, s);
+	}
+	
 }
