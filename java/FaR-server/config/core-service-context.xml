@@ -55,6 +55,8 @@
 	<bean id="contentService" class="net.gqu.content.GridFSContentService">
 		<property name="dbProvider" ref="dbProvider"></property>
 		<property name="userService" ref="userService"></property>
+		<property name="runtimeExec" ref="image.transformer.exe"></property>
+		
 	</bean>
 	
 	<bean id="repositoryService" class="net.gqu.repository.RepositoryServiceImpl">
@@ -120,10 +122,10 @@
 
 
 	
-	<!-- 
+	
 	<bean name="image.transformer.exe" class="net.gqu.utils.RuntimeExec">
             <property name="processDirectory">
-            	<value>E:/apache-tomcat-6.0.18/ImageMagick/bin</value>
+            	<value>${image.converter.dir}</value>
             </property>
             <property name="defaultProperties">
                <props>
@@ -131,5 +133,5 @@
                </props>
             </property>
          </bean>
-       -->
+    
 </beans>
