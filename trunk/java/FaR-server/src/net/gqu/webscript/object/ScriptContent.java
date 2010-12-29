@@ -39,4 +39,8 @@ public class ScriptContent {
 	public ContentFile get(String id) {
 		return contentService.getContent(id);
 	}
+	
+	public ContentFile getSmallImage(String id, long w, long h) {
+		return contentService.getImageThumbnail(id, w, h);
+	}
 }

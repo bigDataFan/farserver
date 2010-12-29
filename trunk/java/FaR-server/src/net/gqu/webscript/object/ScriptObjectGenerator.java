@@ -15,6 +15,7 @@ import org.mozilla.javascript.NativeObject;
 
 public class ScriptObjectGenerator {
 
+	private static final String MULTIPARAM_ENDFIX = "[]";
 	private BasicUserService userService;
 	
 	
@@ -35,7 +36,11 @@ public class ScriptObjectGenerator {
 		
 		while (names.hasMoreElements()) {
 			String name = (String) names.nextElement();
-			object.put(name, object,  request.getParameter(name));
+			if (name.endsWith(MULTIPARAM_ENDFIX)) {
+				object.put(name.substring(0,name.length()-MULTIPARAM_ENDFIX.length()), object,  request.getParameterValues(name));
+			} else {
+				object.put(name, object,  request.getParameter(name));
+			}
 		}
 		return object;
 	}
