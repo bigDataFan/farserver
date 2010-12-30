@@ -13,7 +13,6 @@ import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
 import net.gqu.utils.FileCopyUtils;
-import net.gqu.utils.GUID;
 import net.gqu.utils.RuntimeExec;
 import net.gqu.webscript.object.ContentFile;
 
@@ -26,6 +25,11 @@ import com.mongodb.gridfs.GridFSInputFile;
 
 public class GridFSContentService  implements ContentService {
 	
+	
+	
+	public static final String THUMBNAILS = "thumbnails";
+	public static final String CONTENTS = "contents";
+
 	public void setDbProvider(MongoDBProvider dbProvider) {
 		this.dbProvider = dbProvider;
 	}
@@ -48,7 +52,7 @@ public class GridFSContentService  implements ContentService {
 	
 	@Override
 	public ContentFile getContent(String id) {
-		DB contentDB = dbProvider.getMongo().getDB("contents");
+		DB contentDB = dbProvider.getMongo().getDB(CONTENTS);
 		GridFS gridFS = new GridFS(contentDB);
 		GridFSDBFile file = gridFS.find(new ObjectId(id));
 		
@@ -67,7 +71,7 @@ public class GridFSContentService  implements ContentService {
 
 	@Override
 	public String putContent(ContentFile contentFile) {
-		DB contentDB = dbProvider.getMongo().getDB("contents");
+		DB contentDB = dbProvider.getMongo().getDB(CONTENTS);
 		String contextUser = AuthenticationUtil.getContextUser();
 		userService.incUserUsage(contextUser, contentFile.getSize());
 		
@@ -81,7 +85,7 @@ public class GridFSContentService  implements ContentService {
 
 	@Override
 	public boolean removeContent(String id) {
-		DB contentDB = dbProvider.getMongo().getDB("contents");
+		DB contentDB = dbProvider.getMongo().getDB(CONTENTS);
 		String contextUser = AuthenticationUtil.getContextUser();
 		
 		GridFS gridFS = new GridFS(contentDB);
@@ -94,18 +98,18 @@ public class GridFSContentService  implements ContentService {
 		gridFS.remove(new ObjectId(id));
 		return true;
 	}
-	
 
 	@Override
 	public ContentFile getImageThumbnail(String srcId, long w, long h) {
 		String targetFileName = srcId + "-w" + w + "h" + h;
-		DB contentDB = dbProvider.getMongo().getDB("contents");
-		GridFS gridFS = new GridFS(contentDB);
+		DB thumbnailDB = dbProvider.getMongo().getDB(THUMBNAILS);
+		GridFS thumbnailGridFS = new GridFS(thumbnailDB);
 		
-		GridFSDBFile targetGridFsFile = gridFS.findOne(targetFileName);
+		GridFSDBFile targetGridFsFile = thumbnailGridFS.findOne(targetFileName);
 		
 		if (targetGridFsFile==null) {
-			GridFSDBFile originGridFSFile = gridFS.find(new ObjectId(srcId));
+			DB contentdb = dbProvider.getMongo().getDB(CONTENTS);
+			GridFSDBFile originGridFSFile = new GridFS(contentdb).find(new ObjectId(srcId));
 
 			if (originGridFSFile!=null) {
 				//extract file first
@@ -132,14 +136,14 @@ public class GridFSContentService  implements ContentService {
 				command[2] = "-resize";
 				command[3] = ((w!=0)?(w + "x "):("x" + h));
 				command[4] = tempfile;
-				runtimeExec.execute(command);
+				//runtimeExec.execute(command);
 			
 			
 				File target = new File(tempfile);
 				if (target.exists()) {
 					GridFSInputFile gridfsthumbfile;
 					try {
-						gridfsthumbfile = gridFS.createFile(new FileInputStream(target), targetFileName);
+						gridfsthumbfile = thumbnailGridFS.createFile(new FileInputStream(target), targetFileName);
 						gridfsthumbfile.save();
 						gridfsthumbfile.setContentType(originGridFSFile.getContentType());
 						target.delete();
@@ -149,7 +153,7 @@ public class GridFSContentService  implements ContentService {
 					return null;
 				}
 			}
-			targetGridFsFile = gridFS.findOne(targetFileName);
+			targetGridFsFile = thumbnailGridFS.findOne(targetFileName);
 		}
 		ContentFile contentFile = new ContentFile();
 		contentFile.setModified(targetGridFsFile.getUploadDate());
@@ -163,13 +167,14 @@ public class GridFSContentService  implements ContentService {
 	@Override
 	public ContentFile getImageThumbnail(String srcId, long s) {
 		String targetFileName = srcId + "-w" + s + "h" + s;
-		DB contentDB = dbProvider.getMongo().getDB("contents");
-		GridFS gridFS = new GridFS(contentDB);
+		DB thumbnailDB = dbProvider.getMongo().getDB(THUMBNAILS);
+		GridFS thumbnailGridFS = new GridFS(thumbnailDB);
 		
-		GridFSDBFile targetGridFsFile = gridFS.findOne(targetFileName);
+		GridFSDBFile targetGridFsFile = thumbnailGridFS.findOne(targetFileName);
 		
 		if (targetGridFsFile==null) {
-			GridFSDBFile originGridFSFile = gridFS.find(new ObjectId(srcId));
+			DB contentdb = dbProvider.getMongo().getDB(CONTENTS);
+			GridFSDBFile originGridFSFile = new GridFS(contentdb).find(new ObjectId(srcId));
 
 			if (originGridFSFile!=null) {
 				//extract file first
@@ -180,33 +185,47 @@ public class GridFSContentService  implements ContentService {
 				}
 				File originFile = new File(dir + "\\" + srcId);
 				
-				boolean isx = true;
 				if(!originFile.exists()) {
 					try {
 						originFile.createNewFile();
 						FileCopyUtils.copy(originGridFSFile.getInputStream(), new FileOutputStream(originFile));
-						BufferedImage image = ImageIO.read(originFile);  
-						isx = image.getWidth()>image.getHeight();
 					} catch (IOException e) {
 						return null;
 					}
 				}
-			
+				boolean isx = true;
+				BufferedImage image;
+				try {
+					image = ImageIO.read(originFile);
+					isx = image.getWidth()>image.getHeight();
+				} catch (IOException e1) {
+				}  
+				
 				String tempfile = dir + "\\" + targetFileName;
-				//"-thumbnail 100x100^";
-				String[] command = new String[5];
+				
+				
+				//convert 1.jpg -resize x100 -gravity center -crop 100x100+0+0 +repage 2.jpg
+				// when width>height  use x100 else use 100x
+				
+				StringBuffer command = new StringBuffer();
+				command.append("convert ").append(originFile.getAbsolutePath()).append(" -resize ")
+						.append(isx?("x" + s):(s + "x")).append(" -gravity center").append(" -crop " + s + "x" + s + "+0+0 +repage ")
+						.append(tempfile);
+				/*
 				command[0] = "convert";
 				command[1] = originFile.getAbsolutePath();
 				command[2] = " -resize";
-				command[3] = isx?(s + "x"):("x" + s);//((w!=0)?(w + "x "):("x" + h));
-				command[4] = " -gravity center -crop " + s + "x" + s + "+0+0 +repage ";
-				command[4] = tempfile;
-				runtimeExec.execute(command);
+				command[3] = isx?("x" + s):(s + "x");//((w!=0)?(w + "x "):("x" + h));
+				command[4] = "-gravity center";
+				command[5] = " -crop " + s + "x" + s + "+0+0 +repage ";
+				command[6] = tempfile;
+				*/
+				runtimeExec.execute(command.toString());
 				File target = new File(tempfile);
 				if (target.exists()) {
 					GridFSInputFile gridfsthumbfile;
 					try {
-						gridfsthumbfile = gridFS.createFile(new FileInputStream(target), targetFileName);
+						gridfsthumbfile = thumbnailGridFS.createFile(new FileInputStream(target), targetFileName);
 						gridfsthumbfile.save();
 						gridfsthumbfile.setContentType(originGridFSFile.getContentType());
 						target.delete();
@@ -215,8 +234,15 @@ public class GridFSContentService  implements ContentService {
 				} else {
 					return null;
 				}
+				
+				try {
+					originFile.delete();
+					target.delete();
+				} catch (Exception e) {
+				}
+				
 			}
-			targetGridFsFile = gridFS.findOne(targetFileName);
+			targetGridFsFile = thumbnailGridFS.findOne(targetFileName);
 		}
 		ContentFile contentFile = new ContentFile();
 		contentFile.setModified(targetGridFsFile.getUploadDate());

@@ -247,7 +247,7 @@ public class RuntimeExec
      * 
      * @return Returns the full execution results
      */
-    public ExecutionResult execute(String[] cmd)
+    public ExecutionResult execute(String cmd)
     {
         int defaultFailureExitValue = errCodes.size() > 0 ? ((Integer)errCodes.toArray()[0]) : 1;
         
@@ -266,7 +266,7 @@ public class RuntimeExec
             String execOut = "";
             String execErr = e.getMessage();
             int exitValue = defaultFailureExitValue;
-            ExecutionResult result = new ExecutionResult(null, cmd, errCodes, exitValue, execOut, execErr);
+            ExecutionResult result = new ExecutionResult(null, new String[0], errCodes, exitValue, execOut, execErr);
             if (logger.isDebugEnabled())
             {
                 logger.debug(result);
@@ -310,7 +310,7 @@ public class RuntimeExec
         String execErr = stdErrGobbler.getBuffer();
         
         // construct the return value
-        ExecutionResult result = new ExecutionResult(process, cmd, errCodes, exitValue, execOut, execErr);
+        ExecutionResult result = new ExecutionResult(process, new String[0], errCodes, exitValue, execOut, execErr);
 
         // done
         if (logger.isDebugEnabled())
