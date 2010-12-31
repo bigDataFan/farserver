@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="js/slidernav/slidernav.css" media="screen, projection" />
+<script type="text/javascript" src="js/slidernav/slidernav.js"></script>
+<script type="text/javascript" src="form.js"></script>
+
+</head>
+
+<body>
+
+<div class="header">
+	<div class="container980">
+		<a id="logo"></a>
+		<ul>
+			<li>
+				<span id="c_list">&nbsp;</span>
+				<a href="consumerlist.html">客户列表</a>
+			</li>
+			<li>
+				<span id="c_actvity">&nbsp;</span>
+				<a href="activities.html">客户动态</a>
+			</li>
+			<li>
+				<span id="c_pre">&nbsp;</span>
+				<a href="pre-sales.html">售前跟踪</a>
+			</li>
+			<li>
+				<span id="c_center">&nbsp;</span>
+				<a href="sales.html">售中管理</a>
+			</li>
+			<li>
+				<span id="c_after">&nbsp;</span>
+				<a href="after-sales.html">售后信息</a>
+			</li>
+			<li>
+				<span id="c_ana">&nbsp;</span>
+				<a href="analysis.html">分析</a>
+			</li>			
+		</ul>
+		
+	</div>
+</div>
+
+<div class="mainbody">
+
+	<form action="service/update.gs" method="POST">
+	<div class="container980 kform">
+		<div class="cats">
+			<h3>基本信息</h3>
+			<div class="bigleft">
+				<label >信息</label> <input name="name"><br>
+				<label >时间</label> <input name="time"><br>
+				<label >备忘信息</label><br>
+				 <textarea tabindex="4" rows="3" cols="60" name="info"></textarea><br>
+			</div>
+			<div class="smallright">
+				<label >涉及客户</label> <br>
+				<input id="consumer" name="consumer"  type="hidden">
+				<input id="consumerdisplay" name="consumerdisplay"><br>
+				<div id="slider" class="multiconsumerselect" style="padding: 0px">
+					<div class="slider-content" style="padding: 0px">
+						<ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div> 
+		
+		<div class="cats">
+			<div class="columns3">
+				<input type="button" value="保存" onclick="saveObj()">
+			</div>
+			<div class="columns3">
+				<input type="button" value="保存并新建" onclick="saveObj(true)">
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="footer">
+
+<div id="copyright">
+    <span>&copy;2010 凯迪客户信息管理系统  <a title="凯迪客户信息管理系统 " href="mailto:liuhann@gmail.com">联系作者</a>.  </span>
+</div>
+
+</div>
+
+
+</body>
+</html>
