@@ -1,0 +1,1 @@
+db.getCollection(params.collection).distinct(params.column);

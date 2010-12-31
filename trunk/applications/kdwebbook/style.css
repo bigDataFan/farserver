@@ -1,0 +1,323 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, h, td {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    font-size: small;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+body {
+	/*background: url("img/bg_content.jpg") repeat-y scroll 50% 0 transparent;*/
+}
+
+a {
+    color: #1762BE;
+    text-decoration: none;
+}
+
+a:HOVER {
+    color: #9FCBFF;
+    text-decoration: none;
+}
+
+
+
+.header {
+    border-bottom: 1px solid #5A6064;
+    background: url("img/bg_header.jpg") repeat scroll 0 0 transparent;
+}
+
+.container980 {
+    margin: 0 auto;
+    width: 980px;
+}
+
+div.header div.container980 {
+    height: 90px;
+    background: url("img/bg_header_shine.png") no-repeat scroll 50% 100% transparent;
+}
+
+
+#logo {
+    display: block;
+    float: left;
+    height: 80px;
+    margin: 8px 0 0 -5px;
+    width: 250px;
+}
+
+
+.header #mainMenu {
+    list-style: none outside none;
+    float: right;
+}
+
+
+#mainMenu > li {
+    background: url("img/navi_seperator.png") no-repeat scroll 100% 1px transparent;
+    float: left;
+    position: relative;
+}
+
+#mainMenu > li > span {
+    display: block;
+    height: 45px;
+    left: 50%;
+    margin-left: -25px;
+    position: absolute;
+    top: 12px;
+    width: 50px;
+}
+
+#mainMenu > li > a {
+    color: #FFFFFF;
+    display: block;
+    font-size: 13px;
+    height: 90px;
+    line-height: 130px;
+    padding: 0 18px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: 0 1px 1px #9D9999;
+}
+
+#mainMenu > li:HOVER {
+    background: url("img/bg_navi_hover.png") no-repeat scroll 50% 100% transparent;
+}
+
+/**drop down menu*/
+#mainMenu > li > ul {
+    background: none repeat scroll 0 0 #EBEBEB;
+    border-left: 1px solid #C7C7C7;
+    border-right: 1px solid #C7C7C7;
+    border-top: 1px solid #5A6064;
+    position: absolute;
+    width: 190px;
+    z-index: 9998;
+}
+#mainMenu > li > ul > li {
+	list-style:none;
+    background: url("img/bullet.png") no-repeat scroll 12px 13px transparent;
+    border-top: 1px solid #F5F5F5;
+}
+
+#mainMenu > li > ul > li > span {
+    display: none;
+}
+#mainMenu > li > ul > li > a {
+    border-bottom: 1px solid #C7C7C7;
+    border-top: 1px solid #F0F0F0;
+    color: #484848;
+    display: block;
+    font-size: 12px;
+    line-height: 27px;
+    padding-left: 28px;
+    text-decoration: none;
+    text-shadow: 0 1px 2px #FFFFFF;
+    word-wrap: break-word;
+}
+#mainMenu > li > ul > li > a:hover {
+    background: url("img/bullet.png") no-repeat scroll 12px 12px #F7F7F7;
+    text-decoration: none;
+}
+#mainMenu > li:hover > ul {
+    display: block;
+}
+
+
+#header ul {
+    list-style: none outside none;
+}
+.boxshadow {
+    -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+
+#c_list{
+    background: url("img/sprite.png") no-repeat scroll -50px -44px transparent;
+}
+
+#c_actvity {
+   background: url("img/sprite.png") no-repeat scroll -250px -44px transparent;
+}
+
+#c_pre{
+    background: url("img/sprite.png") no-repeat scroll -100px -44px transparent;
+}
+
+#c_center{
+    background: url("img/sprite.png") no-repeat scroll 0 -44px transparent;
+}
+
+#c_after{
+	background: url("img/sprite.png") no-repeat scroll -200px -44px transparent;
+}
+
+#c_ana{
+	background: url("img/sprite.png") no-repeat scroll -300px -44px transparent;
+}
+
+.footer {
+    background: url("img/bg_header.jpg") repeat scroll 0 0 transparent;
+    padding-top: 50px;
+    position: relative;
+}
+
+#copyright {
+    padding-bottom: 30px;
+    text-align: center;
+    width: 100%;
+	border-top: 1px solid #424C54;
+}
+
+#copyright span {
+    color: #6F7E8A;
+    font-family: Georgia,serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    text-shadow: 0 1px 1px #000000;
+    word-spacing: 0.1em;
+}
+
+#copyright span a {
+    color: #6F7E8A;
+    text-decoration: none;
+}
+
+
+.columns3 {
+    float: left;
+    width: 30%;
+}
+
+.columns2 {
+    float: left;
+    width: 45%;
+}
+
+.columns1 {
+    float: left;
+    width: 95%;
+}
+
+.bigleft {
+	float: left;
+    width: 65%;
+}
+
+.smallright {
+	float: right;
+    width: 30%;
+	
+}
+
+
+/**for the form elements*/
+
+.kform input[type="text"] {
+    /*background: url("img/contact-sprite.png") no-repeat scroll 0 0 transparent;*/
+    border: 1px solid #E7E7E7;;
+    /*#E7E7E7;*/
+    clear: both;
+    font-size: small;
+    height: 28px;
+    line-height: 22px;
+    margin-bottom: 5px;
+    padding: 0 5px 0 2px;
+    width: 60%;
+}
+
+div.kform select {
+	border: 1px solid #E7E7E7;;
+	color:#646464;
+	font-size:small;
+	letter-spacing:0.02em;
+	margin-bottom: 5px;
+    padding: 0 5px 0 2px;
+	padding-bottom:5px;
+	padding-left:5px;
+	padding-top:5px;
+	vertical-align:middle;
+	width: 60%;
+}
+
+
+div.kform div.cats {
+	margin-top:20px;
+	border: 1px solid #D1CFCF;
+	overflow:auto; 
+	zoom:1;
+}
+
+div.kform div.cats div {
+	padding: 5px;
+}
+div.kform div.cats h3{
+	border-bottom: 1px solid #FBB829;
+    height: 25px;
+    color: #FBB829;
+    text-shadow: 0 1px 1px #8F6100;
+    font-size: medium;
+    font-style: normal;
+    font-weight: 900;
+    left: 120px;
+    letter-spacing: 0.02em;
+    top: 0;
+    padding:5px;
+    word-spacing: 0.15em;
+}
+
+
+div.kform input[type="button"] {
+	background: none repeat scroll 0 0 #FBB829;
+    border: 1px solid #FBD073;
+    display: block;
+    height: 25px;
+    position: relative;
+    text-indent: 10px;
+    width: 158px;
+	color: #FFFFFF;
+    font-size: small;
+    font-weight: 900;
+    line-height: 18px;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+
+div.kform textarea {
+    border: 1px solid #E7E7E7;
+    font-size: small;
+    height: 200px;
+    line-height: 22px;
+    width:90%
+    margin: 0;
+}
+
+
+/**for autocomplete tags*/
+SPAN.tagMatches {
+          margin-left: 10px;
+}
+      
+SPAN.tagMatches SPAN {
+    padding: 2px;
+    margin-right: 4px;
+    background-color: #0000AB;
+    color: #fff;
+    cursor: pointer;
+}
+      
+PRE {
+    background: #ddd;
+    font-family: Courier;
+    padding: 5px;
+    overflow: auto;
+}
+      
+      
