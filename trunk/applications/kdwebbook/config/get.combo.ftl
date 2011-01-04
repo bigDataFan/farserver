@@ -13,29 +13,6 @@
 <script language="Javascript" type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 
 
-<script type="text/javascript">
-$(document).ready(function(){
-	
-	$('#infoTable').datagrid({
-			pagination:true,
-			rownumbers:false,
-			pageSize: 20,
-			url: "../service/list.gs?collection=dishes"
-	});	
-});
-
-function getThumb(value,rec) {
-	return '<img src="../service/upload.gs?id=' +  value  + '&w=100">';
-}
-
-function isChecked(value,rec) {
-	return value=='1'? "是" : "否";
-}	
-
-
-
-</script>
-
 </head>
 
 <body>
@@ -84,21 +61,6 @@ function isChecked(value,rec) {
 				<label>说明 </label><br><input type="text" name="desc6">  
 			</div>
 		</div> 
-		
-		<table id="infoTable" style="width:800px;height:500px;" idField="id">
-					<thead>
-						<tr>
-							<th field="name" width="100" >名称</th>
-							<th field="short" width="100" editor="text">简写码</th>
-							<th field="price" width="100" editor="text">单价</th>
-							<th field="image" width="120" editor="text" formatter="getThumb">图片</th>
-							<th field="type" width="100" editor="text" sortable="true">分类</th>
-							<th field="pendding" width="100" editor="text" sortable="true" formatter="isChecked">停用</th>
-						</tr>
-					</thead>
-				</table>	
-				
-				
 				
 		<div class="cats">
 			<div class="columns3">

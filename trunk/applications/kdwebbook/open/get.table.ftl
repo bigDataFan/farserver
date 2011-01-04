@@ -7,6 +7,7 @@
 <script type="text/javascript" src="../js/form.js"></script>
 <script type="text/javascript" src="../js/tag.js"></script>
 
+<script type="text/javascript">
 
 $(document).ready(function(){
 	
@@ -39,9 +40,7 @@ $(document).ready(function(){
 			url: "../service/receipts.gs"
 	});
 });
-
-
-
+</script>
 </head>
 
 <body>
@@ -54,7 +53,7 @@ $(document).ready(function(){
 		<div class="cats">
 			<h3>基本信息</h3>
 			<div class="columns3">
-				<label>餐位</label> <input type="text" name="position">
+				<label>餐位</label> <select name="position" id="position"></select>
 			</div>
 			<div class="columns3">
 				<label>服务员</label> <input type="text" name="waiter">
@@ -62,11 +61,13 @@ $(document).ready(function(){
 			<div class="columns3">
 				<label >备注</label> <input type="text" name="infos">
 			</div>
-			<input type="hidden" >
+			<div class="columns3">
+				<label >外送地址(外送情况下填写)</label> <input type="text" name="infos">
+			</div>
 		</div> 
 		<div>
-			
-			<table id="infoTable" style="width:980px;height:500px;" idField="id">
+		<h3>菜品</h3>
+		<table id="booked" style="width:900px;min-height:500px;" idField="id">
 			<thead>
 				<tr>
 					<th field="name" width="100" >名称</th>

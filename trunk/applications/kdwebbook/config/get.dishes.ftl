@@ -33,7 +33,7 @@ function isChecked(value,rec) {
 <div class="mainbody">
 	<div class="container980" style="padding-top: 10px;">
 	
-		<table id="infoTable" style="width:980px;height:500px;" idField="id">
+		<table id="infoTable" style="width:980px;min-height:500px;" idField="id">
 			<thead>
 				<tr>
 					<th field="name" width="100" >名称</th>
