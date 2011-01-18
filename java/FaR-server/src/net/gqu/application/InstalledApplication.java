@@ -1,5 +1,6 @@
 package net.gqu.application;
 
+
 public class InstalledApplication {
 
 	private String id;

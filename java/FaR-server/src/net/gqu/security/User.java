@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.gqu.application.ApplicationService;
+
 /**
  */
 public class User implements Serializable {
 
+	private static final String KEY_FIRST_APP = "firstApp";
 	public static final String KEY_LOGINED = "logined";
 	public static final String KEY_DISABLED = "disabled";
 	public static final String KEY_ROLE = "role";
@@ -23,8 +26,6 @@ public class User implements Serializable {
 	public static final String ATTR_GOOGLE_PWD = "googlepassword";
 	public static final String ATTR_GOOGLE_CAL_TOKEN = "googlecaltoken";
 	
-	
-	
 	private String name;
 	private String password;
 	private String email;
@@ -35,10 +36,17 @@ public class User implements Serializable {
 	private boolean disabled;
 	private long logined;
 	private String db;
-	
+	private String firstApp;
 
 	
-	
+	public String getFirstApp() {
+		return firstApp;
+	}
+
+	public void setFirstApp(String firstApp) {
+		this.firstApp = firstApp;
+	}
+
 	public String getRole() {
 		return role;
 	}
@@ -57,15 +65,11 @@ public class User implements Serializable {
 		this.disabled = (Boolean)one.get(KEY_DISABLED);
 		this.logined = (Long)one.get(KEY_LOGINED);
 		this.contentUsed = (Long)one.get(KEY_CONTENT_USED);
-		
+		this.firstApp = (one.get(KEY_FIRST_APP)==null)?null:(String)one.get(KEY_FIRST_APP);
 		if (one.get(KEY_ATTRS)!=null) {
 			this.attrs = (Map)one.get(KEY_ATTRS);
 		}
 	}
-	
-	
-	
-	
 	
 	public Map<String, String> getAttrs() {
 		if (attrs==null) {
@@ -76,8 +80,6 @@ public class User implements Serializable {
 	public void setAttrs(Map<String, String> attrs) {
 		this.attrs = attrs;
 	}
-
-	
 	
 	public Map<String, Object> getMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -90,6 +92,7 @@ public class User implements Serializable {
 		map.put(KEY_LOGINED, logined);
 		map.put(KEY_CONTENT_USED, contentUsed);
 		map.put(KEY_ATTRS, attrs);
+		map.put(KEY_FIRST_APP, firstApp);
 		return map;
 	}
 	
@@ -158,6 +161,4 @@ public class User implements Serializable {
 		}
 		return (this.attrs.get(key)==null)?"":this.attrs.get(key);
 	}
-	
-	
 }

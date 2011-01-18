@@ -45,8 +45,9 @@ public class SetUserFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
-		String sessionedUser = (String) httpReq.getSession().getAttribute(AuthenticationFilter.AUTHENTICATION_USER);
 		AuthenticationUtil.setCurrentAsGuest();
+		
+		String sessionedUser = (String) httpReq.getSession().getAttribute(AuthenticationFilter.AUTHENTICATION_USER);
 		
 		if (sessionedUser != null) {
 			AuthenticationUtil.setCurrentUser(sessionedUser);

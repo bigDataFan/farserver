@@ -22,13 +22,30 @@ import com.mongodb.WriteResult;
 
 public class ScriptMongoDBCollection {
 
+	private boolean isReadOnly;
+	
 	private  DBCollection coll;
 	
+	public boolean isReadOnly() {
+		return isReadOnly;
+	}
+
+	public void setReadOnly(boolean isReadOnly) {
+		this.isReadOnly = isReadOnly;
+	}
+
 	public void ensureIndex(String field) {
 		coll.ensureIndex(field);
 	}
 	
+	private void errorWhenReadOnly() {
+		if (isReadOnly) {
+			throw new HttpStatusExceptionImpl(406);
+		}
+	}
+	
 	public String insert(NativeObject no) throws MongoException {
+		errorWhenReadOnly();
 		Map<String, Object> map = RhinoUtils.nativeObjectToMap(no);
 		BasicDBObject bo = new BasicDBObject(map);
 		WriteResult wr = coll.insert(bo, WriteConcern.SAFE);
@@ -47,6 +64,7 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public String upsert(NativeObject o, NativeObject n) throws MongoException {
+		errorWhenReadOnly();
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 		Map<String, Object> newMap = RhinoUtils.nativeObjectToMap(n);
 		
@@ -72,7 +90,7 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public void incField(String id, String field, Long incs) {
-
+		errorWhenReadOnly();
 		BasicDBObject inc = new BasicDBObject();
 		Map<String, Long> zz = new HashMap<String, Long>();
 		zz.put(field, incs);
@@ -80,13 +98,12 @@ public class ScriptMongoDBCollection {
 		
 		BasicDBObject query = new BasicDBObject();
 		query.put("_id", new ObjectId(id));	
-		
 		coll.update(query, inc);
 	}
 	
 	public String upsert(NativeObject o) throws MongoException {
+		errorWhenReadOnly();
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
-		
 		WriteResult wr; 
 		if (oldMap.get("id")!=null && !oldMap.get("id").equals("")) {
 			try {
@@ -113,6 +130,7 @@ public class ScriptMongoDBCollection {
 	}
 
 	public void save(NativeObject o) {
+		errorWhenReadOnly();
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 		coll.save(new BasicDBObject(oldMap));
 	}
@@ -144,6 +162,7 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public void remove(NativeObject o)throws MongoException {
+		errorWhenReadOnly();
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
 
 		if (oldMap.get("id")!=null) {
@@ -167,9 +186,6 @@ public class ScriptMongoDBCollection {
 		return new ScriptDBCursor(coll.find(new BasicDBObject(oldMap),new BasicDBObject(keysMap)));
 	}
 	
-	
-	
-	
 	public ScriptDBCursor findRecent(NativeObject o) {
 		Map<String, Object> oldMap = new HashMap<String, Object>();
 		if (o!=null) {
@@ -184,17 +200,16 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public ScriptDBCursor findRecent() {
-		
 		DBObject orders = new BasicDBObject();
 		orders.put("$natural", -1);
 		DBCursor finded = coll.find().sort(orders);
-		
 		return new ScriptDBCursor(finded);
 	}
 	
 	
 	
 	public WriteResult insert(NativeArray na) throws MongoException {
+		errorWhenReadOnly();
 		Object[] nas = RhinoUtils.nativeArrayToArray(na);
 		DBObject[] dbos = new DBObject[nas.length];
 		for (int i = 0; i < nas.length; i++) {
@@ -210,14 +225,7 @@ public class ScriptMongoDBCollection {
 	public ScriptMongoDBCollection(DBCollection coll) {
 		super();
 		this.coll = coll;
-	}
-
-	public final Object apply(DBObject jo, boolean ensureID) {
-		return coll.apply(jo, ensureID);
-	}
-
-	public final Object apply(DBObject o) {
-		return coll.apply(o);
+		this.isReadOnly = false;
 	}
 
 	public long count() throws MongoException {

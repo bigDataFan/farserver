@@ -46,6 +46,7 @@ import net.gqu.webscript.object.ScriptObjectGenerator;
 import net.gqu.webscript.object.ScriptRequest;
 import net.gqu.webscript.object.ScriptResponse;
 import net.gqu.webscript.object.ScriptSession;
+import net.gqu.webscript.object.ScriptSystem;
 import net.gqu.webscript.object.ScriptUser;
 import net.gqu.webscript.object.ScriptUtils;
 import net.sf.ehcache.Cache;
@@ -287,15 +288,11 @@ public class GQServlet extends HttpServlet {
 
 	protected Map<String, Object> createScriptParameters(GQRequest gqrequest,HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<String, Object>(32, 1.0f);
-		
-		loggingService.getSystemLogger().info("abc");
-		
 		// add web script parameters
 		ScriptRequest scriptRequest = new ScriptRequest(gqrequest.getRequest());
 		scriptRequest.setRemainPath(gqrequest.getTailPath());
 		scriptRequest.setFileSizeMax(gqrequest.getRole().getContentSize());
 		scriptRequest.setFactory(fileItemFactory);
-		
 		
 		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest(), gqrequest.getTailPath()));
 		params.put("request", scriptRequest);
@@ -305,6 +302,8 @@ public class GQServlet extends HttpServlet {
 
 		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
+		
+		params.put("system", new ScriptSystem(applicationService, userService));
 		
 		params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
 		params.put("owner", new ScriptUser(AuthenticationUtil.getContextUser(),userService));
@@ -546,10 +545,20 @@ public class GQServlet extends HttpServlet {
 				throw new HttpStatusExceptionImpl(410); //gone
 			}
 			
-			installedApplication = applicationService.getInstalledByMapping(pathList[0], pathList[1]);
-			if (installedApplication==null) {
-				throw new HttpStatusExceptionImpl(404, null);
-			}
+			Map<String, Object> map = applicationService.getInstalledByMapping(pathList[0], pathList[1]);
+			if (map==null) {
+				if (applicationService.getApplication(pathList[1])==null) {
+					throw new HttpStatusExceptionImpl(404, null);
+				} else {
+					map = applicationService.install(pathList[0], pathList[1], pathList[1]);
+				}
+			} 
+			
+			installedApplication = new InstalledApplication();
+			installedApplication.setApp((String) map.get(ApplicationService.KEY_APPLICATION));
+			installedApplication.setMapping((String) map.get(ApplicationService.KEY_MAPPING));
+			installedApplication.setUser((String)map.get(ApplicationService.KEY_USER));
+		
 			
 			basePath = "/user/" + pathList[0] + "/" + pathList[1];
 			approvedApplication = applicationService.getApplication(installedApplication.getApp());

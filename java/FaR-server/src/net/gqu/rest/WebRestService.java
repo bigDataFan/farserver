@@ -58,13 +58,7 @@ public class WebRestService {
 			throw new HttpStatusExceptionImpl(401);
 		}
 		
-		RegisteredApplication app = applicationService.getApplication(application);
-		
-		if (app==null) {
-			throw new HttpStatusExceptionImpl(404);
-		}
-		
-		InstalledApplication installed = applicationService.install(AuthenticationUtil.getCurrentUser(), app, mapping);
+		Map<String, Object> installed = applicationService.install(AuthenticationUtil.getCurrentUser(), application, mapping);
 		
 		/*
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -74,7 +68,7 @@ public class WebRestService {
 		result.put(ApplicationService._ID, installed.getId());
 		result.put(ApplicationService.MAPPING, installed.getMapping());
 		*/
-		return null;
+		return installed;
 	}
 	
 	
@@ -219,7 +213,7 @@ public class WebRestService {
 	@RestService(method="GET", uri="/admin/user/apps")
 	public Set<String> getUserApps(@RestParam(value="username") String name) {
 		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
-		Map<String, InstalledApplication> installed = applicationService.getUserInstalledApplications(name);
+		Map<String, Map<String, Object>> installed = applicationService.getUserInstalledApplications(name);
 		return installed.keySet();
 	}
 	

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.gqu.application.ApplicationService;
 import net.gqu.cache.EhCacheService;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -25,6 +26,7 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private EhCacheService cacheService;
 	private BasicUserService userService;
+	private ApplicationService applicationService;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		userService = (BasicUserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
-		
+		applicationService = (ApplicationService)ctx.getBean("applicationService");
 	}
 
 
@@ -77,7 +79,7 @@ public class LoginServlet extends HttpServlet {
         			request.getSession().removeAttribute(AuthenticationFilter.LOGIN_REFERER);
         			response.sendRedirect(url);
         		} else { 
-        			response.sendRedirect(userService.getMainPage());
+        			response.sendRedirect("/");
         		}
         		return;
     		}

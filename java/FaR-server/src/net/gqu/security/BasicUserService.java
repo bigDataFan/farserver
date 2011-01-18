@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import net.gqu.application.ApplicationService;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
@@ -31,15 +32,33 @@ public class BasicUserService {
 	private String adminPassword;
 	private String registerPage;
 	private String loginPage;
-	private String mainPage;
+	private ApplicationService applicationService; 
 	
 	
+	/*
 	public String getMainPage() {
-		return mainPage;
+		DB maindb = dbProvider.getMainDB();
+		
+		DBCollection coll = maindb.getCollection("firstpages");
+		
+		Map<String, Object> maps = new HashMap<String, Object>();
+		
+		maps.put("user", AuthenticationUtil.getCurrentUser());
+		maps.put("active", true);
+		
+		DBObject result = coll.findOne(new BasicDBObject(maps));
+		
+		if (result!=null) {
+			return (String) result.get("defaultapp");
+		} else {
+			maps.put("defaultapp", applicationService.getDefaultApp());
+			coll.insert(new BasicDBObject(maps));
+			return applicationService.getDefaultApp();
+		}
+		//return mainPage;
 	}
-	public void setMainPage(String mainPage) {
-		this.mainPage = mainPage;
-	}
+	*/
+	
 	private MongoDBProvider dbProvider = null;
 	
 	public MongoDBProvider getDbProvider() {

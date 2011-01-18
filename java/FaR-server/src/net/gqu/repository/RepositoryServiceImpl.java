@@ -16,14 +16,9 @@ public class RepositoryServiceImpl implements RepositoryService {
 	private List<Loader> loaders = new ArrayList<Loader>();
 
 	private boolean develop = false;
-	private String basePath;
 	
 	public void setDevelop(boolean develop) {
 		this.develop = develop;
-	}
-
-	public void setBasePath(String basePath) {
-		this.basePath = basePath;
 	}
 
 	public void setLoaders(List<Loader> loaders) {
@@ -43,7 +38,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 		
 		LoadResult lr = new LoadResult();
 		if (develop) {
-			File file = new File(basePath + "/" + application.getName() + "/" + path);
+			File file = new File(application.getRepository() + "/" + path);
 			if (file.exists()) {
 				lr.setStatus(200);
 				try {
