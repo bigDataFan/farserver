@@ -24,7 +24,7 @@
 WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 ApplicationService applicationService = (ApplicationService)ctx.getBean("applicationService");
 BasicUserService userService = (BasicUserService)ctx.getBean("userService");
-Map<String, InstalledApplication> installed = applicationService.getUserInstalledApplications(AuthenticationUtil.getCurrentUser());
+Map<String, InstalledApplication> installed = null;//applicationService.getUserInstalledApplications(AuthenticationUtil.getCurrentUser());
 
 User user = userService.getUser(AuthenticationUtil.getCurrentUserName());
 Role role = userService.getRole(user.getRole());

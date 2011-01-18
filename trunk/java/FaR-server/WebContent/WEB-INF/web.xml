@@ -68,6 +68,12 @@
 	
 	<filter-mapping>
 		<filter-name>SetUserFilter</filter-name>
+		<url-pattern>/index</url-pattern>
+	</filter-mapping>
+	
+	
+	<filter-mapping>
+		<filter-name>SetUserFilter</filter-name>
 		<url-pattern>/service/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
@@ -103,6 +109,13 @@
 		<servlet-name>GQServlet</servlet-name>
 		<servlet-class>net.gqu.webscript.GQServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>DefaultServlet</display-name>
+		<servlet-name>DefaultServlet</servlet-name>
+		<servlet-class>net.gqu.servlet.DefaultServlet</servlet-class>
+	</servlet>
 	
 	
 	<servlet-mapping>
@@ -131,8 +144,12 @@
 		<servlet-name>GQServlet</servlet-name>
 		<url-pattern>/user/*</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DefaultServlet</servlet-name>
+		<url-pattern>/index</url-pattern>
+	</servlet-mapping>
 	
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>index</welcome-file>
 	</welcome-file-list>
 </web-app>

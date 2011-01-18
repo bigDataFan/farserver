@@ -1,8 +1,9 @@
 package net.gqu.application;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +25,68 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 public class ApplicationServiceImpl implements ApplicationService {
-	
-	public static final String INSTALLED_COLL_NAME = "installed";
+
 	private String mainServer = null; ;
 	private MongoDBProvider dbProvider;
 	private BasicUserService userService;
 	private String registryLocation;
 	private boolean develop;
+	private String defaultApp;
+	private String appDir;
 	
+	
+	public void init() {
+		if (develop && appDir!=null) {
+			File dir = new File(appDir);
+			if (dir.exists()) {
+				File[] childs = dir.listFiles();
+				for (int i = 0; i < childs.length; i++) {
+					File configFile = new File(appDir + "/" + childs[i].getName() + "/far-app.json");
+					if (configFile.exists()) {
+						try {
+							String text = StringUtils.getText(new FileInputStream(configFile));
+							JSONObject json = new JSONObject(text);
+							RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
+							application.setRepository(childs[i].getPath());
+							applicationMap.put(application.getName(), application);
+						} catch (Exception e) {
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	public void setAppDir(String appDir) {
+		this.appDir = appDir;
+	}
+	
+	public String getDefaultApp() {
+		return defaultApp;
+	}
+
+
+	public void setDefaultApp(String defaultApp) {
+		this.defaultApp = defaultApp;
+	}
+
+
+	public String getRegistryLocation() {
+		return registryLocation;
+	}
+
+
+	public boolean isDevelop() {
+		return develop;
+	}
+
+
+	public String getAppDir() {
+		return appDir;
+	}
+
+
 	public void setRegistryLocation(String registryLocation) {
 		this.registryLocation = registryLocation;
 	}
@@ -58,146 +113,119 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	public void setDbProvider(MongoDBProvider dbProvider) {
 		this.dbProvider = dbProvider;
-	}	
+	}
 	
 	@Override
 	public RegisteredApplication getApplication(String id) {
-		
-		if (develop) {
-			RegisteredApplication ra = new RegisteredApplication();
-			ra.setName(id);
-			ra.setOwner("system");
-			ra.setAlias("");
-			ra.setCategories(new String[]{});
-			ra.setCreated(new Date());
-			return ra;
-		} else {
-			if (applicationMap.containsKey(id)) {
-				return applicationMap.get(id);
-			}
-			if (applicationMap.get(id)==null) {
-				HttpResponse response = HttpLoader.load(registryLocation + id + ".json");
-				if (response!=null && response.getStatusLine().getStatusCode()==200) {
-					try {
-						JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
-						RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
-						applicationMap.put(id, application);
-					} catch (JSONException e) {
-						applicationMap.put(id, null);
-					} catch (IOException e) {
-						e.printStackTrace();
-						applicationMap.put(id, null);
-					}
-				}
-			}
+		if (applicationMap.containsKey(id)) {
 			return applicationMap.get(id);
 		}
 		
+		//remote load
+		if (applicationMap.get(id)==null && !develop) {
+			HttpResponse response = HttpLoader.load(registryLocation + id + ".json");
+			if (response!=null && response.getStatusLine().getStatusCode()==200) {
+				try {
+					JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
+					RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
+					applicationMap.put(id, application);
+				} catch (JSONException e) {
+					applicationMap.put(id, null);
+				} catch (IOException e) {
+					e.printStackTrace();
+					applicationMap.put(id, null);
+				}
+			}
+		}
+		return applicationMap.get(id);
+		
+		
 	}
-	
-	
-	
 
 	@Override
-	public InstalledApplication getInstalledByMapping(String user, String mapping) {
-		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
+	public Map<String, Object> getInstalledByMapping(String user, String mapping) {
+		DBCollection coll = dbProvider.getMainDB().getCollection(ApplicationService.COLL_INSTALLED);
 		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.put(USER, user);
-		basicDBObject.put(MAPPING, mapping);
+		basicDBObject.put(KEY_USER, user);
+		basicDBObject.put(KEY_MAPPING, mapping);
 		
 		DBObject o = coll.findOne(basicDBObject);
-		
 		if (o==null) {
 			return null;
 		}
-		return getInstalledFromDBObject(o);
+		return o.toMap();
 	}
 
 	@Override
-	public Map<String, InstalledApplication> getUserInstalledApplications(
+	public Map<String, Map<String, Object>> getUserInstalledApplications(
 			String user) {
-		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
-		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.put(USER, user);
+		DBCollection coll = dbProvider.getMainDB().getCollection(ApplicationService.COLL_INSTALLED);
 		
-		DBCursor cursor = coll.find(basicDBObject);
-		Map<String, InstalledApplication> result = new HashMap<String, InstalledApplication>();
+		DBCursor cursor = coll.find(new BasicDBObject(KEY_USER, user));
+		Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 		
 		while (cursor.hasNext()) {
 			DBObject obj = cursor.next();
-			result.put((String) obj.get(MAPPING), getInstalledFromDBObject(obj));
+			result.put((String) obj.get(KEY_MAPPING), obj.toMap());
 		}
 		return result;
 	}
 	
 	private InstalledApplication getInstalledFromDBObject(DBObject dbo) {
 		InstalledApplication installedApplication = new InstalledApplication();
-		installedApplication.setApp((String) dbo.get(APPLICATION));
-		installedApplication.setMapping((String) dbo.get(MAPPING));
-		installedApplication.setUser((String) dbo.get(USER));
-		installedApplication.setId(((ObjectId) dbo.get(_ID)).toString());
+		installedApplication.setApp((String) dbo.get(KEY_APPLICATION));
+		installedApplication.setMapping((String) dbo.get(KEY_MAPPING));
+		installedApplication.setUser((String) dbo.get(KEY_USER));
+		installedApplication.setId(((ObjectId) dbo.get(MongoDBProvider._ID)).toString());
 		return installedApplication;
 	}
 
 	@Override
-	public InstalledApplication install(String user, RegisteredApplication app, String mapping) {
-		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
+	public Map<String, Object> install(String user, String appName, String mapping) {
+		
+		RegisteredApplication registedApp = getApplication(appName);
+		if (registedApp==null) {
+			return null;
+		}
+		
+		DBCollection coll = dbProvider.getMainDB().getCollection(ApplicationService.COLL_INSTALLED);
 
 		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.put(USER, user);
-		basicDBObject.put(APPLICATION, app.getName());
-		basicDBObject.put(MAPPING, mapping==null?app.getName():mapping);
+		basicDBObject.put(KEY_USER, user);
+		basicDBObject.put(KEY_APPLICATION, appName);
+		basicDBObject.put(KEY_MAPPING, mapping==null?appName :mapping);
 		coll.update(basicDBObject, basicDBObject, true, false);
 		
+		return basicDBObject.toMap();
+		/*
 		InstalledApplication installedApplication = new InstalledApplication();
-		installedApplication.setApp(app.getName());
+		installedApplication.setApp(appName);
 		installedApplication.setUser(user);
 		installedApplication.setMapping(basicDBObject.getString(MAPPING));
-		installedApplication.setId(basicDBObject.getString(_ID));
-		return installedApplication;
+		installedApplication.setId(basicDBObject.getString(MongoDBProvider._ID));
+		*/
 	}
 
 	@Override
-	public boolean uninstalled(InstalledApplication installedApplication) {
-		return false;
+	public boolean uninstall(String user, String appName) {
+		DBCollection coll = dbProvider.getMainDB().getCollection(ApplicationService.COLL_INSTALLED);
+		Map<String, Object> query = new HashMap<String, Object>();
+		query.put(KEY_USER, user);
+		query.put(KEY_APPLICATION, appName);
+		coll.remove(new BasicDBObject(query));
+		return true;
 	}
 
 	@Override
 	public List<RegisteredApplication> getAllInCurrentServer() {
-		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
-		List<String> apps = coll.distinct(APPLICATION);
-		
-		List<RegisteredApplication> result = new ArrayList<RegisteredApplication>();
-		
-		for (String appName : apps) {
-			result.add(getApplication(appName));
-		}
-		
-		return result;
-	}
-
-	@Override
-	public List<InstalledApplication> getInstalled(String name) {
-		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
-		DBCursor cursor = coll.find(new BasicDBObject(APPLICATION, name));
-		
-		List<InstalledApplication> result = new ArrayList<InstalledApplication>();
-		
-		while (cursor.hasNext()) {
-			DBObject dbo = cursor.next();
-			InstalledApplication ia = new InstalledApplication();
-			ia.setUser((String) dbo.get(USER));
-			ia.setMapping((String) dbo.get(MAPPING));
-			ia.setApp((String) dbo.get(APPLICATION));
-			result.add(ia);
-		}
-		return result;
+		ArrayList<RegisteredApplication> list = new ArrayList<RegisteredApplication>(applicationMap.values());
+		return list;
 	}
 
 	@Override
 	public long getInstallCount(String name) {
-		DBCollection coll = dbProvider.getMainDB().getCollection(INSTALLED_COLL_NAME);
-		DBCursor cursor = coll.find(new BasicDBObject(APPLICATION, name));
+		DBCollection coll = dbProvider.getMainDB().getCollection(ApplicationService.COLL_INSTALLED);
+		DBCursor cursor = coll.find(new BasicDBObject(KEY_APPLICATION, name));
 		return cursor.count();
 	}
 }

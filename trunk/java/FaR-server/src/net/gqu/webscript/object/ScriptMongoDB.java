@@ -9,24 +9,33 @@ import com.mongodb.DBCollection;
 public class ScriptMongoDB {
 	
 	private DBCollection collection;
-
+	private MongoDBProvider dbProvider;
+	private DB currentDB;
 	public ScriptMongoDB(MongoDBProvider dbProvider, String db,
-			String collectionList) {
-		String[] colarray = collectionList.split("/");
-		
-		DB mongodb = dbProvider.getMongo().getDB(db);
-		collection = mongodb.getCollection(AuthenticationUtil.getContextUser());
-		for (int i = 0; i < colarray.length; i++) {
-			collection = collection.getCollection(colarray[i]);
-		}
+			String appName) {
+		this.dbProvider = dbProvider;
+		currentDB = dbProvider.getMongo().getDB(appName);
+		collection = currentDB.getCollection(AuthenticationUtil.getContextUser());
 	}
 
 	public ScriptMongoDBCollection getRootCollection() {
 		return new ScriptMongoDBCollection(collection);
 	}
+	
+	public ScriptMongoDBCollection getSystemCollection(String name) {
+		DB mongodb = dbProvider.getMainDB();
+		
+		ScriptMongoDBCollection smd = new ScriptMongoDBCollection(mongodb.getCollection(name));
+		smd.setReadOnly(true);
+		return smd;
+	}
+	
+	public ScriptMongoDBCollection getAppDB(String appname) {
+		DB mongodb = dbProvider.getMongo().getDB(appname);
+		return new ScriptMongoDBCollection(mongodb.getCollection(AuthenticationUtil.getContextUser()));
+	}
 
 	/*
-	
 	public ScriptMongoDBCollection createCappedCollections(String name, int max) {
 		BasicDBObject options = new BasicDBObject();
 		options.append("capped", true);

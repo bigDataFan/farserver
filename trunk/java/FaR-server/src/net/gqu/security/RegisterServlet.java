@@ -109,7 +109,7 @@ public class RegisterServlet extends HttpServlet {
     		Cache cookieCache = cacheService.getCookieCache();
     		cookieCache.put(element);
     		AuthenticationUtil.setCurrentUser(username);
-    		response.sendRedirect(userService.getMainPage());
+    		response.sendRedirect("/");
     		return;
 		} catch (Exception e) {
 			response.sendRedirect(userService.getRegisterPage());

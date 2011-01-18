@@ -49,7 +49,6 @@ public class RegisteredApplication {
 	}
 
 
-
 	public void setType(int type) {
 		this.type = type;
 	}
@@ -160,6 +159,4 @@ public class RegisteredApplication {
 		maps.put("icon", icon);
 		return maps;
 	}
-	
-
 }

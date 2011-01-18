@@ -39,7 +39,7 @@
 		</property>
 	</bean>
 	
-	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl">
+	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl" init-method="init">
 		<property name="mainServer">
 			<value>${main.server}</value>
 		</property>
@@ -49,6 +49,12 @@
 		</property>
 		<property name="develop">
 			<value>${application.isdev}</value>
+		</property>
+		<property name="appDir">
+			<value>${application.localpath}</value>
+		</property>
+		<property name="defaultApp">
+			<value>${application.app.default}</value>
 		</property>
 	</bean>
 	
@@ -67,7 +73,6 @@
 			</list>
 		</property>
 		<property name="develop"><value>${application.isdev}</value></property>
-		<property name="basePath"><value>${application.localpath}</value></property>
 	</bean>
 	
 	<bean id="loader.github" class="net.gqu.repository.GitHubLoader">
@@ -93,9 +98,6 @@
 		</property>
 		<property name="loginPage">
 			<value>${auth.loginpage}</value>
-		</property>
-		<property name="mainPage">
-			<value>${auth.managepage}</value>
 		</property>
 	</bean>
 	

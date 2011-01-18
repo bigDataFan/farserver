@@ -122,7 +122,7 @@ public class RestServiceServlet extends HttpServlet {
 			
 			Object result = handler.execute(args);
 			if (result==null) {
-				response.sendRedirect(userService.getMainPage());
+				response.sendRedirect("/");
 			} else {
 				render(response, result);
 			}
@@ -142,7 +142,7 @@ public class RestServiceServlet extends HttpServlet {
 	private void render(HttpServletResponse response, Object result)
 			throws IOException {
 		if (result==null) {
-			response.sendRedirect(userService.getMainPage());
+			response.sendRedirect("/");
 			return;
 		}
 		response.setContentType(CONTENT_TYPE);

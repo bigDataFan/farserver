@@ -13,6 +13,8 @@ import com.mongodb.MongoException;
  */
 public class MongoDBProvider {
 	
+	public static final String _ID = "_id";
+	
 	private String mainDb = null;
 	private Mongo mongo = null;
 	
