@@ -1,0 +1,14 @@
+{
+    "name": "defaultapp",
+    "alias": "欢迎使用G趣平台获得快乐",
+    "description": "",
+    "categories": [
+        "dashboard",
+        "浏览器"
+    ],
+    "repository": "",
+    "start": "index.html",
+    "version": "1.01a",
+    "owner": "liuhann@gmail.com",
+    "icon": "images/logo.jpg"
+}
