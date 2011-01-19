@@ -3,11 +3,10 @@
     "alias": "简博客",
     "description": "提供了最基本的博客功能。 可以用它来分享您的知识和心得",
     "categories": [
-        "应用",
-        "浏览器"
+        "浏览器应用"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/KickBlog/",
-    "icon":"images/logo.jpg",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/KickBlog/images/logo.jpg",
     "start": "index.gs",
     "version": "1.0",
     "owner": "liuhann@gmail.com"

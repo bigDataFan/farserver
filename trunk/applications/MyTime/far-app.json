@@ -1,0 +1,14 @@
+{
+    "name": "mytime",
+    "alias": "即时时间管理",
+    "description": "时间就是生命。即时时间管理可以让您更好的跟踪您的每日时间分配情况，当您开始或结束某项工作时都去点击一下应用，这样虽然会给您带来额外的操作，但是每天下来您就很清楚在哪个事情上花掉了多长时间，以敦促您更好的使用时间。 另外如果您在服务器上设置了goole帐号，您也可以把每天的日程同步到google日历上",
+    "category": [
+        "浏览器应用",
+        "手机应用"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/MyTime/",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/MyTime/images/logo.jpg",
+    "start": "web/current.html",
+    "version": "1.0",
+    "owner": "liuhann@gmail.com"
+}

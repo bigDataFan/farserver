@@ -12,11 +12,19 @@
 
 <script type="text/javascript">
 
+var $all_data;
 $(document).ready(function() {
 	$.getJSON("service/allapp.gs",
 			{},
 			function(data){
-				alert(data);
+				for(var i=0; i<data.length;i++) {
+					if (data[i].categories.indexOf('浏览器应用')>-1) {
+						$('#app-grids').append('<li class="util" data-id="id'+ i +'">' 
+								+ '<img height="59" width="59" alt="" src="'+ data[i].icon + '">'
+								+ '<div><strong>' + data[i].alias + '</strong></div>');
+					}
+				}
+				$all_data = $('#app-grids').clone();
 			}
 	);
 	
@@ -71,87 +79,11 @@ ul.image-grid li {
 <div class="container" style="background-color: white; min-height: 300px;">
 	<ul class="splitter"><li>Filter by type:<a data-value="all" href="#">Everything</a> <a data-value="app" href="#">Applications</a><a data-value="util" href="#">Utilities</a>Sort by:<a data-value="name" href="#">Name</a><a data-value="size" href="#">Size</a></li></ul>
 	
-	<ul class="image-grid">
+	<ul class="image-grid" id="app-grids">
 		<li class="util" data-id="id-1">
               <img height="59" width="59" alt="" src="img/feeds.jpg">
               <strong>Activity Monitor</strong>
         </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li><li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        <li class="util" data-id="id-1">
-              <img height="59" width="59" alt="" src="img/feeds.jpg">
-              <strong>Activity Monitor</strong>
-        </li>
-        
 	</ul>
 	
 </div>

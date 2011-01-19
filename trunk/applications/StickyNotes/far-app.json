@@ -3,11 +3,10 @@
     "alias": "快捷小便签",
     "description": "一个简单的小黄纸条应用。",
     "categories": [
-        "应用"
-        "浏览器"
+        "浏览器应用"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/StickyNotes/",
-    "icon":"img/logo.png",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/StickyNotes/img/logo.png",
     "start": "index.html",
     "version": "1.0",
     "owner": "liuhann@gmail.com"
