@@ -49,7 +49,7 @@ function getCat(type) {
 	for(var i=0; i<apps_data.length;i++) {
 		if (apps_data[i].categories.indexOf(type)>-1) {
 			cloned.append('<li class="util" data-id="id'+ i +'">' 
-					+ '<a href=/user/"' + current_user + '/' + apps_data[i].name + '/"><img border="0" height="59" width="59" alt="' 
+					+ '<a href="/user/' + current_user + '/' + apps_data[i].name + '/"><img border="0" height="59" width="59" alt="' 
 					+ apps_data[i].alias + '" src="'+ apps_data[i].icon + '"></a>'
 					+ '<div><strong>' + apps_data[i].alias + '</strong></div>');
 		}
@@ -92,6 +92,14 @@ ul.image-grid li {
     width: 80px;
 }
 
+
+.column {
+    float: left;
+    padding-bottom: 50px;
+    width: 285px;
+    margin-left: 25px;
+}
+
 </style>
 </head>
 <body>
@@ -115,11 +123,32 @@ ul.image-grid li {
 	 
 	 <ul class="image-grid" id="app-grids">
 	</ul>
-	
-	<div style="width: 100%">
+</div>
+
+<div class="container" style="background-color: white; min-height: 300px;">
 		
-	</div>
-	
+		
+		<div class="column first">
+					<img height="59" width="59" class="left" alt="" src="/home/images/ext-icons/1clickweather_20100727.jpg">
+					<h3>1-Click Weather for Safari</h3>
+					<a href="http://www.weather.com" onclick="s_objectID=&quot;http://www.weather.com/_1&quot;;return this.s_oc?this.s_oc(e):true">The Weather Channel</a>
+					<p class="clear">Officially brought to you by the Weather Channel, this extension lets you view the current temperature and weather conditions right in your Safari toolbar.</p>
+		</div>
+		
+		<div class="column">
+					<img height="59" width="59" class="left" alt="" src="/home/images/ext-icons/1clickweather_20100727.jpg">
+					<h3>1-Click Weather for Safari</h3>
+					<a href="http://www.weather.com" onclick="s_objectID=&quot;http://www.weather.com/_1&quot;;return this.s_oc?this.s_oc(e):true">The Weather Channel</a>
+					<p class="clear">Officially brought to you by the Weather Channel, this extension lets you view the current temperature and weather conditions right in your Safari toolbar.</p>
+		</div>
+		
+		
+		<div class="column last">
+					<img height="59" width="59" class="left" alt="" src="/home/images/ext-icons/1clickweather_20100727.jpg">
+					<h3>1-Click Weather for Safari</h3>
+					<a href="http://www.weather.com" onclick="s_objectID=&quot;http://www.weather.com/_1&quot;;return this.s_oc?this.s_oc(e):true">The Weather Channel</a>
+					<p class="clear">Officially brought to you by the Weather Channel, this extension lets you view the current temperature and weather conditions right in your Safari toolbar.</p>
+		</div>	
 </div>
 
 
