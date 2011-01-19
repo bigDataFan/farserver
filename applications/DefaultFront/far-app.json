@@ -3,8 +3,7 @@
     "alias": "欢迎使用G趣平台获得快乐",
     "description": "",
     "categories": [
-        "dashboard",
-        "浏览器"
+        "dashboard"
     ],
     "repository": "",
     "start": "index.html",

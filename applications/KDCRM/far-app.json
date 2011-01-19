@@ -1,0 +1,13 @@
+{
+    "name": "kdcrm",
+    "alias": "凯迪客户关系管理",
+    "description": "提供基本的客户关系应用。适用于中小客户对 客户信息/售前活动信息/客户行为信息/销售活动信息/售后信息等管理",
+    "categories": [
+        "浏览器应用"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/KDCRM/",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/KDCRM/img/logo.jpg",
+    "start": "consumerlist.html",
+    "version": "1.0",
+    "owner": "liuhann@gmail.com"
+}

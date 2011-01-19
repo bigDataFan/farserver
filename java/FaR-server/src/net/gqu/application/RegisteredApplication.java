@@ -1,7 +1,9 @@
 package net.gqu.application;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ public class RegisteredApplication {
 	public static Integer STAGE_COMMERTIAL = 2;
 	
 	private String details;
-	private String[] categories;
+	private List categories;
 	private Date created;
 	
 	private String repository;
@@ -38,7 +40,7 @@ public class RegisteredApplication {
 		this.type = map.get("type")==null? 0: (Integer) map.get("type");
 		this.details = map.get("details")==null? null: (String) map.get("details");
 		this.start = map.get("start")==null? null: (String) map.get("start");
-		this.categories = map.get("categories")==null? (new String[0]) : (String[]) map.get("categories");
+		this.categories = map.get("categories")==null? (new ArrayList(0)) : (List) map.get("categories");
 		this.repository = (String) map.get("repository");
 		this.version = (map.get("version")==null)?"1.0":(String) map.get("version");
 		this.icon = (map.get("icon")==null)?"/icondefault.png":(String) map.get("icon");
@@ -119,11 +121,11 @@ public class RegisteredApplication {
 		this.alias = alias;
 	}
 
-	public String[] getCategories() {
+	public List getCategories() {
 		return categories;
 	}
 
-	public void setCategories(String[] categories) {
+	public void setCategories(List categories) {
 		this.categories = categories;
 	}
 
@@ -151,7 +153,7 @@ public class RegisteredApplication {
 		maps.put("name", name);
 		maps.put("type", type);
 		maps.put("description", description);
-		maps.put("category",categories);
+		maps.put("categories",categories);
 		maps.put("created",created);
 		maps.put("start", start);
 		maps.put("details", details);

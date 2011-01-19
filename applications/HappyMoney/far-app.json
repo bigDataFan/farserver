@@ -2,10 +2,8 @@
     "name": "moneynotes",
     "alias": "聪明小管家",
     "description": "这是一款个人财务管理软件，也就是通常说的记账软件。 软件采用Mobile Web UI技术，使得用移动设备例如使用android，iphone手机的浏览器的访问效果同桌们浏览器相同。",
-    "category": [
-        "应用",
-        "手机",
-        "jquerymobile",
+    "categories": [
+       "手机应用"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/HappyMoney/",
     "icon":"images/logo.jpg",
