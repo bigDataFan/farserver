@@ -3,7 +3,8 @@
     "alias": "G网盘",
     "description": "一个基本的网盘应用。目前提供Web方式的内容访问， 将来还会提供各种同步客户端。",
     "categories": [
-        "浏览器应用"
+        "浏览器应用",
+        "常用工具"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/GQFileManager/",
     "start": "test.html",
