@@ -6,9 +6,9 @@
         "浏览器应用",
         "常用工具"
     ],
-    "repository": "",
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/BaiduCalendar/",
     "start": "index.html",
     "version": "1.01a",
     "owner": "liuhann@gmail.com",
-    "icon": "images/logo.jpg"
+    "icon": "http://farserver.googlecode.com/svn/trunk/applications/BaiduCalendar/logo.jpg"
 }
