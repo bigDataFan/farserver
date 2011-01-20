@@ -8,6 +8,7 @@
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/StickyNotes/",
     "icon":"http://farserver.googlecode.com/svn/trunk/applications/StickyNotes/img/logo.png",
     "start": "index.html",
+    "portlet":"portlet/plainlist.gs",
     "version": "1.0",
     "owner": "liuhann@gmail.com"
 }

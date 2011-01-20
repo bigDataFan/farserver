@@ -8,5 +8,3 @@ if (params.collection) {
 }
 
 result;
-
-
