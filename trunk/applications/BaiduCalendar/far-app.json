@@ -1,0 +1,14 @@
+{
+    "name": "baiducalendar",
+    "alias": "百度日历",
+    "description": "",
+    "categories": [
+        "浏览器应用",
+        "常用工具"
+    ],
+    "repository": "",
+    "start": "index.html",
+    "version": "1.01a",
+    "owner": "liuhann@gmail.com",
+    "icon": "images/logo.jpg"
+}
