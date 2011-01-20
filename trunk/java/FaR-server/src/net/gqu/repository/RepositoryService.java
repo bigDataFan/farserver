@@ -1,10 +1,11 @@
 package net.gqu.repository;
 
-import net.gqu.application.RegisteredApplication;
+import java.util.Map;
+
 
 public interface RepositoryService {
 
-	LoadResult getRaw(RegisteredApplication application, String path);
-	String clean(RegisteredApplication application);
+	LoadResult getRaw(Map<String, Object> application, String path);
+	String clean(String application);
 	
 }

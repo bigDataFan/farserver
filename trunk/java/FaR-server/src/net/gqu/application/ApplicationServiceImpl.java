@@ -34,7 +34,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private String defaultApp;
 	private String appDir;
 	
-	
 	public void init() {
 		if (develop && appDir!=null) {
 			File dir = new File(appDir);
@@ -46,9 +45,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 						try {
 							String text = StringUtils.getText(new FileInputStream(configFile));
 							JSONObject json = new JSONObject(text);
-							RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
-							application.setRepository(childs[i].getPath());
-							applicationMap.put(application.getName(), application);
+							json.put("repository", childs[i].getPath());
+							//json.
+							//RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
+							//application.setRepository(childs[i].getPath());
+							applicationMap.put(json.getString(APP_CONFIG_NAME), JSONUtils.jsonObjectToMap(json));
 						} catch (Exception e) {
 						}
 					}
@@ -91,7 +92,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		this.registryLocation = registryLocation;
 	}
 
-	private Map<String, RegisteredApplication> applicationMap = new HashMap<String, RegisteredApplication>();
+	private Map<String, Map<String, Object>> applicationMap = new HashMap<String, Map<String, Object>>();
 	
 	public String getMainServer() {
 		return mainServer;
@@ -116,7 +117,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 	
 	@Override
-	public RegisteredApplication getApplication(String id) {
+	public Map<String, Object> getApplication(String id) {
 		if (applicationMap.containsKey(id)) {
 			return applicationMap.get(id);
 		}
@@ -127,8 +128,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 			if (response!=null && response.getStatusLine().getStatusCode()==200) {
 				try {
 					JSONObject json = new JSONObject(StringUtils.getText(response.getEntity().getContent()));
-					RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
-					applicationMap.put(id, application);
+					//RegisteredApplication application = new RegisteredApplication(JSONUtils.jsonObjectToMap(json));
+					applicationMap.put(json.getString(APP_CONFIG_NAME), JSONUtils.jsonObjectToMap(json));
 				} catch (JSONException e) {
 					applicationMap.put(id, null);
 				} catch (IOException e) {
@@ -183,7 +184,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Override
 	public Map<String, Object> install(String user, String appName, String mapping) {
 		
-		RegisteredApplication registedApp = getApplication(appName);
+		Map<String, Object> registedApp = getApplication(appName);
 		if (registedApp==null) {
 			return null;
 		}
@@ -217,8 +218,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 
 	@Override
-	public List<RegisteredApplication> getAllInCurrentServer() {
-		ArrayList<RegisteredApplication> list = new ArrayList<RegisteredApplication>(applicationMap.values());
+	public List<Map<String, Object>> getAllInCurrentServer() {
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>(applicationMap.values());
 		return list;
 	}
 

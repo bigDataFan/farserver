@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.gqu.application.ApplicationService;
 import net.gqu.application.InstalledApplication;
-import net.gqu.application.RegisteredApplication;
 import net.gqu.cache.EhCacheService;
 import net.gqu.content.ContentService;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
@@ -208,7 +207,7 @@ public class GQServlet extends HttpServlet {
 
 	private void handleStaticPage(HttpServletRequest request,
 			HttpServletResponse response, GQRequest gqrequest) throws IOException {
-		Cache applicationCache = cacheService.getApplicationCache(gqrequest.getApprovedApplication().getName());
+		Cache applicationCache = cacheService.getApplicationCache((String)gqrequest.getApprovedApplication().get(ApplicationService.APP_CONFIG_NAME));
 		String staticFilePath = gqrequest.getFilePath();
 		String key = "resouce." + staticFilePath;
 		PageInfo pageInfo = null;
@@ -216,7 +215,7 @@ public class GQServlet extends HttpServlet {
 		if (element == null) {
 			LoadResult lr = repositoryService.getRaw(gqrequest.getApprovedApplication(), staticFilePath);
 			if (lr.getStatus()==404) {
-				logger.debug("Request ressource not found: " + gqrequest.getApprovedApplication().getName() + "  "  + staticFilePath);
+				logger.debug("Request ressource not found: " + gqrequest.getApprovedApplication().get(ApplicationService.APP_CONFIG_NAME) + "  "  + staticFilePath);
 				throw new HttpStatusExceptionImpl(404);
 			} else {
 				ByteArrayOutputStream outstr = new ByteArrayOutputStream();
@@ -257,8 +256,8 @@ public class GQServlet extends HttpServlet {
 	}
 
 	
-	private WebScript getWebscript(RegisteredApplication application, String path) {
-		Cache appcache = cacheService.getApplicationCache(application.getName());
+	private WebScript getWebscript(Map<String, Object> application, String path) {
+		Cache appcache = cacheService.getApplicationCache((String)application.get(ApplicationService.APP_CONFIG_NAME));
 		String key = "webscript." + path;
 		Element element = appcache.get(key);
 		if (element==null) {
@@ -268,14 +267,14 @@ public class GQServlet extends HttpServlet {
 				element = new Element(key, webscript);
 				appcache.put(element);
 			} catch (IOException e) {
-				logger.debug("script not found " + application.getName() + " " + path);
+				logger.debug("script not found " + (String)application.get(ApplicationService.APP_CONFIG_NAME) + " " + path);
 				return null;
 			}
 		}
 		return (element==null||element.getObjectValue()==null)?null:(WebScript) element.getObjectValue();
 	}
 
-	private WebScript loadWebScript(RegisteredApplication application,String path) throws IOException {
+	private WebScript loadWebScript(Map<String, Object> application,String path) throws IOException {
 		LoadResult lr = repositoryService.getRaw(application, path);
 		if (lr.getStatus()==404) {
 			return null;
@@ -323,15 +322,15 @@ public class GQServlet extends HttpServlet {
 	
 	
 
-	private Template getFreeMarkerTemplate(RegisteredApplication application,
+	private Template getFreeMarkerTemplate(Map<String, Object> application,
 			String path) {
-		Cache appcache = cacheService.getApplicationCache(application.getName());
+		Cache appcache = cacheService.getApplicationCache((String)application.get(ApplicationService.APP_CONFIG_NAME));
 		String key = "ftl." + path;
 		Element element = appcache.get(key);
 		
 		if (element == null) {
 			try {
-				Template template = freemarkerConfiguration.getTemplate(application.getName() + "." + path);
+				Template template = freemarkerConfiguration.getTemplate(application.get(ApplicationService.APP_CONFIG_NAME) + "." + path);
 				element = new Element(key, template);
 				appcache.put(element);
 			} catch (IOException e) {
@@ -515,7 +514,7 @@ public class GQServlet extends HttpServlet {
 
 	public class GQRequest {
     	private HttpServletRequest request;
-    	private RegisteredApplication approvedApplication;
+    	private Map<String, Object> approvedApplication;
     	private String[] pathList;
     	private boolean isScript;
 		private String jspath;
@@ -572,10 +571,10 @@ public class GQServlet extends HttpServlet {
 			isScript = false;
 			
 			if (pathList.length==2 || (pathList.length==3&&pathList[2].equals(""))) {
-				if (approvedApplication.getStart()==null) {
+				if (approvedApplication.get(ApplicationService.APP_CONFIG_START)==null) {
 					throw new HttpStatusExceptionImpl(404);
 				} else {
-					throw new HttpStatusExceptionImpl(307, approvedApplication.getStart());
+					throw new HttpStatusExceptionImpl(307, (String)approvedApplication.get(ApplicationService.APP_CONFIG_START));
 				}
 			} else {
 				pathArray = StringUtils.subArray(pathList, 2);
@@ -620,7 +619,7 @@ public class GQServlet extends HttpServlet {
 			return pathArray;
 		}
 
-		public RegisteredApplication getApprovedApplication() {
+		public Map<String, Object> getApprovedApplication() {
 			return approvedApplication;
 		}
 

@@ -9,6 +9,7 @@
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/KDCRM/",
     "icon":"http://farserver.googlecode.com/svn/trunk/applications/KDCRM/img/logo.jpg",
     "start": "consumerlist.html",
+    "portlet": "portlet/activities.gs",
     "version": "1.0",
     "owner": "liuhann@gmail.com"
 }

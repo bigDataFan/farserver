@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.application.RegisteredApplication;
 import net.gqu.security.BasicUserService;
 
 public class ScriptSystem {
@@ -18,9 +17,6 @@ public class ScriptSystem {
 		super();
 		this.applicationService = applicationService;
 		this.userService = userService;
-	}
-	public RegisteredApplication getApplication(String app) {
-		return applicationService.getApplication(app);
 	}
 	public long getInstallCount(String name) {
 		return applicationService.getInstallCount(name);
@@ -35,14 +31,7 @@ public class ScriptSystem {
 	
 	
 	public List<Map<String, Object>> getAllApplications() {
-		List<RegisteredApplication> list = applicationService.getAllInCurrentServer();
-		
-		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
-		
-		for (RegisteredApplication map : list) {
-			result.add(map.getMaps());
-		}
-		return result;
+		return applicationService.getAllInCurrentServer();
 	}
 	
 	

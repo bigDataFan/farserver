@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.application.RegisteredApplication;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
 import net.gqu.security.AuthenticationUtil;
@@ -221,6 +220,8 @@ public class WebRestService {
 	@RestService(method="POST", uri="/admin/application/list")
 	public Map<String, Object> showAllApps() {
 		if (!AuthenticationUtil.isCurrentUserAdmin()) throw new HttpStatusExceptionImpl(403);
+		
+		/*
 		List<RegisteredApplication> all = applicationService.getAllInCurrentServer();
 		List<Map> jsoned = new ArrayList<Map>();
 		for (RegisteredApplication aa : all) {
@@ -229,9 +230,10 @@ public class WebRestService {
 			jsoned.add(map);
 		}
 		
+		*/
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("total", all.size());
-		result.put("rows", jsoned);
+		result.put("total", applicationService.getAllInCurrentServer().size());
+		result.put("rows", applicationService.getAllInCurrentServer());
 		return result;
 		
 	}

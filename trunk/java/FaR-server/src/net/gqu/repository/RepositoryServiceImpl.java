@@ -6,8 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import net.gqu.application.RegisteredApplication;
+import net.gqu.application.ApplicationService;
 
 import org.apache.http.HttpResponse;
 
@@ -29,16 +30,16 @@ public class RepositoryServiceImpl implements RepositoryService {
 	}
 
 	@Override
-	public String clean(RegisteredApplication application) {
+	public String clean(String application) {
 		return null;
 	}
 	
 	@Override
-	public LoadResult getRaw(RegisteredApplication application, String path) {
+	public LoadResult getRaw(Map<String, Object> application, String path) {
 		
 		LoadResult lr = new LoadResult();
 		if (develop) {
-			File file = new File(application.getRepository() + "/" + path);
+			File file = new File(application.get(ApplicationService.APP_CONFIG_REPOSITORY) + "/" + path);
 			if (file.exists()) {
 				lr.setStatus(200);
 				try {
@@ -52,8 +53,8 @@ public class RepositoryServiceImpl implements RepositoryService {
 			}
 		} else {
 			for (Loader loader : loaders) {
-				if (loader.canload(application.getRepository())) {
-					HttpResponse response = loader.getStream(application.getRepository(), path);
+				if (loader.canload((String)application.get(ApplicationService.APP_CONFIG_REPOSITORY))) {
+					HttpResponse response = loader.getStream((String)application.get(ApplicationService.APP_CONFIG_REPOSITORY) , path);
 					try {
 						lr.setStatus(response.getStatusLine().getStatusCode());
 						lr.setInputStream(response.getEntity().getContent());
