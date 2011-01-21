@@ -1,0 +1,15 @@
+{
+    "name": "moveheadjoke",
+    "alias": "摇头晃脑小笑话",
+    "description": "",
+    "categories": [
+        "浏览器应用",
+        "常用工具"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/MoveHeadJokes/",
+    "icon":"http://farserver.googlecode.com/svn/trunk/applications/MoveHeadJokes/images/logo.jpg",
+    "start": "index.html",
+    "version": "1.0",
+    "admin":"test",
+    "owner": "liuhann@gmail.com"
+}
