@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>开始活动吧</title>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+<style type="text/css">
+
+body {
+	background: url("header_bg.png") repeat-x scroll left top #EA960A;
+	color: #444444;
+	font: 13px/ 18px Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+#header {
+	height: 60px;
+	margin: 0 auto;
+	position: relative;
+	width: 963px;
+}
+
+.content {
+	overflow: hidden;
+}
+
+#content_wrapper {
+background-color:#FFFFFF;
+min-width:963px;
+}
+
+.content,.content_with_sidebar {
+	margin: 0 auto;
+	padding: 20px;
+	position: relative;
+	width: 923px;
+}
+
+.sIFR-replaced,.sIFR-ignore {
+	visibility: visible !important;
+}
+
+h5 {
+margin:0;
+padding:10px 0;
+}
+
+.highlight {
+background:url("highlight_bg.png") repeat-x scroll left top #FEFBF3;
+border-color:#F4E2BD;
+border-style:solid;
+border-width:1px 0;
+}
+
+dt,h1,h2,h3,h4,h5,h6 {
+	color: #489D20;
+	font: bold 19px Georgia, serif;
+}
+
+#splash_top {
+background:url("viviti_leaf.png") no-repeat scroll 0 0 transparent;
+height:400px;
+padding-left:350px;
+}
+
+ul {
+	-webkit-transform: rotate(-90deg); 
+	-moz-transform: rotate(-90deg);	
+	transform:rotate(-90deg);
+	color: #489D20;
+	font-size: 18px;
+	font-weight: bold;
+	height: 300px;
+	list-style:none;
+	float:left; 
+	list-style: none;
+}
+
+.odd{
+	-webkit-transform: rotate(-180deg); 
+	-moz-transform: rotate(-180deg);	
+	transform:rotate(-180deg);
+	list-style:circle;
+}
+
+#sh_rdiv {
+	bottom:0.9em;
+	font-size:85%;
+	position:absolute;
+	right:0.27em;
+}
+
+.sc_light {
+	border:1px solid;
+	cursor:pointer;
+	margin:0;
+	width: 15px;
+}
+
+#sh_rdiv a {
+	cursor:default;
+	display:block;
+	float:left;
+	margin:0 0.27em;
+	outline:medium none;
+	position:relative;
+	text-decoration:none;
+	color:#FFFFFF;
+}
+
+#sh_rdiv div {
+	float:left;
+	margin:1px;
+	padding:0.18em 0.27em;
+}
+
+</style>
+
+<script type="text/javascript">
+
+
+var total = 0; 
+var current = 0;
+
+function pre() {
+	if (current<=1) {
+		return;
+	} else {
+		current--;
+		go(current);
+	}
+}
+
+function next() {
+	if (current>=total) {
+		return;
+	} else {
+		current++;
+		go(current);
+	}
+}
+
+function go(c) {
+	var req;
+	if (c==null) {
+		req = {};
+		
+	} else {
+		req = {'c':c};
+	}
+	$.getJSON("service/open.gs", 
+			req,
+			function(data) {
+
+				$('#tul').empty();
+				var  isOdd = false;
+				var remains = data.content;
+				total = data.total;
+				current = data.id;
+				while (remains.length>0) {
+					if (remains.length>15) {
+						$('#tul').append('<li class="' + (isOdd?'odd':'n') + '">' + remains.substring(0,15) + '</li>');
+						$('#tul').append('<li>&nbsp;</li>');
+						remains = remains.substring(15);
+					} else {
+						$('#tul').append('<li class="' + (isOdd?'odd':'n') + '">' + remains + '</li>');
+						remains = "";
+					}
+					isOdd = !isOdd;
+				}
+				
+				$('li').hide();
+			
+				gonext($('li:first'));
+				
+	});
+}
+
+$(document).ready(function(){
+	go(null);
+	/*
+	$('#first').fadeIn("slow", function(){
+		   alert($(this).next().html());
+	 });
+	 */
+});
+
+function gonext(obj) {
+	if ($(obj).html() == "&nbsp;") {
+		$(obj).show('fast');
+		gonext($(this).next());
+	}
+	$(obj).fadeIn(1000, function(){
+		   gonext($(this).next());
+	 });
+}
+
+</script>
+</head>
+<body>
+<div id="header"><div id="sh_rdiv"><a href="#" onclick="pre()">
+<div class="sc_light" id="divpre">◄</div>
+</a><a href="#" onclick="next()">
+<div class="sc_light" id="divnext">►</div>
+</a></div></div>
+
+
+<div id="content_wrapper">
+<div class="content">
+<h5 style="" class="sIFR-replaced">
+<span class="sIFR-alternate">来吧 ！ 放下手头的工作活动一下！！</span></h5>
+
+
+</div>
+<div class="highlight">
+<div class="content">
+<div id="splash_top">
+
+
+<ul id="tul" >
+
+</ul>
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+</body>
+</html>
