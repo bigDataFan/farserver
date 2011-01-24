@@ -30,9 +30,8 @@ public class ScriptMongoDB {
 		return smd;
 	}
 	
-	public ScriptMongoDBCollection getAppDB(String appname) {
-		DB mongodb = dbProvider.getMongo().getDB(appname);
-		return new ScriptMongoDBCollection(mongodb.getCollection(AuthenticationUtil.getContextUser()));
+	public ScriptMongoDBCollection getGlobalCollection(String name) {
+		return new ScriptMongoDBCollection(currentDB.getCollection(name));
 	}
 
 	/*
