@@ -1,0 +1,15 @@
+{
+    "name": "ZenCalculator",
+    "alias": "控制台计算器",
+    "description": "",
+    "categories": [
+        "浏览器应用",
+        "常用工具",
+        "手机应用"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/ZenCalculator/",
+    "start": "index.html",
+    "version": "1.01a",
+    "owner": "liuhann@gmail.com",
+    "icon": "http://farserver.googlecode.com/svn/trunk/applications/ZenCalculator/logo.jpg"
+}
