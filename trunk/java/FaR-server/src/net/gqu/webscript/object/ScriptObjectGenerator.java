@@ -4,6 +4,7 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.gqu.application.ApplicationService;
 import net.gqu.application.InstalledApplication;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
@@ -17,13 +18,19 @@ public class ScriptObjectGenerator {
 
 	private static final String MULTIPARAM_ENDFIX = "[]";
 	private BasicUserService userService;
-	
+	private ApplicationService applicationService;
 	
 	
 	
 	public BasicUserService getUserService() {
 		return userService;
 	}
+	
+
+	public void setApplicationService(ApplicationService applicationService) {
+		this.applicationService = applicationService;
+	}
+
 
 	public void setUserService(BasicUserService userService) {
 		this.userService = userService;
@@ -62,16 +69,15 @@ public class ScriptObjectGenerator {
 		return object;
 	}
 	
+	/*
 	public NativeObject createContextObject(GQRequest request,InstalledApplication installedApplication, String remains) {
 		NativeObject object = new NativeObject();
-		object.put("user", object, installedApplication.getUser());
-		object.put("application", object, installedApplication.getUser());
-		object.put("fileSize", object, installedApplication.getUser());
-		object.put("totalSize", object, installedApplication.getUser());
+		object.put("application", object, applicationService.getApplication(installedApplication.getApp()));
 		object.put("reqestPath", object, request.getRequest().getRequestURI());
 		object.put("basePath", object, request.getBasePath());
 		object.put("gsPath", object, remains);
 		
 		return object;
 	}
+	*/
 }

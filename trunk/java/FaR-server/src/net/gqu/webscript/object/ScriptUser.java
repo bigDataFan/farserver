@@ -28,6 +28,10 @@ public class ScriptUser {
 		return name;
 	}
 	
+	public boolean isAdmin() {
+		return AuthenticationUtil.isCurrentUserAdmin();
+	}
+	
 	public boolean isGuest() {
 		return AuthenticationUtil.GUEST_USER_NAME.equals(name);
 	}

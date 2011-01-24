@@ -297,8 +297,8 @@ public class GQServlet extends HttpServlet {
 		params.put("request", scriptRequest);
 		params.put("response", new ScriptResponse(response));
 		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
-		params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
-
+		//params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
+		params.put("application",RhinoUtils.mapToNativeObject(gqrequest.getApprovedApplication()));
 		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
 		
@@ -315,7 +315,7 @@ public class GQServlet extends HttpServlet {
 	
 	protected Map<String, Object> getFtlParameters(Map<String, Object> scriptObjects) {
 		scriptObjects.put("params", RhinoUtils.nativeObjectToMap((NativeObject) scriptObjects.get("params")));
-		scriptObjects.put("context", RhinoUtils.nativeObjectToMap((NativeObject) scriptObjects.get("context")));
+		//scriptObjects.put("context", RhinoUtils.nativeObjectToMap((NativeObject) scriptObjects.get("context")));
 		
 		return scriptObjects;
 	}
