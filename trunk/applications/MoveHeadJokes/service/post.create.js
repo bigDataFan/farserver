@@ -1,5 +1,5 @@
 if (application.admin!=user.getName()) {
-	response.code(403);
+	response.sendError(403);
 }
 
 db.getGlobalCollection("jokes").insert({"content":params.content,
