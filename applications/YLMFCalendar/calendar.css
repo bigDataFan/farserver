@@ -1,0 +1,172 @@
+.col-main{
+    width:541px;
+}
+.col-sub{
+    width:400px;
+}
+#info_box,.calendar-panel{
+    margin-bottom:5px;
+}
+.calendar-header{
+    background:#F4FAFE;
+    border:1px solid #BBD6F1;
+    padding:3px;
+}
+#back_today{
+    float:right;
+}
+.calendar-header span,.calendar-header input,.calendar-header select{ vertical-align:middle;}
+.calendar-week{
+    border-left:1px #eee solid;
+    border-right:1px #eee solid;
+    border-bottom:1px #d7d7d7 solid;
+    height:22px; 
+    background:url(calendar_week_bg.gif) repeat-x 0 0; 
+    padding:0 2px;
+}
+.calendar-week li{
+    float:left; 
+    width:76px; 
+    text-align:center; 
+    vertical-align:middle; 
+    line-height:22px;
+}
+.calendar-datail{
+    border:1px #eee solid;
+    zoom:1;
+}
+.calendar-datail:after{
+    content: '\0020';
+    display: block;
+    height: 0;
+    clear: both;
+}
+.calendar-datail a{
+    border:1px #eee solid;
+    background:#fff;
+    float:left; 
+    width:75px; 
+    height:75px;
+    text-align:center; 
+    font-size:26px;  
+}
+.calendar-datail a:hover{
+    background:#fbffbc;
+}
+.calendar-datail a.today{}
+.calendar-datail a:link,.calendar-datail a:visited{ color:#000; text-decoration:none;}
+.calendar-datail a.selected-day{
+    border:1px #f00 solid;
+    background:#fbffbc;
+}
+.calendar-datail a.other-day,
+.calendar-datail a.other-day span{
+    color:#ccc;
+}
+.calendar-datail a span{ color:#666;}
+.calendar-datail a.red{ color:#F00;}
+.calendar-datail a.red span{ color:#666;}
+.calendar-datail a.green span{ color:#48A01B;}
+.calendar-datail a:hover{ text-decoration:none;}
+
+.calendar-left-panel{ width:225px; border:1px #CEE0F4 solid; background:#F6F9FC;}
+.calendar-left-panel .border-b{ border-bottom:1px #CEE0F4 solid;}
+.calendar-left-middle li{ margin:5px 0; clear:both; vertical-align:middle; height:100%; line-height:16px;}
+.calendar-left-middle li img{ margin:1px 3px 0 0; float:left;  height:14px;}
+.calendar-left-middle li span{ display:block; float:left; width:195px;}
+
+.calendar-history{ height:265px; overflow:auto;}
+.calendar-history li{ margin:2px 0;}
+.calendar-history li span{ display:block; float:left; width:45px; color:#999999;}
+
+.calendar-datail a span{ display:block; font-size:12px; font-weight:normal;}
+.calendar-datail a span.tq{color:#36c;}
+.calendar-datail-hover-pop{
+    border:1px #3a6bcd solid;
+    left:224px;
+    overflow:hidden;
+    position:absolute;
+    padding:10px 10px 0;
+    top:278px;
+    width:235px;
+    z-index:999;
+}
+#pop_title{
+    background:#fff;
+    border:1px #3a6bcd solid;
+    border-bottom:none;
+    font-size:40px;
+    height:74px;
+    left:-1px;
+    position:absolute;
+    text-align:center;
+    top:-75px;
+    width:75px;
+}
+#pop_day{
+    font-weight:700;
+    font-size:14px;
+}
+#pop_jieri{
+    border-bottom:1px #ccc solid;
+    color:#008000;
+    margin-bottom:5px;
+    padding-bottom:5px;
+}
+#xiongji{
+    padding:5px 5px 0; 
+    zoom:1;
+}
+#pop_xiongji dd,#xiongji dd{
+    margin-left:25px;
+    padding-bottom:5px;
+    zoom:1;
+}
+#xiongji dd{
+    margin-left:35px;
+}
+.nl-yi,.nl-ji,.nl-xx{
+    background:#79BF20;
+    color:#fff;
+    float:left;
+    padding:0 3px;
+}
+.nl-ji{
+    background:#FF0000;
+}
+.nl-xx{
+    background:#96c;
+}
+.green{
+    color:#008000;
+}
+#today ul{
+    color:#666;
+    padding:5px;
+}
+.day_datail{
+    padding:5px;
+    border-bottom:1px #eee dashed;
+}
+.day_datail_day{
+    font-size:15px;
+    font-weight:700;
+}
+.day_datail_jieri{
+    color:#008000;
+}
+#js_year{
+    width:80px;
+}
+#js_hover_datail_bg{
+    background:#fff;
+    height:999px;
+    width:999px;
+    position:absolute;
+    z-index:-1;
+    left:0;
+    top:0;
+    opacity:0.8;
+    filter:alpha(opacity=80);
+    -ms-filter:"alpha(opacity=80)";
+}
