@@ -1,0 +1,65 @@
+body, html {
+	background-color: #222222;
+}
+
+canvas {
+	border: 6px #333333 solid;
+	background-color: #111111;
+}
+
+.ui {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #999999;
+	text-align: left;
+	padding: 8px;
+	background-color: rgba(0,0,0,0.5);
+	position: absolute;
+	z-index: 2;
+}
+
+#message {
+	padding: 16px;
+}
+
+#status {
+	width: 884px;
+	height: 15px;
+	padding: 8px;
+	display: none;
+}
+
+#status span {
+	color: #bbbbbb;
+	font-weight: bold;
+	margin-right: 5px;
+}
+
+#title {
+	margin-bottom: 20px;
+	color: #eeeeee;
+}
+
+.ui ul {
+	margin: 10px 0 10px 0;
+	padding: 8px 0 8px 10px;
+}
+
+.ui ul li {
+	list-style: none;
+}
+
+.ui a {
+	outline: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 38px;
+	text-decoration: none;
+	color: #bbbbbb;
+	padding: 2px;
+	display: block
+}
+
+.ui a:hover {
+	color: #ffffff;
+	background-color: #000000;
+}

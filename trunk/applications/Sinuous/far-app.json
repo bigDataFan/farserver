@@ -1,0 +1,15 @@
+{
+    "name": "Sinuous",
+    "alias": "太空大对碰",
+    "description": "",
+    "categories": [
+        "浏览器应用",
+		"游戏",
+        "手机应用"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/Sinuous/",
+    "start": "happy.html",
+    "version": "1.0b",
+    "owner": "liuhann@gmail.com",
+    "icon": "http://farserver.googlecode.com/svn/trunk/applications/Sinuous/logo.jpg"
+}
