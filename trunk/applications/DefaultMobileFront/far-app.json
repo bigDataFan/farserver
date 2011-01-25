@@ -1,0 +1,13 @@
+{
+    "name": "mobileapp",
+    "alias": "G趣移动版",
+    "description": "",
+    "categories": [
+        "dashboard"
+    ],
+    "repository": "",
+    "start": "index.gs",
+    "version": "1.01a",
+    "owner": "liuhann@gmail.com",
+    "icon": "images/logo.jpg"
+}
