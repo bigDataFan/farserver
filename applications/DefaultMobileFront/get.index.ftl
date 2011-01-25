@@ -30,8 +30,8 @@
 <div class="f">您好 ${model.user} </div>
 <div class="j">
 	<#list model.allapps as app>
-		<#if app.get("categories")?seq_contains("手机应用")>
-			${app.get("alias")}
+		<#if app.categories?seq_contains("手机应用")>
+			<a href="/user/${model.user}/${app.name}/"> ${app.alias}</a> &nbsp; | &nbsp; 
 		</#if>
 	</#list>
 </div>

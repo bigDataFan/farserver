@@ -20,6 +20,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * Servlet implementation class DefaultServlet
  */
 public class DefaultServlet extends HttpServlet {
+	private static final String MOBILE_DOMAIN = "m.";
+
 	private static final long serialVersionUID = 1L;
       
 	private BasicUserService userService;
@@ -44,19 +46,32 @@ public class DefaultServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*
 		String agent = request.getHeader("User-Agent");
 		boolean isHTML5 = false;
-		
 		if (agent.startsWith("Mozilla/5.0")) {
 			isHTML5 = true;
 		}
+		*/
+		boolean ismobile = request.getRemoteHost().startsWith(MOBILE_DOMAIN);
+		
 		
 		if (AuthenticationUtil.isCurrentLogon()) {
 			User user = userService.getUser(AuthenticationUtil.getCurrentUserName());
-			response.sendRedirect("/user/" + AuthenticationUtil.getCurrentUser() + "/" 
-					+ ((user.getFirstApp()==null)?applicationService.getDefaultApp():user.getFirstApp()) + "/");
+			
+			if (ismobile) {
+				response.sendRedirect("/user/" + AuthenticationUtil.getCurrentUser() + "/" 
+						+ ((user.getMobileApp()==null)?applicationService.getMobileApp():user.getMobileApp()) + "/");
+			} else {
+				response.sendRedirect("/user/" + AuthenticationUtil.getCurrentUser() + "/" 
+						+ ((user.getFirstApp()==null)?applicationService.getDefaultApp():user.getFirstApp()) + "/");
+			}
 		} else {
-			response.sendRedirect("/index.html");
+			if (ismobile) {
+				response.sendRedirect("/m/index.html");
+			} else {
+				response.sendRedirect("/index.html");
+			}
 		}
 		
 		

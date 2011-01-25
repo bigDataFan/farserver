@@ -56,6 +56,9 @@
 		<property name="defaultApp">
 			<value>${application.app.default}</value>
 		</property>
+		<property name="mobileApp">
+			<value>${application.mobile.default}</value>
+		</property>
 	</bean>
 	
 	<bean id="contentService" class="net.gqu.content.GridFSContentService">

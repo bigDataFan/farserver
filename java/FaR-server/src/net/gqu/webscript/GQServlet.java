@@ -529,7 +529,7 @@ public class GQServlet extends HttpServlet {
 		public GQRequest(HttpServletRequest request) {
 			super();
 			this.request = request;
-			
+
 			pathList = getPathList(request);
 			if (pathList.length<2) {
 				throw new HttpStatusExceptionImpl(400);

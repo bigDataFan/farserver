@@ -20,8 +20,6 @@ public class ScriptObjectGenerator {
 	private BasicUserService userService;
 	private ApplicationService applicationService;
 	
-	
-	
 	public BasicUserService getUserService() {
 		return userService;
 	}

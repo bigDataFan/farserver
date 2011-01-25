@@ -28,4 +28,5 @@ public interface ApplicationService {
 	List<Map<String, Object>> getAllInCurrentServer();
 	long getInstallCount(String name);
 	public String getDefaultApp();
+	public String getMobileApp();
 }

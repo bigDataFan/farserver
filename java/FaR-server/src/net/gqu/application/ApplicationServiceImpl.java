@@ -32,7 +32,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private String registryLocation;
 	private boolean develop;
 	private String defaultApp;
+	private String mobileApp;
 	private String appDir;
+	
 	
 	public void init() {
 		if (develop && appDir!=null) {
@@ -58,7 +60,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 	}
 	
-	
+	public void setMobileApp(String mobileApp) {
+		this.mobileApp = mobileApp;
+	}
+
 	public void setAppDir(String appDir) {
 		this.appDir = appDir;
 	}
@@ -228,5 +233,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 		DBCollection coll = dbProvider.getMainDB().getCollection(ApplicationService.COLL_INSTALLED);
 		DBCursor cursor = coll.find(new BasicDBObject(KEY_APPLICATION, name));
 		return cursor.count();
+	}
+
+
+	@Override
+	public String getMobileApp() {
+		return mobileApp;
 	}
 }

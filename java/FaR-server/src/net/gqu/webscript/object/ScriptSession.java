@@ -6,7 +6,7 @@ public class ScriptSession {
 	private HttpSession httpSession;
 	
 	public Object get(String arg0) {
-		return (Object) httpSession.getAttribute(arg0);
+		return httpSession.getAttribute(arg0);
 	}
 	
 	public void set(String arg0, Object arg1) {
