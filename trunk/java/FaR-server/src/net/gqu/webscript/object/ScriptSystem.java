@@ -28,12 +28,9 @@ public class ScriptSystem {
 		return applicationService.getUserInstalledApplications(user);
 	}
 	
-	
 	public List<Map<String, Object>> getAllApplications() {
 		return applicationService.getAllInCurrentServer();
 	}
-	
-	
 	
 	public Map<String, Object> install(String user, String app, String mapping) {
 		return applicationService.install(user, app, mapping);

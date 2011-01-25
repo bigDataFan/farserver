@@ -11,6 +11,8 @@ import net.gqu.application.ApplicationService;
 public class User implements Serializable {
 
 	private static final String KEY_FIRST_APP = "firstApp";
+	private static final String KEY_MOBILE_APP = "mobileApp";
+	
 	public static final String KEY_LOGINED = "logined";
 	public static final String KEY_DISABLED = "disabled";
 	public static final String KEY_ROLE = "role";
@@ -37,8 +39,18 @@ public class User implements Serializable {
 	private long logined;
 	private String db;
 	private String firstApp;
+	private String mobileApp;
 
 	
+	
+	public String getMobileApp() {
+		return mobileApp;
+	}
+
+	public void setMobileApp(String mobileApp) {
+		this.mobileApp = mobileApp;
+	}
+
 	public String getFirstApp() {
 		return firstApp;
 	}
@@ -66,6 +78,7 @@ public class User implements Serializable {
 		this.logined = (Long)one.get(KEY_LOGINED);
 		this.contentUsed = (Long)one.get(KEY_CONTENT_USED);
 		this.firstApp = (one.get(KEY_FIRST_APP)==null)?null:(String)one.get(KEY_FIRST_APP);
+		this.mobileApp = (one.get(KEY_MOBILE_APP)==null)?null:(String)one.get(KEY_MOBILE_APP);
 		if (one.get(KEY_ATTRS)!=null) {
 			this.attrs = (Map)one.get(KEY_ATTRS);
 		}
@@ -93,6 +106,7 @@ public class User implements Serializable {
 		map.put(KEY_CONTENT_USED, contentUsed);
 		map.put(KEY_ATTRS, attrs);
 		map.put(KEY_FIRST_APP, firstApp);
+		map.put(KEY_MOBILE_APP, mobileApp);
 		return map;
 	}
 	
