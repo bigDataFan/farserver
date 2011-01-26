@@ -53,7 +53,7 @@ public class DefaultServlet extends HttpServlet {
 			isHTML5 = true;
 		}
 		*/
-		boolean ismobile = request.getRemoteHost().startsWith(MOBILE_DOMAIN);
+		boolean ismobile = request.getServerName().startsWith(MOBILE_DOMAIN);
 		
 		
 		if (AuthenticationUtil.isCurrentLogon()) {
