@@ -9,6 +9,7 @@
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/ZenCalculator/",
     "start": "index.html",
+    "mobile":"m/cal.html",
     "version": "1.01a",
     "owner": "liuhann@gmail.com",
     "icon": "http://farserver.googlecode.com/svn/trunk/applications/ZenCalculator/logo.jpg"
