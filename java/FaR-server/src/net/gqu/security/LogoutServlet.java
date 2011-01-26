@@ -59,7 +59,7 @@ public class LogoutServlet extends HttpServlet {
 			}
     	}
     	request.getSession().removeAttribute(AuthenticationFilter.AUTHENTICATION_USER);
-    	response.sendRedirect(userService.getLoginPage());
+    	response.sendRedirect("/");
 	}
 
 	/**
