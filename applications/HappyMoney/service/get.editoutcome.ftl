@@ -19,19 +19,21 @@
 
 		<div data-role="content">	
 			<form id="outcomeForm" method="POST" action="saveoutcome.gs">
+				<#if model.id??>
+					<input type="hidden" name="id"  value="${model.id}">
+				</#if>
+				
+				
 				<div data-role="fieldcontain">
-					<label for="name">支出条目:</label>
-					<#if model.id??>
-						<input type="hidden" name="id"  value="${model.id}">
-					</#if>
+					<label for="name">支出条目:</label><br>
 				    <input type="text" name="name" value="${model.name}"  />
 				    <label for="name">金额: </label>
-				    <input type="text" name="mount" value="${model.mount}"  />
+				    <input type="text" name="mount" value="${model.mount}" />
 				    <label for="name">时间: (Feb 12,2010)</label>
 				    <input type="text" name="day" value="${model.day?date?string.medium}" />
 				    <label for="name">备注:</label>
 				    <textarea name="comment" id="comment" value="${model.comment}" ></textarea>
-				 <label for="category">分类:</label>
+   				    <label for="category">分类:</label>
 					<select name="category">
 						<#list model.cats as cat>
 							<option value="${cat.name}">${cat.name}</option>
