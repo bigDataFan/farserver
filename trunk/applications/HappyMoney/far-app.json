@@ -9,6 +9,7 @@
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/HappyMoney/",
     "icon":"http://farserver.googlecode.com/svn/trunk/applications/HappyMoney/images/logo.jpg",
     "start": "service/index.gs",
+    "mobile": "service/index.gs",
     "version": "0.9",
     "owner": "liuhann@gmail.com"
 }
