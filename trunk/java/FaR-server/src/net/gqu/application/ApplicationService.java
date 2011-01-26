@@ -14,6 +14,7 @@ public interface ApplicationService {
 	
 	public static final String APP_CONFIG_NAME = "name";
 	public static final String APP_CONFIG_START = "start";
+	public static final String APP_CONFIG_MOBILE_START = "mobile";
 	public static final String APP_CONFIG_REPOSITORY = "repository";
 	
 	
