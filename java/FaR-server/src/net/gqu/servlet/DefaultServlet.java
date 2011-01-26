@@ -20,7 +20,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * Servlet implementation class DefaultServlet
  */
 public class DefaultServlet extends HttpServlet {
-	private static final String MOBILE_DOMAIN = "m.";
+	public static final String MOBILE_DOMAIN = "m.";
 
 	private static final long serialVersionUID = 1L;
       

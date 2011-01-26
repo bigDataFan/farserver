@@ -33,6 +33,7 @@ import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
 import net.gqu.security.Role;
 import net.gqu.security.User;
+import net.gqu.servlet.DefaultServlet;
 import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.MimeTypeUtils;
@@ -571,8 +572,9 @@ public class GQServlet extends HttpServlet {
 			isScript = false;
 			
 			if (pathList.length==2 || (pathList.length==3&&pathList[2].equals(""))) {
-				if (approvedApplication.get(ApplicationService.APP_CONFIG_START)==null) {
-					throw new HttpStatusExceptionImpl(404);
+				boolean ismobile = request.getServerName().startsWith(DefaultServlet.MOBILE_DOMAIN);
+				if (ismobile) {
+					throw new HttpStatusExceptionImpl(307, (String)approvedApplication.get(ApplicationService.APP_CONFIG_MOBILE_START));
 				} else {
 					throw new HttpStatusExceptionImpl(307, (String)approvedApplication.get(ApplicationService.APP_CONFIG_START));
 				}
