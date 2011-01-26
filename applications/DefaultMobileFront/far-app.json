@@ -6,7 +6,7 @@
         "dashboard"
     ],
     "repository": "",
-    "start": "index.gs",
+    "mobile": "index.gs",
     "version": "1.01a",
     "owner": "liuhann@gmail.com",
     "icon": "images/logo.jpg"
