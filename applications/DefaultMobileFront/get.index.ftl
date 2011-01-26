@@ -30,11 +30,11 @@
 <div class="f">您好 ${model.user} </div>
 <div class="j">
 	<#list model.allapps as app>
-		<#if app.categories?seq_contains("手机应用")>
-			<a href="/user/${model.user}/${app.name}/"> ${app.alias}</a> &nbsp; | &nbsp; 
+		<#if app.mobile>
+			<a href="/user/${model.user}/${app.name}/${app.mobile}"> ${app.alias}</a> &nbsp; | &nbsp; 
 		</#if>
 	</#list>
 </div>
-
+<div class="f"><a href="/logout">退出</a> </div>
 </body>
 </html>
