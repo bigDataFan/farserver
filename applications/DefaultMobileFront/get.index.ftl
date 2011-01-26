@@ -30,7 +30,7 @@
 <div class="f">您好 ${model.user} </div>
 <div class="j">
 	<#list model.allapps as app>
-		<#if app.mobile>
+		<#if app.mobile??>
 			<a href="/user/${model.user}/${app.name}/${app.mobile}"> ${app.alias}</a> &nbsp; | &nbsp; 
 		</#if>
 	</#list>
