@@ -300,7 +300,7 @@ public class GQServlet extends HttpServlet {
 		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
 		//params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
 		params.put("application",RhinoUtils.mapToNativeObject(gqrequest.getApprovedApplication()));
-		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getContextUser().getDb(), gqrequest.getInstalledApplication().getApp()));
+		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getInstalledApplication().getApp()));
 		params.put("content", new ScriptContent(contentService,userService));
 		
 		params.put("system", new ScriptSystem(applicationService, userService));
@@ -537,6 +537,7 @@ public class GQServlet extends HttpServlet {
 			}
 			
 			contextUser = userService.getUser(pathList[0]);
+			AuthenticationUtil.setContextUser(pathList[0]);
 			if (contextUser.isDisabled()) {
 				throw new HttpStatusExceptionImpl(410); //gone
 			}

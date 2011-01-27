@@ -8,18 +8,17 @@ import com.mongodb.DBCollection;
 
 public class ScriptMongoDB {
 	
-	private DBCollection collection;
+	private DBCollection userCollection;
 	private MongoDBProvider dbProvider;
 	private DB currentDB;
-	public ScriptMongoDB(MongoDBProvider dbProvider, String db,
-			String appName) {
+	public ScriptMongoDB(MongoDBProvider dbProvider, String db) {
 		this.dbProvider = dbProvider;
-		currentDB = dbProvider.getMongo().getDB(appName);
-		collection = currentDB.getCollection(AuthenticationUtil.getContextUser());
+		currentDB = dbProvider.getMongo().getDB(db);
+		userCollection = currentDB.getCollection(AuthenticationUtil.getContextUser());
 	}
 
 	public ScriptMongoDBCollection getRootCollection() {
-		return new ScriptMongoDBCollection(collection);
+		return new ScriptMongoDBCollection(userCollection);
 	}
 	
 	public ScriptMongoDBCollection getSystemCollection(String name) {
@@ -43,7 +42,12 @@ public class ScriptMongoDB {
 	}
 	*/
 	public ScriptMongoDBCollection getCollection(String name) {
-		DBCollection coll = collection.getCollection(name);
+		DBCollection coll = userCollection.getCollection(name);
+		return new ScriptMongoDBCollection(coll);
+	}
+	
+	public ScriptMongoDBCollection getUserCollection(String name) {
+		DBCollection coll = userCollection.getCollection(name);
 		return new ScriptMongoDBCollection(coll);
 	}
 }
