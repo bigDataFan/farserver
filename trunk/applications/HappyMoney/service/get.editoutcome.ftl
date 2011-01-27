@@ -27,19 +27,27 @@
 				<div data-role="fieldcontain">
 					<label for="name">支出条目:</label><br>
 				    <input type="text" name="name" value="${model.name}"  />
+				</div>
+				 <div data-role="fieldcontain">   
 				    <label for="name">金额: </label>
 				    <input type="text" name="mount" value="${model.mount}" />
+				 </div>
+				 <div data-role="fieldcontain">   
 				    <label for="name">时间: (Feb 12,2010)</label>
 				    <input type="text" name="day" value="${model.day?date?string.medium}" />
+				 </div>
+				 <div data-role="fieldcontain">   
 				    <label for="name">备注:</label>
 				    <textarea name="comment" id="comment" value="${model.comment}" ></textarea>
+				 </div>
+				 <div data-role="fieldcontain">  
    				    <label for="category">分类:</label>
 					<select name="category">
 						<#list model.cats as cat>
 							<option value="${cat.name}">${cat.name}</option>
 						</#list>
 					</select>
-				</div>
+				</div></div>
 				<fieldset class="ui-grid-c">
 					<#if model.id??>
                             <div class="ui-block-a"><a href="deleteoutcome.gs?id=${model.id}" id="cancel" data-role="button">删除</a></div>
