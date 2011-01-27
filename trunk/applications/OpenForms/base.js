@@ -343,7 +343,15 @@ $(document)
 					$('#link_save').click(
 							function() {
 								var s = i();
-								alert(s);
+								$.post( "service/saveform.gs",
+										{
+											"html": s,
+											"name": $('#form_title').html()
+										},
+										function(data){
+											
+										}
+								);
 							}
 					);
 				});
