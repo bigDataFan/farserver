@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>表单设计器</title>
+<link type="text/css" rel="stylesheet" href="base.css">
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="base.js"></script>
+</head>
+<body>
+<header><h1 class="rg">表单设计器</h1></header>
+
+<div class="main">
+<div class="oper"><a id="link_save" href="#">保存表单</a>|<a href="#">返回到列表</a></div>	
+<div id="src">
+<p>点击输入项以加入表单</p>
+<ul class="elems">
+<li><a class="elem textbox" data-type="textbox">文本输入</a></li>
+<li><a class="elem select" data-type="select">下拉选择框</a></li>
+<li><a class="elem textarea" data-type="textarea">文本区域输入</a></li>
+<li><a class="elem checkbox" data-type="checkbox">多选框 </a></li>
+</ul>
+</div>
+<div id="dst">
+<menu label="options"><li class="showhtml"><a class="nos" href="#uform">表单预览</a></li><li class="clear"><a class="nos" href="#">表单清空</a></li></menu>
+<h2 class="legend ed" contenteditable="true">表单标题</h2><div id="farea"></div>
+<ul class="tl"><li><a class="active" href="#uform">html预览</a></li></ul>
+<div class="tp" id="uform"></div>
+<div class="tp" id="uhtml"></div>
+</div>
+</div>
+
+</body>
+</html>
