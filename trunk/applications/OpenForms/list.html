@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>表单列表</title>
+<link type="text/css" rel="stylesheet" href="base.css">
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+
+
+<script type="text/javascript">
+$(document).ready( function() {
+	$.getJSON("service/listform.gs", null, 
+			function(data) {
+				
+			}
+	)
+		
+});
+
+</script>
+</head>
+<body>
+<header><h1 class="rg">表单列表</h1></header>
+
+<div style="margin: 0 auto; width:1000px">
+	<div>未发布表单</div>
+	<table id="unpub"  width="100%">
+		<tr width="80%"><td class="title">dfdsfdfdfd</td>
+		<td width="10%"><a class="pub" href="#" data-value="uuid">发布</a></td>
+		<td><a  class="del" data-value="uuid">删除</a></td>
+	</tr>
+	</table>
+	<div>已发布表单</div>
+</div>
+
+</body>
+</html>
