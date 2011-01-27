@@ -1,3 +1,3 @@
-db.getUserCollection("forms").save({"html":params.html});
+db.getUserCollection("forms").save(params);
 
 "1";
