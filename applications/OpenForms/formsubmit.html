@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>表单设计器</title>
+<title>表单提交</title>
 <link type="text/css" rel="stylesheet" href="base.css">
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
 
@@ -28,17 +28,28 @@ function getParam(strname) {
 }
 
 $(document).ready(function() {
+	var id = getParam("id");
+	$.getJSON("service/formhtml.gs", 
+			{"id":id},
+			function(data) {
+				$('div.main').html(data.html);
+			}	
+	);
 	
+	$('#zformid').val(id);
 	
 });
 </script>
 </head>
 <body>
-<header><h1 class="rg">发布表单</h1></header>
+<header><h1 class="rg"></h1></header>
 
-<div class="main">
-<div class="oper"><a id="link_save" href="#">保存表单</a>|<a href="#">返回到列表</a></div>	
-<div class="oper">地址<span>ddfddf</span></div>
-
+<form method="post" action="service/submit.gs">
+<input name="zformid" id="zformid" type="hidden">
+	<div class="main">
+			
+	</div>
+	<div class="main"><input type="submit" value="提交"></div>
+</form>
 </body>
 </html>
