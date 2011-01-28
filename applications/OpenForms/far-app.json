@@ -1,0 +1,14 @@
+{
+    "name": "openforms",
+    "alias": "表单设计器",
+    "description": "一个基本的表单设计应用，用来向其他人发布调查或者收集信息",
+    "categories": [
+        "浏览器应用",
+        "业务管理"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/OpenForms/",
+    "start": "list.html",
+    "version": "1.01a",
+    "owner": "liuhann@gmail.com",
+    "icon": "http://farserver.googlecode.com/svn/trunk/applications/OpenForms/logo.jpg"
+}
