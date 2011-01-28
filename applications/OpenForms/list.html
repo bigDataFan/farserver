@@ -11,7 +11,27 @@
 $(document).ready( function() {
 	$.getJSON("service/listforms.gs", null, 
 			function(data) {
-				
+				for (var i=0; i<data.length; i++) {
+					var form = data[i];
+					if (form.ispub) {
+						
+					} else {
+						var tr = $('tr.unpub_template').clone();
+						tr.removeClass('unpub_template');
+						tr.find('td.title').html(form.name);
+						tr.find('a.pub').attr('href', "publish.html?id=" + form.id);
+						tr.show();
+						$('#unpub').append(tr);
+						tr.find('a.del').attr('data-value', form.id);
+						tr.find('a.del').click(function() {
+							$.get('service/deleteform.gs',
+									{"id":form.id},
+									function(data){
+										//location.href = location.href; 
+									});
+						});
+					}
+				}
 			}
 	)
 		
@@ -26,7 +46,7 @@ $(document).ready( function() {
 	<h1>未发布表单</h1>
 	<div><a href="edit.html">新建表单</a></div>
 	<table id="unpub"  width="100%">
-		<tr width="80%"><td class="title">dfdsfdfdfd</td>
+		<tr width="80%" class="unpub_template" style="display: none"><td class="title">dfdsfdfdfd</td>
 			<td width="10%"><a class="pub" href="#" data-value="uuid">发布</a></td>
 			<td width="10%"><a  class="del" data-value="uuid">删除</a></td>
 		</tr>
