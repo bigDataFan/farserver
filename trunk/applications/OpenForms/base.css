@@ -1,6 +1,5 @@
 body {
 	margin: 0;
-	text-align: center;
 	font: 80% Verdana, sans-serif;
 	color: #333;
 }
@@ -9,7 +8,7 @@ h1 {
 	margin: 0 0 .5em;
 	border-bottom: 1px solid #ccc;
 	padding: .5em 0 .4em;
-	font-size: 2.8em;
+	font-size: 2em;
 	font-weight: normal;
 	font-family: 'Vollkorn', arial, serif;
 	color: #e9e9e9;
@@ -18,7 +17,7 @@ h1 {
 
 h2 {
 	margin: 0 0 .1em;
-	font-size: 1.2em;
+	font-size: medium;
 	color: #555;
 }
 
@@ -289,4 +288,8 @@ menu a:hover {
 
 .mm {
 	display: none;
+}
+
+td {
+	border:1px solid #ddd;
 }
