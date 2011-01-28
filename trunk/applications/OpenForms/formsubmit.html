@@ -32,12 +32,10 @@ $(document).ready(function() {
 	$.getJSON("service/formhtml.gs", 
 			{"id":id},
 			function(data) {
-				$('div.main').html(data.html);
-			}	
+				$('#formcontent').html(data.html);
+			}
 	);
-	
 	$('#zformid').val(id);
-	
 });
 </script>
 </head>
@@ -47,9 +45,9 @@ $(document).ready(function() {
 <form method="post" action="service/submit.gs">
 <input name="zformid" id="zformid" type="hidden">
 	<div class="main">
-			
+			<div id="formcontent"></div>
+		<input type="submit" value="提交">
 	</div>
-	<div class="main"><input type="submit" value="提交"></div>
 </form>
 </body>
 </html>
