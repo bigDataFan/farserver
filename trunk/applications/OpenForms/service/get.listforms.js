@@ -1,1 +1,1 @@
-db.getUserCollection("forms").find({}).toArray();
+db.getUserCollection("forms").find({},{"name":1}).toArray();
