@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
 $(document).ready( function() {
-	$.getJSON("service/listform.gs", null, 
+	$.getJSON("service/listforms.gs", null, 
 			function(data) {
 				
 			}
@@ -24,11 +24,12 @@ $(document).ready( function() {
 
 <div style="margin: 0 auto; width:1000px">
 	<h1>未发布表单</h1>
+	<div><a href="edit.html">新建表单</a></div>
 	<table id="unpub"  width="100%">
 		<tr width="80%"><td class="title">dfdsfdfdfd</td>
-		<td width="10%"><a class="pub" href="#" data-value="uuid">发布</a></td>
-		<td width="10%"><a  class="del" data-value="uuid">删除</a></td>
-	</tr>
+			<td width="10%"><a class="pub" href="#" data-value="uuid">发布</a></td>
+			<td width="10%"><a  class="del" data-value="uuid">删除</a></td>
+		</tr>
 	</table>
 	<h1>已发布表单</h3>
 	<table id="pub"  width="100%">

@@ -33,7 +33,7 @@ $(document)
 						var o = ""/* b + h("placeholder", p + "_ph")
 								+ '<input type=text id="' + p
 								+ '_ph" name="eph">' + _d;*/
-						lbl = '<div class="ml label ed"' + ce + ">" /*+ k*/
+						lbl = '<div class="ml label ed"' + ce + ">" + k
 								+ " 描述" + _d;
 						e_ = '<div class="element ' + k + '">';
 						m = h("name", p + "_n") + '<input type="text" id="' + p
@@ -349,7 +349,7 @@ $(document)
 											"name": $('#form_title').html()
 										},
 										function(data){
-											
+											location.href="list.html";
 										}
 								);
 							}
