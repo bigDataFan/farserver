@@ -14,7 +14,21 @@ $(document).ready( function() {
 				for (var i=0; i<data.length; i++) {
 					var form = data[i];
 					if (form.ispub) {
+						var tr = $('tr.pub_template').clone();
+						tr.removeClass('pub_template');
+						tr.find('td.title').html(form.name);
+						tr.find('a.view').attr('href', "result.html?id=" + form.id);
+						tr.show();
+						$('#pub').append(tr);
 						
+						tr.find('a.del').attr('data-value', form.id);
+						tr.find('a.del').click(function() {
+							$.get('service/deleteall.gs',
+									{"id":form.id},
+									function(data){
+										//location.href = location.href; 
+									});
+						});
 					} else {
 						var tr = $('tr.unpub_template').clone();
 						tr.removeClass('unpub_template');
@@ -53,8 +67,8 @@ $(document).ready( function() {
 	</table>
 	<h1>已发布表单</h3>
 	<table id="pub"  width="100%">
-		<tr width="80%"><td class="title">dfdsfdfdfd</td>
-		<td width="10%"><a class="pub" href="#" data-value="uuid">查看</a></td>
+		<tr class="pub_template" style="display: none" width="80%"><td class="title">dfdsfdfdfd</td>
+		<td width="10%"><a class="view" href="#" data-value="uuid">查看</a></td>
 		<td width="10%"><a  class="del" data-value="uuid">删除调查</a></td>
 	</tr>
 	</table>

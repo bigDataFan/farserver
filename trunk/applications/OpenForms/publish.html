@@ -5,13 +5,54 @@
 <title>表单设计器</title>
 <link type="text/css" rel="stylesheet" href="base.css">
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+
+<script type="text/javascript">
+
+function getParam(strname) {
+	var hrefstr, pos, parastr, para, tempstr;
+	hrefstr = window.location.href;
+	pos = hrefstr.indexOf("?")
+	parastr = hrefstr.substring(pos + 1);
+	para = parastr.split("&");
+	tempstr = "";
+	for (i = 0; i < para.length; i++)
+	{
+		tempstr = para[i];
+		pos = tempstr.indexOf("=");
+		if (tempstr.substring(0, pos) == strname) {
+			return tempstr.substring(pos + 1);
+		}
+	}
+	return null;
+}
+
+$(document).ready(function() {
+	var id= getParam("id");
+	$('#link_loc').attr("href", "formsubmit.html?id=" + id);
+	$('#location').html(location.href.substring(0,location.href.lastIndexOf("/")) + "/formsubmit.html?id=" + id);
+	
+	
+	$('#link_save').click(function(){
+		$.post("service/publish.gs", 
+				{"id":id},
+				function() {
+					//location.href="list.html";
+				});	
+	});
+});
+
+
+</script>
 </head>
 <body>
 <header><h1 class="rg">发布表单</h1></header>
 
 <div class="main">
-<div class="oper"><a id="link_save" href="#">保存表单</a>|<a href="#">返回到列表</a></div>	
-<div class="oper">地址<span>ddfddf</span></div>
+<div class="oper"><a href="list.html">返回到列表</a></div>
 
+<h1>邀请其他人进入这个页面填写表单  </h1>
+	
+<div class="oper" style="padding: 20px; border:1px solid navy;">地址:<span id="location"></span> <a id="link_loc" href="#" target="_blank">进入</a></div>
+<a id="link_save" href="#">确定</a>
 </body>
 </html>
