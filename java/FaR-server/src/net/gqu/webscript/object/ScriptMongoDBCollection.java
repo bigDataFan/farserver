@@ -153,7 +153,18 @@ public class ScriptMongoDBCollection {
 	
 	public NativeObject findOne(NativeObject o) {
 		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
-		DBObject one = coll.findOne(new BasicDBObject(oldMap));
+		
+		BasicDBObject query = new BasicDBObject(oldMap);
+
+		
+		if (oldMap.get("id")!=null && !oldMap.get("id").equals("")) {
+			try {
+				query.put("_id", new ObjectId((String)oldMap.get("id")));
+				query.remove("id");
+			} catch (Exception e) {
+			}
+		}
+		DBObject one = coll.findOne(query);
 		if (one==null) {
 			return null;
 		} else {
