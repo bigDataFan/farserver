@@ -13,6 +13,7 @@ import org.mozilla.javascript.NativeFunction;
 import org.mozilla.javascript.NativeObject;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -243,8 +244,9 @@ public class ScriptMongoDBCollection {
 		return coll.count();
 	}
 
-	public long count(DBObject query) throws MongoException {
-		return coll.count(query);
+	public long count(NativeObject no) throws MongoException {
+		Map<String, Object> map = RhinoUtils.nativeObjectToMap(no);
+		return coll.count(new BasicDBObject(map));
 	}
 
 	public void createIndex(DBObject arg0, DBObject arg1) throws MongoException {
