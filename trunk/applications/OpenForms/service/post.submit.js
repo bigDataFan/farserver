@@ -4,3 +4,4 @@ params.submitdate = new Date();
 
 db.getUserCollection("results").save(params);
 
+"1";

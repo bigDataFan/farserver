@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>结果查看</title>
+<link type="text/css" rel="stylesheet" href="base.css">
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+
+
+
+<script type="text/javascript">
+
+function getParam(strname) {
+	var hrefstr, pos, parastr, para, tempstr;
+	hrefstr = window.location.href;
+	pos = hrefstr.indexOf("?")
+	parastr = hrefstr.substring(pos + 1);
+	para = parastr.split("&");
+	tempstr = "";
+	for (i = 0; i < para.length; i++)
+	{
+		tempstr = para[i];
+		pos = tempstr.indexOf("=");
+		if (tempstr.substring(0, pos) == strname) {
+			return tempstr.substring(pos + 1);
+		}
+	}
+	return null;
+}
+
+
+
+
+$(document).ready(function() {
+	var id= getParam("id");
+	$('#link_loc').attr("href", "formsubmit.html?id=" + id);
+	$('#location').html(location.href.substring(0,location.href.lastIndexOf("/")) + "/formsubmit.html?id=" + id);
+	
+
+	$.getJSON("service/summary.gs",
+			{
+				"id":id
+			},
+			function(data) {
+								
+			}		
+	)
+});
+
+
+</script>
+
+
+</head>
+<body>
+<header><h1 class="rg">结果查看</h1></header>
+<div class="main">
+	<div class="oper"><a href="list.html">返回到列表</a></div>
+	<div class="oper" style="padding: 20px; border:1px solid navy;">地址:<span id="location"></span> <a id="link_loc" href="#" target="_blank">预览</a></div>
+</div>
+<div id="formcontent"></div>
+
+</body>
+</html>
