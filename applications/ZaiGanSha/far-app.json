@@ -1,0 +1,15 @@
+{
+    "name": "ZaiGanSha",
+    "alias": "在干啥",
+    "description": "",
+    "categories": [
+        "浏览器应用",
+        "交流共享",
+        "手机应用"
+    ],
+    "repository": "http://farserver.googlecode.com/svn/trunk/applications/ZaiGanSha/",
+    "start": "index.html",
+    "version": "1.01a",
+    "owner": "liuhann@gmail.com",
+    "icon": "http://farserver.googlecode.com/svn/trunk/applications/ZaiGanSha/logo.jpg"
+}

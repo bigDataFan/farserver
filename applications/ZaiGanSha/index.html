@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet"  href="injected.css" />
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"> </script>
+
+
+<script type="text/javascript">
+var uidiv_global_popup;
+$(document).ready(function(){
+	uidiv_global_popup = $('#gq_extension_wrapper');
+	bindEvents(uidiv_global_popup);
+	
+	getTodayItemsInStore(
+		function(data) {
+			for(var i=0; i<data.length; i++) {
+				addUiItem(data[i]);
+			}
+			calculateUiTotal();
+			setTimeout("scheduleUpdate()",60000);
+		}
+	);
+	
+	/*
+	
+	addUiItem({
+			dura:123434,
+			start:122334432,
+			desc:"any"
+		}
+	);
+	
+	addUiItem({
+		dura:12232,
+		start:new Date().getTime(),
+		desc:"编写任务计划书",
+		running:true,
+		begins:new Date().getTime()
+		}
+	);
+	*/
+	
+});
+</script>
+</head>
+<body style="background-color: graytext;">
+
+<div id="gq_extension_wrapper" class="extension_wrapper">
+	<div class="close"><a class="close" href="#">&nbsp;</a></div>
+	<h1>工作<a class="list" href="#">&nbsp;</a> <a class="graph" href="#">&nbsp;</a> <a class="new" href="#">&nbsp;</a></h1>
+	
+	<div class="list"></div>
+	<div class="graph" id="gq_extension_timer_chart"></div>
+	
+	<div class="additem" style="display: none">
+			<input class="inputarea"></input><a class="run" href="#">&nbsp;</a>
+			<a class="cancel" href="#">&nbsp;</a> <span class="saving" style="display:none">保存中....</span>
+	</div>
+	
+	<div class="summary">
+		<h4><a id="total">00:00</a><a>总计：</a></h4>
+	</div>
+</div>
+
+</body>
+</html>
