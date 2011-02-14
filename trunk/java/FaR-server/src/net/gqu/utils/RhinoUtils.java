@@ -12,6 +12,10 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Undefined;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBObject;
+
 public class RhinoUtils {
 
 	public static final String MONGODB_MAP_ID = "id";
@@ -84,6 +88,30 @@ public class RhinoUtils {
 		}
 		return result;
     }
+    
+    
+    public static DBObject nativeObjectToMongoDBObject(NativeObject no) {
+    	BasicDBObject bdo = new BasicDBObject();
+    	Object[] ids = no.getIds();
+		for (Object id : ids) {
+			String key = id.toString();
+			
+			if (key.equals("id")) {
+				Object value = nativeToObject(no.get(key, no));
+				if (value instanceof String && !value.equals("")) {
+					bdo.append("_id", new ObjectId((String)value));
+				} 
+			} else {
+				Object value = no.get(key, no);
+				if (value!=null && !(value instanceof Undefined)) {
+					bdo.put(key, nativeToObject(value));
+				}
+			}
+		}
+		return bdo;
+    }
+    
+    
 
 
 	/**

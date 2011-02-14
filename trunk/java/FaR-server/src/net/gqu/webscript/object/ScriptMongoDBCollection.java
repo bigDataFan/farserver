@@ -9,11 +9,9 @@ import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeFunction;
 import org.mozilla.javascript.NativeObject;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -153,18 +151,7 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public NativeObject findOne(NativeObject o) {
-		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
-		
-		BasicDBObject query = new BasicDBObject(oldMap);
-
-		
-		if (oldMap.get("id")!=null && !oldMap.get("id").equals("")) {
-			try {
-				query.put("_id", new ObjectId((String)oldMap.get("id")));
-				query.remove("id");
-			} catch (Exception e) {
-			}
-		}
+		DBObject query = RhinoUtils.nativeObjectToMongoDBObject(o);
 		DBObject one = coll.findOne(query);
 		if (one==null) {
 			return null;
@@ -175,13 +162,7 @@ public class ScriptMongoDBCollection {
 	
 	public void remove(NativeObject o)throws MongoException {
 		errorWhenReadOnly();
-		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
-
-		if (oldMap.get("id")!=null) {
-			oldMap.put("_id", new ObjectId((String)oldMap.get("id")));
-			oldMap.remove("id");
-		}
-		coll.remove(new BasicDBObject(oldMap));
+		coll.remove(RhinoUtils.nativeObjectToMongoDBObject(o));
 	}
 	
 	public ScriptDBCursor find(NativeObject o) {
@@ -192,10 +173,7 @@ public class ScriptMongoDBCollection {
 	}
 	
 	public ScriptDBCursor find(NativeObject o, NativeObject keys) {
-		Map<String, Object> oldMap = RhinoUtils.nativeObjectToMap(o);
-		Map<String, Object> keysMap = RhinoUtils.nativeObjectToMap(keys);
-		BasicDBObject bdo = new BasicDBObject();
-		return new ScriptDBCursor(coll.find(new BasicDBObject(oldMap),new BasicDBObject(keysMap)));
+		return new ScriptDBCursor(coll.find(RhinoUtils.nativeObjectToMongoDBObject(o),RhinoUtils.nativeObjectToMongoDBObject(keys)));
 	}
 	
 	public ScriptDBCursor findRecent(NativeObject o) {
