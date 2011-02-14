@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 
 public class Role {
 
+	public static final String ROLEDB = "roledb";
 	public static final String KEY_ENABLED = "enabled";
 	public static final String KEY_OPEN = "open";
 	public static final String KEY_TOTAL_SIZE = "totalSize";
@@ -83,6 +84,11 @@ public class Role {
 	public long getContentSize() {
 		return contentSize;
 	}
+	
+	public String getRoleDB() {
+		return ROLEDB + name.toLowerCase();
+	}
+	
 
 	public void setContentSize(long contentSize) {
 		this.contentSize = contentSize;

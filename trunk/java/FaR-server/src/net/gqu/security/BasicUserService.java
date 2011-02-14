@@ -289,7 +289,7 @@ public class BasicUserService {
 		role.setContentSize(oneFile);
 		role.setTotalSize(maxSize);
 		role.setOpen(isOpen);
-		
+
 		DB db = dbProvider.getMainDB();
 		DBCollection rolecoll = db.getCollection(KEY_ROLES);
 		rolecoll.save(new BasicDBObject(role.getMap()));
