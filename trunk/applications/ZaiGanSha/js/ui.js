@@ -149,7 +149,7 @@ function addUiItem(item) {
 
 function run(parentDiv) {
 	startItemInStore(parentDiv.attr('id') , function(data) {
-			uidiv_global_popup.find('div.running').removeClass("running").addClass("normal").css("margin", "0px").css("padding", "8px");
+			$('div.running').removeClass("running").addClass("normal").css("margin", "0px").css("padding", "8px");
 			parentDiv.removeClass("normal").addClass("running").css("padding","25px").css("margin", "0px -30px");
 			rebindAll();
 			setTimeout("scheduleUpdate()",60000);
@@ -359,24 +359,22 @@ function updateItemInStore(id, content, cb) {
 	);
 }
 
-function removeItemFromStore(id) {
+function removeItemFromStore(id, cb) {
 	$.post("service/remove.gs",
 			{
 				"id":id
 			},
-			function(data) {
-			}
+			cb
 	);
 }
 
 
-function startItemInStore(id) {
+function startItemInStore(id, cb) {
 	$.post("service/start.gs",
 			{
 				"id":id
 			},
-			function(data) {
-			}
+			cb
 	);
 }
 
