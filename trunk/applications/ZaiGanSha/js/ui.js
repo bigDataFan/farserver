@@ -225,18 +225,19 @@ function saveEditBox() {
 					$('div.additem').slideUp(200);
 					$('div.list').slideDown(200);
 					$('div.running').fadeIn(400);
-				};
+				}
 		)
 	} else {
 		addItem2Store($('.inputarea').val(),
 				function (data) {
-					addUiItem(data);
+					var item = JSON.parse(data);
+					addUiItem(item);
 					$('span.saving').hide();
 					$('div.additem').slideUp(200);
 					$('div.list').slideDown(200);
 					$('div.running').fadeIn(400);
 				}
-			);
+		);
 	}
 }
 
@@ -256,8 +257,6 @@ function scheduleUpdate() {
 	
 	setTimeout("scheduleUpdate()",60000);
 }
-
-
 
 
 function drawChart() {
@@ -389,15 +388,8 @@ function stopItemInStore() {
 }
 
 function addItem2Store(content, cb) {
-	var item = new Object();
-	//item.start = new Date().getTime();
-	item.desc = content;
-	item.running = false;
-	item.dura = 0;
-	item.begins = 0;
-	
 	$.post("service/add.gs",
-			item,
+			{"desc":content},
 			cb
 	);
 }

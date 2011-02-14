@@ -17,14 +17,13 @@ while(runnings.hasNext()) {
 	db.getUserCollection("activities").upsert(item);
 }
 
-var itemToStart = db.getUserCollection("activities").findOne({"start":params.id});
+var itemToStart = db.getUserCollection("activities").findOne({"start":parseInt(params.id)});
 
-itemToStart.running = true;
-itemToStart.begins = new Date().getTime();
-
-
-db.getUserCollection("activities").upsert(itemToStart);
-
+if (itemToStart) {
+	itemToStart.running = true;
+	itemToStart.begins = new Date().getTime();
+	db.getUserCollection("activities").upsert(itemToStart);
+}
 
 itemToStart;
 
