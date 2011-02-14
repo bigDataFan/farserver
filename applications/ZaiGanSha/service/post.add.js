@@ -5,8 +5,14 @@ if (user.isGuest()) {
 if (!user.equals(owner)) {
 	response.sendError(403);
 }
-params.start = new Date().getTime();
-db.getUserCollection("activities").insert(params);
 
-params;
 
+var item = new Object();
+item.start = new Date().getTime();
+item.desc = params.desc;
+item.running = false;
+item.dura = 0;
+item.begins = 0;
+db.getUserCollection("activities").insert(item);
+
+item;
