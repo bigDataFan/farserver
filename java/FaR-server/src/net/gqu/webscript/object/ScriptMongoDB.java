@@ -41,6 +41,7 @@ public class ScriptMongoDB {
 		return new ScriptMongoDBCollection(collection.getCollection());
 	}
 	*/
+	@Deprecated
 	public ScriptMongoDBCollection getCollection(String name) {
 		DBCollection coll = userCollection.getCollection(name);
 		return new ScriptMongoDBCollection(coll);
