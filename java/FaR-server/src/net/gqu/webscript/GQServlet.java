@@ -294,22 +294,40 @@ public class GQServlet extends HttpServlet {
 		scriptRequest.setFileSizeMax(gqrequest.getRole().getContentSize());
 		scriptRequest.setFactory(fileItemFactory);
 		
+		/**the http request params for quick access*/
 		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest(), gqrequest.getTailPath()));
+		
+		/**the http request*/
 		params.put("request", scriptRequest);
+		
+		/**the http response*/
 		params.put("response", new ScriptResponse(response));
+		
+		/**the http session*/
 		params.put("session", new ScriptSession(gqrequest.getRequest().getSession()));
-		//params.put("context", scriptObjectGenerator.createContextObject(gqrequest, gqrequest.getInstalledApplication(), gqrequest.getTailPath()));
+
+		/**the context applications*/
 		params.put("application",RhinoUtils.mapToNativeObject(gqrequest.getApprovedApplication()));
-		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getInstalledApplication().getApp()));
+
+		/**assign the role db for current user*/
+		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getRole().getRoleDB()));
+		
+		/**the content service for saving steam */
 		params.put("content", new ScriptContent(contentService,userService));
 		
-		params.put("system", new ScriptSystem(applicationService, userService));
-		
+		/**the current user*/
 		params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
+		
+		/**the user who owns the collection*/
 		params.put("owner", new ScriptUser(AuthenticationUtil.getContextUser(),userService));
+		
+		/**utils */
 		params.put("utils", ScriptUtils.getInstance());
-		params.put("logger", loggingService.getScriptLogger());
-		params.put("google", scriptObjectGenerator.createGoogleServiceObject(gqrequest.getInstalledApplication().getUser()));
+		
+		/**the system object for dashboard application*/
+		params.put("system", new ScriptSystem(applicationService, userService));
+		//params.put("logger", loggingService.getScriptLogger());
+		//params.put("google", scriptObjectGenerator.createGoogleServiceObject(gqrequest.getInstalledApplication().getUser()));
 		return params;
 	}
 	
