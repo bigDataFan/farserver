@@ -1,7 +1,9 @@
 package net.gqu.webscript.object;
 
+import net.gqu.application.ApplicationService;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.security.AuthenticationUtil;
+import net.gqu.webscript.GQServlet;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -17,17 +19,22 @@ public class ScriptMongoDB {
 		userCollection = currentDB.getCollection(AuthenticationUtil.getContextUser());
 	}
 
-	public ScriptMongoDBCollection getRootCollection() {
-		return new ScriptMongoDBCollection(userCollection);
-	}
-	
 	public ScriptMongoDBCollection getSystemCollection(String name) {
 		DB mongodb = dbProvider.getMainDB();
-		
 		ScriptMongoDBCollection smd = new ScriptMongoDBCollection(mongodb.getCollection(name));
 		smd.setReadOnly(true);
 		return smd;
 	}
+	
+	//prepare a single collection for this application
+	public ScriptMongoDBCollection getApplictionCollection(String collName) {
+		return new ScriptMongoDBCollection(
+				dbProvider.getMongo().getDB(
+						(String)GQServlet.threadlocalRequest.get().getApprovedApplication().get(ApplicationService.APP_CONFIG_NAME)
+				).getCollection(collName));
+	}
+
+	
 	
 	public ScriptMongoDBCollection getGlobalCollection(String name) {
 		return new ScriptMongoDBCollection(currentDB.getCollection(name));
