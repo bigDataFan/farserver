@@ -22,11 +22,13 @@ function bindEvents(uidiv_global_popup) {
 	);
 	
 	/**新增事件按钮*/
+	/*
 	uidiv_global_popup.find('a.new').click(
 			function() {
 				showEditBox(null);
 			}
 	);
+	*/
 	
 	/**新增保存按钮*/
 	uidiv_global_popup.find('a.run').click(

@@ -6,11 +6,13 @@
 
 <link rel="stylesheet"  href="injected.css" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"> </script>
-<script type="text/javascript" src="js/json2.js"></script>
 <script type="text/javascript" src="js/ui.js"></script>
 
 
 <script type="text/javascript">
+
+//$.ajax({"cache":"no"});
+
 var uidiv_global_popup;
 $(document).ready(function(){
 	uidiv_global_popup = $('#gq_extension_wrapper');
@@ -18,6 +20,7 @@ $(document).ready(function(){
 	
 	getTodayItemsInStore(
 		function(data) {
+			alert(data);
 			for(var i=0; i<data.length; i++) {
 				addUiItem(data[i]);
 			}
@@ -52,7 +55,10 @@ $(document).ready(function(){
 
 <div id="gq_extension_wrapper" class="extension_wrapper">
 	<div class="close"><a class="close" href="#">&nbsp;</a></div>
-	<h1>工作<a class="list" href="#" rel="返回到列表模式">&nbsp;</a> <a class="graph" href="#" rel="用饼状图查看工作分配情况">&nbsp;</a> <a class="new" href="#" title="新建一个工作项">&nbsp;</a></h1>
+	<h1>工作 <a class="list" href="#" rel="返回到列表模式">&nbsp;</a> 
+			<a class="graph" href="#" rel="用饼状图查看工作分配情况">&nbsp;</a>
+			<a class="new" href="javascript:showEditBox(null);" title="新建一个工作项">&nbsp;</a>
+	</h1>
 	
 	<div class="list"></div>
 	<div class="graph" id="gq_extension_timer_chart"></div>
@@ -63,9 +69,16 @@ $(document).ready(function(){
 	</div>
 	
 	<div class="summary">
-		<h4><a id="total">00:00</a><a>总计：</a></h4>
+		<span><a>显示最近10次工作</a></span><h4><a id="total">00:00</a><a>总计：</a></h4>
 	</div>
+	
+	
 </div>
 
+<div class="oldtask_container">
+	<div class="entry normal" id="1297918871331"><h4><span class="desc">准备应用 </span><span class="config" style="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="#" class="rs">2:08</a></h4></div>
+	<div class="entry normal" id="1297918871331"><h4><span class="desc">准备应用 </span><span class="config" style="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="#" class="rs">2:08</a></h4></div>
+</div>
+	
 </body>
 </html>

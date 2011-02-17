@@ -12,6 +12,21 @@
 	/*display: none;*/
 }
 
+
+.oldtask_container {
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 0 6px 1px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
+	background:none repeat scroll 0 0 rgba(255, 255, 255, 0.3);
+	background-color:#eeeeed;
+	margin:40px auto;
+	padding:20px;
+	width:800px;
+	/*display: none;*/
+}
+
+
 .extension_wrapper h1 {
 	font-family:FertigoRegular,Segoe,"Segoe UI","Helvetica Neue",Arial,sans-serif;
 	font-size:150%;
