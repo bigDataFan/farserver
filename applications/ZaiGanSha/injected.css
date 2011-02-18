@@ -1,3 +1,29 @@
+div.thintitle {
+    background-color: #F4F4F4;
+    border: 1px solid #E4E4E4;
+    float: none;
+    font: 12px/22px Tahoma,Helvetica,"宋体",san-serif;
+    height: 22px;
+    min-width: 978px;
+    overflow: visible;
+    position: relative;
+    z-index: 10001;
+}
+
+div.thintitle  div.wrapper {
+    float: none;
+    overflow: visible;
+    position: relative;
+     width: 960px;
+}
+
+div.l {
+	float:left;
+}
+
+div.r {
+	float:right;
+}
 
 .extension_wrapper {
 	-moz-border-radius:5px;
