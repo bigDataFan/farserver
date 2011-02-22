@@ -5,6 +5,7 @@
     "categories": [
         "dashboard"
     ],
+    "dashboard":"true",
     "repository": "",
     "start": "index.html",
     "version": "1.01a",
