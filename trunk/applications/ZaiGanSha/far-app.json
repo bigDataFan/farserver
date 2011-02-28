@@ -1,6 +1,6 @@
 {
     "name": "ZaiGanSha",
-    "alias": "在干啥",
+    "alias": "点滴时间管理",
     "description": "",
     "categories": [
         "浏览器应用",
@@ -8,7 +8,7 @@
         "手机应用"
     ],
     "repository": "http://farserver.googlecode.com/svn/trunk/applications/ZaiGanSha/",
-    "start": "index.html",
+    "start": "index.gs",
     "version": "1.01a",
     "owner": "liuhann@gmail.com",
     "icon": "http://farserver.googlecode.com/svn/trunk/applications/ZaiGanSha/logo.png"

@@ -7,13 +7,12 @@ if (!user.equals(owner)) {
 }
 
 //stop all runnings;
-var runnings = db.getUserCollection("activities").find({"running" : true});
+var runnings = db.getCollection("activities").find({"running" : true});
 
 while(runnings.hasNext()) {
 	var item = runnings.next();
 	item.running = false;
 	item.dura += new Date().getTime() - item.begins;
-	db.getUserCollection("activities").upsert(item);
+	db.getCollection("activities").upsert(item);
 }
-
-"1";
+response.sendRedirect("../index.gs");

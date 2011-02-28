@@ -8,22 +8,22 @@ if (!user.equals(owner)) {
 
 
 //stop all runnings;
-var runnings = db.getUserCollection("activities").find({"running" : true});
+var runnings = db.getCollection("activities").find({"running" : true});
 
 while(runnings.hasNext()) {
 	var item = runnings.next();
 	item.running = false;
 	item.dura += new Date().getTime() - item.begins;
-	db.getUserCollection("activities").upsert(item);
+	db.getCollection("activities").upsert(item);
 }
 
-var itemToStart = db.getUserCollection("activities").findOne({"start":parseInt(params.id)});
+var itemToStart = db.getCollection("activities").findOne({"start":parseInt(params.id)});
 
 if (itemToStart) {
 	itemToStart.running = true;
 	itemToStart.begins = new Date().getTime();
-	db.getUserCollection("activities").upsert(itemToStart);
+	db.getCollection("activities").upsert(itemToStart);
 }
 
-itemToStart;
+response.sendRedirect("../index.gs");
 
