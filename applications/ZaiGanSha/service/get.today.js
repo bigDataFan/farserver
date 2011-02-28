@@ -10,7 +10,7 @@ if (!user.equals(owner)) {
 var b = new Date();
 b.setHours(0, 0, 0, 0);
 
-db.getUserCollection("activities").find({
+db.getCollection("activities").find({
 				"start":{
 					"$gte": b.getTime(),
 					"$lte": b.getTime()+24*60*60*1000

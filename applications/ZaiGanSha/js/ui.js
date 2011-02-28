@@ -372,12 +372,16 @@ function removeItemFromStore(id, cb) {
 
 
 function startItemInStore(id, cb) {
-	$.post("service/start.gs",
-			{
-				"id":id
-			},
-			cb
-	);
+	if ($.browser.msie) {
+		location.href = "service/start.gs?id=" + id;
+	} else {
+		$.post("service/start.gs",
+				{
+			"id":id
+				},
+				cb
+		);
+	}
 }
 
 function stopItemInStore() {

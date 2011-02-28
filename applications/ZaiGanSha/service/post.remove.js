@@ -6,6 +6,6 @@ if (!user.equals(owner)) {
 	response.sendError(403);
 }
 
-var itemToStart = db.getUserCollection("activities").remove({"start":parseInt(params.id)});
+var itemToStart = db.getCollection("activities").remove({"start":parseInt(params.id)});
 
 "1";
