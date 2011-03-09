@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
     	
     	if (user!=null) {
     		if (!pwd.equals(user.getPassword())) {
-    			response.sendRedirect(userService.getLoginPage());
+    			response.sendRedirect("/login.jsp");
     			return;
     		} else {
     			userService.incLogCount(username);
@@ -84,7 +84,7 @@ public class LoginServlet extends HttpServlet {
         		return;
     		}
     	} else {
-    		response.sendRedirect(userService.getLoginPage());
+    		response.sendRedirect("/login.jsp");
     	}
 	}
 	  public Cookie createNewCookie(HttpServletResponse httpResp ) {
