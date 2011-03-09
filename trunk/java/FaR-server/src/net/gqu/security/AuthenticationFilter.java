@@ -115,7 +115,7 @@ public class AuthenticationFilter implements Filter
         		}
         	}
         	httpReq.getSession().setAttribute(AuthenticationFilter.LOGIN_REFERER, httpReq.getRequestURI());
-        	httpResp.sendRedirect(userService.getLoginPage());
+        	httpResp.sendRedirect("/login.jsp");
         	return;
         } else {
         	AuthenticationUtil.setCurrentUser(user);

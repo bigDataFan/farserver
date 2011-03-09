@@ -21,7 +21,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-
 /**
  * Servlet implementation class RegisterServlet
  */
@@ -65,39 +64,39 @@ public class RegisterServlet extends HttpServlet {
 		logger.debug("register: " + username + "  " +  email + " " + password + "  " );
 		if (username==null || username.length()<4 ) {
 			request.getSession().setAttribute("error", "invalid user name");
-			response.sendRedirect(userService.getRegisterPage());
+			response.sendRedirect("/login.jsp");
 			return;
 		} 
 		
 		
 		if ( password==null || password.length()<6 ) {
 			request.getSession().setAttribute("error", "password strenth");
-			response.sendRedirect(userService.getRegisterPage());
+			response.sendRedirect("/login.jsp");
 			return;
 		} 
 		
 		if (passwordc==null || !password.equals(passwordc)) {
 			request.getSession().setAttribute("error", "password confirm");
-			response.sendRedirect(userService.getRegisterPage());
+			response.sendRedirect("/login.jsp");
 			return;
 		} 
 		
 		if (email==null) {
 			request.getSession().setAttribute("error", "invalid email");
-			response.sendRedirect(userService.getRegisterPage());
+			response.sendRedirect("/login.jsp");
 			return;
 		} 
 		
 		if (request.getParameter("randomimg")==null || !request.getParameter("randomimg").equals(rndimg)) {
 			request.getSession().setAttribute("error", "invalid random picture");
-			response.sendRedirect(userService.getRegisterPage());
+			response.sendRedirect("/login.jsp");
 			return;
 		}
 		
 		try {
 			if (userService.getUser(username)!=null) {
 				request.getSession().setAttribute("error", "username conflict");
-				response.sendRedirect(userService.getRegisterPage());
+				response.sendRedirect("/register.jsp");
 				return;
 			}
 			
@@ -112,7 +111,7 @@ public class RegisterServlet extends HttpServlet {
     		response.sendRedirect("/");
     		return;
 		} catch (Exception e) {
-			response.sendRedirect(userService.getRegisterPage());
+			response.sendRedirect("register.jsp");
 			return;
 		}
 	}

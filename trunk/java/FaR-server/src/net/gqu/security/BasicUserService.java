@@ -30,8 +30,6 @@ public class BasicUserService {
 	
 	private String userdb;
 	private String adminPassword;
-	private String registerPage;
-	private String loginPage;
 	private ApplicationService applicationService; 
 	
 	
@@ -193,24 +191,6 @@ public class BasicUserService {
 				return null;
 			}
 		}
-	}
-
-	
-	
-	public String getLoginPage() {
-		return loginPage;
-	}
-
-	public void setLoginPage(String loginPage) {
-		this.loginPage = loginPage;
-	}
-
-	public String getRegisterPage() {
-		return registerPage;
-	}
-
-	public void setRegisterPage(String registerPage) {
-		this.registerPage = registerPage;
 	}
 
 	public String getUserdb() {
