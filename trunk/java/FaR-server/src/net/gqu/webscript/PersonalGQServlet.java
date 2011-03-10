@@ -1,15 +1,9 @@
 package net.gqu.webscript;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.SocketException;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -20,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
 import net.gqu.content.ContentService;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
@@ -31,12 +24,8 @@ import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
 import net.gqu.security.AuthenticationUtil;
 import net.gqu.security.BasicUserService;
-import net.gqu.security.Role;
-import net.gqu.security.User;
-import net.gqu.servlet.DefaultServlet;
 import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.JSONUtils;
-import net.gqu.utils.MimeTypeUtils;
 import net.gqu.utils.RhinoUtils;
 import net.gqu.utils.StringUtils;
 import net.gqu.webscript.object.ContentFile;
@@ -68,13 +57,13 @@ import freemarker.template.TemplateException;
 /**
  * Servlet implementation class GQServlet
  */
-public class GQServlet extends HttpServlet {
+public class PersonalGQServlet extends HttpServlet {
 	
 	private static final String ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers";
 	private static final String ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers";
 
 	private static final long serialVersionUID = 1L;
-	private Log logger = LogFactory.getLog(GQServlet.class);
+	private Log logger = LogFactory.getLog(PersonalGQServlet.class);
 
 	private static final String ACCESS_CONTROL_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials";
 	private static final String ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods";
@@ -84,9 +73,6 @@ public class GQServlet extends HttpServlet {
 	public static final String JSON_CONTENT_TYPE = "application/json; charset=UTF-8";
 	public static final String HTML_TYPE = "text/html; charset=UTF-8";
 	public static final String FTL_END_FIX = ".ftl";
-	
-	
-	public static ThreadLocal<GQRequest> threadlocalRequest = new ThreadLocal<GQRequest>();
 	
 	private ApplicationService applicationService;
 	private RepositoryService repositoryService;
@@ -108,7 +94,7 @@ public class GQServlet extends HttpServlet {
 	/**
      * @see HttpServlet#HttpServlet()
      */
-    public GQServlet() {
+    public PersonalGQServlet() {
         super();
     }
 
@@ -155,82 +141,41 @@ public class GQServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			GQRequest gqRequest = new GQRequest(request);
-			
-			threadlocalRequest.set(gqRequest);
-			
-			AuthenticationUtil.setContextUser(gqRequest.getInstalledApplication().getUser());
-			
-			if (gqRequest.isScript()) {
-				WebScript webScript = getWebscript(gqRequest.getApprovedApplication(), gqRequest.getJsPath());
-				Template template = getFreeMarkerTemplate(gqRequest.getApprovedApplication(), gqRequest.getFtlPath());
-				if (webScript==null && template==null){
-					throw new HttpStatusExceptionImpl(404);
-				}
+			GQRequest gqRequest = GQRequest.parse(request, applicationService);
+			WebScript webScript = getWebscript(gqRequest.getApprovedApplication(), gqRequest.getJsPath());
+			Template template = getFreeMarkerTemplate(gqRequest.getApprovedApplication(), gqRequest.getFtlPath());
+			if (webScript==null && template==null){
+				throw new HttpStatusExceptionImpl(404);
+			}
 				
-				Map<String, Object> params = createScriptParameters(gqRequest, response);
+			Map<String, Object> params = createScriptParameters(gqRequest, response);
 				
-				Object wsresult = null;
-				if (webScript!=null) {
-					wsresult = scriptExecService.executeScript(webScript, params, false);
-					params.put("model", wsresult);
-				}
-				
-				if (template!=null) {
-					params = getFtlParameters(params);
-					response.setContentType(HTML_TYPE);
-					template.process(params, response.getWriter());
-				} else {
-					if (!response.isCommitted()) {
-						if (wsresult instanceof ContentFile) {
-							handleFileDownLoad(request, response, (ContentFile)wsresult);
-						} else {
-							response.setContentType(HTML_TYPE);
-							response.getWriter().println(JSONUtils.toJSONString(wsresult));
-						}
+			Object wsresult = null;
+			if (webScript!=null) {
+				wsresult = scriptExecService.executeScript(webScript, params, false);
+				params.put("model", wsresult);
+			}
+			
+			if (template!=null) {
+				params = getFtlParameters(params);
+				response.setContentType(HTML_TYPE);
+				template.process(params, response.getWriter());
+			} else {
+				if (!response.isCommitted()) {
+					if (wsresult instanceof ContentFile) {
+						handleFileDownLoad(request, response, (ContentFile)wsresult);
+					} else {
+						response.setContentType(HTML_TYPE);
+						response.getWriter().println(JSONUtils.toJSONString(wsresult));
 					}
 				}
-			} else {
-				handleStaticPage(request, response, gqRequest);
 			}
+			
 		} catch (Exception e) {
 			handleException(request, response, e);
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-
-	
-
-	private void handleStaticPage(HttpServletRequest request,
-			HttpServletResponse response, GQRequest gqrequest) throws IOException {
-		Cache applicationCache = cacheService.getApplicationCache((String)gqrequest.getApprovedApplication().get(ApplicationService.APP_CONFIG_NAME));
-		String staticFilePath = gqrequest.getFilePath();
-		String key = "resouce." + staticFilePath;
-		PageInfo pageInfo = null;
-		Element element = applicationCache.get(key);
-		if (element == null) {
-			LoadResult lr = repositoryService.getRaw(gqrequest.getApprovedApplication(), staticFilePath);
-			if (lr.getStatus()==404) {
-				logger.debug("Request ressource not found: " + gqrequest.getApprovedApplication().get(ApplicationService.APP_CONFIG_NAME) + "  "  + staticFilePath);
-				throw new HttpStatusExceptionImpl(404);
-			} else {
-				ByteArrayOutputStream outstr = new ByteArrayOutputStream();
-				FileCopyUtils.copy(lr.getInputStream(), outstr);
-				long timeToLiveSeconds = applicationCache.getCacheConfiguration().getTimeToLiveSeconds();
-				pageInfo = new PageInfo(200, MimeTypeUtils.guess(staticFilePath), null, null,
-						outstr.toByteArray(), true, timeToLiveSeconds);
-			}
-			applicationCache.put(new Element(key, pageInfo));
-		} else {
-			pageInfo = (PageInfo) element.getObjectValue();
-		}
-		responsePageInfo(request, response, pageInfo);
-	}
 
 	private void handleException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
 		if (e instanceof HttpStatusExceptionImpl) {
@@ -361,69 +306,7 @@ public class GQServlet extends HttpServlet {
 	}
 	
 
-	private void responsePageInfo(HttpServletRequest request,
-			HttpServletResponse response, PageInfo pageInfo) throws IOException {
-		if (pageInfo==null) {
-			response.setStatus(404);
-			return;
-		}
-		response.setStatus(pageInfo.getStatusCode());
-		String contentType = pageInfo.getContentType();
-		if (contentType != null && contentType.length() > 0) {
-			response.setContentType(contentType);
-		}
-		final Collection headers = pageInfo.getResponseHeaders();
-		final int header = 0;
-		final int value = 1;
-
-		for (Iterator iterator = headers.iterator(); iterator.hasNext();) {
-		    final String[] headerPair = (String[]) iterator.next();
-		    response.setHeader(headerPair[header], headerPair[value]);
-		}
-		
-		byte[] body;
-		if (acceptsGzipEncoding(request)) {
-			response.setHeader("Content-Encoding", GZIP);
-		    body = pageInfo.getGzippedBody();
-		} else {
-		    body = pageInfo.getUngzippedBody();
-		}
-		response.setContentLength(body.length);
-		OutputStream out = new BufferedOutputStream(response.getOutputStream());
-		out.write(body);
-		out.flush();
-	}
-
 	
-	private static final String GZIP = "gzip";
-	private boolean acceptsGzipEncoding(HttpServletRequest request) {
-		return acceptsEncoding(request, GZIP);
-	}
-	
-	 /**
-     * Checks if request accepts the named encoding.
-     */
-	private static final String ACCEPT_ENCODING = "Accept-Encoding";
-    protected boolean acceptsEncoding(final HttpServletRequest request, final String name) {
-        final boolean accepts = headerContains(request, ACCEPT_ENCODING, name);
-        return accepts;
-    }
-
-    /**
-     * Checks if request contains the header value.
-     */
-    private boolean headerContains(final HttpServletRequest request, final String header, final String value) {
-
-        final Enumeration accepted = request.getHeaders(header);
-        while (accepted.hasMoreElements()) {
-            final String headerValue = (String) accepted.nextElement();
-            if (headerValue.indexOf(value) != -1) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     
     private void handleFileDownLoad(HttpServletRequest request, HttpServletResponse response, ContentFile downloadFile) {
     	if (downloadFile.getModified()!=null) {
@@ -524,164 +407,7 @@ public class GQServlet extends HttpServlet {
 	}
        
     }
-    
-    public static GQRequest getThreadlocalRequest() {
-		return threadlocalRequest.get();
-	}
 
 
-
-	public class GQRequest {
-    	private HttpServletRequest request;
-    	private Map<String, Object> approvedApplication;
-    	private String[] pathList;
-    	private boolean isScript;
-		private String jspath;
-		private String basePath;
-		private String ftlpath;
-		private String remainPath;
-		private InstalledApplication installedApplication;
-		private String[] pathArray;
-    	private User contextUser;
-    	private Role role;
-    	
-		public GQRequest(HttpServletRequest request) {
-			super();
-			this.request = request;
-			
-			pathList = getPathList(request);
-			if (pathList.length<2) {
-				throw new HttpStatusExceptionImpl(400);
-			}
-			
-			contextUser = userService.getUser(pathList[0]);
-			AuthenticationUtil.setContextUser(pathList[0]);
-			if (contextUser.isDisabled()) {
-				throw new HttpStatusExceptionImpl(410); //gone
-			}
-			role = userService.getRole(contextUser.getRole()); 
-			if (role==null || !role.isEnabled()) {
-				throw new HttpStatusExceptionImpl(410); //gone
-			}
-			
-			Map<String, Object> map = applicationService.getInstalledByMapping(pathList[0], pathList[1]);
-			if (map==null) {
-				if (applicationService.getApplication(pathList[1])==null) {
-					throw new HttpStatusExceptionImpl(404, null);
-				} else {
-					map = applicationService.install(pathList[0], pathList[1], pathList[1]);
-				}
-			} 
-			
-			installedApplication = new InstalledApplication();
-			installedApplication.setApp((String) map.get(ApplicationService.KEY_APPLICATION));
-			installedApplication.setMapping((String) map.get(ApplicationService.KEY_MAPPING));
-			installedApplication.setUser((String)map.get(ApplicationService.KEY_USER));
-		
-			
-			basePath = "/user/" + pathList[0] + "/" + pathList[1];
-			approvedApplication = applicationService.getApplication(installedApplication.getApp());
-			
-			if (approvedApplication==null) {
-				throw new HttpStatusExceptionImpl(404, null);
-			}
-			
-			
-			int pos = -1;
-			isScript = false;
-			
-			if (pathList.length==2 || (pathList.length==3&&pathList[2].equals(""))) {
-				boolean ismobile = request.getServerName().startsWith(DefaultServlet.MOBILE_DOMAIN);
-				if (ismobile) {
-					throw new HttpStatusExceptionImpl(307, (String)approvedApplication.get(ApplicationService.APP_CONFIG_MOBILE_START));
-				} else {
-					throw new HttpStatusExceptionImpl(307, (String)approvedApplication.get(ApplicationService.APP_CONFIG_START));
-				}
-			} else {
-				pathArray = StringUtils.subArray(pathList, 2);
-			}
-			
-			
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < pathArray.length; i++) {
-				if(pathArray[i].endsWith(WebScript.FILE_END_FIX)) {
-					pos = i;
-					isScript = true;
-					break;
-				}
-				sb.append("/" + pathArray[i]);
-			}
-			
-			if (isScript) {
-				jspath  = sb.toString() + "/" + request.getMethod().toLowerCase() + "." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".js";
-				ftlpath = sb.toString() + "/" + request.getMethod().toLowerCase() + "." + pathArray[pos].substring(0,pathArray[pos].length()-3) + ".ftl";
-				remainPath = StringUtils.cancatStringArray(pathArray, pos+1, '/');
-			}
-		}
-
-		
-		
-		public String getBasePath() {
-			return basePath;
-		}
-
-
-
-		public boolean isScript() {
-			return isScript;
-		}
-	    	
-		public String getFilePath() {
-			String staticFilePath = StringUtils.cancatStringArray(pathArray, 0, '/');
-			return staticFilePath;
-		}
-		
-		public String[] getPathArray() {
-			return pathArray;
-		}
-
-		public Map<String, Object> getApprovedApplication() {
-			return approvedApplication;
-		}
-
-		public InstalledApplication getInstalledApplication() {
-			return installedApplication;
-		}
-
-		public String getTailPath() {
-			return remainPath;
-		}
-		
-		
-		public String getJsPath() {
-			return jspath;
-		}
-		public String getFtlPath() {
-			return ftlpath;
-		}
-		
-		
-		
-		public HttpServletRequest getRequest() {
-			return request;
-		}
-
-		public User getContextUser() {
-			return contextUser;
-		}
-
-		public Role getRole() {
-			return role;
-		}
-
-		private String[] getPathList(HttpServletRequest request) {
-			String pathInfo = request.getPathInfo();
-			if (pathInfo.charAt(0)=='/') {
-				pathInfo = pathInfo.substring(1);
-			}
-			String[] pathLists = pathInfo.split("/");
-			return pathLists;
-		}
-    	
-    }
+	
 }
