@@ -65,9 +65,14 @@
 		<property name="dbProvider" ref="dbProvider"></property>
 		<property name="userService" ref="userService"></property>
 		<property name="runtimeExec" ref="image.transformer.exe"></property>
-		
 	</bean>
 	
+	<bean id="repositoryService" class="net.gqu.repository.WebAppRootRepositoryService">
+		<property name="webappPath"></property>
+	</bean>
+	
+	
+	<!-- 
 	<bean id="repositoryService" class="net.gqu.repository.RepositoryServiceImpl">
 		<property name="loaders">
 			<list>
@@ -77,7 +82,9 @@
 		</property>
 		<property name="develop"><value>${application.isdev}</value></property>
 	</bean>
-	
+	 -->
+	 
+	 
 	<bean id="loader.github" class="net.gqu.repository.GitHubLoader">
 	</bean>
 
