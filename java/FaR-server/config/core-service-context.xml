@@ -68,9 +68,10 @@
 	</bean>
 	
 	<bean id="repositoryService" class="net.gqu.repository.WebAppRootRepositoryService">
-		<property name="webappPath"></property>
+		<property name="webappPath">
+			<value>D:/myworkspace</value>
+		</property>
 	</bean>
-	
 	
 	<!-- 
 	<bean id="repositoryService" class="net.gqu.repository.RepositoryServiceImpl">

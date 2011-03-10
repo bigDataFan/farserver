@@ -78,7 +78,7 @@ public class RestServiceServlet extends HttpServlet {
 		} catch (HttpStatusExceptionImpl e) {
 			if (e.getCode()==401) {
 				request.getSession().setAttribute(LoginServlet.HEADER_REFERER, request.getRequestURI());
-				response.sendRedirect("/login.jsp");
+				response.sendRedirect("/login.html");
 				return;
 			} else {
 				response.setStatus(e.getCode());
@@ -128,7 +128,7 @@ public class RestServiceServlet extends HttpServlet {
 			}
 		} catch (HttpStatusExceptionImpl e) {
 			if (e.getCode()==401) {
-				response.sendRedirect("/login.jsp");
+				response.sendRedirect("/login.html");
 				return;
 			} else {
 				response.setStatus(e.getCode());
