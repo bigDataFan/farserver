@@ -1,0 +1,233 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+
+
+div.thintitle {
+    background-color: #F4F4F4;
+    border: 1px solid #E4E4E4;
+    float: none;
+    font: 12px/22px Tahoma,Helvetica,"宋体",san-serif;
+    height: 22px;
+    min-width: 978px;
+    overflow: visible;
+    position: relative;
+    z-index: 10001;
+}
+
+div.thintitle  div.wrapper {
+    float: none;
+    overflow: visible;
+    position: relative;
+     width: 960px;
+}
+
+div.l {
+	float:left;
+}
+
+div.r {
+	float:right;
+}
+
+.extension_wrapper {
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 0 6px 1px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
+	/*background:none repeat scroll 0 0 rgba(255, 255, 255, 0.3);*/
+	background-color:#eeeeed;
+	margin:10px auto;
+	padding:20px;
+	width:800px;
+	/*display: none;*/
+}
+
+
+.oldtask_container {
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 0 6px 1px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
+	background:none repeat scroll 0 0 rgba(255, 255, 255, 0.3);
+	background-color:#eeeeed;
+	margin:40px auto;
+	padding:20px;
+	width:800px;
+	/*display: none;*/
+}
+
+
+.extension_wrapper h1 {
+	font-family:FertigoRegular,Segoe,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+	font-size:150%;
+	letter-spacing:-0.04em;
+	line-height:1.1;
+	margin-left:0px;
+	margin-bottom:10px;
+	border-bottom:1px solid #C2D0E7;
+	text-align: left;
+	padding-bottom: 5px;
+}
+
+
+.extension_wrapper h1 a.new  {
+	float: right;
+	display: inline;
+	background: url("images/new.png") no-repeat scroll center;
+	padding-top:1px;
+	padding-left:10px;
+	margin-left:10px;
+	margin-bottom:5px;
+	text-decoration: none;
+}
+
+.extension_wrapper h1 a.graph  {
+	float: right;
+	display: inline;
+	background: url("images/pie.png") no-repeat scroll center;
+	padding-top:1px;
+	padding-left:10px;
+	margin-left:10px;
+	margin-bottom:5px;
+	text-decoration: none;
+}
+
+.extension_wrapper h1 a.list  {
+	float: right;
+	display: inline;
+	background: url("images/list.png") no-repeat scroll center;
+	padding-top:1px;
+	padding-left:10px;
+	margin-left:10px;
+	margin-bottom:5px;
+	text-decoration: none;
+}
+
+
+.extension_wrapper div.close {
+	position: relative;
+	float: left;
+	top: -10px;
+	left: -20px;
+}
+
+.extension_wrapper div.close a.close {
+	float: right;
+	display: inline;
+	background: url("images/icon_close.png") no-repeat scroll center;
+	padding-top:1px;
+	padding-left:10px;
+	margin-left:10px;
+	margin-bottom:5px;
+	text-decoration: none;
+}
+
+
+
+.extension_wrapper h1, h2, h3 {
+	text-shadow:0 1px 0 rgba(255, 255, 255, 0.7), 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.extension_wrapper small {
+	font: small normal;
+	padding-left: 10px;
+	color: #888888
+}
+
+.extension_wrapper h4 {
+	margin: 0px;
+	padding: 0px;
+	font-weight: normal;
+}
+
+.extension_wrapper div.entry {
+	padding:8px;	
+	text-align: left;
+}
+
+.extension_wrapper div.running, .extension_wrapper div.additem ,.extension_wrapper div.edititem {
+	-moz-border-radius:5px 5px 5px 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 0 6px 1px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
+	background:none repeat scroll 0 0 rgba(255, 255, 255, 0.6);
+	margin: 0px -30px;
+	padding: 25px;
+}
+
+
+.extension_wrapper div.entry a.rs {
+	color: black;
+	text-decoration: none;
+	font-size: small;
+	font-weight: normal;
+	float: right;
+}
+
+.extension_wrapper div.entry span.config {
+	cursor:pointer;
+	background: url('images/config.png') no-repeat center;
+}
+
+.extension_wrapper div.running a.rs {
+	background: transparent url('images/btn_running.gif') no-repeat scroll right top;
+	padding:5px 60px 5px 0px;
+}
+
+.extension_wrapper div.normal a.rs {
+	background: url("images/btn_timero.png") no-repeat scroll right top transparent;
+	padding:5px 60px 0px 0px;
+}
+
+.extension_wrapper div.normal a.rs:HOVER {
+	background: url('images/btn_timero.png') no-repeat 100% -23px;
+}
+
+.extension_wrapper div.additem a.run {
+	display: inline;
+	background: url("images/accept.png") no-repeat scroll center;
+	padding-top:1px;
+	padding-left:10px;
+	margin-left:20px;
+	text-decoration: none;
+}
+
+.extension_wrapper div.additem a.cancel {
+	display: inline;
+	background: url("images/delete.png") no-repeat scroll center;
+	padding-left:10px;
+	padding-top:1px;
+	margin-left:20px;
+	text-decoration: none;
+}
+
+
+.extension_wrapper .inputarea {
+	font-size: medium;
+	width: 250px;
+}
+
+.extension_wrapper div.summary {
+	margin-top:20px;
+	border-top:1px solid #C2D0E7;
+	text-align: left;
+	padding-top: 5px;
+}
+
+.extension_wrapper div.summary h4 {
+	margin-left: 30px;
+}
+
+.extension_wrapper div.summary h4 a.rs {
+	float:right;
+}
+
+input.inputarea {
+    border: 1px solid #D9D9D9;
+    font-size: 20px;
+    padding: 3px;
+}
+
