@@ -27,12 +27,6 @@
 		</init-param> 
 	</filter>
 	
-	
-	<filter>
-		<display-name>SetUserFilter</display-name>
-		<filter-name>SetUserFilter</filter-name>
-		<filter-class>net.gqu.security.SetUserFilter</filter-class>
-	</filter>
 	<filter>
 		<display-name>AuthenticationFilter</display-name>
 		<filter-name>AuthenticationFilter</filter-name>

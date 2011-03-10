@@ -93,14 +93,8 @@
 		<property name="adminPassword">
 			<value>${auth.adminpassword}</value>
 		</property>
-		<property name="registerPage">
-			<value>${auth.registerpage}</value>
-		</property>
 		<property name="userdb">
 			<value>${mongodb.userdb}</value>
-		</property>
-		<property name="loginPage">
-			<value>${auth.loginpage}</value>
 		</property>
 	</bean>
 	

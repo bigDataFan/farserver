@@ -11,7 +11,6 @@
 <%@page import="net.gqu.security.BasicUserService"%>
 <%@page import="net.gqu.security.User"%>
 <%@page import="net.gqu.security.Role"%>
-<%@page import="net.gqu.application.RegisteredApplication"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>我的首页</title>
@@ -50,15 +49,7 @@ Role role = userService.getRole(user.getRole());
 <div class="left box" style="min-height: 400px">
 	<h3>我安装的应用</h3>
 	<ul class="iconlist">
-		<%
-			for (InstalledApplication ia: installed.values()) {
-				RegisteredApplication registered = applicationService.getApplication(ia.getApp());
-		%>
-					
-					<li>
-					<a target="_blank" href="../user/<%=ia.getUser() %>/<%=ia.getMapping() %>/">
-					<img border="0" src="<%=registered.getIcon() %>" style="float: left;"/><h3><%=registered.getAlias() %></h3></a></li>
-		<%} %>
+	
 	</ul>
 </div>
 
