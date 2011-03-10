@@ -1,8 +1,9 @@
 package net.gqu.security;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.UUID;
 
-import javax.imageio.spi.ServiceRegistry;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,13 +12,17 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.gqu.mongodb.MongoDBProvider;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import net.gqu.cache.EhCacheService;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 /**
  * Servlet Filter implementation class SetUserFilter
@@ -26,7 +31,8 @@ public class SetUserFilter implements Filter {
 
 	
 	public static final String ARG_TICKET = "ticket";
-	private EhCacheService cacheService;
+	private MongoDBProvider dbProvider;
+	
     /**
      * Default constructor. 
      */
@@ -45,6 +51,7 @@ public class SetUserFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
+		HttpServletResponse httpResp = (HttpServletResponse) response;
 		AuthenticationUtil.setCurrentAsGuest();
 		
 		String sessionedUser = (String) httpReq.getSession().getAttribute(AuthenticationFilter.AUTHENTICATION_USER);
@@ -57,13 +64,21 @@ public class SetUserFilter implements Filter {
         		ticket = httpReq.getParameter(ARG_TICKET);
         	}
         	if (ticket!=null) {
-        		Cache cookieCache = cacheService.getCookieCache();
-        		Element element = cookieCache.get(ticket);
-        		if (element!=null) {
-        			String cachedUser = (String) element.getValue();
-        			httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, cachedUser);
-        			AuthenticationUtil.setCurrentUser(cachedUser);
+        		DBCollection cookiesCol = dbProvider.getMainDB().getCollection("cookies");
+        		DBObject ticDoc = cookiesCol.findOne(new BasicDBObject("ticket", ticket));
+        		String userName;
+        		if(ticDoc==null) {
+        			//give guest a cookie and let him use it
+        			userName = "guest" + System.currentTimeMillis();
+        			Cookie newCookie = createNewCookie(httpResp);
+        			cookiesCol.insert(BasicDBObjectBuilder.start().add("user", userName).add("ticket", newCookie.getValue())
+        					.add("remote", request.getRemoteAddr()).add("agent", httpReq.getHeader("User-Agent"))
+        					.add("created", new Date()).get());
+        		} else {
+        			userName = (String)ticDoc.get("user");
         		}
+        		AuthenticationUtil.setCurrentUser(userName);
+        		httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, userName);
         	}
 		}
 		// pass the request along the filter chain
@@ -75,7 +90,7 @@ public class SetUserFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(fConfig.getServletContext());
-		cacheService = (EhCacheService) ctx.getBean("cacheService");
+		dbProvider = (MongoDBProvider) ctx.getBean("dbProvider");
 	}
 	
 	 public String getCookieTicket(HttpServletRequest httpReq) {
@@ -92,4 +107,14 @@ public class SetUserFilter implements Filter {
 	    	return httpReq.getParameter(ARG_TICKET);
 	    }
 
+	 
+	  public Cookie createNewCookie(HttpServletResponse httpResp ) {
+	    	Cookie cookie = new Cookie(AuthenticationFilter.ARG_TICKET, UUID.randomUUID().toString());
+	    	cookie.setMaxAge(60*24*60*60);
+	    	cookie.setPath("/");
+	    	httpResp.addCookie(cookie);
+	    	return cookie;
+	   }
+
+	  
 }
