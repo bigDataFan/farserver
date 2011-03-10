@@ -32,48 +32,28 @@
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>net.gqu.security.AuthenticationFilter</filter-class>
 	</filter>
+	
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/service/*</url-pattern>
+	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/user/*</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>AuthenticationFilter</filter-name>
+		<url-pattern>*.gs</url-pattern>
+	</filter-mapping>
+	
+	
 	<servlet>
 		<display-name>RandomImgServlet</display-name>
 		<servlet-name>RandomImgServlet</servlet-name>
 		<servlet-class>net.gqu.servlet.RandomImgServlet</servlet-class>
 	</servlet>
-	
-	
-	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/service/*</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/user/*</url-pattern>
-	</filter-mapping>
-	
-	<filter-mapping>
-		<filter-name>SetUserFilter</filter-name>
-		<url-pattern>/user/*</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>SetUserFilter</filter-name>
-		<url-pattern>/user/*</url-pattern>
-	</filter-mapping>
-	
-	<filter-mapping>
-		<filter-name>SetUserFilter</filter-name>
-		<url-pattern>/index</url-pattern>
-	</filter-mapping>
-	
-	
-	<filter-mapping>
-		<filter-name>SetUserFilter</filter-name>
-		<url-pattern>/service/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>AuthenticationFilter</filter-name>
-		<url-pattern>/manage/*</url-pattern>
-	</filter-mapping>
 	
 	
 	<servlet>
@@ -101,24 +81,12 @@
 	<servlet>
 		<display-name>GQServlet</display-name>
 		<servlet-name>GQServlet</servlet-name>
-		<servlet-class>net.gqu.webscript.GQServlet</servlet-class>
+		<servlet-class>net.gqu.webscript.PersonalGQServlet</servlet-class>
 	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>DefaultServlet</display-name>
-		<servlet-name>DefaultServlet</servlet-name>
-		<servlet-class>net.gqu.servlet.DefaultServlet</servlet-class>
-	</servlet>
-	
 	
 	<servlet-mapping>
 		<servlet-name>RandomImgServlet</servlet-name>
 		<url-pattern>/rndimg</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>RestServiceServlet</servlet-name>
-		<url-pattern>/service/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
@@ -136,14 +104,10 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GQServlet</servlet-name>
-		<url-pattern>/user/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>DefaultServlet</servlet-name>
-		<url-pattern>/index</url-pattern>
+		<url-pattern>*.gs</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>
-		<welcome-file>index</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 </web-app>
