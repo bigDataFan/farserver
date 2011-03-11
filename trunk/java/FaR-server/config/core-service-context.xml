@@ -51,7 +51,7 @@
 			<value>${application.isdev}</value>
 		</property>
 		<property name="appDir">
-			<value>${application.localpath}</value>
+			<value>${tomcat.webapp.path}</value>
 		</property>
 		<property name="defaultApp">
 			<value>${application.app.default}</value>
@@ -69,7 +69,7 @@
 	
 	<bean id="repositoryService" class="net.gqu.repository.WebAppRootRepositoryService">
 		<property name="webappPath">
-			<value>D:/myworkspace</value>
+			<value>${tomcat.webapp.path}</value>
 		</property>
 	</bean>
 	

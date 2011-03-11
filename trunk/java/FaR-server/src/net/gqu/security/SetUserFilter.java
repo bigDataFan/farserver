@@ -58,28 +58,30 @@ public class SetUserFilter implements Filter {
 		
 		if (sessionedUser != null) {
 			AuthenticationUtil.setCurrentUser(sessionedUser);
+			AuthenticationUtil.setContextUser(sessionedUser);
 		} else {
 			String ticket = getCookieTicket(httpReq);
 			if (ticket==null) {
-        		ticket = httpReq.getParameter(ARG_TICKET);
+				Cookie newCookie = createNewCookie(httpResp);
+				ticket = newCookie.getValue();
         	}
-        	if (ticket!=null) {
-        		DBCollection cookiesCol = dbProvider.getMainDB().getCollection("cookies");
-        		DBObject ticDoc = cookiesCol.findOne(new BasicDBObject("ticket", ticket));
-        		String userName;
-        		if(ticDoc==null) {
-        			//give guest a cookie and let him use it
-        			userName = "guest" + System.currentTimeMillis();
-        			Cookie newCookie = createNewCookie(httpResp);
-        			cookiesCol.insert(BasicDBObjectBuilder.start().add("user", userName).add("ticket", newCookie.getValue())
+			
+        	DBCollection cookiesCol = dbProvider.getMainDB().getCollection("cookies");
+        	DBObject ticDoc = cookiesCol.findOne(new BasicDBObject("ticket", ticket));
+        	String userName;
+        	if(ticDoc==null) {
+        		//give guest a cookie and let him use it
+        		userName = "guest" + System.currentTimeMillis();
+        			
+        		cookiesCol.insert(BasicDBObjectBuilder.start().add("user", userName).add("ticket", ticket)
         					.add("remote", request.getRemoteAddr()).add("agent", httpReq.getHeader("User-Agent"))
         					.add("created", new Date()).get());
-        		} else {
-        			userName = (String)ticDoc.get("user");
-        		}
-        		AuthenticationUtil.setCurrentUser(userName);
-        		httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, userName);
+        	} else {
+        		userName = (String)ticDoc.get("user");
         	}
+        	AuthenticationUtil.setCurrentUser(userName);
+        	AuthenticationUtil.setContextUser(sessionedUser);
+        	httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, userName);
 		}
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

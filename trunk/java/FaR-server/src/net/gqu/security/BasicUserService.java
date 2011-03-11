@@ -5,14 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.types.ObjectId;
-
 import net.gqu.application.ApplicationService;
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
+import org.bson.types.ObjectId;
+
 import com.google.gdata.client.http.AuthSubUtil;
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -192,7 +193,30 @@ public class BasicUserService {
 			}
 		}
 	}
+	
+	private HashMap<String, DB> userdbs = new HashMap<String, DB>();
+	
+	public DB getUserDB(String userName) {
+		
+		if (userdbs.get(userName)==null) {
+			DB maindb = dbProvider.getMainDB();
+			
+			DBCollection mapingColl = maindb.getCollection("dbmappings");
+			
+			DBObject mapdoc = mapingColl.findOne(new BasicDBObject("user", userName));
+			
+			String dbname = "datadb";
+			if (mapdoc==null) {
+				mapingColl.insert(BasicDBObjectBuilder.start().append("user", userName).append("db", dbname).get());
+			} else {
+				dbname = (String) mapdoc.get("db");
+			}
+			userdbs.put(userName, dbProvider.getMongo().getDB(dbname));
+		}
+		return userdbs.get(userName);
+	}
 
+	
 	public String getUserdb() {
 		return userdb;
 	}
