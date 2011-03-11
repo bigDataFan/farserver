@@ -1,11 +1,3 @@
-if (user.isGuest()) {
-	response.sendError(401);
-}
-
-if (!user.equals(owner)) {
-	response.sendError(403);
-}
-
 if (params.start) {
 	db.getCollection("activities").upsert(
 			{"start" : params.start}, 
@@ -23,5 +15,3 @@ if (params.start) {
 }
 
 response.sendRedirect("../index.gs");
-
-
