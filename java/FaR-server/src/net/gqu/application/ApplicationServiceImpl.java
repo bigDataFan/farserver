@@ -36,6 +36,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private String appDir;
 	
 	public void init() {
+	
 		if (develop && appDir!=null) {
 			File dir = new File(appDir);
 			if (dir.exists()) {

@@ -21,7 +21,6 @@ public class MongoDBProvider {
 	public  Mongo getMongo() {
 		return mongo;
 	}
-	
 	public DB getMainDB() {
 		return mongo.getDB(mainDb);
 	}

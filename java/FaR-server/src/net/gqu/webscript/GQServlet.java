@@ -295,7 +295,7 @@ public class GQServlet extends HttpServlet {
 		scriptRequest.setFactory(fileItemFactory);
 		
 		/**the http request params for quick access*/
-		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest(), gqrequest.getTailPath()));
+		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest()));
 		
 		/**the http request*/
 		params.put("request", scriptRequest);
@@ -310,7 +310,7 @@ public class GQServlet extends HttpServlet {
 		params.put("application",RhinoUtils.mapToNativeObject(gqrequest.getApprovedApplication()));
 
 		/**assign the role db for current user*/
-		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getRole().getRoleDB()));
+		params.put("db", new ScriptMongoDB(userService.getUserDB(AuthenticationUtil.getContextUser())));
 		
 		/**the content service for saving steam */
 		params.put("content", new ScriptContent(contentService,userService));

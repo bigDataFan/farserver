@@ -235,12 +235,10 @@ public class PersonalGQServlet extends HttpServlet {
 		Map<String, Object> params = new HashMap<String, Object>(32, 1.0f);
 		// add web script parameters
 		ScriptRequest scriptRequest = new ScriptRequest(gqrequest.getRequest());
-		scriptRequest.setRemainPath(gqrequest.getTailPath());
-		scriptRequest.setFileSizeMax(gqrequest.getRole().getContentSize());
 		scriptRequest.setFactory(fileItemFactory);
 		
 		/**the http request params for quick access*/
-		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest(), gqrequest.getTailPath()));
+		params.put("params", scriptObjectGenerator.createRequestParams(gqrequest.getRequest()));
 		
 		/**the http request*/
 		params.put("request", scriptRequest);
@@ -255,13 +253,14 @@ public class PersonalGQServlet extends HttpServlet {
 		params.put("application",RhinoUtils.mapToNativeObject(gqrequest.getApprovedApplication()));
 
 		/**assign the role db for current user*/
-		params.put("db", new ScriptMongoDB(dbProvider, gqrequest.getRole().getRoleDB()));
+		params.put("db", new ScriptMongoDB(userService.getUserDB(AuthenticationUtil.getContextUser())));
+		
 		
 		/**the content service for saving steam */
 		params.put("content", new ScriptContent(contentService,userService));
 		
 		/**the current user*/
-		params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
+		//params.put("user", new ScriptUser(AuthenticationUtil.getCurrentUser(),userService));
 		
 		/**the user who owns the collection*/
 		params.put("owner", new ScriptUser(AuthenticationUtil.getContextUser(),userService));

@@ -34,7 +34,7 @@ public class ScriptObjectGenerator {
 		this.userService = userService;
 	}
 
-	public NativeObject createRequestParams(HttpServletRequest request, String remains) {
+	public NativeObject createRequestParams(HttpServletRequest request) {
 
 		NativeObject object = new NativeObject();
 		Enumeration names = request.getParameterNames();
