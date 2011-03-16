@@ -231,3 +231,19 @@ input.inputarea {
     padding: 3px;
 }
 
+
+.comment, .comment-reply-link {
+	-webkit-box-shadow: white 0px 0px 1px inset;
+	background: #4D97F1;
+	border: 1px solid #3B72B4;
+	color: white;
+	font-size: small;
+	height: 22px;
+	line-height: 22px;
+	text-align: center;
+	text-decoration: none;
+	width: 80px;
+	padding: 3px 8px;
+}
+
+

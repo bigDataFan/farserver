@@ -19,11 +19,11 @@
 			<#if model.item??>
 					<input type="hidden" value="${model.item.start?c}" name="start">
 					<input class="inputarea" value="${model.item.desc}" name="desc">
-					<input type="submit" value="确定"></input>
+					<input type="submit" class="comment" value="确定"></input>
 					<a href="service/delete.gs?start=${params.start}" class="cancel">&nbsp;</a>
 			<#else>
 					<input class="inputarea" value="请输入任务名称" name="desc">
-					<input type="submit" value="确定"></input>	
+					<a href="javascript:void(0)" onclick="document.forms[0].submit()" class="comment">确定</a>
 			</#if>
 		</form>
 	</div>
