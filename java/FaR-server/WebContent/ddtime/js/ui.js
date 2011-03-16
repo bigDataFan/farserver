@@ -247,7 +247,7 @@ function saveEditBox() {
 	//setTimeout("scheduleUpdate()",60000);
 
 function scheduleUpdate() {
-	
+	alert("update time");
 	if (uidiv_global_popup) {
 		var durhtml = uidiv_global_popup.find("div.list div.running a.rs");
 		if (durhtml) {
@@ -258,83 +258,6 @@ function scheduleUpdate() {
 	}
 	
 	setTimeout("scheduleUpdate()",60000);
-}
-
-
-function drawChart() {
-	uidiv_global_popup.find("div.list").hide();
-	uidiv_global_popup.find("div.graph").fadeIn();
-
-	var chartArray = TimeStore.getGraphArray();
-	var chart = new Highcharts.Chart({
-		chart: {
-			renderTo: CHART_ID,
-			margin: [20, 60, 50, 20]
-		},
-		title: {
-			text: "Time Chart"
-		},
-		plotArea: {
-			shadow: null,
-			borderWidth: null,
-			backgroundColor: null
-		},
-		tooltip: {
-			formatter: function() {
-				return '<b>'+ this.point.name +'</b>: '+ this.y +' %';
-			}
-		},
-		plotOptions: {
-			pie: {
-				allowPointSelect: true,
-				dataLabels: {
-					enabled: true,
-					formatter: function() {
-						if (this.y > 5) return this.point.name;
-					},
-					color: 'white',
-					style: {
-						font: '13px Trebuchet MS, Verdana, sans-serif'
-					}
-				}
-			}
-		},
-		legend: {
-			layout: 'vertical',
-			style: {
-				bottom: '10px',
-				right: '10px',
-				left:'auto',
-				top:'auto'
-			}
-		},
-		credits: {
-			href:"http://www.g-qu.net",
-			text:"g-qu.net"
-		},
-	        series: [{
-			type: 'pie',
-			name: 'Browser share',
-			data: chartArray
-			/*
-			[
-				['Firefox',   44.2],
-				['IE7',       26.6],
-				{
-					name: 'IE6',
-					y: 20,
-					sliced: true,
-					selected: true
-				},
-				['Chrome',    3.1],
-				['Safari',    2.7],
-				['Opera',     2.3],
-				['Mozilla',   0.4]
-			]
-			*/
-			//data: [3.40, 1.05, 2.90, 1.65, 1.35, 2.59, 1.39, 3.07, 2.82]
-		}]
-	});
 }
 
 function getTodayItemsInStore(cb) {
