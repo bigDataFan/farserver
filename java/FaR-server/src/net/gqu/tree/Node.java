@@ -6,7 +6,7 @@ public class Node {
 
 	private Date created;
 	private Date modified;
-	private String id;
+	private String name;
 	
 	
 	
