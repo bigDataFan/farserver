@@ -17,10 +17,6 @@ public class RepositoryService {
 
 	private MongoDBDataSource dataSource;
 	
-	
-	
-	
-	
 	public void appendChildren(String parentQuery, Map<String, Object> obj) {
 		DBCollection collection = dataSource.getMainDB().getCollection("items");
 		
@@ -31,20 +27,25 @@ public class RepositoryService {
 		}
 	}
 	
-	public Collection<Map<String, Object>> listChildRen(String parentQuery, int from, int limit, String orderField, String groupBy) {
+	public Collection<Map<String, Object>> listChildRen(String parentQuery, Map<String, Object> filter,  int from, int limit, String orderField, String groupBy) {
 		DBCollection collection = dataSource.getMainDB().getCollection("items");
 		DBObject parent = collection.findOne(BasicDBObjectBuilder.start("_id", new ObjectId(parentQuery)).get());
 		
 		Collection<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 		if (parent!=null) {
-			DBCursor queryResult = collection.find(BasicDBObjectBuilder.start("_parent_id", parent.get("_id")).get())
-			.skip(from).limit(limit);
+			BasicDBObjectBuilder builder;
+			
+			if (filter!=null) {
+				builder = BasicDBObjectBuilder.start(filter).append("_parent_id", parent.get("_id"));
+			} else {
+				builder = BasicDBObjectBuilder.start("_parent_id", parent.get("_id"));
+			}
+			DBCursor queryResult = collection.find(builder.get()).skip(from).limit(limit);
 			while (queryResult.hasNext()) {
 				DBObject dbo = queryResult.next();
 				result.add(dbo.toMap());
 			}
 		}
-		
 		return result;
 	}
 	
