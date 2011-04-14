@@ -47,8 +47,7 @@ public class RentationService {
 			wsresult = scriptExecService.executeScript(pair.getJs(), httpParams, false);
 			httpParams.put("model", wsresult);
 		}
-		
-		
+		return renderId;
 		
 	}
 	
