@@ -53,6 +53,14 @@ public class RepositoryService {
 	private void auditCreated(DBObject parent, Map<String, Object> obj) {
 		obj.put("_audit_created", new Date());
 		obj.put("_parent_id",  parent.get("_id"));
+		if (obj.get("name")==null) {
+			obj.put("name", "noname");
+		}
+		if (obj.get("title")==null) {
+			obj.put("title", "未命名标题 ");
+		}
+
+		
 	}
 	
 	
