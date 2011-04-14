@@ -2,7 +2,6 @@ package com.wikipy.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +16,10 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.mozilla.javascript.NativeObject;
 
 import com.wikipy.content.ContentFile;
 import com.wikipy.content.ContentService;
+import com.wikipy.repository.RepositoryService;
 
 /**
  * Servlet implementation class ReceiveItemServlet
@@ -31,6 +30,7 @@ public class ReceiveItemServlet extends HttpServlet {
 	private FileItemFactory fileItemFactory = new DiskFileItemFactory();
 	
 	private ContentService contentService;
+	private RepositoryService repositoryService;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -77,11 +77,16 @@ public class ReceiveItemServlet extends HttpServlet {
 					}
 				}
 			}
-			
-			
-			
+			fields.put("_attaches", attaches);
+			Object pid = fields.get("_parentid");
+			if (pid==null) {
+				response.sendError(400);
+				return;
+			}
+			repositoryService.appendChildren((String)pid, fields);
 		} catch (FileUploadException e) {
 			e.printStackTrace();
+			response.sendError(400);
 		}
 	}
 
