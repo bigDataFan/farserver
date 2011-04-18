@@ -14,6 +14,7 @@
 		</property>
 	</bean>
 	
+	<!-- 
 	<bean id="loggingService" class="net.gqu.logging.LoggingService" init-method="init">
 		<property name="dbProvider" ref="dbProvider"></property>
 		<property name="level">
@@ -26,8 +27,9 @@
 			<value>${logger.maxsize}</value>
 		</property>
 	</bean>
+	 -->
 	
-	<bean id="datasource" class="com.wikipy.mongodb.MongoDBDataSource" init-method="init">
+	<bean id="dataSource" class="com.wikipy.mongodb.MongoDBDataSource" init-method="init">
 		<property name="ip">
 			<value>${mongodb.ip}</value>
 		</property>
@@ -40,11 +42,11 @@
 	</bean>
 	
 	<bean id="contentService" class="com.wikipy.content.GridFSContentService">
-		<property name="datasource" ref="datasource"></property>
+		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
 	<bean id="repositoryService" class="com.wikipy.repository.RepositoryService">
-		<property name="datasource" ref="datasource"></property>
+		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
 	
