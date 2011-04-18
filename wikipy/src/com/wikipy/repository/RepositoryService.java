@@ -29,7 +29,7 @@ public class RepositoryService {
 		if (parent!=null) {
 			auditCreated(parent, obj);
 			collection.insert(BasicDBObjectBuilder.start(obj).get());
-		}
+		} 
 	}
 	
 	public Collection<Map<String, Object>> listChildRen(String parentQuery, Map<String, Object> filter,  int from, int limit, String orderField, String groupBy) {
@@ -54,18 +54,16 @@ public class RepositoryService {
 		return result;
 	}
 	
-	
 	private void auditCreated(DBObject parent, Map<String, Object> obj) {
 		obj.put("_audit_created", new Date());
 		obj.put("_parent_id",  parent.get("_id"));
-		if (obj.get("name")==null) {
-			obj.put("name", "noname");
+		obj.put("_path", parent.get("_path")+ "/" + obj.get("_name") );
+		if (obj.get("_name")==null) {
+			obj.put("_name", "noname");
 		}
-		if (obj.get("title")==null) {
-			obj.put("title", "未命名标题 ");
+		if (obj.get("_title")==null) {
+			obj.put("_title", "未命名标题 ");
 		}
-
-		
 	}
 	
 	
