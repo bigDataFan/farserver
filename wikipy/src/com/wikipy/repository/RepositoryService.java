@@ -17,6 +17,11 @@ public class RepositoryService {
 
 	private MongoDBDataSource dataSource;
 	
+	
+	public void setDataSource(MongoDBDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
 	public void appendChildren(String parentQuery, Map<String, Object> obj) {
 		DBCollection collection = dataSource.getMainDB().getCollection("items");
 		
