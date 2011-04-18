@@ -21,10 +21,9 @@ public class GridFSContentService  implements ContentService {
 	public static final String THUMBNAILS = "thumbnails";
 	public static final String CONTENTS = "contents";
 
-	public void setDbProvider(MongoDBDataSource datasource) {
+	public void setDatasource(MongoDBDataSource datasource) {
 		this.datasource = datasource;
 	}
-	
 
 	public void setRuntimeExec(RuntimeExec runtimeExec) {
 		this.runtimeExec = runtimeExec;

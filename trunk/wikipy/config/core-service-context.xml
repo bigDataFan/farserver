@@ -27,7 +27,7 @@
 		</property>
 	</bean>
 	
-	<bean id="dbProvider" class="net.gqu.mongodb.MongoDBProvider" init-method="init">
+	<bean id="datasource" class="com.wikipy.mongodb.MongoDBDataSource" init-method="init">
 		<property name="ip">
 			<value>${mongodb.ip}</value>
 		</property>
@@ -39,55 +39,16 @@
 		</property>
 	</bean>
 	
-	<bean id="contentService" class="net.gqu.content.GridFSContentService">
-		<property name="dbProvider" ref="dbProvider"></property>
-		<property name="userService" ref="userService"></property>
-		<property name="runtimeExec" ref="image.transformer.exe"></property>
+	<bean id="contentService" class="com.wikipy.content.GridFSContentService">
+		<property name="datasource" ref="datasource"></property>
 	</bean>
 	
-	<bean id="repositoryService" class="net.gqu.repository.WebAppRootRepositoryService">
-		<property name="webappPath">
-			<value>${tomcat.webapp.path}</value>
-		</property>
+	<bean id="repositoryService" class="com.wikipy.repository.RepositoryService">
+		<property name="datasource" ref="datasource"></property>
 	</bean>
 	
 	
-	<bean id="cacheService" class="net.gqu.cache.EhCacheService"></bean>
-
-	<bean id="userService" class="net.gqu.security.BasicUserService">
-		<property name="dbProvider">
-			<ref bean="dbProvider"/>
-		</property>
-		<property name="adminPassword">
-			<value>${auth.adminpassword}</value>
-		</property>
-		<property name="userdb">
-			<value>${mongodb.userdb}</value>
-		</property>
-	</bean>
-	
-	<bean id="script.object.generator" class="net.gqu.webscript.object.ScriptObjectGenerator">
-		<property name="userService" ref="userService"></property>
-	</bean>
-	
-	<bean id="scriptService" class="net.gqu.webscript.ScriptExecService" init-method="init">
-	</bean>
-	
-	<bean id="rest.services" class="net.gqu.rest.WebRestService">
-		<property name="applicationService" ref="applicationService"></property>
-		<property name="cacheService" ref="cacheService"></property>
-		<property name="userService" ref="userService"></property>
-	</bean>
-
-	<bean id="registry" class="net.gqu.rest.HttpServiceRegistry">
-		<property name="injectedServices">
-			<list>
-				<ref bean="rest.services"/>
-			</list>
-		</property>
-	</bean>	
-	
-	<bean name="image.transformer.exe" class="net.gqu.utils.RuntimeExec">
+	<bean name="image.transformer.exe" class="com.wikipy.content.RuntimeExec">
             <property name="defaultProperties">
                <props>
                   <prop key="options"></prop>
