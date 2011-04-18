@@ -21,19 +21,21 @@ public class GridFSContentService  implements ContentService {
 	public static final String THUMBNAILS = "thumbnails";
 	public static final String CONTENTS = "contents";
 
-	public void setDatasource(MongoDBDataSource datasource) {
-		this.datasource = datasource;
+	
+
+	public void setDataSource(MongoDBDataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	public void setRuntimeExec(RuntimeExec runtimeExec) {
 		this.runtimeExec = runtimeExec;
 	}
-	private MongoDBDataSource datasource;
+	private MongoDBDataSource dataSource;
 	private RuntimeExec runtimeExec;
 	
 	@Override
 	public ContentFile getContent(String id) {
-		DB contentDB = datasource.getMongo().getDB(CONTENTS);
+		DB contentDB = dataSource.getMongo().getDB(CONTENTS);
 		GridFS gridFS = new GridFS(contentDB);
 		GridFSDBFile file = gridFS.find(new ObjectId(id));
 		
@@ -52,7 +54,7 @@ public class GridFSContentService  implements ContentService {
 
 	@Override
 	public String putContent(ContentFile contentFile) {
-		DB contentDB = datasource.getMongo().getDB(CONTENTS);
+		DB contentDB = dataSource.getMongo().getDB(CONTENTS);
 		GridFS gridFS = new GridFS(contentDB);
 		GridFSInputFile file = gridFS.createFile(contentFile.getInputStream(), contentFile.getFileName());
 		file.setContentType(contentFile.getMimetype());
@@ -63,7 +65,7 @@ public class GridFSContentService  implements ContentService {
 
 	@Override
 	public boolean removeContent(String id) {
-		DB contentDB = datasource.getMongo().getDB(CONTENTS);
+		DB contentDB = dataSource.getMongo().getDB(CONTENTS);
 		GridFS gridFS = new GridFS(contentDB);
 		GridFSDBFile file = gridFS.find(new ObjectId(id));
 		gridFS.remove(new ObjectId(id));
@@ -73,13 +75,13 @@ public class GridFSContentService  implements ContentService {
 	@Override
 	public ContentFile getImageThumbnail(String srcId, long w, long h) {
 		String targetFileName = srcId + "-w" + w + "h" + h;
-		DB thumbnailDB = datasource.getMongo().getDB(THUMBNAILS);
+		DB thumbnailDB = dataSource.getMongo().getDB(THUMBNAILS);
 		GridFS thumbnailGridFS = new GridFS(thumbnailDB);
 		
 		GridFSDBFile targetGridFsFile = thumbnailGridFS.findOne(targetFileName);
 		
 		if (targetGridFsFile==null) {
-			DB contentDB = datasource.getMongo().getDB(CONTENTS);
+			DB contentDB = dataSource.getMongo().getDB(CONTENTS);
 			GridFSDBFile originGridFSFile = new GridFS(contentDB).find(new ObjectId(srcId));
 
 			if (originGridFSFile!=null) {
