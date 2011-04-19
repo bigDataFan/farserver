@@ -46,8 +46,6 @@ public class BasicRenderServlet extends HttpServlet {
 		contentService = (ContentService) ctx.getBean("contentService");
 		repositoryService = (RepositoryService) ctx.getBean("repositoryService");
 	}
-
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -58,7 +56,7 @@ public class BasicRenderServlet extends HttpServlet {
 		
 		String servletPath = request.getServletPath();
 		if (path.equals("/")) {
-			response.sendRedirect("/" + webappUri + servletPath + "/4dabe0856c3d000000002e34/page/1");
+			response.sendRedirect("/" + webappUri + servletPath + "/4dae1908dd49000000003f42/page/1");
 			return;
 		}
 		
@@ -71,8 +69,6 @@ public class BasicRenderServlet extends HttpServlet {
 		int perpage = 100;
 		String parentPath = splits[1];
 		int page = new Integer(splits[3]);
-		
-		Collection<Map<String, Object>> children = repositoryService.listChildRen(parentPath, null, (page-1)* perpage, 100, null, null);
 		
 		response.setContentType(TEXT_HTML_CHARSET_UTF_8);
 		PrintWriter writer = response.getWriter();
@@ -92,6 +88,12 @@ public class BasicRenderServlet extends HttpServlet {
         writer.write("</style></head>\n");
         writer.flush();
         
+        Map itemMap = repositoryService.getItem(parentPath);
+        
+        writer.write("当前目录:" + itemMap.get("_path")
+        		+ "   <a href=\"/" + webappUri + servletPath + "/" + itemMap.get("_parent_id") + "/page/1" 
+        		+ "\">转到上一级 </a>  <a href=\"/" + webappUri + "/client/edit.html?pid=" + parentPath + "\">增加</>");
+        
         writer.write("<table cellspacing='2' cellpadding='3' border='0' width='100%' class='listingTable'>\n");
         writer.write("<tr><td class='tableHeading' width='*'>");
         writer.write("Name");
@@ -110,6 +112,8 @@ public class BasicRenderServlet extends HttpServlet {
         writer.write("</td>");
         
         writer.write("</tr>\n");
+        
+        Collection<Map<String, Object>> children = repositoryService.listChildRen(parentPath, null, (page-1)* perpage, 100, null, null);
         int rowId = 0;
         for (Map<String, Object> map : children) {
         	  writer.write("<tr class='");
