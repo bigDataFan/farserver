@@ -7,12 +7,16 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import sun.swing.StringUIClientPropertyKey;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.wikipy.mongodb.MongoDBDataSource;
+import com.wikipy.utils.StringUtils;
+import com.wikipy.web.HttpStatusExceptionImpl;
 
 public class RepositoryService {
 
@@ -57,18 +61,50 @@ public class RepositoryService {
 	}
 	
 	private void auditCreated(DBObject parent, Map<String, Object> obj) {
-		obj.put("_audit_created", new Date());
 		obj.put("_parent_id",  parent.get("_id"));
-		obj.put("_path", (String)parent.get("_path") + (String) obj.get("_name") + "/" );
 		if (obj.get("_name")==null) {
 			obj.put("_name", "noname");
 		}
 		if (obj.get("_title")==null) {
 			obj.put("_title", "未命名标题 ");
 		}
+		
+		for (String specialKey : obj.keySet()) {
+			if (specialKey.startsWith("_")) {
+				doSpecialKey(specialKey, obj);
+			}
+		}
+		
+		obj.put("_path", (String)parent.get("_path") + (String) obj.get("_name") + "/" );
 	}
 	
 	
+	private void doSpecialKey(String specialKey, Map<String, Object> obj) {
+		if (specialKey.startsWith("_time_")) {
+			obj.put(specialKey, StringUtils.parseDateString((String)obj.get(specialKey)));
+		}
+		
+		if (specialKey.startsWith("_int_")) {
+			obj.put(specialKey, Integer.parseInt(((String)obj.get(specialKey))));
+		}
+		
+		if (specialKey.startsWith("_float_")) {
+			obj.put(specialKey, Float.parseFloat(((String)obj.get(specialKey))));
+		}
+		
+		if (specialKey.startsWith("_unique_")) {
+			DBCollection collection = dataSource.getMainDB().getCollection("items");
+			
+			DBObject one = collection.findOne(BasicDBObjectBuilder.start().append("_parent_id", obj.get("_parent_id"))
+					.append(specialKey, obj.get(specialKey)).get());
+			
+			if (one!=null) {
+				throw new HttpStatusExceptionImpl(409);
+			}
+		}
+		
+	}
+
 	private void audit(Map<String, Object> obj) {
 		
 	}
