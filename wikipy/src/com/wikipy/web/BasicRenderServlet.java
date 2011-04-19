@@ -21,6 +21,7 @@ import com.wikipy.repository.RepositoryService;
  * Servlet implementation class BasicRenderServlet
  */
 public class BasicRenderServlet extends HttpServlet {
+	public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html;charset=UTF-8";
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -68,8 +69,8 @@ public class BasicRenderServlet extends HttpServlet {
 		
 		Collection<Map<String, Object>> children = repositoryService.listChildRen(parentPath, null, (page-1)* perpage, 100, null, null);
 		
+		response.setContentType(TEXT_HTML_CHARSET_UTF_8);
 		PrintWriter writer = response.getWriter();
-		
 		writer.write("<html><head><title>");
         writer.write(parentPath);
         writer.write("</title>");

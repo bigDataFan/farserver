@@ -31,7 +31,7 @@ public class RepositoryService {
 		if (parent!=null) {
 			auditCreated(parent, obj);
 			collection.insert(BasicDBObjectBuilder.start(obj).get());
-		} 
+		}
 	}
 	
 	public Collection<Map<String, Object>> listChildRen(String parentQuery, Map<String, Object> filter,  int from, int limit, String orderField, String groupBy) {
