@@ -35,6 +35,26 @@ public class RepositoryService {
 		}
 	}
 	
+	
+	public Map getItem(String id) {
+		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBObject item = collection.findOne(new BasicDBObject("_id", new ObjectId(id)));
+		return (item==null)?null:item.toMap();
+	}
+	
+	public long getChildrenCount(String parentQuery, Map<String, Object> filter) {
+		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		
+		BasicDBObjectBuilder builder;
+		if (filter!=null) {
+			builder = BasicDBObjectBuilder.start(filter).append("_parent_id", new ObjectId(parentQuery));
+		} else {
+			builder = BasicDBObjectBuilder.start("_parent_id", new ObjectId(parentQuery));
+		}
+		
+		return collection.getCount(builder.get());
+	}
+	
 	public Collection<Map<String, Object>> listChildRen(String parentQuery, Map<String, Object> filter,  int from, int limit, String orderField, String groupBy) {
 		DBCollection collection = dataSource.getMainDB().getCollection("items");
 		DBObject parent = collection.findOne(BasicDBObjectBuilder.start("_id", new ObjectId(parentQuery)).get());
