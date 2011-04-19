@@ -28,7 +28,11 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/post</url-pattern>
 	</filter-mapping>
-	
+			
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/postItem</url-pattern>
+	</filter-mapping>
 	
 	<listener>
 		<listener-class>
@@ -49,6 +53,13 @@
 		<servlet-class>
 		com.wikipy.web.ReceiveItemServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>TextFormReceiver</display-name>
+		<servlet-name>TextFormReceiver</servlet-name>
+		<servlet-class>com.wikipy.web.TextFormReceiver</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>BasicRenderServlet</servlet-name>
 		<url-pattern>/b/*</url-pattern>
@@ -56,6 +67,10 @@
 	<servlet-mapping>
 		<servlet-name>ReceiveItemServlet</servlet-name>
 		<url-pattern>/post</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TextFormReceiver</servlet-name>
+		<url-pattern>/postItem</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

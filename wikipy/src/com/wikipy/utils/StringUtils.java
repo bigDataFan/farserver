@@ -19,6 +19,7 @@ package com.wikipy.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +69,7 @@ public abstract class StringUtils {
 	private static Pattern dnsPattern;
 	private static Pattern userIdPattern;
 	
-	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	//---------------------------------------------------------------------
 	// General convenience methods for working with Strings
@@ -1001,6 +1002,18 @@ public abstract class StringUtils {
 		return dateformat.format(date);
 	}
 	
+	public static Date parseDateString(String dateStr) {
+		try {
+			return dateformat.parse(dateStr);
+		} catch (ParseException e) {
+			try {
+				return new Date(dateStr);
+			} catch (Exception e1) {
+				return new Date();
+			}
+		}
+	}
+	
 	public static String getParentPath(String path, String pathSep) {
 		int pos = path.lastIndexOf(pathSep);
 		if (pos==path.length()-pathSep.length()) {
@@ -1098,30 +1111,30 @@ public abstract class StringUtils {
     
     
     
-//  国标码和区位码转换常�?
+//  国标码和区位码转换常�?
     static final int GB_SP_DIFF = 160; 
 
-    // 存放国标�?��汉字不同读音的起始区位码 
+    // 存放国标�?��汉字不同读音的起始区位码 
     static final int[] secPosValueList = { 1601, 1637, 1833, 2078, 2274, 2302, 
       2433, 2594, 2787, 3106, 3212, 3472, 3635, 3722, 3730, 3858, 4027, 
       4086, 4390, 4558, 4684, 4925, 5249, 5600 }; 
 
-    // 存放国标�?��汉字不同读音的起始区位码对应读音 
+    // 存放国标�?��汉字不同读音的起始区位码对应读音 
     static final char[] firstLetter = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
       'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 
       'Y', 'Z' }; 
 
-    // 获取�?��字符串的拼音�?
+    // 获取�?��字符串的拼音�?
     public static String getFirstLetter(String oriStr) { 
      String str = oriStr.toLowerCase(); 
      StringBuffer buffer = new StringBuffer(); 
      char ch; 
      char[] temp; 
-     for (int i = 0; i < str.length(); i++) { // 依次处理str中每个字�?
+     for (int i = 0; i < str.length(); i++) { // 依次处理str中每个字�?
       ch = str.charAt(i); 
       temp = new char[] {ch}; 
       byte[] uniCode = new String(temp).getBytes(); 
-      if (uniCode[0] < 128 && uniCode[0] > 0) { // 非汉�?
+      if (uniCode[0] < 128 && uniCode[0] > 0) { // 非汉�?
        buffer.append(temp); 
       } else { 
        buffer.append(convert(uniCode)); 
@@ -1131,9 +1144,9 @@ public abstract class StringUtils {
     } 
 
     /** 
-     * 获取�?��汉字的拼音首字母�?GB码两个字节分别减�?60，转换成10进制码组合就可以得到区位�?
-     * 例如汉字“你”的GB码是0xC4/0xE3，分别减�?xA0�?60）就�?x24/0x43 
-     * 0x24转成10进制就是36�?x43�?7，那么它的区位码就是3667，在对照表中读音为�?n�?
+     * 获取�?��汉字的拼音首字母�?GB码两个字节分别减�?60，转换成10进制码组合就可以得到区位�?
+     * 例如汉字“你”的GB码是0xC4/0xE3，分别减�?xA0�?60）就�?x24/0x43 
+     * 0x24转成10进制就是36�?x43�?7，那么它的区位码就是3667，在对照表中读音为�?n�?
      */ 
 
     static char convert(byte[] bytes) { 
