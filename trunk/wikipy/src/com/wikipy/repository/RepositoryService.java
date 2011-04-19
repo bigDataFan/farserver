@@ -2,12 +2,9 @@ package com.wikipy.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
-
-import sun.swing.StringUIClientPropertyKey;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
