@@ -28,6 +28,8 @@ import com.wikipy.repository.RepositoryService;
  * Servlet implementation class ReceiveItemServlet
  */
 public class ReceiveItemServlet extends HttpServlet {
+	private static final String UTF_8 = "UTF-8";
+
 	private static final long serialVersionUID = 1L;
     
 	private FileItemFactory fileItemFactory = new DiskFileItemFactory();
@@ -66,18 +68,19 @@ public class ReceiveItemServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		ServletFileUpload upload = new ServletFileUpload(fileItemFactory);
+		upload.setHeaderEncoding(UTF_8);
 		try {
 			List<FileItem> items = upload.parseRequest(request);
 			Map<String, Object> fields = new HashMap<String, Object>();
 			List<String> attaches = new ArrayList<String>();
 			for (FileItem fileItem : items) {
 				if (fileItem.isFormField()) {
-					fields.put(fileItem.getFieldName(), fileItem.getString());
+					fields.put(fileItem.getFieldName(), fileItem.getString("UTF-8"));
 				} else {
 					try {
 						if (fileItem.getSize()>0) {
 							ContentFile contentFile = new ContentFile();
-							contentFile.setFileName(fileItem.getFieldName());
+							contentFile.setFileName(fileItem.getName());
 							contentFile.setContent(fileItem.getInputStream());
 							contentFile.setSize(fileItem.getSize());
 							contentFile.setMimetype(fileItem.getContentType());
