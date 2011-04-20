@@ -24,6 +24,20 @@ public class FeedClient {
 	
 	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
+	private String postUrl;
+	private String parentId;
+	private String feedUrl;
+	
+	public FeedClient(String postUrl, String parentId, String feedUrl) {
+		super();
+		this.postUrl = postUrl;
+		this.parentId = parentId;
+		this.feedUrl = feedUrl;
+	}
+
+	
+	
+
 	public static void main(String[] args) {
 		
 		HttpClient httpClient = new HttpClient();
