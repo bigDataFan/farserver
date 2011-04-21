@@ -1,5 +1,14 @@
 package com.sitechasia.client;
 
-public class FeedJob {
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+
+public class FeedJob implements Job {
+
+	@Override
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		
+	}
 
 }
