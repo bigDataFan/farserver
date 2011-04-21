@@ -8,7 +8,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.wikipy.mongodb.MongoDBDataSource;
 
-
 public class JobDAO {
 	private MongoDBDataSource dataSource;
 
@@ -49,5 +48,4 @@ public class JobDAO {
 			jobs.add(cursor.next().toMap());
 		}
 	}
-	
 }
