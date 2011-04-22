@@ -1,6 +1,5 @@
 package com.wikipy.job;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ public class JobDAO {
 		this.dataSource = dataSource;
 	}
 	
-	private LinkedList<Map<String, Object>> jobs = (LinkedList) Collections.synchronizedCollection(new LinkedList<Map<String, Object>>());
+	private LinkedList<Map<String, Object>> jobs = new LinkedList<Map<String, Object>>();
 	
 	
 	private void init() {
