@@ -14,14 +14,14 @@
         </property>  
 	</bean>
 
-	<bean id="jobDAO" class="com.wikipy.job.JobDAO">
+	<bean id="jobDAO" class="com.wikipy.job.JobDAO" init-method="init">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
 	
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
             <property name="jobDetail" ref="importerJob" />  
-            <property name="cronExpression" value="0 0/5 * * * *" />  
+            <property name="cronExpression" value="0 0/5 0-23 * * ?" />  
     </bean>  
           
     <bean id="jobScheduerFactory" lazy-init="false"   
