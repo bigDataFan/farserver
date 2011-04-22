@@ -6,6 +6,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:core-service-context.xml
+			classpath:schedule-job-context.xml
 		</param-value>
 	</context-param>
 	
@@ -81,3 +82,4 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>
+
