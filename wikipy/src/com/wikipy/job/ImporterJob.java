@@ -27,8 +27,6 @@ public class ImporterJob implements Job {
 			
 		}
 		System.out.println("job executed");
-		
-		
 	}
 
 	
