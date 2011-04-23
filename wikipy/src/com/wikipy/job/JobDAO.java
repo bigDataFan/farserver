@@ -1,6 +1,7 @@
 package com.wikipy.job;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.mongodb.BasicDBObject;
@@ -10,6 +11,14 @@ import com.wikipy.mongodb.MongoDBDataSource;
 public class JobDAO {
 	private MongoDBDataSource dataSource;
 
+	private String jobCollection;
+	
+	
+	
+	public void setJobCollection(String jobCollection) {
+		this.jobCollection = jobCollection;
+	}
+
 	public void setDataSource(MongoDBDataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -17,14 +26,25 @@ public class JobDAO {
 	private LinkedList<Map<String, Object>> jobs = new LinkedList<Map<String, Object>>();
 	
 	
-	private void init() {
-		if (!dataSource.getMainDB().collectionExists("jobs")) {
-			dataSource.getMainDB().createCollection("jobs", new BasicDBObject("capped", true));
+	public void init() {
+		if (!dataSource.getMainDB().collectionExists(jobCollection)) {
+			dataSource.getMainDB().createCollection(jobCollection, new BasicDBObject("capped", true));
 		}
 	}
 	
+	public List<Map<String, Object>> listAllJobs() {
+		
+		DBCursor cursor = dataSource.getMainDB().getCollection(jobCollection).find();
+		
+		LinkedList<Map<String, Object>> result=new LinkedList<Map<String,Object>>();
+		while (cursor.hasNext()) {
+			result.add(cursor.next().toMap());
+		}
+		return result;
+	}
+	
 	public void appendNewJob(Map<String, Object> job) {
-		dataSource.getMainDB().getCollection("jobs").insert(new BasicDBObject(job));
+		dataSource.getMainDB().getCollection(jobCollection).insert(new BasicDBObject(job));
 		jobs.addLast(job);
 	}
 	
@@ -41,7 +61,7 @@ public class JobDAO {
 	
 	
 	public void loadAll() {
-		DBCursor cursor = dataSource.getMainDB().getCollection("jobs").find();
+		DBCursor cursor = dataSource.getMainDB().getCollection(jobCollection).find();
 		
 		while (cursor.hasNext()) {
 			jobs.add(cursor.next().toMap());

@@ -61,6 +61,14 @@
 		<servlet-name>TextFormReceiver</servlet-name>
 		<servlet-class>com.wikipy.web.TextFormReceiver</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>JobPostServlet</display-name>
+		<servlet-name>JobPostServlet</servlet-name>
+		<servlet-class>
+		com.wikipy.web.JobPostServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>BasicRenderServlet</servlet-name>
 		<url-pattern>/b/*</url-pattern>
@@ -72,6 +80,10 @@
 	<servlet-mapping>
 		<servlet-name>TextFormReceiver</servlet-name>
 		<url-pattern>/postItem</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>JobPostServlet</servlet-name>
+		<url-pattern>/feed/post</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
