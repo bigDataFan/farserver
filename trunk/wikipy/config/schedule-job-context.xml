@@ -15,6 +15,7 @@
 	</bean>
 
 	<bean id="jobDAO" class="com.wikipy.job.JobDAO" init-method="init">
+	<property name="jobCollection" value="jobs"></property>
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
