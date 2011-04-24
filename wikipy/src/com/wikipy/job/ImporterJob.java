@@ -11,20 +11,15 @@ import org.quartz.JobExecutionException;
 
 public class ImporterJob implements Job {
 
+	private ImportClient  importClient;
 	private JobDAO jobDAO;
-	
-	public void setJobDAO(JobDAO jobDAO) {
-		this.jobDAO = jobDAO;
-	}
 	
 	public void execute(JobExecutionContext jcontext) throws JobExecutionException {
 		
 		jobDAO = (JobDAO) jcontext.getMergedJobDataMap().get("jobDAO");
-		
-		Map<String, Object> jobDetail = jobDAO.fetchJob();
-		
-		if (jobDetail!=null) {
-			
+		Map<String, Object> jobMap = jobDAO.fetchJob();
+		if (jobMap!=null) {
+			importClient.doImport(jobMap);
 		}
 		System.out.println("job executed");
 	}

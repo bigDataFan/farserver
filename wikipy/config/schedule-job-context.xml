@@ -15,11 +15,17 @@
 		</property>
 	</bean>
 	
+	
+	
 	<bean id="feedImporter" class="com.wikipy.job.FeedClient">
 		<property name="postUrl" value="http://127.0.0.1/wikipy/postItem">
 		</property>
-		<property name="jobDAO" ref="feedJobDAO"></property>
 	</bean>
+	<bean id="feedJobDAO" class="com.wikipy.job.JobDAO" init-method="init">
+		<property name="jobCollection" value="feeds"></property>
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
 
 	<bean id="feedJob" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass" value="com.wikipy.job.ImporterJob" />  
@@ -28,14 +34,13 @@
                 <entry key="jobDAO" >
                 	<ref bean="feedJobDAO"/>
                 </entry>  
+                <entry key="importClient">
+                	<ref bean="feedImporter"/>
+                </entry>
             </map>  
         </property>  
 	</bean>
 
-	<bean id="feedJobDAO" class="com.wikipy.job.JobDAO" init-method="init">
-		<property name="jobCollection" value="feeds"></property>
-		<property name="dataSource" ref="dataSource"></property>
-	</bean>
 	
 	
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
