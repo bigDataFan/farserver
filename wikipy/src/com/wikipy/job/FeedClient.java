@@ -24,17 +24,21 @@ public class FeedClient {
 	
 	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	private String postUrl;
+	private String postUrl = "http://127.0.0.1/wikipy/postItem";
 	private String parentId;
 	private String feedUrl;
 	
-	public FeedClient(String postUrl, String parentId, String feedUrl) {
+	public FeedClient( String parentId, String feedUrl) {
 		super();
-		this.postUrl = postUrl;
 		this.parentId = parentId;
 		this.feedUrl = feedUrl;
 	}
 
+	
+	
+	
+	
+	
 	
 	
 
