@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.wikipy.mongodb.MongoDBDataSource;
 
 public class JobDAO {
@@ -41,8 +42,13 @@ public class JobDAO {
 		return result;
 	}
 	
-	public void appendNewJob(Map<String, Object> job) {
-		dataSource.getMainDB().getCollection(jobCollection).insert(new BasicDBObject(job));
+	public void appendNewJob(String key, Map<String, Object> job) {
+		DBObject one = dataSource.getMainDB().getCollection(jobCollection).findOne(new BasicDBObject("key", key));
+		
+		if (one==null) {
+			job.put("key", key);
+			dataSource.getMainDB().getCollection(jobCollection).insert(new BasicDBObject(job));
+		}
 		jobs.addLast(job);
 	}
 	
@@ -57,6 +63,9 @@ public class JobDAO {
 	}
 	
 	
+	public void update(String key, Map<String, Object> job) {
+		dataSource.getMainDB().getCollection(jobCollection).update(new BasicDBObject("key", key), new BasicDBObject(job));
+	}
 	
 	public void loadAll() {
 		DBCursor cursor = dataSource.getMainDB().getCollection(jobCollection).find();

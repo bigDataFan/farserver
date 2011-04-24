@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface ImportClient {
 	
-	void importMap(Map<String, Object> map);
+	void doImport(Map<String, Object> map);
 	Map<String, Object> check(Map<String, Object> map);
 	
 }
