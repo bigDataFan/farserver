@@ -3,25 +3,43 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<bean id="importerJob" class=" org.springframework.scheduling.quartz.JobDetailBean">
+
+	<bean id="importersRegistry" class="com.wikipy.job.ImportersRegistry">
+		<property name="importers">
+			<map>
+				<entry>
+					<key><value>feed</value></key>
+					<ref bean="feedImporter"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="feedImporter" class="com.wikipy.job.FeedClient">
+		<property name="postUrl" value="http://127.0.0.1/wikipy/postItem">
+		</property>
+		<property name="jobDAO" ref="feedJobDAO"></property>
+	</bean>
+
+	<bean id="feedJob" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass" value="com.wikipy.job.ImporterJob" />  
         <property name="jobDataAsMap">  
             <map>  
                 <entry key="jobDAO" >
-                	<ref bean="jobDAO"/>
+                	<ref bean="feedJobDAO"/>
                 </entry>  
             </map>  
         </property>  
 	</bean>
 
-	<bean id="jobDAO" class="com.wikipy.job.JobDAO" init-method="init">
-	<property name="jobCollection" value="jobs"></property>
+	<bean id="feedJobDAO" class="com.wikipy.job.JobDAO" init-method="init">
+		<property name="jobCollection" value="feeds"></property>
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
 	
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">  
-            <property name="jobDetail" ref="importerJob" />  
+            <property name="jobDetail" ref="feedJob" />  
             <property name="cronExpression" value="0 0/5 0-23 * * ?" />  
     </bean>  
           

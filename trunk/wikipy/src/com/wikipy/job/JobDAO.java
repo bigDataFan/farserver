@@ -13,8 +13,6 @@ public class JobDAO {
 
 	private String jobCollection;
 	
-	
-	
 	public void setJobCollection(String jobCollection) {
 		this.jobCollection = jobCollection;
 	}
