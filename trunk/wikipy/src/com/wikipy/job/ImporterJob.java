@@ -17,6 +17,7 @@ public class ImporterJob implements Job {
 	public void execute(JobExecutionContext jcontext) throws JobExecutionException {
 		
 		jobDAO = (JobDAO) jcontext.getMergedJobDataMap().get("jobDAO");
+		importClient = (ImportClient) jcontext.getMergedJobDataMap().get("importClient");
 		Map<String, Object> jobMap = jobDAO.fetchJob();
 		if (jobMap!=null) {
 			importClient.doImport(jobMap);

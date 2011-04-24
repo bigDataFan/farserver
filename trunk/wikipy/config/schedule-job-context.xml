@@ -20,6 +20,7 @@
 	<bean id="feedImporter" class="com.wikipy.job.FeedClient">
 		<property name="postUrl" value="http://127.0.0.1/wikipy/postItem">
 		</property>
+		<property name="jobDAO" ref="feedJobDAO"></property>
 	</bean>
 	<bean id="feedJobDAO" class="com.wikipy.job.JobDAO" init-method="init">
 		<property name="jobCollection" value="feeds"></property>

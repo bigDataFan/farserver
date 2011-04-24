@@ -15,7 +15,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.wikipy.job.ImportClient;
 import com.wikipy.job.ImportersRegistry;
-import com.wikipy.job.JobDAO;
 
 /**
  * Servlet implementation class JobPostServlet
