@@ -26,22 +26,15 @@ public class FeedClient implements ImportClient {
 	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	private String postUrl = "http://127.0.0.1/wikipy/postItem";
-	private String parentId;
-	private String feedUrl;
+	private JobDAO jobDAO;
 	
-	public FeedClient( String parentId, String feedUrl) {
-		super();
-		this.parentId = parentId;
-		this.feedUrl = feedUrl;
+	public void setJobDAO(JobDAO jobDAO) {
+		this.jobDAO = jobDAO;
 	}
 
-	
-	
-	
-	
-	
-	
-	
+	public void setPostUrl(String postUrl) {
+		this.postUrl = postUrl;
+	}
 
 	public static void main(String[] args) {
 		
@@ -123,6 +116,9 @@ public class FeedClient implements ImportClient {
 
 	@Override
 	public Map<String, Object> check(Map<String, Object> map) {
+		
+		
+		
 		HttpClient httpClient = new HttpClient();
 		httpClient.getParams().setParameter("http.protocol.content-charset", "UTF-8");
 		URL url;

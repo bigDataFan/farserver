@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.wikipy.job.ImportClient;
+import com.wikipy.job.ImportersRegistry;
 import com.wikipy.job.JobDAO;
 
 /**
@@ -20,12 +22,12 @@ import com.wikipy.job.JobDAO;
  */
 public class JobPostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	JobDAO jobDAO;
+       private ImportersRegistry importersRegistry;
+	
     @Override
 	public void init(ServletConfig config) throws ServletException {
     	WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-    	jobDAO = (JobDAO)ctx.getBean("jobDAO");
+    	importersRegistry = (ImportersRegistry) ctx.getBean("importersRegistry");
 	}
 
 	/**
@@ -48,11 +50,14 @@ public class JobPostServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Map<String, Object> newJobs = new HashMap<String, Object>();
 		
-		newJobs.put("feedUrl", request.getParameter("feedUrl"));
-		newJobs.put("uuid", request.getParameter("uuid"));
-		jobDAO.appendNewJob(newJobs);
+		ImportClient importers = importersRegistry.getImporter(request.getParameter("type"));
+		if (importers!=null) {
+			Map<String, Object> newJobs = new HashMap<String, Object>();
+			newJobs.put("feedUrl", request.getParameter("feedUrl"));
+			newJobs.put("uuid", request.getParameter("uuid"));
+			importers.check(newJobs);
+		}
 		
 		response.sendRedirect("client/feedmanage.jsp");
 		
