@@ -51,13 +51,8 @@ public class FeedClient implements ImportClient {
 			url = new URL((String) map.get("feedUrl"));
 			Feed feed = FeedParser.parse(url);
 			FeedHeader header = new FeedHeader();
-
-			map.put("title", header.getTitle());
 			
-			System.out.println("Link: " + header.getLink());
-			System.out.println("Description: " + header.getDescription());
-			System.out.println("Language: " + header.getLanguage());
-			System.out.println("PubDate: " + header.getPubDate());
+			map.put("_title", header.getTitle());
 			
 			jobDAO.appendNewJob(url.toString(), map);
 		} catch (MalformedURLException e) {
@@ -90,17 +85,6 @@ public class FeedClient implements ImportClient {
 		try {
 			url = new URL((String) map.get("feedUrl"));
 			Feed feed = FeedParser.parse(url);
-			
-			/*
-			FeedHeader header = new FeedHeader();
-			System.out.println("Title: " + header.getTitle());
-			System.out.println("Link: " + header.getLink());
-			System.out.println("Description: " + header.getDescription());
-			System.out.println("Language: " + header.getLanguage());
-			System.out.println("PubDate: " + header.getPubDate());
-			
-			System.out.println("** ITEMS **");
-			*/
 			int items = feed.getItemCount();
 			for (int i = 0; i < items; i++) {
 				FeedItem item = feed.getItem(i);
@@ -113,7 +97,6 @@ public class FeedClient implements ImportClient {
 					RawAttribute attr = item.getAttribute(j);
 					postMethod.addParameter(attr.getName(), attr.getValue());
 				}
-				
 				
 				for (int j = 0; j < item.getNodeCount(); j++) {
 					RawNode node = item.getNode(j);

@@ -11,7 +11,7 @@
 <%
 
 WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-JobDAO jobDAO = (JobDAO)ctx.getBean("jobDAO");
+JobDAO jobDAO = (JobDAO)ctx.getBean("feedJobDAO");
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -23,6 +23,7 @@ JobDAO jobDAO = (JobDAO)ctx.getBean("jobDAO");
 <form method="post" action="../feed/post">
 	url: <input name="feedUrl">
 	uuid: <input name="uuid">
+	<input type="hidden" name="type" value="feed">
 	<input type="submit">
 </form>
 

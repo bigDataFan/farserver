@@ -92,7 +92,7 @@ public class BasicRenderServlet extends HttpServlet {
         
         writer.write("当前目录:" + itemMap.get("_path")
         		+ "   <a href=\"/" + webappUri + servletPath + "/" + itemMap.get("_parent_id") + "/page/1" 
-        		+ "\">转到上一级 </a>  <a href=\"/" + webappUri + "/client/node.jsp?parentid=" + parentPath + "\">增加</>");
+        		+ "\">转到上一级 </a>  <a href=\"/" + webappUri + "/client/node.jsp?parentid=" + parentPath + "\">增加</a>");
         
         writer.write("<table cellspacing='2' cellpadding='3' border='0' width='100%' class='listingTable'>\n");
         writer.write("<tr><td class='tableHeading' width='*'>");
