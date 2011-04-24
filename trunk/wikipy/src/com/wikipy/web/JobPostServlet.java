@@ -1,6 +1,8 @@
 package com.wikipy.web;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -46,9 +48,13 @@ public class JobPostServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		jobDAO.appendNewJob(request.getParameterMap());
+		Map<String, Object> newJobs = new HashMap<String, Object>();
 		
-		response.sendRedirect("client.feedmanage.jsp");
+		newJobs.put("feedUrl", request.getParameter("feedUrl"));
+		newJobs.put("uuid", request.getParameter("uuid"));
+		jobDAO.appendNewJob(newJobs);
+		
+		response.sendRedirect("client/feedmanage.jsp");
 		
 		
 	}
