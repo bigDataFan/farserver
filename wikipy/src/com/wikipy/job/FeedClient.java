@@ -15,12 +15,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
 
-public class FeedClient {
+public class FeedClient implements ImportClient {
 	
 	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -110,5 +111,57 @@ public class FeedClient {
 			e.printStackTrace();
 		}
 
+	}
+
+
+
+
+
+
+
+
+
+	@Override
+	public Map<String, Object> check(Map<String, Object> map) {
+		HttpClient httpClient = new HttpClient();
+		httpClient.getParams().setParameter("http.protocol.content-charset", "UTF-8");
+		URL url;
+		try {
+			url = new URL((String) map.get("feedUrl"));
+			Feed feed = FeedParser.parse(url);
+			FeedHeader header = new FeedHeader();
+
+			map.put("title", header.getTitle());
+			
+			System.out.println("Link: " + header.getLink());
+			System.out.println("Description: " + header.getDescription());
+			System.out.println("Language: " + header.getLanguage());
+			System.out.println("PubDate: " + header.getPubDate());
+			return map;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (FeedIOException e) {
+			e.printStackTrace();
+		} catch (FeedXMLParseException e) {
+			e.printStackTrace();
+		} catch (UnsupportedFeedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+
+
+
+
+
+
+
+	@Override
+	public void importMap(Map<String, Object> map) {
+		
 	}
 }
