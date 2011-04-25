@@ -53,7 +53,7 @@ public class JobDAO {
 	}
 	
 	public synchronized Map<String, Object> fetchJob() {
-		Map<String, Object> peek = jobs.peek();
+		Map<String, Object> peek = jobs.pop();
 		
 		if (peek == null) {
 			loadAll();
