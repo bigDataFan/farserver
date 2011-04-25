@@ -57,7 +57,7 @@ public class JobDAO {
 		
 		if (peek == null) {
 			loadAll();
-			return jobs.peek();
+			return jobs.pop();
 		} 
 		return peek;
 	}
