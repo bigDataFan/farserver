@@ -58,7 +58,7 @@ public class JobPostServlet extends HttpServlet {
 			importers.check(newJobs);
 		}
 		
-		response.sendRedirect("client/feedmanage.jsp");
+		response.sendRedirect("../client/feedmanage.jsp");
 		
 		
 	}
