@@ -116,7 +116,7 @@ public class FeedClient implements ImportClient {
 				
 				int status = httpClient.executeMethod(postMethod);
 			}
-			map.put("updated", new Date());
+			map.put("_updated", new Date());
 			jobDAO.update((String) map.get("feedUrl"), map);
 			
 		} catch (MalformedURLException e) {

@@ -71,6 +71,11 @@ public class TextFormReceiver extends HttpServlet {
 			String key = (String) enums.nextElement();
 			params.put(key, request.getParameter(key));
 		}
+		
+		if (request.getParameterValues(RepositoryService.PROP_ASPECT)!=null) {
+			params.put(RepositoryService.PROP_ASPECT, request.getParameterValues(RepositoryService.PROP_ASPECT));
+		}
+		
 		String pid = request.getParameter("_parentid");
 		if (pid==null) {
 			response.sendError(400);
