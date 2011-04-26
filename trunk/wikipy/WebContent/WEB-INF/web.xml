@@ -69,6 +69,14 @@
 		<servlet-class>
 		com.wikipy.web.JobPostServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>JsonReceiveServlet</display-name>
+		<servlet-name>JsonReceiveServlet</servlet-name>
+		<servlet-class>
+		com.wikipy.web.JsonReceiveServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>BasicRenderServlet</servlet-name>
 		<url-pattern>/b/*</url-pattern>
@@ -84,6 +92,10 @@
 	<servlet-mapping>
 		<servlet-name>JobPostServlet</servlet-name>
 		<url-pattern>/feed/post</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>JsonReceiveServlet</servlet-name>
+		<url-pattern>/postJson</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
