@@ -17,13 +17,13 @@ import com.wikipy.web.HttpStatusExceptionImpl;
 
 public class RepositoryService {
 
-	private static final String PROP_ID = "_id";
+	public static final String PROP_ID = "_id";
 
-	private static final String PROP_PARENT_ID = "_parent_id";
+	public static final String PROP_PARENT_ID = "_parent_id";
 
 	public static final String PROP_PATH = "_path";
 
-	private static final String PROP_TITLE = "_title";
+	public static final String PROP_TITLE = "_title";
 
 	public static final String PROP_NAME = "_name";
 
@@ -45,6 +45,14 @@ public class RepositoryService {
 			auditCreated(parent, obj);
 			collection.insert(BasicDBObjectBuilder.start(obj).get());
 		}
+	}
+	
+	
+	
+	public void updateProp(String id, String prop, Object newval) {
+		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		collection.update(new BasicDBObject(PROP_ID, new ObjectId(id)), new BasicDBObject("$push", 
+				new BasicDBObject(PROP_ASPECT, newval)));
 	}
 	
 	public void addAspect(String id, String aspect) {
@@ -81,6 +89,19 @@ public class RepositoryService {
 		}
 		
 		return collection.getCount(builder.get());
+	}
+	
+	
+	public Collection<Map<String, Object>> selectItems(Map m) {
+		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCursor cursor = collection.find(new BasicDBObject(m));
+		
+		Collection<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
+		while (cursor.hasNext()) {
+			result.add(cursor.next().toMap());
+		}
+		
+		return result;
 	}
 	
 	public Collection<Map<String, Object>> listChildRen(String parentQuery, Map<String, Object> filter,  int from, int limit, String orderField, String groupBy) {
