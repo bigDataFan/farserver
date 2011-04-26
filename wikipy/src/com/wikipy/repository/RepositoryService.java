@@ -140,9 +140,10 @@ public class RepositoryService {
 				doSpecialKey(specialKey, obj);
 			}
 		}
-		
 		obj.put(PROP_PATH, (String)parent.get(PROP_PATH) + (String) obj.get(PROP_NAME) + "/" );
 	}
+	
+	
 	
 	
 	private void doSpecialKey(String specialKey, Map<String, Object> obj) {
@@ -168,11 +169,6 @@ public class RepositoryService {
 				throw new HttpStatusExceptionImpl(409);
 			}
 		}
-		
-	}
-
-	private void audit(Map<String, Object> obj) {
-		
 	}
 	
 }
