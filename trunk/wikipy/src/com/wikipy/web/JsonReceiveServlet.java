@@ -62,7 +62,7 @@ public class JsonReceiveServlet extends HttpServlet {
 				return;
 			}
 			try {
-				repositoryService.appendChildren((String) pid, map);
+				doImportMap((String) pid, map);
 			} catch (HttpStatusExceptionImpl e) {
 				response.sendError(e.getCode());
 			} catch (RuntimeException e) {
@@ -73,6 +73,21 @@ public class JsonReceiveServlet extends HttpServlet {
 		}
 	}
 
+	private void doImportMap(String parentId, Map<String, Object> map) {
+		Object children = map.get("_children");
+		Map[] childrenMap = null;
+		if (children!=null && children instanceof Map[]) {
+			map.remove("_children");
+			childrenMap = (Map[]) children;
+		}		
+		String pid = repositoryService.appendChildren(parentId, map);
+		
+		for (int i = 0; i < childrenMap.length; i++) {
+			doImportMap(pid, childrenMap[i]);
+		}
+	}
+	
+	
 	String inputStream2String(InputStream is) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 		StringBuffer buffer = new StringBuffer();
