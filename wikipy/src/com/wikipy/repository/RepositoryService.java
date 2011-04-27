@@ -11,6 +11,8 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
+import com.mongodb.WriteResult;
 import com.wikipy.mongodb.MongoDBDataSource;
 import com.wikipy.utils.StringUtils;
 import com.wikipy.web.HttpStatusExceptionImpl;
@@ -35,7 +37,7 @@ public class RepositoryService {
 		this.dataSource = dataSource;
 	}
 
-	public void appendChildren(String parentQuery, Map<String, Object> obj) {
+	public String appendChildren(String parentQuery, Map<String, Object> obj) {
 		DBCollection collection = dataSource.getMainDB().getCollection("items");
 
 		DBObject parent = collection.findOne(new BasicDBObject(PROP_ID, new ObjectId(parentQuery)));
@@ -43,8 +45,11 @@ public class RepositoryService {
 				
 		if (parent!=null) {
 			auditCreated(parent, obj);
-			collection.insert(BasicDBObjectBuilder.start(obj).get());
+			BasicDBObject bo = new BasicDBObject(obj);
+			WriteResult wr = collection.insert(bo);
+			return bo.getString("_id");
 		}
+		return null;
 	}
 	
 	
