@@ -81,9 +81,10 @@ public class JsonReceiveServlet extends HttpServlet {
 			childrenMap = (Map[]) children;
 		}		
 		String pid = repositoryService.appendChildren(parentId, map);
-		
-		for (int i = 0; i < childrenMap.length; i++) {
-			doImportMap(pid, childrenMap[i]);
+		if (childrenMap!=null) {
+			for (int i = 0; i < childrenMap.length; i++) {
+				doImportMap(pid, childrenMap[i]);
+			}
 		}
 	}
 	
