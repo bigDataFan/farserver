@@ -19,7 +19,7 @@ import com.wikipy.job.ImportersRegistry;
 /**
  * Servlet implementation class JobPostServlet
  */
-public class JobPostServlet extends HttpServlet {
+public class ImportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        private ImportersRegistry importersRegistry;
 	
@@ -32,7 +32,7 @@ public class JobPostServlet extends HttpServlet {
 	/**
      * @see HttpServlet#HttpServlet()
      */
-    public JobPostServlet() {
+    public ImportServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
