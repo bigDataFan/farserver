@@ -52,6 +52,15 @@ public class RepositoryService {
 		return null;
 	}
 	
+	public Map<String, Object> queryOneItem(Map<String, Object> params) {
+		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBObject one = collection.findOne(new BasicDBObject(params));
+		if (one!=null) {
+			return one.toMap();
+		} else {
+			return null;
+		}
+	}
 	
 	
 	public void updateProp(String id, String prop, Object newval) {

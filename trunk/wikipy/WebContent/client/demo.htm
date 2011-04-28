@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0042)http://202.10.70.8:8080/page/ajaxdemo.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>demo</title>
+<script type="text/javascript" language="javascript" src="bajax.js"></script><script language="javascript" type="text/javascript">
+	
+	window.$=function(obj){return typeof(obj)=="string"?document.getElementById(obj):obj}
+	
+	function ct(){
+		if($("at1").checked==true){
+			$("t1").value="";
+			$("t1").disabled=true;
+		}else
+			$("t1").disabled=false;
+			
+	}	
+	
+	function ajaxtest(){
+		if($("address").value==""){
+			alert("发送地址不可以为空");
+			return;
+		}
+		$("t2").value="";
+		$("btn1").disabled=true;
+		_obj = new Bajax(); 
+		if($("at1").checked==true)
+			_obj.get($("address").value, callback, "");
+		else
+			_obj.post($("address").value, $("t1").value,callback, "");	
+		
+	}
+	
+	function callback(req, obj) {  
+		if(req.readyState == 4)  {
+			$("btn1").disabled=false;
+    	if(req.status == 200)  {
+		    alert("返回200");
+    		$("t2").value=req.responseText;
+			}
+      else
+      	alert("返回结果出现错误 code=" + req.status);  	
+		}
+	} 
+</script></head>
+ 
+
+<body>
+<table width="100%" border="1">
+	<colgroup><col width="50%"><col width="50%">
+	</colgroup><tbody><tr>
+		<td>
+    	<fieldset style="text-align:center">
+     		<legend>发送方式</legend>
+     		<input type="radio" name="at" id="at1" value="get" onclick="ct()">get 
+     		<input type="radio" name="at" id="at2" value="post" onclick="ct()" checked="">post 
+    	</fieldset>	
+    </td>
+   	<td>
+			<fieldset style="text-align:center">
+				<legend>发送地址</legend>
+				<input type="text" name="address" id="address" value="test.asp" style="width:90%">
+			</fieldset>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<fieldset>
+				<legend>发送内容</legend>
+				<textarea id="t1" cols="55" rows="17" style="margin-left: 2px; margin-right: 2px; width: 609px; ">
+
+				</textarea>
+			</fieldset>		
+		</td>
+		<td>
+			<fieldset>
+				<legend>接受内容</legend>
+				<textarea id="t2" cols="55" rows="17" style="margin-left: 2px; margin-right: 2px; width: 634px; "></textarea>
+			</fieldset>		
+		</td>
+	</tr>
+</tbody></table>
+<br>
+<center><input type="button" value="提 交 信 息" id="btn1" onclick="ajaxtest()"></center>
+
+
+
+</body></html>

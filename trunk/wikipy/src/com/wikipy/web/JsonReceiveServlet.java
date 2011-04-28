@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -75,15 +76,18 @@ public class JsonReceiveServlet extends HttpServlet {
 
 	private void doImportMap(String parentId, Map<String, Object> map) {
 		Object children = map.get("_children");
-		Map[] childrenMap = null;
-		if (children!=null && children instanceof Map[]) {
+		Collection childrenCollection = null;
+		if (children!=null && children instanceof Collection) {
 			map.remove("_children");
-			childrenMap = (Map[]) children;
+			childrenCollection = (Collection) children;
 		}		
 		String pid = repositoryService.appendChildren(parentId, map);
-		if (childrenMap!=null) {
-			for (int i = 0; i < childrenMap.length; i++) {
-				doImportMap(pid, childrenMap[i]);
+		if (childrenCollection!=null) {
+			for (Object object : childrenCollection) {
+				try {
+					doImportMap(pid, (Map)object);
+				} catch (Exception e) {
+				}
 			}
 		}
 	}
