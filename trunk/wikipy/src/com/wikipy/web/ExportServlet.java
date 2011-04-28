@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class PackDownJsonServlet
  */
-public class PackDownJsonServlet extends HttpServlet {
+public class ExportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PackDownJsonServlet() {
+    public ExportServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -24,7 +24,15 @@ public class PackDownJsonServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String path = request.getPathInfo();
+		
+		if (path.endsWith(".json")) {
+			String uuid = path.substring(path.lastIndexOf("/")+1, path.length()-5);
+			
+		}
+		
+		
+		
 	}
 
 	/**
