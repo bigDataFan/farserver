@@ -120,23 +120,32 @@ public class RepositoryService {
 	
 	public Collection<Map<String, Object>> listChildRen(String parentQuery, Map<String, Object> filter,  int from, int limit, String orderField, String groupBy) {
 		DBCollection collection = dataSource.getMainDB().getCollection("items");
-		DBObject parent = collection.findOne(BasicDBObjectBuilder.start(PROP_ID, new ObjectId(parentQuery)).get());
+		//DBObject parent = collection.findOne(BasicDBObjectBuilder.start(PROP_ID, new ObjectId(parentQuery)).get());
 		
 		Collection<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
-		if (parent!=null) {
-			BasicDBObjectBuilder builder;
-			
-			if (filter!=null) {
-				builder = BasicDBObjectBuilder.start(filter).append(PROP_PARENT_ID, parent.get(PROP_ID));
-			} else {
-				builder = BasicDBObjectBuilder.start(PROP_PARENT_ID, parent.get(PROP_ID));
-			}
-			DBCursor queryResult = collection.find(builder.get()).skip(from).limit(limit);
-			while (queryResult.hasNext()) {
-				DBObject dbo = queryResult.next();
-				result.add(dbo.toMap());
-			}
+		//if (parent!=null) {
+		BasicDBObjectBuilder builder;
+		
+		if (filter!=null) {
+			builder = BasicDBObjectBuilder.start(filter).append(PROP_PARENT_ID, new ObjectId(parentQuery));
+		} else {
+			builder = BasicDBObjectBuilder.start(PROP_PARENT_ID, new ObjectId(parentQuery));
 		}
+		DBCursor queryResult = collection.find(builder.get());
+		
+		if (from>0) {
+			queryResult.skip(from);
+		}
+		if (limit>-1) {
+			queryResult.limit(limit);
+		}
+		
+		
+		while (queryResult.hasNext()) {
+			DBObject dbo = queryResult.next();
+			result.add(dbo.toMap());
+		}
+		//}
 		return result;
 	}
 	

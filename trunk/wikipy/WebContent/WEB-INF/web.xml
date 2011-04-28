@@ -80,10 +80,10 @@
 	<servlet>
 		<description>
 		</description>
-		<display-name>PackDownJsonServlet</display-name>
-		<servlet-name>PackDownJsonServlet</servlet-name>
+		<display-name>ExportServlet</display-name>
+		<servlet-name>ExportServlet</servlet-name>
 		<servlet-class>
-		com.wikipy.web.PackDownJsonServlet</servlet-class>
+		com.wikipy.web.ExportServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>BasicRenderServlet</servlet-name>
@@ -106,8 +106,8 @@
 		<url-pattern>/postJson</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>PackDownJsonServlet</servlet-name>
-		<url-pattern>/jsonpack</url-pattern>
+		<servlet-name>ExportServlet</servlet-name>
+		<url-pattern>/export/*</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
