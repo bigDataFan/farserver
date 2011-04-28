@@ -46,9 +46,8 @@
 		<servlet-name>BasicRenderServlet</servlet-name>
 		<servlet-class>com.wikipy.web.BasicRenderServlet</servlet-class>
 	</servlet>
+	
 	<servlet>
-		<description>
-		</description>
 		<display-name>ReceiveItemServlet</display-name>
 		<servlet-name>ReceiveItemServlet</servlet-name>
 		<servlet-class>
