@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -46,6 +47,9 @@ public class BasicRenderServlet extends HttpServlet {
 		contentService = (ContentService) ctx.getBean("contentService");
 		repositoryService = (RepositoryService) ctx.getBean("repositoryService");
 	}
+	
+	
+	private String rootNode;
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -56,7 +60,13 @@ public class BasicRenderServlet extends HttpServlet {
 		
 		String servletPath = request.getServletPath();
 		if (path.equals("/")) {
-			response.sendRedirect("/" + webappUri + servletPath + "/4db39a037914000000007d34/page/1");
+			if (rootNode==null) {
+				Map<String, Object> query = new HashMap<String, Object>();
+				query.put(RepositoryService.PROP_PATH, "/");
+				Map<String, Object> item = repositoryService.queryOneItem(query);
+				rootNode = item.get("_id").toString();
+			}
+			response.sendRedirect("/" + webappUri + servletPath + "/" + rootNode + "/page/1");
 			return;
 		}
 		
