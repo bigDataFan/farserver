@@ -54,31 +54,22 @@
 		com.wikipy.web.ReceiveItemServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<description>
-		</description>
 		<display-name>TextFormReceiver</display-name>
 		<servlet-name>TextFormReceiver</servlet-name>
 		<servlet-class>com.wikipy.web.TextFormReceiver</servlet-class>
 	</servlet>
 	<servlet>
-		<description>
-		</description>
-		<display-name>JobPostServlet</display-name>
-		<servlet-name>JobPostServlet</servlet-name>
-		<servlet-class>
-		com.wikipy.web.JobPostServlet</servlet-class>
+		<display-name>ImportServlet</display-name>
+		<servlet-name>ImportServlet</servlet-name>
+		<servlet-class>com.wikipy.web.ImportServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<description>
-		</description>
 		<display-name>JsonReceiveServlet</display-name>
 		<servlet-name>JsonReceiveServlet</servlet-name>
 		<servlet-class>
 		com.wikipy.web.JsonReceiveServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<description>
-		</description>
 		<display-name>ExportServlet</display-name>
 		<servlet-name>ExportServlet</servlet-name>
 		<servlet-class>
@@ -102,7 +93,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>JsonReceiveServlet</servlet-name>
-		<url-pattern>/postJson</url-pattern>
+		<url-pattern>/import</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ExportServlet</servlet-name>
