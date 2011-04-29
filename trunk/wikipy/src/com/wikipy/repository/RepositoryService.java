@@ -99,7 +99,19 @@ public class RepositoryService {
 	public Map getItem(String id) {
 		DBCollection collection = getItemCollection();
 		DBObject item = collection.findOne(new BasicDBObject(PROP_ID, new ObjectId(id)));
-		return (item==null)?null:item.toMap();
+		
+		
+		
+		if (item==null) {
+			return null;
+		}  else {
+			Map map = item.toMap();
+			
+			map.put(PROP_ID, map.get(PROP_ID).toString());
+			map.put(PROP_PARENT_ID, map.get(PROP_PARENT_ID).toString());
+			return map;
+		}
+		
 	}
 	
 	public long getChildrenCount(String parentQuery, Map<String, Object> filter) {
