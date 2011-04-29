@@ -57,7 +57,7 @@ public class JsonReceiveServlet extends HttpServlet {
 			JSONObject json = new JSONObject(s);
 			Map<String, Object> map = JSONUtils.jsonObjectToMap(json);
 			
-			Object pid = map.get("_parentid");
+			Object pid = map.get(RepositoryService.PROP_PARENT_ID);
 			if (pid==null) {
 				response.sendError(400);
 				return;
@@ -76,6 +76,9 @@ public class JsonReceiveServlet extends HttpServlet {
 
 	private void doImportMap(String parentId, Map<String, Object> map) {
 		Object children = map.get("_children");
+		map.remove(RepositoryService.PROP_ID);
+		map.remove(RepositoryService.PROP_PATH);
+		map.remove(RepositoryService.PROP_PARENT_ID);
 		Collection childrenCollection = null;
 		if (children!=null && children instanceof Collection) {
 			map.remove("_children");

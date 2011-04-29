@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 import org.json.JSONWriter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -47,17 +45,19 @@ public class ExportServlet extends HttpServlet {
 		repositoryService = (RepositoryService) ctx.getBean("repositoryService");
 	}
 	
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path = request.getPathInfo();
-		PrintWriter writer = response.getWriter();
 		if (path.endsWith(".json")) {
+			
 			String uuid = path.substring(path.lastIndexOf("/")+1, path.length()-5);
 			Map item = repositoryService.getItem(uuid);
 			if (item!=null) {
 				response.setContentType(BasicRenderServlet.TEXT_HTML_CHARSET_UTF_8);
+				PrintWriter writer = response.getWriter();
 				JSONWriter jsonwriter = new JSONWriter(writer);
 				printItem(item, jsonwriter);
 			} else {
