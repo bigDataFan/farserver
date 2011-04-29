@@ -88,10 +88,6 @@
 		<url-pattern>/postItem</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>JobPostServlet</servlet-name>
-		<url-pattern>/feed/post</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
 		<servlet-name>JsonReceiveServlet</servlet-name>
 		<url-pattern>/import</url-pattern>
 	</servlet-mapping>

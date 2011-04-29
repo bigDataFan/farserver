@@ -149,16 +149,16 @@ public class BasicRenderServlet extends HttpServlet {
               writer.write(StringUtils.getFormateDate(new Date(((ObjectId)map.get("_id")).getTime())) + "</td>");
               
               writer.write("<td class='textData'>");
-              int attachcount = 0;
+              /*
+               * int attachcount = 0;
               if (map.get("_attaches")!=null) {
             	  attachcount = ((Collection)map.get("_attaches")).size();
-              }
-              writer.write(attachcount + "</td>");
+              }*/
               
+              writer.write("<a target='_blank' href=\"/wikipy/client/edit.jsp?id=" + map.get(RepositoryService.PROP_ID) + "\">edit</a></td>");
               
               writer.write("</tr>");
 		}
-        
         writer.write("</table></body></html>");
 	}
 
