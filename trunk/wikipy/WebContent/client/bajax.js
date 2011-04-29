@@ -1,51 +1,13 @@
-/** bajax.js  
- *  Base Ajax ¼òÒ×·â×° 2007.07.20  
- *  ---------------------------------------------------------------------------  
- *  >>½Ó¿Ú£º  
- *      get, post   ³£ÓÃÆÕÍ¨½Ó¿Ú¡£  
- *      e_handler   ³ö´í´¦Àí¾ä±ú£¬¿ÉÑ¡¡£  
- *      _object     ´´½¨ä¯ÀÀÆ÷¼æÈÝXHRµÄ°ü×°¡£  
- *  
- *  >>²ÎÊý£º  
- *      @url:       ÇëÇóµÄÏìÓ¦Ò³Ãæ£»  
- *      @sdata:     POSTµÄÊý¾Ý£»  
- *      @callback:  ´¦ÀíÏìÓ¦Êý¾ÝµÄ»Øµ÷º¯Êý£»  
- *  
- *  ÒÔÏÂ²ÎÊý¿ÉÑ¡  
- *      @fdata:     ´«µÝ¸ø»Øµ÷º¯ÊýµÄÊý¾Ý£¬Ä¬ÈÏnull£»  
- *      @asyn:      ÊÇ·ñÒì²½£¬Ä¬ÈÏtrue¡£  
- *  
- *  ·µ»ØÖµ£º  
- *      Èç¹ûÊÇÒì²½£¬·µ»ØÒì²½ÇëÇó¶ÔÏó£»·ñÔò²»·µ»Ø¡£  
- *  
- *  >>»Øµ÷º¯Êý£º  
- *  
- *      »Øµ÷º¯ÊýÓÐÁ½¸ö²ÎÊý£º(req, data)  
- *      @req:       Òì²½ÇëÇó¶ÔÏó£¨XMLHttpRequest »ò ActiveXObject£©  
- *      @data:      ´«ÈëµÄ¸½¼ÓÊý¾Ý¡£  
- *  
- *  >>×¢Òâ£º  
- *  
- *      1¡¢´«µÝµ½»Øµ÷º¯ÊýµÄ¸½¼ÓÊý¾Ý¿ÉÒÔÊÇÊýÖµ¡¢×Ö´®¡¢Êý×é»ò¶ÔÏó¡£  
- *      2¡¢¿ÉÖÃe_handlerµÄ²ÎÊýÎªnullÀ´È¡Ïû³ö´í´¦Àí¡£  
- *   
- *  @Copyright: GNU - LGPL.  
- *  ---------------------------------------------------------------------------  
- */  
+
   
 function Bajax()   
 {   
-    // Ä¬ÈÏ³ö´í´¦Àí   
+
     this._eh = Bajax._error;   
 }   
   
-// µ÷ÊÔÉèÖÃ   
+
 Bajax.debug_enable = false;   
-  
-//-- ÓÃ»§½Ó¿Ú -----------------------------------------------------------------   
-  
-// GET ÇëÇó   
-//£¨URL, »Øµ÷º¯Êý[, »Øµ÷º¯Êý¸½¼ÓÊý¾Ý, ÊÇ·ñÒì²½]£©   
 Bajax.prototype.get = function (url, callback, fdata, asyn)   
 {   
     fdata = (fdata === undefined)? null: fdata;   
@@ -70,8 +32,8 @@ Bajax.prototype.get = function (url, callback, fdata, asyn)
     }   
 }   
   
-// POST ÇëÇó   
-//£¨URL, POSTÊý¾Ý, »Øµ÷º¯Êý[, »Øµ÷º¯Êý¸½¼ÓÊý¾Ý, ÊÇ·ñÒì²½]£©   
+// POST ï¿½ï¿½ï¿½ï¿½   
+//ï¿½ï¿½URL, POSTï¿½ï¿½ï¿½, ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½[, ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ç·ï¿½ï¿½ì²½]ï¿½ï¿½   
 Bajax.prototype.post = function (url, sdata, callback, fdata, asyn)   
 {   
     fdata = (fdata === undefined)? null: fdata;   
@@ -99,14 +61,14 @@ Bajax.prototype.post = function (url, sdata, callback, fdata, asyn)
     }   
 }   
   
-// ÉèÖÃ³ö´í´¦Àíº¯Êý   
+// ï¿½ï¿½ï¿½Ã³ï¿½ï¿½?ï¿½?ï¿½ï¿½   
 Bajax.prototype.e_handler = function (func)   
 {   
     if(func !== undefined) this._eh = func;   
 }   
   
-// ´´½¨Ò»¸ö¼æÈÝµÄXHR¶ÔÏó¡£   
-// ¸ÄÁËÒ»ÏÂ£ºIE7ÖÐÓÅÏÈ²ÉÓÃNative XHR   
+// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½XHRï¿½ï¿½ï¿½ï¿½   
+// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Â£ï¿½IE7ï¿½ï¿½ï¿½ï¿½ï¿½È²ï¿½ï¿½ï¿½Native XHR   
 Bajax._object = function()   
 {   
     var A;   
@@ -131,26 +93,26 @@ Bajax._object = function()
     return A;   
 }   
   
-//-- Ë½ÓÐº¯Êý -----------------------------------------------------------------   
+//-- Ë½ï¿½Ðºï¿½ï¿½ï¿½ -----------------------------------------------------------------   
   
 Bajax._callback = function (req, callback, data, obj)   
 {   
     callback(req, data);   
 }   
   
-// Debug: ÏÔÊ¾²ÉÓÃµÄ»Øµ÷º¯Êý¡£   
+// Debug: ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ÃµÄ»Øµï¿½ï¿½ï¿½ï¿½ï¿½   
 Bajax._debugger = function (func)   
 {   
     alert('running: ' + Bajax._fname(func));   
 }   
   
-// Ä¬ÈÏµÄ³ö´í´¦Àí   
+// Ä¬ï¿½ÏµÄ³ï¿½ï¿½?ï¿½ï¿½   
 Bajax._error = function (req, callback)   
 {   
     alert(req.statusText + '\nShould run: ' + Bajax._fname(callback));   
 }   
   
-// ÌáÈ¡º¯ÊýÃû£¨º¬²ÎÊý£©   
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   
 Bajax._fname = function (func)   
 {   
     var S = func.toString();   

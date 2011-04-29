@@ -38,7 +38,7 @@ public class RepositoryService {
 	}
 
 	public String appendChildren(String parentQuery, Map<String, Object> obj) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 
 		DBObject parent = collection.findOne(new BasicDBObject(PROP_ID, new ObjectId(parentQuery)));
 		//DBObject parent =collection.findOne(
@@ -53,7 +53,7 @@ public class RepositoryService {
 	}
 	
 	public Map<String, Object> queryOneItem(Map<String, Object> params) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		DBObject one = collection.findOne(new BasicDBObject(params));
 		if (one!=null) {
 			return one.toMap();
@@ -62,38 +62,48 @@ public class RepositoryService {
 		}
 	}
 	
+	public void updateItem(Map<String, Object> map) {
+		DBCollection collection = getItemCollection();
+		collection.update(new BasicDBObject(PROP_ID, map.get(PROP_ID)), new BasicDBObject(map));
+		
+	}
 	
 	public void updateProp(String id, String prop, Object newval) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		collection.update(new BasicDBObject(PROP_ID, new ObjectId(id)), new BasicDBObject("$push", 
 				new BasicDBObject(PROP_ASPECT, newval)));
 	}
+
+	private DBCollection getItemCollection() {
+		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		return collection;
+	}
 	
 	public void addAspect(String id, String aspect) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		collection.update(new BasicDBObject(PROP_ID, new ObjectId(id)), new BasicDBObject("$push", 
 				new BasicDBObject(PROP_ASPECT, aspect)));
 	}
 	
 	public void removeAspect(String id, String aspect) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		collection.update(new BasicDBObject(PROP_ID, new ObjectId(id)), new BasicDBObject("$pull", 
 				new BasicDBObject(PROP_ASPECT, aspect)));
 	}
 
 	public boolean hasAspect(String id, String aspect) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		return  (collection.findOne(new BasicDBObject(PROP_ID, new ObjectId(id)).append(PROP_ASPECT, aspect)))!=null;
 	}
 	
 	public Map getItem(String id) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		DBObject item = collection.findOne(new BasicDBObject(PROP_ID, new ObjectId(id)));
 		return (item==null)?null:item.toMap();
 	}
 	
 	public long getChildrenCount(String parentQuery, Map<String, Object> filter) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		
 		BasicDBObjectBuilder builder;
 		if (filter!=null) {
@@ -107,7 +117,7 @@ public class RepositoryService {
 	
 	
 	public Collection<Map<String, Object>> selectItems(Map m) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
+		DBCollection collection = getItemCollection();
 		DBCursor cursor = collection.find(new BasicDBObject(m));
 		
 		Collection<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
@@ -119,8 +129,7 @@ public class RepositoryService {
 	}
 	
 	public Collection<Map<String, Object>> listChildRen(String parentQuery, Map<String, Object> filter,  int from, int limit, String orderField, String groupBy) {
-		DBCollection collection = dataSource.getMainDB().getCollection("items");
-		//DBObject parent = collection.findOne(BasicDBObjectBuilder.start(PROP_ID, new ObjectId(parentQuery)).get());
+		DBCollection collection = getItemCollection();
 		
 		Collection<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 		//if (parent!=null) {
@@ -183,7 +192,7 @@ public class RepositoryService {
 		}
 		
 		if (specialKey.startsWith("_unique_")) {
-			DBCollection collection = dataSource.getMainDB().getCollection("items");
+			DBCollection collection = getItemCollection();
 			
 			DBObject one = collection.findOne(BasicDBObjectBuilder.start().append(PROP_PARENT_ID, obj.get(PROP_PARENT_ID))
 					.append(specialKey, obj.get(specialKey)).get());
