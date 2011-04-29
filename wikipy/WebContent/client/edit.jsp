@@ -1,6 +1,6 @@
 <%@page import="org.json.JSONObject"%>
 <%@page import="com.wikipy.utils.JSONUtils"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -42,7 +42,7 @@ function ajaxtest(){
 	$("t2").value="";
 	$("btn1").disabled=true;
 	_obj = new Bajax(); 
-	_obj.post("..//import", $("t1").value,callback, "");	
+	_obj.post("../import", $("t1").value,callback, "");	
 }
 
 function callback(req, obj) {  
@@ -51,9 +51,8 @@ function callback(req, obj) {
 	if(req.status == 200)  {
 	    alert("200");
 		$("t2").value=req.responseText;
-		}
-  else
-  	alert("error code=" + req.status);  	
+	} else
+		alert("error code=" + req.status);  	
 	}
 } 
 </script>
@@ -71,6 +70,7 @@ function callback(req, obj) {
 <%} %>
 				</textarea>
 			</fieldset>		
+<center><input type="button" value="SUBMIT" id="btn1" onclick="ajaxtest()"></center>
 
 </body>
 </html>
