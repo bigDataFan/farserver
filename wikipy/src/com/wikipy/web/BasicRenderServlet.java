@@ -59,7 +59,7 @@ public class BasicRenderServlet extends HttpServlet {
 		String webappUri = request.getRequestURI().split("/")[1];
 		
 		String servletPath = request.getServletPath();
-		if (path.equals("/")) {
+		if (path==null || path.equals("/")) {
 			if (rootNode==null) {
 				Map<String, Object> query = new HashMap<String, Object>();
 				query.put(RepositoryService.PROP_PATH, "/");
