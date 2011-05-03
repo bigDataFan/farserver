@@ -11,7 +11,6 @@
 <head>
 
 <%
-
 WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 RepositoryService repositoryService = (RepositoryService) ctx.getBean("repositoryService");
 String id = request.getParameter("id");
@@ -21,9 +20,6 @@ if (id!=null) {
 	Map map = repositoryService.getItem(id);
 	jsonObject = new JSONObject(map);
 }
-
-
-
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -36,10 +32,6 @@ if (id!=null) {
 window.$=function(obj){return typeof(obj)=="string"?document.getElementById(obj):obj}
 
 function ajaxtest(){
-	if($("address").value==""){
-		return;
-	}
-	$("t2").value="";
 	$("btn1").disabled=true;
 	_obj = new Bajax(); 
 	_obj.post("../import", $("t1").value,callback, "");	
@@ -49,15 +41,13 @@ function callback(req, obj) {
 	if(req.readyState == 4)  {
 		$("btn1").disabled=false;
 	if(req.status == 200)  {
-	    alert("200");
-		$("t2").value=req.responseText;
+	    alert("200  " + req.responseText);
 	} else
 		alert("error code=" + req.status);  	
 	}
 } 
 </script>
 
-</script>
 
 </head>
 <body>
