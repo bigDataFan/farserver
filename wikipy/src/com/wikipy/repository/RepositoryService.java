@@ -108,7 +108,7 @@ public class RepositoryService {
 			Map map = item.toMap();
 			
 			map.put(PROP_ID, map.get(PROP_ID).toString());
-			map.put(PROP_PARENT_ID, map.get(PROP_PARENT_ID).toString());
+			map.put(PROP_PARENT_ID, (map.get(PROP_PARENT_ID)==null)?null:(map.get(PROP_PARENT_ID).toString()));
 			return map;
 		}
 		
