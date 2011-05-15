@@ -7,7 +7,9 @@
 			import com.fx.FileService;
 			
 			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
 			import mx.controls.Alert;
+			import mx.controls.listClasses.TileListItemRenderer;
 			import mx.core.UITextField;
 			import mx.events.CloseEvent;
 
@@ -58,7 +60,10 @@
 					var dir:File = event.target as File;
 					cfg_basePath.text = dir.nativePath;
 					fileService.init(new File(cfg_basePath.text));	
-					list_days.dataProvider = new ArrayCollection(fileService.getDays()); 
+					 
+					var days:ArrayCollection = new ArrayCollection(fileService.getDays());
+					list_days.dataProvider =days;
+					list_days.verticalScrollPosition = days.length;
 				});
 			}
 			
@@ -85,9 +90,11 @@
 			{
 				var target:Object = event.target;
 				if (target is UITextField) {
-					var tf:UITextField = target as UITextField;
+					var ir:TileListItemRenderer = target.parent as TileListItemRenderer;
 					
+					var arraylist:ArrayList = fileService.getDateFileList(ir.data["path"]);
 					
+					datagrid_file_list_view.dataProvider = arraylist;
 				}
 			}
 
@@ -160,8 +167,14 @@
 						</mx:HorizontalList>
 						<s:Button width="43" label="&gt;" click="button2_clickHandler(event)"/>
 					</s:HGroup>
-					<s:DataGrid id="dg_file_list_view" width="100%" height="100%">
-						
+					<s:DataGrid id="datagrid_file_list_view" width="100%" height="100%">
+						<s:columns>
+							
+							<mx:DataGridColumn headerText="" dataField="icon">
+							</mx:DataGridColumn>
+							<mx:DataGridColumn headerText="名称" dataField="name"/>
+							<mx:DataGridColumn headerText="类型" dataField="description"/>
+						</s:columns>
 					</s:DataGrid>					
 					
 					<s:HGroup verticalAlign="middle">

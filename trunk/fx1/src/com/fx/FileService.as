@@ -6,6 +6,8 @@ package com.fx
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
+	import mx.collections.ArrayCollection;
+	import mx.collections.ArrayList;
 	import mx.controls.Alert;
 
 	public class FileService
@@ -52,7 +54,10 @@ package com.fx
 			for (var i:int = 0; i < children.length; i++) {
 				var child:File = children[i] as File;
 				if (child.name.match(/\d{1,2}日/i)) {
-					dates.push(child.parent.parent.name + "-" + child.parent.name + "-" + child.name);
+					var o:Object = new Object();
+					o["label"] = child.parent.parent.name + child.parent.name + child.name;
+					o["path"] = child.nativePath;
+					dates.push(o);
 				}
 			}
 		}
@@ -77,6 +82,17 @@ package com.fx
 			
 		}
 		
+		
+		public function getDateFileList(dateStr:String):ArrayList {
+			
+			var folder:File = new File(dateStr);
+			
+			return new ArrayList(folder.getDirectoryListing());
+			
+			 //var y:String = dateStr.indexOf("年");
+			 //var m:String = dateStr.indexOf("月");
+			 //var d:String = dateStr.indexOf("日");
+		}
 		
 		/*
 		public function scanAndAddFiles(root:File, folder:File) : void {
