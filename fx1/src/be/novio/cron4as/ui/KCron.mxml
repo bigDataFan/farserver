@@ -1,0 +1,1064 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="575" height="400" backgroundColor="0xffffff"
+	paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"
+	creationComplete="creationCompleteHandler();"
+>
+
+    <mx:Metadata>
+        [Event(name="change", type="flash.events.Event")]
+    </mx:Metadata>
+
+	<mx:HBox horizontalGap="3">
+		<mx:VBox borderStyle="solid" borderColor="0xCCCCCC" borderThickness="1" height="100%" paddingBottom="3" paddingLeft="3" paddingRight="3" paddingTop="3">
+			<mx:Label text="Months" />
+			<mx:VBox verticalGap="1">
+				<mx:CheckBox label="January" id="month_1_chk" change="month_change(event);" />
+				<mx:CheckBox label="February" id="month_2_chk" change="month_change(event);" />
+				<mx:CheckBox label="March" id="month_3_chk" change="month_change(event);" />
+				<mx:CheckBox label="April" id="month_4_chk" change="month_change(event);" />
+				<mx:CheckBox label="May" id="month_5_chk" change="month_change(event);" />
+				<mx:CheckBox label="June" id="month_6_chk" change="month_change(event);" />
+				<mx:CheckBox label="July" id="month_7_chk" change="month_change(event);" />
+				<mx:CheckBox label="August" id="month_8_chk" change="month_change(event);" />
+				<mx:CheckBox label="September" id="month_9_chk" change="month_change(event);" />
+				<mx:CheckBox label="October" id="month_10_chk" change="month_change(event);" />
+				<mx:CheckBox label="November" id="month_11_chk" change="month_change(event);" />
+				<mx:CheckBox label="December" id="month_12_chk" change="month_change(event);" />
+				<mx:HBox horizontalGap="1">
+				<mx:Button label="Set all" id="setAllMonths_btn" width="47" height="25" click="setAllMonths_btn_click(event);" />
+				<mx:Button label="Reset" id="resetMonths_btn" width="47" height="25" click="resetMonths_btn_click(event);" />
+				</mx:HBox>
+			</mx:VBox>
+ 		</mx:VBox>
+		<mx:VBox height="100%" verticalGap="3">
+			<mx:VBox borderStyle="solid" borderColor="0xCCCCCC" borderThickness="1" paddingBottom="3" paddingLeft="3" paddingRight="3" paddingTop="3">
+				<mx:Label text="Days" />
+				<mx:VBox verticalGap="1">
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="day_1_btn" label="1" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_2_btn" label="2" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_3_btn" label="3" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_4_btn" label="4" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_5_btn" label="5" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_6_btn" label="6" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_7_btn" label="7" width="25" height="25" toggle="true" change="day_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="day_8_btn" label="8" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_9_btn" label="9" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_10_btn" label="10" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_11_btn" label="11" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_12_btn" label="12" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_13_btn" label="13" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_14_btn" label="14" width="25" height="25" toggle="true" change="day_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="day_15_btn" label="15" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_16_btn" label="16" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_17_btn" label="17" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_18_btn" label="18" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_19_btn" label="19" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_20_btn" label="20" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_21_btn" label="21" width="25" height="25" toggle="true" change="day_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="day_22_btn" label="22" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_23_btn" label="23" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_24_btn" label="24" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_25_btn" label="25" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_26_btn" label="26" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_27_btn" label="27" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_28_btn" label="28" width="25" height="25" toggle="true" change="day_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="day_29_btn" label="29" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_30_btn" label="30" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:Button id="day_31_btn" label="31" width="25" height="25" toggle="true" change="day_change(event);" />
+						<mx:HBox horizontalGap="1">
+							<mx:Button label="Set all" id="setAllDays_btn" width="47" height="25" click="setAllDays_btn_click(event);" />
+							<mx:Button label="Reset" id="resetDays_btn" width="47" height="25" click="resetDays_btn_click(event);" />
+						</mx:HBox>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:VBox>
+			
+			<mx:VBox borderStyle="solid" borderColor="0xCCCCCC" borderThickness="1" height="100%" width="100%" paddingBottom="3" paddingLeft="3" paddingRight="3" paddingTop="3">
+				<mx:Label text="Weekdays" />
+				<mx:VBox verticalGap="1">
+					<mx:CheckBox label="Monday" id="weekday_1_chk" change="weekday_change(event);" />
+					<mx:CheckBox label="Tuesday" id="weekday_2_chk" change="weekday_change(event);" />
+					<mx:CheckBox label="Wednesday" id="weekday_3_chk" change="weekday_change(event);" />
+					<mx:CheckBox label="Thursday" id="weekday_4_chk" change="weekday_change(event);" />
+					<mx:CheckBox label="Friday" id="weekday_5_chk" change="weekday_change(event);" />
+					<mx:CheckBox label="Saturday" id="weekday_6_chk" change="weekday_change(event);" />
+					<mx:CheckBox label="Sunday" id="weekday_0_chk" change="weekday_change(event);" />
+					<mx:HBox horizontalGap="1">
+					<mx:Button label="Set all" id="setAllWeekdays_btn" width="47" height="25" click="setAllWeekdays_btn_click(event);" />
+					<mx:Button label="Reset" id="resetWeekdays_btn" width="47" height="25" click="resetWeekdays_btn_click(event);" />
+					</mx:HBox>
+				</mx:VBox>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:VBox verticalGap="3" height="100%">
+			<mx:VBox borderStyle="solid" borderColor="0xCCCCCC" borderThickness="1" height="100%" width="100%" paddingBottom="3" paddingLeft="3" paddingRight="3" paddingTop="3">
+				<mx:Label text="Hours" />
+				<mx:VBox verticalGap="1">
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="hour_0_btn" label="0" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_1_btn" label="1" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_2_btn" label="2" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_3_btn" label="3" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_4_btn" label="4" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_5_btn" label="5" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_6_btn" label="6" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_7_btn" label="7" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_8_btn" label="8" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_9_btn" label="9" width="25" height="25" toggle="true" change="hour_change(event);" />
+					</mx:HBox>			
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="hour_10_btn" label="10" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_11_btn" label="11" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_12_btn" label="12" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_13_btn" label="13" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_14_btn" label="14" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_15_btn" label="15" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_16_btn" label="16" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_17_btn" label="17" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_18_btn" label="18" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_19_btn" label="19" width="25" height="25" toggle="true" change="hour_change(event);" />
+					</mx:HBox>			
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="hour_20_btn" label="20" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_21_btn" label="21" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_22_btn" label="22" width="25" height="25" toggle="true" change="hour_change(event);" />
+						<mx:Button id="hour_23_btn" label="23" width="25" height="25" toggle="true" change="hour_change(event);" />
+					</mx:HBox>	
+					<mx:HBox horizontalGap="1">
+						<mx:Button label="Set all" id="setAllHours_btn" width="47" height="25" click="setAllHours_btn_click(event);" />
+						<mx:Button label="Reset" id="setHours_btn" width="47" height="25" click="setHours_btn_click(event);" />
+					</mx:HBox>
+				</mx:VBox>
+			</mx:VBox>
+			
+			<mx:VBox borderStyle="solid" borderColor="0xCCCCCC" borderThickness="1" height="100%" width="100%" paddingBottom="3" paddingLeft="3" paddingRight="3" paddingTop="3">
+				<mx:Label text="Minutes" />
+				<mx:VBox verticalGap="1">
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="min_0_btn" label="0" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_1_btn" label="1" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_2_btn" label="2" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_3_btn" label="3" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_4_btn" label="4" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_5_btn" label="5" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_6_btn" label="6" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_7_btn" label="7" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_8_btn" label="8" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_9_btn" label="9" width="25" height="25" toggle="true" change="minute_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="min_10_btn" label="10" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_11_btn" label="11" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_12_btn" label="12" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_13_btn" label="13" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_14_btn" label="14" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_15_btn" label="15" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_16_btn" label="16" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_17_btn" label="17" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_18_btn" label="18" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_19_btn" label="19" width="25" height="25" toggle="true" change="minute_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="min_20_btn" label="20" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_21_btn" label="21" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_22_btn" label="22" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_23_btn" label="23" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_24_btn" label="24" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_25_btn" label="25" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_26_btn" label="26" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_27_btn" label="27" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_28_btn" label="28" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_29_btn" label="29" width="25" height="25" toggle="true" change="minute_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="min_30_btn" label="30" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_31_btn" label="31" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_32_btn" label="32" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_33_btn" label="33" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_34_btn" label="34" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_35_btn" label="35" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_36_btn" label="36" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_37_btn" label="37" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_38_btn" label="38" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_39_btn" label="39" width="25" height="25" toggle="true" change="minute_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="min_40_btn" label="40" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_41_btn" label="41" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_42_btn" label="42" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_43_btn" label="43" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_44_btn" label="44" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_45_btn" label="45" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_46_btn" label="46" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_47_btn" label="47" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_48_btn" label="48" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_49_btn" label="49" width="25" height="25" toggle="true" change="minute_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button id="min_50_btn" label="50" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_51_btn" label="51" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_52_btn" label="52" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_53_btn" label="53" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_54_btn" label="54" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_55_btn" label="55" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_56_btn" label="56" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_57_btn" label="57" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_58_btn" label="58" width="25" height="25" toggle="true" change="minute_change(event);" />
+						<mx:Button id="min_59_btn" label="59" width="25" height="25" toggle="true" change="minute_change(event);" />
+					</mx:HBox>
+					<mx:HBox horizontalGap="1">
+						<mx:Button label="Set all" id="setAllMinutes_btn" width="47" height="25" click="setAllMinutes_btn_click(event);" />
+						<mx:Button label="Reset" id="resetMinutes_btn" width="47" height="25" click="resetMinutes_btn_click(event);" />
+					</mx:HBox>
+				</mx:VBox>
+			</mx:VBox>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import be.novio.cron4as.IValueMatcher;
+			import mx.logging.Log;
+			import mx.logging.ILogger;
+		
+			/**
+			 * This is a base component to edit Cron strings in the most elaborate way.
+			 * The interface is inspired by the KCron editor on UNIX.
+			 * 
+			 * @author Hans Van de Velde
+			 */
+		
+			import be.novio.cron4as.IValueMatcher;
+			import mx.collections.ArrayCollection;
+			import be.novio.cron4as.SchedulingPattern;
+			import be.novio.cron4as.Predictor;
+			import mx.controls.Alert;
+		
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+			//
+			// PROPERTIES
+			//
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			// privates
+			private var theCronPredictor:Predictor;
+			private var cronString:String = "";
+			private static const CRONPARTS:Array = ["minutes", "hours", "days", "months", "weekdays"];
+			private var isCreated:Boolean = false;
+			private static const LOGGER:ILogger = Log.getLogger("KCron");
+		
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+			//
+			// IMPLICIT GETTERS AND SETTERS
+			//
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+			/**
+			 * Settings all days selected in the interface
+			 */
+			public function set allDaysSelected(isSel:Boolean):void
+			{
+				try
+				{
+					// apply in the interface, which avoids using tons of bindings
+					for(var i:int = 1; i<=31; i++) (this["day_"+i+"_btn"] as Button).selected = isSel;
+					
+					// notify
+					dispatchEvent(new Event("change"));
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+			}
+			/**
+			 * Returns if all days are selected in the interface
+			 */
+			public function get allDaysSelected():Boolean
+			{
+				var allSelected:Boolean = true;
+				
+				try
+				{
+					for(var i:int = 1; i<=31; i++)
+					{
+						var btn:Button = (this["day_"+i+"_btn"] as Button);
+						if(!btn.selected)
+						{
+							allSelected = false;
+							i = 31;
+						} 
+					}
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+				
+				return allSelected;
+			}
+			
+			//----------------------------------------------------------------------------------------------------			
+			
+			/**
+			 * Settings all months selected in the interface
+			 */
+			public function set allMonthsSelected(isSel:Boolean):void
+			{
+				try
+				{
+					// apply in the interface, which avoids using tons of bindings
+					for(var i:int = 1; i<=12; i++) (this["month_"+i+"_chk"] as CheckBox).selected = isSel;
+					
+					// notify
+					dispatchEvent(new Event("change"));
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+			}
+			
+			//----------------------------------------------------------------------------------------------------			
+			
+			/**
+			 * Returns if all months are selected in the interface
+			 */
+			public function get allMonthsSelected():Boolean
+			{
+				var allSelected:Boolean = true;
+				
+				try
+				{
+					for(var i:int = 1; i<=12; i++)
+					{
+						var btn:CheckBox = (this["month_"+i+"_chk"] as CheckBox);
+						if(!btn.selected)
+						{
+							allSelected = false;
+							i = 13; // break for
+						}
+					} 
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+				
+				return allSelected;
+			}
+			
+			//----------------------------------------------------------------------------------------------------			
+			
+			/**
+			 * Settings all weekdays selected in the interface
+			 */
+			public function set allWeekdaysSelected(isSel:Boolean):void
+			{
+				try
+				{
+					// apply in the interface, which avoids using tons of bindings
+					for(var i:int = 0; i<=6; i++) (this["weekday_"+i+"_chk"] as CheckBox).selected = isSel;
+					
+					// notify
+					dispatchEvent(new Event("change"));
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+			}
+			/**
+			 * Returns if all weekdays are selected in the interface
+			 */
+			public function get allWeekdaysSelected():Boolean
+			{
+				var allSelected:Boolean = true;
+				
+				try
+				{
+					for(var i:int = 0; i<=6; i++)
+					{
+						var btn:CheckBox = (this["weekday_"+i+"_chk"] as CheckBox);
+						if(!btn.selected)
+						{
+							allSelected = false;
+							i = 7;
+						} 
+					} 
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+				
+				return allSelected;
+			}
+			
+			//----------------------------------------------------------------------------------------------------			
+			
+			/**
+			 * Setting all hours selected in the interface
+			 */
+			public function set allHoursSelected(isSel:Boolean):void
+			{
+				try
+				{
+					// apply in the interface, which avoids using tons of bindings
+					for(var i:int = 0; i<=23; i++) (this["hour_"+i+"_btn"] as Button).selected = isSel;
+					
+					// notify
+					dispatchEvent(new Event("change"));
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+			}
+			/**
+			 * Returns if all hours are selected in the interface
+			 */
+			public function get allHoursSelected():Boolean
+			{
+				var allSelected:Boolean = true;
+				
+				try
+				{
+					for(var i:int = 0; i<=23; i++)
+					{
+						var btn:Button = (this["hour_"+i+"_btn"] as Button);
+						if(!btn.selected)
+						{
+							allSelected = false;
+							i = 24;
+						} 
+					} 
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+				
+				return allSelected;
+			}
+			
+			
+			//----------------------------------------------------------------------------------------------------			
+			
+			/**
+			 * Settings all minute buttons selected in the interface
+			 */
+			public function set allMinutesSelected(isSel:Boolean):void
+			{
+				try
+				{
+					// apply in the interface, which avoids using tons of bindings
+					for(var i:int = 0; i<60; i++) (this["min_"+i+"_btn"] as Button).selected = isSel;
+					
+					// notify
+					dispatchEvent(new Event("change"));
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+			}
+			/**
+			 * Returns is all available minute buttons are selected in the interface
+			 */
+			public function get allMinutesSelected():Boolean
+			{
+				var allSelected:Boolean = true;
+				
+				try
+				{
+					for(var i:int = 0; i<60; i++)
+					{
+						var btn:Button = (this["min_"+i+"_btn"] as Button);
+						if(!btn.selected)
+						{
+							allSelected = false;
+							i = 60;
+						} 
+					} 
+				}
+				catch(e:Error)
+				{
+					LOGGER.error(e.getStackTrace());
+				}
+				
+				return allSelected;
+			}
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+			//
+			// PUBLIC METHODS (API)
+			//
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			/**
+			 * Setting the cron via a string and it's displayed in the interface
+			 */
+			public function setCron(_cron_str:String):void
+			{
+				// 
+				cronString = _cron_str;
+				
+				//
+				if(isCreated) setCronToInterface(cronString);
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Get the cron as it is displayed in the interface.
+			 * If certain parts are empty, it will contain #'s as temporary placeholders for the missing values.
+			 */
+			public function getCron():String
+			{
+				var cron:String = "" + getCronPart_minutes() + " " + this.getCronPart_hours() + " " + this.getCronPart_days() + " " + this.getCronPart_months() + " " + this.getCronPart_weekdays();
+				if(cron.indexOf("#") > -1) // validating the input...
+				{
+					var msg_str:String = "";
+					var split_ar:Array = cron.split(" ");
+					for(var i:int = 0; i<split_ar.length; i++)
+					{
+						if(""+split_ar[i] == "#")
+						{
+							if(msg_str.length > 0) msg_str += "\n";
+							msg_str += "Missing value for " + CRONPARTS[i];
+						}
+					}
+					
+					//
+					throw new Error(msg_str);					
+				}
+				
+				//
+				return cron;
+			}
+			
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+			//
+			// PRIVATE METHODS
+			//
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			/**
+			 *
+			 */
+			private function setCronToInterface(_cron:String):void
+			{
+				// clear
+				resetUI(); 
+				
+				//
+				var schedulingPattern:SchedulingPattern = new SchedulingPattern(_cron);
+
+				//
+				try
+				{
+					// set the minute buttons
+					var minMatchers:ArrayCollection = schedulingPattern.minuteMatcher.getMatchers();
+					for(var minuteIndex:int = 0; minuteIndex < minMatchers.length; minuteIndex++)
+					{
+						var minValues:Array = (minMatchers.getItemAt(minuteIndex) as IValueMatcher).getValues();
+						
+						if(minValues.length == 1 && minValues[0] == "*")
+						{
+							this.allMinutesSelected = true;
+						}
+						else
+						{
+							for(var mv:int = 0; mv < minValues.length; mv++)
+							{
+								(this["min_"+minValues[mv]+"_btn"] as Button).selected = true;
+							}
+						}
+					}
+						
+					// set the hour buttons
+					var hourMatchers:ArrayCollection = schedulingPattern.hourMatcher.getMatchers();
+					for(var hourIndex:int = 0; hourIndex < hourMatchers.length; hourIndex++)
+					{
+						var hourValues:Array = (hourMatchers.getItemAt(hourIndex) as IValueMatcher).getValues();
+						
+						if(hourValues.length == 1 && hourValues[0] == "*")
+						{
+							this.allHoursSelected = true;
+						}
+						else
+						{
+							for(var hv:int = 0; hv < hourValues.length; hv++)
+							{
+								(this["hour_"+hourValues[hv]+"_btn"] as Button).selected = true;
+							}
+						}
+					}
+					
+					// set the days of month buttons
+					var dayOfMonthMatchers:ArrayCollection = schedulingPattern.dayOfMonthMatcher.getMatchers();
+					for(var dayOfMonthIndex:int = 0; dayOfMonthIndex < dayOfMonthMatchers.length; dayOfMonthIndex++)
+					{
+						var dayOfMonthValues:Array = (dayOfMonthMatchers.getItemAt(dayOfMonthIndex) as IValueMatcher).getValues();
+						
+						if(dayOfMonthValues.length == 1 && dayOfMonthValues[0] == "*")
+						{
+							this.allDaysSelected = true;	
+						}
+						else
+						{
+							for(var domv:int = 0; domv < dayOfMonthValues.length; domv++)
+							{
+								(this["day_"+dayOfMonthValues[domv]+"_btn"] as Button).selected = true;
+							} 
+						}
+					}
+					
+					// set the months checkboxes
+					var monthMatchers:ArrayCollection = schedulingPattern.monthMatcher.getMatchers();
+					for(var monthIndex:int = 0; monthIndex < monthMatchers.length; monthIndex++)
+					{
+						var monthValues:Array = (monthMatchers.getItemAt(monthIndex) as IValueMatcher).getValues();
+						
+						if(monthValues.length == 1 && monthValues[0] == "*")
+						{
+							this.allMonthsSelected = true;
+						}
+						else
+						{
+							for(var mnthv:int = 0; mnthv < monthValues.length; mnthv++)
+							{
+								(this["month_"+monthValues[mnthv]+"_chk"] as CheckBox).selected = true;
+							} 
+						}
+					}
+					
+					// set the weekday checkboxes
+					var dayOfWeekMatchers:ArrayCollection = schedulingPattern.dayOfWeekMatcher.getMatchers();
+					for(var dayOfWeekIndex:int = 0; dayOfWeekIndex < dayOfWeekMatchers.length; dayOfWeekIndex++)
+					{
+						var dayOfWeekValues:Array = (dayOfWeekMatchers.getItemAt(dayOfWeekIndex) as IValueMatcher).getValues(); 
+						
+						if(dayOfWeekValues.length == 1 && dayOfWeekValues[0] == "*")
+						{
+							this.allWeekdaysSelected = true;
+						}
+						else
+						{
+							for(var dowv:int = 0; dowv < dayOfWeekValues.length; dowv++)
+							{
+								(this["weekday_"+dayOfWeekValues[dowv]+"_chk"] as CheckBox).selected = true;		
+							}
+						}
+					}
+				}
+				catch(e:Error)
+				{
+					LOGGER.error("Error in KCron.setCronToInterface, error:" + e.getStackTrace());
+				}
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 *
+			 */
+			private function resetUI():void
+			{
+				allDaysSelected = false;
+				allMonthsSelected = false;
+				allWeekdaysSelected = false;
+				allHoursSelected = false;
+				allMinutesSelected = false;
+			}
+
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 *
+			 */
+			private function getCronPart_weekdays():String
+			{
+				var _str:String = "";
+				var sep_str:String = "";
+				if(allWeekdaysSelected)
+				{
+					_str = "*";
+				}
+				else
+				{
+					var noneSelected:Boolean = true;
+					for(var i:int = 0; i<=6; i++)
+					{
+						var chk:CheckBox = (this["weekday_"+i+"_chk"] as CheckBox);
+						if(chk.selected)
+						{
+							if(i <= 6) _str += sep_str;
+							_str += ""+i;
+							sep_str = ",";
+							noneSelected = false;
+						} 
+					} 
+					
+					//
+					if(noneSelected) _str = "#";
+					else _str = tryToMakeSpans(_str);
+				}
+				
+				return _str;
+			}
+
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 *
+			 */
+			private function getCronPart_months():String
+			{
+				var _str:String = "";
+				var sep_str:String = "";
+				if(allMonthsSelected)
+				{
+					_str = "*";
+				}
+				else
+				{
+					var noneSelected:Boolean = true;
+					for(var i:int = 1; i<=12; i++)
+					{
+						var chk:CheckBox = (this["month_"+i+"_chk"] as CheckBox);
+						if(chk.selected)
+						{
+							if(i <= 12) _str += sep_str;
+							_str += ""+i;
+							sep_str = ",";
+							noneSelected = false;
+						} 
+					} 
+					
+					//
+					if(noneSelected) _str = "#";
+					else _str = tryToMakeSpans(_str);
+				}
+				
+				return _str;
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 *
+			 */
+			private function getCronPart_days():String
+			{
+				var _str:String = "";
+				var sep_str:String = "";
+				if(allDaysSelected)
+				{
+					_str = "*";
+				}
+				else
+				{
+					var noneSelected:Boolean = true;
+					for(var i:int = 1; i<=31; i++)
+					{
+						var btn:Button = (this["day_"+i+"_btn"] as Button);
+						if(btn.selected)
+						{
+							if(i <= 31) _str += sep_str;
+							_str += ""+i;
+							sep_str = ",";
+							noneSelected = false;
+						} 
+					}
+					
+					//
+					if(noneSelected) _str = "#";
+					else _str = tryToMakeSpans(_str);
+				}
+				
+				return _str;
+			}
+
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 *
+			 */
+			private function getCronPart_hours():String
+			{
+				var _str:String = "";
+				var sep_str:String = "";
+				if(allHoursSelected)
+				{
+					_str = "*";
+				}
+				else
+				{
+					var noneSelected:Boolean = true;
+					for(var i:int = 0; i<=23; i++)
+					{
+						var btn:Button = (this["hour_"+i+"_btn"] as Button);
+						if(btn.selected)
+						{
+							if(i <= 23) _str += sep_str;
+							sep_str = ",";
+							noneSelected = false;
+							_str += ""+i;
+						} 
+					}
+					
+					//
+					if(noneSelected) _str = "#";
+					else _str = tryToMakeSpans(_str);
+				}
+				
+				return _str;
+			}
+
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 *
+			 */
+			private function getCronPart_minutes():String
+			{
+				var _str:String = "";
+				var sep_str:String = "";
+
+				if(allMinutesSelected)
+				{
+					_str = "*";
+				}
+				else
+				{
+					var noneSelected:Boolean = true;
+					for(var i:int = 0; i<60; i++) 
+					{
+						var btn:Button = (this["min_"+i+"_btn"] as Button);
+						if(btn.selected)
+						{
+							if(i < 60) _str += sep_str;
+							sep_str = ",";
+							_str += ""+i;
+							noneSelected = false;
+						} 
+					} 
+					
+					//
+					if(noneSelected) _str = "#";
+					else _str = tryToMakeSpans(_str);
+				}
+								
+				
+				return _str;
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 * TO DO !!!
+			 * @param cronPart_str: a part of a cron as comma delimited list
+			 * We treat a comma delimited list and try to return (a list of) span(s)
+			 */
+			private function tryToMakeSpans(cronPart_str:String):String
+			{
+				var split_ar:Array = cronPart_str.split(",");
+				var returnString:String = "";
+				var sep_str:String = "";
+				
+				if(split_ar.length > 2) // a span is only possible if there are more than 2 numbers
+				{
+					var work_ar:Array = new Array();
+					
+					// add first element
+					work_ar.push(split_ar[0]); 
+					
+					// PREPARATION : replace intermediate elements in the span by a placeholder "~"
+					for(var i:int = 1; i<split_ar.length-1; i++)
+					{
+						var prevNum:int = parseInt(""+split_ar[i-1]);
+						var curNum:int = parseInt(""+split_ar[i]);
+						var nextNum:int = parseInt(""+split_ar[i+1]);
+						
+						if(prevNum + 1 == curNum && nextNum - 1 == curNum) // we have a span !
+						{
+							work_ar.push("~");
+						}
+						else
+						{
+							work_ar.push(""+curNum);
+						}
+					}
+					
+					// add the last element
+					work_ar.push(split_ar[split_ar.length-1]);
+
+					//					
+					for(var j:int = 0; j<work_ar.length; j++)
+					{
+						if(work_ar[j] == "~")
+						{
+							if(""+returnString.charAt(returnString.length-1) != "-")
+							{ 
+								returnString += "-";
+							}
+						}
+						else if(!isNaN(parseInt(""+work_ar[j])))
+						{
+							if(j<work_ar.length && ""+returnString.charAt(returnString.length-1) != "-") returnString += sep_str;
+							returnString += ""+work_ar[j];
+							sep_str = ",";
+						}
+					}
+				}
+				else
+				{
+					returnString = cronPart_str;
+				}
+				
+				return returnString;
+			}
+			
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+			//
+			// EVENT HANDLERS
+			//
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+			/**
+			 *
+			 */
+			private function creationCompleteHandler():void
+			{
+				isCreated = true;
+				
+				//
+				if(""+cronString != "")
+				{
+					setCronToInterface(cronString);
+				}
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+		
+			/**
+			 * Event handler for when a month cron setting changed
+			 */
+			private function month_change(event:Event):void
+			{
+				dispatchEvent(new Event("change"));
+			}
+			/**
+			 * Event handler for when a day cron setting changed
+			 */
+			private function day_change(event:Event):void
+			{
+				dispatchEvent(new Event("change"));
+			}
+			/**
+			 * Event handler for when a week cron setting changed
+			 */
+			private function weekday_change(event:Event):void
+			{
+				dispatchEvent(new Event("change"));
+			}
+			/**
+			 * Event handler for when an hour cron setting changed
+			 */
+			private function hour_change(event:Event):void
+			{
+				dispatchEvent(new Event("change"));
+			}
+			/**
+			 * Event handler for when a minute cron setting changed
+			 */
+			private function minute_change(event:Event):void
+			{
+				dispatchEvent(new Event("change"));
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Set all / Reset days button handlers
+			 */
+			private function setAllDays_btn_click(event:Event):void
+			{
+				allDaysSelected = true;
+			}
+			private function resetDays_btn_click(event:Event):void
+			{
+				allDaysSelected = false;
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Set all / Reset months button handlers
+			 */
+			private function setAllMonths_btn_click(event:Event):void
+			{
+				allMonthsSelected = true;
+			}
+			private function resetMonths_btn_click(event:Event):void
+			{
+				allMonthsSelected = false;
+			}
+
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Set all / Reset weekday button handlers
+			 */
+			private function setAllWeekdays_btn_click(event:Event):void
+			{
+				allWeekdaysSelected = true;
+			}
+			private function resetWeekdays_btn_click(event:Event):void
+			{
+				allWeekdaysSelected = false;
+			}
+
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Set all / Reset hour button handlers
+			 */
+			private function setAllHours_btn_click(event:Event):void
+			{
+				allHoursSelected = true;
+			}
+			private function setHours_btn_click(event:Event):void
+			{
+				allHoursSelected = false;
+			}
+			
+			//---------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Set all / Reset minute button handlers
+			 */
+			private function setAllMinutes_btn_click(event:Event):void
+			{
+				allMinutesSelected = true;
+			}
+			private function resetMinutes_btn_click(event:Event):void
+			{
+				allMinutesSelected = false;
+			}
+		]]>
+	</mx:Script>
+</mx:VBox>

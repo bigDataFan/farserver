@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+xmlns:mx="http://www.adobe.com/2006/mxml"
+xmlns:planning="be.novio.cron4as.ui.*"
+title="Edit cron string"
+creationComplete="creationCompleteHandler();"
+>
+    <mx:WipeRight id="wipeLabel" target="{occurrenceLbl}" />
+
+    <planning:KCron id="myKcron" change="myKcron_change(event);" />
+    <mx:HBox width="100%">
+        <mx:Label text="Job duration (in minutes):" /><mx:NumericStepper id="duration_ns" minimum="5" stepSize="5" maximum="525600" change="duration_ns_change(event);" />
+    </mx:HBox>
+    <mx:HBox width="100%">
+        <mx:Label id="occurrenceLbl" fontWeight="bold" text="{'Next occurrence: ' + nextOccurrenceDate_str}" width="500" />
+    </mx:HBox>
+    <mx:HBox width="100%" horizontalAlign="right">
+        <mx:Button label="Save and close" id="save_btn" click="save_btn_click(event);" />
+        <mx:Button label="Cancel" id="cancel_btn" click="cancel_btn_click(event);" />
+    </mx:HBox>    
+
+    <mx:Script>
+    	<![CDATA[
+    		import be.novio.utils.DateFunction;
+    		import be.novio.cron4as.Predictor;
+	        import mx.formatters.DateFormatter;
+	        import be.novio.utils.DateFunction;
+	        import mx.managers.PopUpManager;
+	        import mx.controls.Alert;
+	        
+	        [Bindable] public var sequenceName:String="";
+	        [Bindable] public var nextOccurrenceDate_str:String = "";
+	        
+	        public static const CRON_UPDATE:String = "cronUpdate";
+	        
+	        private var cron_str:String = "";
+	        private var dur:Number = 0;
+	        private var dateFormatter:DateFormatter;
+	
+	        //////////////////////////////////////////////////////////////////////
+	        //
+	        // PUBLIC METHODS
+	        //
+	        //////////////////////////////////////////////////////////////////////
+	        
+	        /**
+	         *
+	         */
+	        public function setCron(crn_str:String):void
+	        {
+	            cron_str = crn_str;
+	            myKcron.setCron(crn_str);
+	            updateOccurrenceInfo();
+	        }
+	        public function getCron():String
+	        {
+	            return cron_str;
+	        }
+	        
+	        //----------------------------------------------------------------------------------
+	        
+	        /**
+	         *
+	         */
+	        public function setDuration(d:int):void
+	        {
+	            dur = d;
+	            duration_ns.value = d;
+	        }
+	        public function getDuration():Number
+	        {
+	            return dur;
+	        }
+	        
+	        //----------------------------------------------------------------------------------
+	
+	        /**
+	         * close the popup window
+	         */            
+	        public function close():void
+	        {
+	            PopUpManager.removePopUp(this);
+	        }
+	        
+	        //////////////////////////////////////////////////////////////////////
+	        //
+	        // PRIVATE METHODS
+	        //
+	        //////////////////////////////////////////////////////////////////////
+	        
+	        /**
+	         *
+	         */
+	        private function updateOccurrenceInfo():void
+	        {
+	            //
+	            if(cron_str == "" || dur == 0)
+	            {
+	                nextOccurrenceDate_str = "";
+	                return;    
+	            }
+	            
+	            //
+	            var nextOcc_date:Date = new Predictor(myKcron.getCron()).nextMatchingDate();
+	            var oldLbl_str:String = ""+occurrenceLbl.text;
+	            nextOccurrenceDate_str = "" + dateFormatter.format(nextOcc_date) + " ---> " + dateFormatter.format(DateFunction.dateAdd(DateFunction.ADDMINUTES, dur, nextOcc_date));
+	            var newLbl_str:String = ""+occurrenceLbl.text;
+	            
+	            //
+	            if(""+newLbl_str != ""+oldLbl_str) wipeLabel.play();
+	        }
+	        
+	        //---------------------------------------------------------------------
+	        
+	        /**
+	         *
+	         */
+	        private function setInvalidCronMessage():void
+	        {
+	            nextOccurrenceDate_str = "[!]";
+	        }
+	        
+	        //////////////////////////////////////////////////////////////////////
+	        //
+	        // EVENT HANDLERS
+	        //
+	        //////////////////////////////////////////////////////////////////////
+	        
+	        /**
+	         *
+	         */
+	        private function creationCompleteHandler():void
+	        {
+	            dateFormatter = new DateFormatter();
+	            dateFormatter.formatString = "DD/MM/YYYY J:NN";
+	        }
+	        
+	        //--------------------------------------------------------------------    
+	        
+	        /**
+	         *
+	         */
+	        private function duration_ns_change(event:Event):void
+	        {
+	            dur = (event.currentTarget as NumericStepper).value;
+	            try
+	            {
+	                updateOccurrenceInfo();
+	            }
+	            catch(e:Error)
+	            {
+	                setInvalidCronMessage();
+	            }
+	        }
+	        
+	        //--------------------------------------------------------------------    
+	        
+	        /**
+	         *
+	         */
+	        private function save_btn_click(event:Event):void
+	        {
+	            try
+	            {
+	                cron_str = myKcron.getCron();
+	                
+	                //
+	                dur = duration_ns.value;
+	                dispatchEvent(new Event(CRON_UPDATE));
+	            }
+	            catch(e:Error)
+	            {
+	                Alert.show(""+e.message, "Invalid cron, please correct:");
+	            }
+	        }
+	        
+	        //--------------------------------------------------------------------    
+	        
+	        /**
+	         *
+	         */
+	        private function cancel_btn_click(event:Event):void
+	        {
+	            close();
+	        }
+	        
+	        //--------------------------------------------------------------------    
+	        
+	        /**
+	         *
+	         */
+	        private function myKcron_change(event:Event):void
+	        {
+	            try
+	            {
+	                updateOccurrenceInfo();
+	            }
+	            catch(e:Error)
+	            {
+	                setInvalidCronMessage();
+	            }
+	        }
+	        
+      	]]>
+    </mx:Script>
+</mx:TitleWindow>
