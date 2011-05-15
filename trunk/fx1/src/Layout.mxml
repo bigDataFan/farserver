@@ -169,11 +169,16 @@
 					</s:HGroup>
 					<s:DataGrid id="datagrid_file_list_view" width="100%" height="100%">
 						<s:columns>
-							
-							<mx:DataGridColumn headerText="" dataField="icon">
-							</mx:DataGridColumn>
-							<mx:DataGridColumn headerText="名称" dataField="name"/>
-							<mx:DataGridColumn headerText="类型" dataField="description"/>
+							<s:ArrayList id="columns">
+								<s:GridColumn dataField="icon" headerText="" itemRenderer="com.fx.FileItemRenderer" width="64">
+								</s:GridColumn>
+								<s:GridColumn headerText="名称" dataField="name"/>	
+								<s:GridColumn headerText="修改时间" dataField="modificationDate">
+								</s:GridColumn>
+								<s:GridColumn dataField="size">
+									
+								</s:GridColumn>
+							</s:ArrayList>
 						</s:columns>
 					</s:DataGrid>					
 					

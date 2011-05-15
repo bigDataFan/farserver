@@ -86,7 +86,6 @@ package com.fx
 		public function getDateFileList(dateStr:String):ArrayList {
 			
 			var folder:File = new File(dateStr);
-			
 			return new ArrayList(folder.getDirectoryListing());
 			
 			 //var y:String = dateStr.indexOf("年");
