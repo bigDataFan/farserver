@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					  >
+	
+	<fx:Script>
+		<![CDATA[
+			import be.novio.cron4as.Scheduler;
+			import be.novio.cron4as.SchedulingPattern;
+			import be.novio.cron4as.Task;
+			import be.novio.cron4as.event.CronTaskEvent;
+			import be.novio.cron4as.event.SchedulerPollingActivatedEvent;
+			
+			import com.adobe.serialization.json.JSON;
+			import com.adobe.serialization.json.JSONEncoder;
+			import com.coltware.airxmail.INetAddress;
+			import com.coltware.airxmail.MailSender.SMTPSender;
+			import com.coltware.airxmail.MimeMessage;
+			import com.coltware.airxmail.RecipientType;
+			
+			import mx.controls.Alert;
+			
+			import spark.components.Application;
+			
+			public var globalConfig:Object = new Object();
+
+			
+			function sendEmail(event:Event) {
+				this.globalConfig;
+				//.globalConfig["aa"] = "bb";
+				
+				var timer:Timer
+				return;
+				var sender:SMTPSender = new SMTPSender();
+				sender.setParameter(SMTPSender.HOST,"smtp.126.com");
+				sender.setParameter(SMTPSender.PORT,25);
+				//sender.setParameter(SMTPSender.SSL,true);
+				//sender.setParameter(SMTPSender.SOCKET_OBJECT,new SecureSocket());
+
+				sender.setParameter(SMTPSender.AUTH,true)
+				sender.setParameter(SMTPSender.USERNAME,"liuhann@126.com");
+				sender.setParameter(SMTPSender.PASSWORD,"overlord");
+				var message:MimeMessage = new MimeMessage();
+				var from:INetAddress = new INetAddress("liuhann@126.com","from label");
+				message.setFrom(from);
+				var toRecpt:INetAddress = new INetAddress("liuhann@gmail.com","to label");
+				message.addRcpt(RecipientType.TO,toRecpt);
+				message.setSubject("hello world");
+				message.setTextBody("welcom !! \r\n this is first email. ");
+				sender.send(message);
+				sender.close();
+				Alert.show("ok","yeah");
+			}
+
+			
+			function cron() {
+				var scheduler: Scheduler = new Scheduler();
+				
+				scheduler.schedule(new Task(new SchedulingPattern("* 9 * * *"),"aa"));
+				
+				scheduler.addEventListener(SchedulerPollingActivatedEvent.EVENT_NAME,beginOfTaskEventHandler);
+				scheduler.addEventListener(CronTaskEvent.EVENT_NAME,beginOfTaskEventHandler);
+				
+				scheduler.start();
+				
+				//cron.setPattern("0 15 10 * *");
+				
+				/*
+				try {
+					Alert.show(cron.getNextOccurDate(new Date()).toTimeString(),"hi");
+				} catch (e:Error) {
+					Alert.show(e.getStackTrace(),"he");
+				}*/
+					
+			}
+			
+			protected function windowedapplication1_activateHandler(event:Event):void
+			{
+			}
+			
+			private function beginOfTaskEventHandler(event:Event):void
+			{
+				Alert.show("Notification for task " + event.type);
+			}
+
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var obj:Object = {};
+				obj["tsk_info"] = tsk_info.text;
+				var str:String = JSON.encode(obj);
+			}
+
+
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				
+			}
+
+			
+			function  interateFolder( dic:Dictionary, folder:File):Dictionary {
+				if (folder.isDirectory) {
+					var list:Array = folder.getDirectoryListing();
+					for (var i:int = 0; i < list.length; i++) 
+					{
+						var child:File = list[i];
+						var datestr:String = child.modificationDate.fullYear + "-" + child.modificationDate.month + "-" + child.modificationDate.date;
+						
+						
+						
+					}
+				}
+				
+				return dic;
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<s:Panel title="ViewStack Container" height="240" width="720">
+	
+		
+	<mx:ViewStack id="global" borderStyle="solid" width="100%" height="80%" color="0x323232" >
+		<s:NavigatorContent width="100%" height="100%" label="vv" id="vs_config">
+			<s:Panel>
+				<s:Form width="675">
+					<s:FormItem label="工作目录">
+						<s:HGroup>
+							<s:TextInput width="300" id="cfg_basePath">
+								
+							</s:TextInput> 
+							<s:Button label="Open">
+							   <s:click>
+								   var f:File = File.desktopDirectory;
+								   f.browseForDirectory("选择目录");
+								   f.addEventListener(Event.SELECT, function (event:Event):void {
+								  		 var dir:File = event.target as File;
+								   		  cfg_basePath.text = dir.nativePath;
+								   		//fs.open(event.target as File, FileMode.READ);
+								   });
+							   </s:click>
+							</s:Button>   
+							
+						</s:HGroup>
+					</s:FormItem>
+					<s:FormItem label="">
+						
+						
+					</s:FormItem>
+				</s:Form>
+			</s:Panel>
+		</s:NavigatorContent>
+		
+		<s:NavigatorContent width="100%" height="100%" label="vv">
+			
+			<s:Panel id="pn_edit_task" width="500" height="400" title="any" visible="false">
+				<s:Form>
+					<s:FormItem label="事务信息">
+						<s:TextInput width="300" id="tsk_info">
+							
+						</s:TextInput>
+					</s:FormItem>
+					<s:FormItem label="启动时间">
+						<s:TextInput width="300" id="tsk_start"  text="{new Date()}">
+							
+						</s:TextInput>
+					</s:FormItem>
+					<s:FormItem label="邮件提醒时间">
+						<s:TextInput width="300" id="tsk_remind">
+							
+						</s:TextInput>
+					</s:FormItem>
+					<s:FormItem label="附加文件">
+						
+					</s:FormItem>
+					<s:Button label="确定" click="button1_clickHandler(event)">
+						
+					</s:Button>
+				</s:Form>
+				
+			</s:Panel>
+			
+			
+			
+		</s:NavigatorContent>
+		
+		<s:NavigatorContent width="100%" height="100%" label="vv">
+			
+			<s:Panel width="500" height="400" visible="false">
+				<s:Button>
+					<s:click>
+						<![CDATA[
+							var folder:File = new File("f:/");
+							var dic:Dictionary = new Dictionary();
+							
+							interateFolder(dic,folder);
+							
+						
+						
+						]]>
+					</s:click>
+				</s:Button>
+				
+				
+			</s:Panel>
+			
+			
+		</s:NavigatorContent>
+		
+	</mx:ViewStack>
+	</s:Panel>
+	<s:ComboBox x="281" y="335"/>
+	<s:List x="257" y="485" width="200" height="44"></s:List>
+	
+</s:WindowedApplication>
