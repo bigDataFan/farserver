@@ -9,6 +9,8 @@ package com.fx
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.controls.Alert;
+	import mx.formatters.DateFormatter;
+	import mx.formatters.Formatter;
 
 	public class FileService
 	{
@@ -17,10 +19,20 @@ package com.fx
 		var dates:Array = new Array();
 		var dateDic:Dictionary = new Dictionary();
 		
+		
+		
 		var rootFolder:File;
 		
 		public function FileService()
 		{
+		}
+		
+		public function getRootFolder():String {
+			if (rootFolder==null) {
+				return "";
+			} else {
+				return rootFolder.nativePath;
+			}
 		}
 		
 		public function getDays():Array {
@@ -86,13 +98,25 @@ package com.fx
 		public function getDateFileList(dateStr:String):ArrayList {
 			
 			var folder:File = new File(dateStr);
-			return new ArrayList(folder.getDirectoryListing());
+			var children:Array = folder.getDirectoryListing();
 			
+			var result: ArrayList = new ArrayList();
+			for (var i:int = 0; i < children.length; i++) 
+			{
+				result.addItem(new GridFile(children[i] as File));	
+			}
+			return result;
 			 //var y:String = dateStr.indexOf("年");
 			 //var m:String = dateStr.indexOf("月");
 			 //var d:String = dateStr.indexOf("日");
 		}
 		
+		private function formatFolder(date:Date):String {
+			return date.getFullYear() + "年/" 
+				+ (((date.getMonth()+1)<10)?("0"+ (date.getMonth()+1)): (date.getMonth()+1)) + "月/" 
+				+ ((date.getDate()<10)?("0"+date.getDate()):date.getDate()) + "日"
+			
+		}
 		
 		public function organizeFolder(root:File) : void {
 			var children:Array = root.getDirectoryListing();
@@ -102,7 +126,7 @@ package com.fx
 					//scanAndAddFiles(root,child);
 				} else {
 					var modified:Date = child.modificationDate;
-					var folderPath:String = root.nativePath + "/" + modified.getFullYear() + "年/" + (modified.getMonth()+1) + "月/" + modified.getDate() + "日/" + child.name;
+					var folderPath:String = root.nativePath + "/" + formatFolder(modified) + "/" + child.name;
 					var dateFolder:File = new File(folderPath);
 					//dateFolder.createDirectory();
 					var fr:FileReference = new FileReference();

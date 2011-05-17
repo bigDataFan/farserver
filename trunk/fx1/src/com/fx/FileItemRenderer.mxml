@@ -4,9 +4,15 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				autoDrawBackground="true" >
 	
-	<s:Image source="img/unknown.png">
+	<s:Image source="{data.iconpath}">
 		
 	</s:Image>
+	<s:Label text="aaa">
+		
+	</s:Label>
 	
+	<s:Label text="{data.@size}">
+		
+	</s:Label>
 	
 </s:ItemRenderer>
