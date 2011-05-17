@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" >
 	<fx:Script>
 		<![CDATA[
+			import com.fx.ConfigUtils;
 			import com.fx.FileService;
 			
 			import mx.collections.ArrayCollection;
@@ -12,8 +12,6 @@
 			import mx.controls.listClasses.TileListItemRenderer;
 			import mx.core.UITextField;
 			import mx.events.CloseEvent;
-
-			var global_workingdates:Array = [];
 			
 			var xmm:XML = 
 				<vssmenu label="all" data="root">
@@ -42,7 +40,7 @@
 					var text:UITextField = target as UITextField;
 					
 					if (text.text=="每日文件") {
-						viewstack_global.selectedChild = vbox_everyday_file;
+						viewstack.selectedChild = navcontent_everyday_file;
 					}
 					
 				}
@@ -58,17 +56,25 @@
 				
 				f.addEventListener(Event.SELECT, function (event:Event):void {
 					var dir:File = event.target as File;
-					cfg_basePath.text = dir.nativePath;
-					fileService.init(new File(cfg_basePath.text));	
-					 
-					var days:ArrayCollection = new ArrayCollection(fileService.getDays());
-					list_days.dataProvider =days;
-					list_days.verticalScrollPosition = days.length;
+					fileService.organizeFolder(dir);
+					ConfigUtils.writeProp("basePath",dir.nativePath);
+					ui_init_fileVGroup();
 				});
 			}
 			
-			
-			
+			public function ui_init_fileVGroup() :void {
+				var basePath:String = ConfigUtils.readProp("basePath");
+				
+				if (basePath!=null) {
+					cfg_basePath.text = basePath;
+					
+					fileService.init(new File(cfg_basePath.text));	
+					var days:ArrayCollection = new ArrayCollection(fileService.getDays());
+					list_days.dataProvider =days;
+					list_days.verticalScrollPosition = days.length;
+				}
+				
+			}
 			
 
 
@@ -124,72 +130,58 @@
 		</fx:XML>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
+	
 	<mx:MenuBar x="0" y="0" height="30" width="100%" dataProvider="{xmm}"   labelField="@label"  showRoot="false" iconField="">
 	</mx:MenuBar>
 	<s:HGroup x="0" y="30" width="100%" height="100%">
 		
+		
 		<mx:HDividedBox width="100%" height="100%" color="0x323232">
 			<mx:Tree id="myTree" width="200" height="100%" labelField="@label"
 					 showRoot="false" dataProvider="{data_ltree}"  click="myTree_clickHandler(event)"/>
-			
-			<mx:ViewStack id="viewstack_global" borderStyle="solid" width="100%" height="100%" color="0x323232">
 				
 				
-				
-				<mx:VBox id="custInfo" label="Customer Info" backgroundColor="0xDCDCDC" width="100%" height="100%" fontWeight="bold" horizontalAlign="center" >
-					<mx:Label text="Customer Info" width="100%" textAlign="center" paddingTop="10" />
-					<mx:HBox width="100%" horizontalAlign="center">
+				<mx:ViewStack id="viewstack" borderStyle="solid" width="100%" height="80%" color="0x323232">
+					<s:NavigatorContent id="search" label="Search" backgroundColor="0xDCDCDC" width="100%" height="100%" fontWeight="bold">
 						
-						<mx:Label text="Email Address"/>
-						<mx:TextInput id="email" width="200"/>
-						<mx:Button label="Submit" click="email.text='';" />
-					</mx:HBox>
-					
-				</mx:VBox>
-				
-				<mx:VBox id="accountInfo" label="Account Info" backgroundColor="0xDCDCDC" width="100%" height="100%" fontWeight="bold" >
-					<mx:Label text="Account Info" width="100%" textAlign="center" paddingTop="10" />
-					<mx:HBox width="100%" horizontalAlign="center">
-						<mx:Button label="Purchases" />
-						<mx:Button label="Sales" />
-						<mx:Button label="Reports" />
-						
-					</mx:HBox>
-				</mx:VBox>
-				
-				
-				<!--文件管理 VBOX-->
-				<mx:VBox id="vbox_everyday_file" label="每日文件" backgroundColor="0xDCDCDC" width="100%" height="100%" fontWeight="bold" >
-					<s:HGroup verticalAlign="middle">
-						<s:Button width="34" label="&lt;" click="button1_clickHandler(event)"/>
-						<mx:HorizontalList width="707" height="25" id="list_days" click="list_days_clickHandler(event)" horizontalScrollPolicy="off">
+						<s:Label text="helloa">
 							
-						</mx:HorizontalList>
-						<s:Button width="43" label="&gt;" click="button2_clickHandler(event)"/>
-					</s:HGroup>
-					<s:DataGrid id="datagrid_file_list_view" width="100%" height="100%">
-						<s:columns>
-							<s:ArrayList id="columns">
-								<s:GridColumn dataField="icon" headerText="" itemRenderer="com.fx.FileItemRenderer" width="64">
-								</s:GridColumn>
-								<s:GridColumn headerText="名称" dataField="name"/>	
-								<s:GridColumn headerText="修改时间" dataField="modificationDate">
-								</s:GridColumn>
-								<s:GridColumn dataField="size">
-									
-								</s:GridColumn>
-							</s:ArrayList>
-						</s:columns>
-					</s:DataGrid>					
+						</s:Label>
+					</s:NavigatorContent>
 					
-					<s:HGroup verticalAlign="middle">
-						<s:Label>请设置您的工作根目录</s:Label><s:TextInput x="35" y="10" width="428" id="cfg_basePath"/> 
-						<s:Button label="设置" click="textinput1_clickHandler(event)"/>
-						<!--<s:Button label="按日期组织文件"  click="button1_clickHandler(event)"/>-->
-						<s:Label color="red" id="label_filestatus" text="工作目录的文件会自动按日期组织起来"></s:Label>
-					</s:HGroup>
-				</mx:VBox>
-			</mx:ViewStack>
+					<!--文件管理 VBOX-->
+					<s:NavigatorContent id="navcontent_everyday_file" backgroundColor="0xDCDCDC" width="100%" height="100%" initialize="ui_init_fileVGroup()">
+						<s:HGroup verticalAlign="middle">
+							<s:Button width="34" label="&lt;" click="button1_clickHandler(event)"/>
+							<mx:HorizontalList width="707" height="25" id="list_days" click="list_days_clickHandler(event)" horizontalScrollPolicy="off">
+								
+							</mx:HorizontalList>
+							<s:Button width="43" label="&gt;" click="button2_clickHandler(event)"/>
+						</s:HGroup>
+						<s:DataGrid id="datagrid_file_list_view" width="100%" height="100%">
+							<s:columns>
+								<s:ArrayList id="columns">
+									<s:GridColumn dataField="icon" headerText="" itemRenderer="com.fx.FileItemRenderer" width="64">
+									</s:GridColumn>
+									<s:GridColumn headerText="名称" dataField="name"/>	
+									<s:GridColumn headerText="修改时间" dataField="modificationDate">
+									</s:GridColumn>
+									<s:GridColumn dataField="size">
+										
+									</s:GridColumn>
+								</s:ArrayList>
+							</s:columns>
+						</s:DataGrid>					
+						<s:HGroup verticalAlign="middle">
+							<s:Label>请设置您的工作根目录</s:Label><s:TextInput x="35" y="10" width="428" id="cfg_basePath"/> 
+							<s:Button label="设置" click="textinput1_clickHandler(event)"/>
+							<!--<s:Button label="按日期组织文件"  click="button1_clickHandler(event)"/>-->
+							<s:Label color="red" id="label_filestatus" text="工作目录的文件会自动按日期组织起来"></s:Label>
+						</s:HGroup>
+					</s:NavigatorContent>
+					
+				</mx:ViewStack>
+				
 			
 		</mx:HDividedBox>
 		

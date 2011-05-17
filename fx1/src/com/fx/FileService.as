@@ -93,8 +93,32 @@ package com.fx
 			 //var d:String = dateStr.indexOf("日");
 		}
 		
+		
+		public function organizeFolder(root:File) : void {
+			var children:Array = root.getDirectoryListing();
+			for (var i:int = 0; i < children.length; i++) {
+				var child:File = children[i] as File;
+				if (child.isDirectory) {
+					//scanAndAddFiles(root,child);
+				} else {
+					var modified:Date = child.modificationDate;
+					var folderPath:String = root.nativePath + "/" + modified.getFullYear() + "年/" + (modified.getMonth()+1) + "月/" + modified.getDate() + "日/" + child.name;
+					var dateFolder:File = new File(folderPath);
+					//dateFolder.createDirectory();
+					var fr:FileReference = new FileReference();
+					try {
+						child.moveTo(dateFolder, false);
+						//child.copyTo(dateFolder, false);
+					} catch (e:Error) {
+						//do nothing
+					}
+				}
+				
+			}
+		}
+		
 		/*
-		public function scanAndAddFiles(root:File, folder:File) : void {
+		public function scanAndAddFiles(root:File) : void {
 			
 			if (folder.name.match(/[2,9][0,1][0-9][0-9]年/i)) {
 				return;
@@ -121,6 +145,7 @@ package com.fx
 			
 		}
 		*/
+		
 		
 		
 	}
