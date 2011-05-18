@@ -180,17 +180,19 @@
 					<!--文件管理 VBOX-->
 					<s:NavigatorContent id="navcontent_everyday_file" backgroundColor="0xDCDCDC" width="100%" height="100%" initialize="navcontent_everyday_file_initializeHandler(event)">
 						<mx:VBox width="100%" height="100%">
-							
+						<!--日期导航-->
 						<s:HGroup verticalAlign="middle">
 							<s:Button width="34" label="&lt;" click="button1_clickHandler(event)"/>
 							<mx:HorizontalList   id="list_days" 
 								width="707" height="25"
 								click="list_days_clickHandler(event)" horizontalScrollPolicy="off"
 								initialize="list_days_initializeHandler(event)"
-								selectedIndex="{fileService.getDays().length-1}">
+								dataProvider="{fileService.getDays()}">
 							</mx:HorizontalList>
 							<s:Button width="43" label="&gt;" click="button2_clickHandler(event)"/>
 						</s:HGroup>
+							
+						<!--文件列表-->
 						<mx:DataGrid id="datagrid_file_list_view" width="100%" height="100%" 
 									 doubleClickEnabled="true" 
 									 doubleClick="datagrid_file_list_view_doubleClickHandler(event)">
@@ -207,7 +209,9 @@
 								<mx:DataGridColumn headerText="修改时间" dataField="modified"/>
 								<mx:DataGridColumn dataField="size" sortable="true" resizable="true"/>
 							</mx:columns>
-						</mx:DataGrid>					
+						</mx:DataGrid>		
+						
+						<!--目录设置-->
 						<s:HGroup verticalAlign="middle">
 							<s:Label>工作根目录</s:Label><s:TextInput text="{fileService.getRootFolder()}" x="35" y="10" width="428" id="cfg_basePath"/> 
 							<s:Button label="设置" click="textinput1_clickHandler(event)"/>
