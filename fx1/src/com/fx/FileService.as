@@ -2,6 +2,8 @@ package com.fx
 {
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.FileReference;
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
@@ -202,7 +204,31 @@ package com.fx
 			}
 		}
 		
-		public function createNotes(title:String, text:String) {
+		public function readNotes(title:String):String {
+			var filePath:String = notesPath + "/" + title + ".html";
+			var fs:FileStream = new FileStream();
+			fs.open(new File(filePath), FileMode.READ);
+			var text:String = fs.readUTFBytes(fs.bytesAvailable);
+			fs.close();
+			return text;
+		}
+		
+		public function saveNotes(title:String, newTitle:String, text:String) :void {
+			var filePath:String = notesPath + "/" + title + ".html";
+			var stream:FileStream = new FileStream();
+			
+			stream.open(new File(filePath),FileMode.WRITE);
+			stream.writeUTFBytes(text);
+			stream.close();
+			
+			if (newTitle!=null) {
+				var newPath:String = getNewNotesTitle(newTitle);
+				new File(filePath).moveTo(new File(newPath),false);
+			}
+			
+		}
+		
+		public function createNotes(title:String, text:String):String {
 			
 			if (title==null && title=="") {
 				if (text=="") {
@@ -215,15 +241,28 @@ package com.fx
 					}
 				}
 			}
-			
+			var filePath:String = getNewNotesTitle(title);
 			
 			var stream:FileStream = new FileStream();
 			
-			stream.open(,FileMode.WRITE);
-			stream.writeUTFBytes(rte.htmlText);
+			stream.open(new File(filePath),FileMode.WRITE);
+			stream.writeUTFBytes(text);
 			stream.close();
 		}
 		
+		public function getNewNotesTitle(title:String) : String {
+			
+			var filePath:String = notesPath + "/" + title + ".html";
+			
+			var i:Number = 0;
+			while(new File(filePath).exists) {
+				filePath = notesPath + "/" + title + "(" + i + ").html";
+				i = i + 1;
+			}
+			return filePath;
+			
+		}
+ 		
 		/*
 		public function scanAndAddFiles(root:File) : void {
 			
