@@ -46,6 +46,7 @@ package com.fx
 		
 		public var usefullFolder:String;
 		public var todayPath:String;
+		public var notesPath:String;
 		
 		public function init(root:File) : void {
 			this.rootFolder = root;
@@ -58,6 +59,10 @@ package com.fx
 			usefullFolder =  rootFolder.nativePath + "/常用文件"; 
 			var usefull:File = new File(usefullFolder);
 			usefull.createDirectory();
+			
+			notesPath = rootFolder.nativePath + "/便笺";
+			var notesFolder:File = new File(notesPath);
+			notesFolder.createDirectory();
 			
 			
 			if (dates.length==0) {
@@ -195,6 +200,28 @@ package com.fx
 				}
 				
 			}
+		}
+		
+		public function createNotes(title:String, text:String) {
+			
+			if (title==null && title=="") {
+				if (text=="") {
+					return;
+				} else {
+					if (text.length>30) {
+						title = text.substr(0,30);
+ 					} else {
+						title = text;
+					}
+				}
+			}
+			
+			
+			var stream:FileStream = new FileStream();
+			
+			stream.open(,FileMode.WRITE);
+			stream.writeUTFBytes(rte.htmlText);
+			stream.close();
 		}
 		
 		/*
