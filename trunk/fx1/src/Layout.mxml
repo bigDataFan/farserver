@@ -14,6 +14,7 @@
 			import mx.core.UITextField;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ItemClickEvent;
 			
 			var xmm:XML = 
 				<vssmenu label="all" data="root">
@@ -43,7 +44,12 @@
 					
 					if (text.text=="每日文件") {
 						viewstack.selectedChild = navcontent_everyday_file;
-					}
+						return;
+					} 
+					if (text.text=="常用文件") {
+						viewstack.selectedChild = navcontent_useful_file;
+						return;
+					} 
 					
 				}
 			}
@@ -77,8 +83,7 @@
 			{
 				list_days.verticalScrollPosition ++;
 			}
-
-
+			
 			protected function list_days_clickHandler(event:MouseEvent):void
 			{
 				var target:Object = event.target;
@@ -132,6 +137,55 @@
 				//dataProvider="{new ArrayCollection(fileService.getDays())}"
 			}
 
+
+			
+			private var fileOperations:Array=["删除","复制到今天","标记为常用"];
+			protected function buttonbar1_itemClickHandler(event:ItemClickEvent):void
+			{
+				switch(event.index)
+				{
+					case 0:
+					{
+						var items:Array = datagrid_file_list_view.selectedItems;
+						for (var i:int = 0; i < items.length; i++) 
+						{
+							var gridfile:GridFile = items[i] as GridFile;
+							try {
+								gridfile.file.deleteFile();
+							} catch (e:Error) {
+							} 
+						}
+						datagrid_file_list_view.dataProvider = fileService.getDateFileList(null);					
+						
+						break;
+					}
+					
+					case 1:
+					{
+						var items:Array = datagrid_file_list_view.selectedItems;
+						for (var i:int = 0; i < items.length; i++) 
+						{
+							var gridfile:GridFile = items[i] as GridFile;
+							try {
+								gridfile.file.copyTo(new File(fileService.todayPath + "/" + gridfile.name));
+								//gridfile.file.deleteFile();
+							} catch (e:Error) {
+							} 
+						}
+						datagrid_file_list_view.dataProvider = fileService.getDateFileList(null);					
+						
+						break;
+					}
+						
+					default:
+					{
+						break;
+					}
+				}
+				
+				// TODO Auto-generated method stub
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -151,7 +205,7 @@
 				<node label="文件">
 					<node label="每日文件"></node>
 					<node label="常用文件"></node>
-					<node label="分类管理"></node>
+					<node label="目录设置"></node>
 				</node>
 			</node>
 			
@@ -193,8 +247,14 @@
 						</s:HGroup>
 							
 						<!--文件列表-->
+							
+						<!--文件列表的操作栏-->
+						<mx:ButtonBar horizontalGap="5" itemClick="buttonbar1_itemClickHandler(event)" dataProvider="{fileOperations}">
+							
+						</mx:ButtonBar>
+							
 						<mx:DataGrid id="datagrid_file_list_view" width="100%" height="100%" 
-									 doubleClickEnabled="true" 
+									 doubleClickEnabled="true" allowMultipleSelection="true"
 									 doubleClick="datagrid_file_list_view_doubleClickHandler(event)">
 							<mx:columns>
 								<mx:DataGridColumn headerText="" width="64">
@@ -222,6 +282,34 @@
 						</s:HGroup>
 						</mx:VBox>
 					</s:NavigatorContent>
+					
+					
+					
+					<!--常用文件管理 VBOX-->
+					<s:NavigatorContent id="navcontent_useful_file" backgroundColor="0xDCDCDC" width="100%" height="100%" initialize="navcontent_everyday_file_initializeHandler(event)">
+						<mx:VBox width="100%" height="100%">
+							<!--文件列表-->
+							<mx:DataGrid id="datagrid_useful_file_list_view" width="100%" height="100%" 
+										 doubleClickEnabled="true" allowMultipleSelection="true"
+										 doubleClick="datagrid_file_list_view_doubleClickHandler(event)"
+										 dataProvider="{fileService.getUsefullFileList()}">
+								<mx:columns>
+									<mx:DataGridColumn headerText="" width="64">
+										<mx:itemRenderer>
+											<fx:Component>
+												<mx:Image source="{data.iconpath}" width="64" height="64">
+												</mx:Image>
+											</fx:Component>
+										</mx:itemRenderer>
+									</mx:DataGridColumn >
+									<mx:DataGridColumn headerText="名称" dataField="name"/>	
+									<mx:DataGridColumn headerText="修改时间" dataField="modified"/>
+									<mx:DataGridColumn dataField="size" sortable="true" resizable="true"/>
+								</mx:columns>
+							</mx:DataGrid>		
+						</mx:VBox>
+					</s:NavigatorContent>
+					
 					
 				</mx:ViewStack>
 				
