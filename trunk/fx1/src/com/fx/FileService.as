@@ -18,13 +18,18 @@ package com.fx
 		//var timer:Timer = new Timer(20000);
 		var dates:Array = new Array();
 		var dateDic:Dictionary = new Dictionary();
-		public const USEFULL_FOLDER = "常用文件";
 		
 		
 		var rootFolder:File;
 		
 		public function FileService()
 		{
+			var basePath:String = ConfigUtils.readProp("basePath");
+			
+			if (basePath!=null) {
+				init(new File(basePath));	
+			}
+
 		}
 		
 		public function getRootFolder():String {
@@ -39,6 +44,7 @@ package com.fx
 			return dates;
 		}
 		
+		public var usefullFolder:String;
 		public var todayPath:String;
 		
 		public function init(root:File) : void {
@@ -49,7 +55,8 @@ package com.fx
 			var todayFolder:File = new File(todayPath);
 			todayFolder.createDirectory();
 			
-			var usefull:File = new File(rootFolder.nativePath + "/" + USEFULL_FOLDER);
+			usefullFolder =  rootFolder.nativePath + "/常用文件"; 
+			var usefull:File = new File(usefullFolder);
 			usefull.createDirectory();
 			
 			
@@ -144,7 +151,7 @@ package com.fx
 		
 		public function getUsefullFileList():ArrayList {
 			
-			var folder:File = new File(rootFolder.nativePath + "/" + USEFULL_FOLDER);
+			var folder:File = new File(usefullFolder);
 			var children:Array = folder.getDirectoryListing();
 			
 			var result: ArrayList = new ArrayList();
