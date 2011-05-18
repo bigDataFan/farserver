@@ -41,6 +41,11 @@ package com.fx
 		
 		public function init(root:File) : void {
 			this.rootFolder = root;
+			var date:Date = new Date();
+			
+			var todayPath:String = rootFolder.nativePath + "/" + formatFolder(date);
+			var todayFolder:File = new File(todayPath);
+			todayFolder.createDirectory();
 			var children:Array = rootFolder.getDirectoryListing();
 			for (var i:int = 0; i < children.length; i++) {
 				var folder:File = children[i] as File;
@@ -48,6 +53,7 @@ package com.fx
 					scanMonth(folder);
 				}
 			}
+			dates.reverse();
 		}
 		
 		
