@@ -220,6 +220,10 @@ package com.fx
 			return result;
 		}
 		
+		public function removeNotes(title:String):void {
+			var filePath:String = notesPath + "/" + title + ".html";
+			new File(filePath).deleteFile();
+		}
 		
 		
 		public function readNotes(title:String):String {
