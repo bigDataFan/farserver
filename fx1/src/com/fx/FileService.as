@@ -222,8 +222,8 @@ package com.fx
 			stream.close();
 			
 			if (newTitle!=null) {
-				var newPath:String = getNewNotesTitle(newTitle);
-				new File(filePath).moveTo(new File(newPath),false);
+				var newTitle:String = getNewNotesTitle(newTitle);
+				new File(filePath).moveTo(new File(notesPath + "/" + newTitle + ".html"),false);
 			}
 			
 		}
@@ -232,7 +232,7 @@ package com.fx
 			
 			if (title==null && title=="") {
 				if (text=="") {
-					return;
+					return "";
 				} else {
 					if (text.length>30) {
 						title = text.substr(0,30);
@@ -241,13 +241,14 @@ package com.fx
 					}
 				}
 			}
-			var filePath:String = getNewNotesTitle(title);
+			var newTitle:String = getNewNotesTitle(title);
 			
 			var stream:FileStream = new FileStream();
 			
-			stream.open(new File(filePath),FileMode.WRITE);
+			stream.open(new File(notesPath + "/" + newTitle + ".html"),FileMode.WRITE);
 			stream.writeUTFBytes(text);
 			stream.close();
+			return newTitle;
 		}
 		
 		public function getNewNotesTitle(title:String) : String {
@@ -255,11 +256,14 @@ package com.fx
 			var filePath:String = notesPath + "/" + title + ".html";
 			
 			var i:Number = 0;
+			var newTitle:String = title;
 			while(new File(filePath).exists) {
-				filePath = notesPath + "/" + title + "(" + i + ").html";
 				i = i + 1;
+				newTitle =  title + "(" + i + ")";
+				filePath = notesPath + "/" + newTitle + ".html";
 			}
-			return filePath;
+			
+			return newTitle;
 			
 		}
  		
