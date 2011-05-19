@@ -115,7 +115,17 @@
 				
 				item.file.openWithDefaultApplication();
 			}
-
+			
+			
+			//常用文件列表的双击事件
+			protected function datagrid_useful_file_list_view_doubleClickHandler(event:MouseEvent):void
+			{
+				if (datagrid_useful_file_list_view.selectedItem!=null) {
+					var item:GridFile = datagrid_useful_file_list_view.selectedItem as GridFile;
+					item.file.openWithDefaultApplication();
+				}
+			}
+			
 
 			protected function list_days_initializeHandler(event:FlexEvent):void
 			{
@@ -207,22 +217,41 @@
 			//便签表格的单击事件：保存
 			protected function datagrid_notes_list_clickHandler(event:MouseEvent):void
 			{
-												
-				vbox_rte.left = 600;
-				datagrid_notes_list.dataProvider = fileService.getNotesList();
-				vbox_rte.width = navcontent_notes.width-600;
+				if (isEditing) {
+					vbox_rte.left = 600;
+					vbox_rte.width = navcontent_notes.width-600;
+					
+					if (rte_title.text=="" && rte.text=="") return;				
+					
+					if(isCreateing) {
+						rte_title.text = fileService.createNotes(rte_title.text, rte.text);
+						datagrid_notes_list.dataProvider = fileService.getNotesList();
+						isCreateing = false;
+					} else {
+						fileService.saveNotes(rte_title.text,null, rte.text);
+					}
+					isEditing = false;
+				} 
 				
-				if (rte_title.text=="" && rte.text=="") return;				
+				var target:Object = event.target;
 				
-				if(isCreateing) {
-					rte_title.text = fileService.createNotes(rte_title.text, rte.text);
+				var i:int = datagrid_notes_list.selectedIndex;
+				
+				if (i>(datagrid_notes_list.dataProvider as ArrayCollection).length) {
+					return;
+				}
+				
+				if (datagrid_notes_list.dataProvider.getItemAt(i)!=null) {
+					var item:Object = datagrid_notes_list.dataProvider.getItemAt(i) as Object;
 					isCreateing = false;
-				} else {
-					fileService.saveNotes(rte_title.text,null, rte.text);
+					rte_title.text = item["title"];
+					var text:String = fileService.readNotes(item["title"]);
+					rte.htmlText = text;
+					
 				}
 				
 			}
-
+			
 			//便签表格的双击事件：编辑
 			protected function datagrid_notes_list_doubleClickHandler(event:MouseEvent):void
 			{
@@ -233,9 +262,32 @@
 				vbox_rte.left = 120;
 				vbox_rte.width = navcontent_notes.width-120;
 				isCreateing = false;
+				isEditing = true;
 				rte_title.text = item["title"];
 				var text:String = fileService.readNotes(item["title"]);
 			}
+
+
+			protected function vbox_rte_clickHandler(event:MouseEvent):void
+			{
+				vbox_rte.left = 120;
+				vbox_rte.width = navcontent_notes.width-120;
+				isEditing = true;
+			}
+
+
+			protected function button5_clickHandler(event:MouseEvent):void
+			{
+				var selected:Array = datagrid_notes_list.selectedItems;
+				for each (var item:Object in selected) {
+					fileService.removeNotes(item["title"]);
+				}
+				
+				datagrid_notes_list.dataProvider = fileService.getNotesList();
+			}
+
+
+		
 
 		]]>
 	</fx:Script>
@@ -285,22 +337,25 @@
 					<!--便签内容-->
 					<s:NavigatorContent id="navcontent_notes"  width="100%" height="100%">
 						<s:VGroup width="100%" height="100%">
-							<s:Button label="创建" click="button4_clickHandler(event)"/>
+							<s:HGroup>
+								<s:Button label="创建" click="button4_clickHandler(event)"/> 
+								<s:Button label="删除" click="button5_clickHandler(event)"/>
+							</s:HGroup>								
+								
 							<mx:DataGrid id="datagrid_notes_list" width="100%" height="100%"  
-									doubleClickEnabled="true" allowMultipleSelection="true"
+								    allowMultipleSelection="true"
 									dataProvider="{fileService.getNotesList()}"
-									click="datagrid_notes_list_clickHandler(event)"
-									doubleClick="datagrid_notes_list_doubleClickHandler(event)">
+									click="datagrid_notes_list_clickHandler(event)">
 								<mx:columns>
 									<mx:DataGridColumn headerText="标题" dataField="title"/>	
 									<mx:DataGridColumn headerText="修改时间" dataField="modified"/>
 								</mx:columns>
 							</mx:DataGrid>	
 						</s:VGroup>
-						<mx:VBox left="600" width="{navcontent_notes.width-600}" height="100%" id="vbox_rte">
+						<mx:VBox left="600" width="{navcontent_notes.width-600}" height="100%" id="vbox_rte" click="vbox_rte_clickHandler(event)">
 							<mx:TextInput width="100%" id="rte_title">
 							</mx:TextInput>
-							<mx:RichTextEditor id="rte" width="100%" height="100%"/>
+							<mx:RichTextEditor id="rte" width="100%" height="100%" />
 						</mx:VBox>
 					</s:NavigatorContent>
 					
@@ -365,7 +420,7 @@
 							<!--文件列表-->
 							<mx:DataGrid id="datagrid_useful_file_list_view" width="100%" height="100%" 
 										 doubleClickEnabled="true" allowMultipleSelection="true"
-										 doubleClick="datagrid_file_list_view_doubleClickHandler(event)"
+										 doubleClick="datagrid_useful_file_list_view_doubleClickHandler(event)"
 										 dataProvider="{fileService.getUsefullFileList()}">
 								<mx:columns>
 									<mx:DataGridColumn headerText="" width="64">
