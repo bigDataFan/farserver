@@ -194,12 +194,14 @@
 
 			
 			var isCreateing:Boolean = true;
+			var isEditing:Boolean = false;
 			//创建便签的按钮操作
 			protected function button4_clickHandler(event:MouseEvent):void
 			{
 				vbox_rte.left = 120;
 				vbox_rte.width = navcontent_notes.width-120;
 				isCreateing = true;
+				isEditing = true;
 			}
 
 			//便签表格的单击事件：保存
@@ -207,6 +209,7 @@
 			{
 												
 				vbox_rte.left = 600;
+				datagrid_notes_list.dataProvider = fileService.getNotesList();
 				vbox_rte.width = navcontent_notes.width-600;
 				
 				if (rte_title.text=="" && rte.text=="") return;				
@@ -214,8 +217,24 @@
 				if(isCreateing) {
 					rte_title.text = fileService.createNotes(rte_title.text, rte.text);
 					isCreateing = false;
+				} else {
+					fileService.saveNotes(rte_title.text,null, rte.text);
 				}
 				
+			}
+
+			//便签表格的双击事件：编辑
+			protected function datagrid_notes_list_doubleClickHandler(event:MouseEvent):void
+			{
+				var target:Object = event.target;
+				var i:int = datagrid_notes_list.selectedIndex;
+				var item:Object = datagrid_notes_list.dataProvider.getItemAt(i) as Object;
+				
+				vbox_rte.left = 120;
+				vbox_rte.width = navcontent_notes.width-120;
+				isCreateing = false;
+				rte_title.text = item["title"];
+				var text:String = fileService.readNotes(item["title"]);
 			}
 
 		]]>
@@ -267,10 +286,11 @@
 					<s:NavigatorContent id="navcontent_notes"  width="100%" height="100%">
 						<s:VGroup width="100%" height="100%">
 							<s:Button label="创建" click="button4_clickHandler(event)"/>
-							<mx:DataGrid id="datagrid_notes_list" width="100%" height="100%" 
+							<mx:DataGrid id="datagrid_notes_list" width="100%" height="100%"  
 									doubleClickEnabled="true" allowMultipleSelection="true"
 									dataProvider="{fileService.getNotesList()}"
-									click="datagrid_notes_list_clickHandler(event)">
+									click="datagrid_notes_list_clickHandler(event)"
+									doubleClick="datagrid_notes_list_doubleClickHandler(event)">
 								<mx:columns>
 									<mx:DataGridColumn headerText="标题" dataField="title"/>	
 									<mx:DataGridColumn headerText="修改时间" dataField="modified"/>
