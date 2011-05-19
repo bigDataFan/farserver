@@ -204,6 +204,24 @@ package com.fx
 			}
 		}
 		
+		public function getNotesList():Array {
+			var notesFolder:File = new File(notesPath);
+			
+			var list:Array = notesFolder.getDirectoryListing();
+			
+			var result:Array = new Array();
+			for each (var file:File in list) {
+				var o:Object = new Object();
+				o["title"] = file.name.substr(0,file.name.length-5);
+				o["created"] = FormatUtils.formatDate(file.creationDate);
+				o["modified"] = FormatUtils.formatDate(file.modificationDate);
+				result.push(o);				
+			}
+			return result;
+		}
+		
+		
+		
 		public function readNotes(title:String):String {
 			var filePath:String = notesPath + "/" + title + ".html";
 			var fs:FileStream = new FileStream();
