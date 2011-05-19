@@ -59,7 +59,6 @@
 				}
 			}
 			
-			
 			var fileService:FileService = new FileService();
 			
 			protected function textinput1_clickHandler(event:MouseEvent):void {
@@ -194,19 +193,29 @@
 			}
 
 			
+			var isCreateing:Boolean = true;
 			//创建便签的按钮操作
 			protected function button4_clickHandler(event:MouseEvent):void
 			{
 				vbox_rte.left = 120;
 				vbox_rte.width = navcontent_notes.width-120;
+				isCreateing = true;
 			}
 
 			//便签表格的单击事件：保存
 			protected function datagrid_notes_list_clickHandler(event:MouseEvent):void
 			{
-								
+												
 				vbox_rte.left = 600;
 				vbox_rte.width = navcontent_notes.width-600;
+				
+				if (rte_title.text=="" && rte.text=="") return;				
+				
+				if(isCreateing) {
+					rte_title.text = fileService.createNotes(rte_title.text, rte.text);
+					isCreateing = false;
+				}
+				
 			}
 
 		]]>
@@ -259,8 +268,9 @@
 						<s:VGroup width="100%" height="100%">
 							<s:Button label="创建" click="button4_clickHandler(event)"/>
 							<mx:DataGrid id="datagrid_notes_list" width="100%" height="100%" 
-												 doubleClickEnabled="true" allowMultipleSelection="true"
-												 doubleClick="" click="datagrid_notes_list_clickHandler(event)">
+									doubleClickEnabled="true" allowMultipleSelection="true"
+									dataProvider="{fileService.getNotesList()}"
+									click="datagrid_notes_list_clickHandler(event)">
 								<mx:columns>
 									<mx:DataGridColumn headerText="标题" dataField="title"/>	
 									<mx:DataGridColumn headerText="修改时间" dataField="modified"/>
