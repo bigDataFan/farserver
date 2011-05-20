@@ -21,12 +21,12 @@ package com.fx
 		var dates:Array = new Array();
 		var dateDic:Dictionary = new Dictionary();
 		
-		
 		var rootFolder:File;
 		
-		public function FileService()
+		public function FileService(config:ConfigService)
 		{
-			var basePath:String = ConfigUtils.readProp("basePath");
+			
+			var basePath:String = config.rootFolder; 
 			
 			if (basePath!=null) {
 				init(new File(basePath));	
