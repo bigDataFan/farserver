@@ -3,9 +3,11 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx" >
 	<fx:Script>
 		<![CDATA[
+			import com.fx.ConfigService;
 			import com.fx.ConfigUtils;
 			import com.fx.FileService;
 			import com.fx.GridFile;
+			import com.fx.NotesService;
 			
 			import mx.collections.ArrayCollection;
 			import mx.collections.ArrayList;
@@ -36,6 +38,13 @@
 				</vssmenu>
 			
 
+				
+			
+			var configService:ConfigService = new ConfigService();
+			var fileService:FileService = new FileService(configService);
+			var notesService:NotesService = new NotesService(configService);
+			
+			
 			protected function myTree_clickHandler(event:MouseEvent):void
 			{
 				var target:Object = event.target;
@@ -58,8 +67,7 @@
 					
 				}
 			}
-			
-			var fileService:FileService = new FileService();
+
 			
 			protected function textinput1_clickHandler(event:MouseEvent):void {
 

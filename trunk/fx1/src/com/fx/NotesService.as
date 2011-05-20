@@ -1,13 +1,15 @@
 package com.fx
 {
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 
 	public class NotesService
 	{
-		public function NotesService()
+		public function NotesService(config:ConfigService)
 		{
-			var basePath:String = ConfigUtils.readProp("basePath");
-			
+			var basePath:String = config.rootFolder;
+		
 			if (basePath!=null) {
 				init(new File(basePath));	
 			}
@@ -58,8 +60,8 @@ package com.fx
 				currentEditing = title;
 				return text;
 			} catch(e:Error) {
-				return "";
 			}
+			return "";
 		}
 		
 		public function saveNotes(title:String, text:String) :void {

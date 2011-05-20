@@ -20,7 +20,9 @@
       <airExcludes/>
     </application>
   </applications>
-  <modules/>
+  <modules>
+    <module application="src/Layout.mxml" destPath="com/share115/Welcome.swf" optimize="true" sourcePath="src/com/share115/Welcome.mxml"/>
+  </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>

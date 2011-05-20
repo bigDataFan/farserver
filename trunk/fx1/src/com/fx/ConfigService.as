@@ -4,29 +4,38 @@ package com.fx
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	
+	import flashx.textLayout.elements.Configuration;
+	
 	import mx.resources.ResourceBundle;
 	import mx.resources.ResourceManager;
 
 	public class ConfigService
 	{
+		public var rootFolder:String;
+		public var email:String;
+		public var password:String;
+		
+		
 		public function ConfigService() {
-			
-			var configFilePath:String = File.applicationStorageDirectory + "/config.properties";
-			
-			var configFile:File = new File(configFilePath);
-			
-			if (!configFile.exists) {
-				var stream:FileStream = new FileStream();
-				stream.open(configFile,FileMode.WRITE);
-				stream.writeUTFBytes("Hello=aab");
-				stream.close();
-			} else {
-				var fs:FileStream = new FileStream();
-				fs.open(configFile, FileMode.READ);
-				 = fs.readUTFBytes(fs.bytesAvailable);
-				fs.close();
+			rootFolder = ConfigUtils.readProp("root");
+			if (rootFolder==null) {
+				var file:File = File.documentsDirectory.resolvePath("layout");
+				file.createDirectory();
+				rootFolder = file.nativePath;
+				ConfigUtils.writeProp("root", rootFolder);
 			}
+			
+			email = ConfigUtils.readProp("email");
+			password = ConfigUtils.readProp("password");
+			
 		}
+		
+		
+		public function setRoot(root:String):void {
+			rootFolder = root;
+			ConfigUtils.writeProp("root", rootFolder);
+		}
+		
 	}
 	
 }
