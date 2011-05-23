@@ -65,16 +65,20 @@ package com.fx
 		}
 		
 		public function saveNotes(title:String, text:String) :void {
-			var filePath:String = notesPath + "/" + currentEditing + ".html";
-			var stream:FileStream = new FileStream();
-			
-			stream.open(new File(filePath),FileMode.WRITE);
-			stream.writeUTFBytes(text);
-			stream.close();
-			
-			if (title!=currentEditing) {
-				var newTitle:String = getNewNotesTitle(title);
-				new File(filePath).moveTo(new File(notesPath + "/" + newTitle + ".html"),false);
+			if (currentEditing==null) {
+				createNotes(title,text);
+			} else {
+				var filePath:String = notesPath + "/" + currentEditing + ".html";
+				var stream:FileStream = new FileStream();
+				
+				stream.open(new File(filePath),FileMode.WRITE);
+				stream.writeUTFBytes(text);
+				stream.close();
+				
+				if (title!=currentEditing) {
+					var newTitle:String = getNewNotesTitle(title);
+					new File(filePath).moveTo(new File(notesPath + "/" + newTitle + ".html"),false);
+				}
 			}
 			
 		}
