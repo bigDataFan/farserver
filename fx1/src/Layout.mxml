@@ -218,6 +218,9 @@
 			{
 				vbox_rte.left = 120;
 				vbox_rte.width = navcontent_notes.width-120;
+				rte.htmlText = "";
+				rte_title.text = "";
+				notesService.currentEditing = null;
 				isCreateing = true;
 				isEditing = true;
 			}
@@ -229,20 +232,28 @@
 					vbox_rte.left = 600;
 					vbox_rte.width = navcontent_notes.width-600;
 					
-					if (rte_title.text=="" && rte.text=="") return;				
+					if (rte_title.text=="" && rte.htmlText=="") return;				
 					
 					if(isCreateing) {
-						rte_title.text = fileService.createNotes(rte_title.text, rte.text);
-						datagrid_notes_list.dataProvider = fileService.getNotesList();
+						rte_title.text = notesService.createNotes(rte_title.text, rte.htmlText);//fileService.createNotes(rte_title.text, rte.htmlText);
 						isCreateing = false;
 					} else {
-						fileService.saveNotes(rte_title.text,null, rte.text);
+						notesService.saveNotes(rte_title.text, rte.htmlText);
 					}
 					isEditing = false;
-				} 
-				
-				var target:Object = event.target;
-				
+					datagrid_notes_list.dataProvider = notesService.getNotesList();
+				} else {
+					var item:Object = datagrid_notes_list.selectedItem;
+					if (item!=null) {
+						rte_title.text = item["title"];
+						var text:String = notesService.editNotes(item["title"]);
+						rte.htmlText = text;
+						
+					}
+				}
+				//刷新dataprovider
+				//var target:Object = event.target;
+				/*
 				var i:int = datagrid_notes_list.selectedIndex;
 				
 				if (i>(datagrid_notes_list.dataProvider as ArrayCollection).length) {
@@ -252,11 +263,9 @@
 				if (datagrid_notes_list.dataProvider.getItemAt(i)!=null) {
 					var item:Object = datagrid_notes_list.dataProvider.getItemAt(i) as Object;
 					isCreateing = false;
-					rte_title.text = item["title"];
-					var text:String = fileService.readNotes(item["title"]);
-					rte.htmlText = text;
 					
 				}
+				*/
 				
 			}
 			
@@ -281,6 +290,9 @@
 				vbox_rte.left = 120;
 				vbox_rte.width = navcontent_notes.width-120;
 				isEditing = true;
+				if (rte.htmlText=="" && rte_title.text=="") {
+					isCreateing = true;
+				}
 			}
 
 
@@ -288,8 +300,14 @@
 			{
 				var selected:Array = datagrid_notes_list.selectedItems;
 				for each (var item:Object in selected) {
-					fileService.removeNotes(item["title"]);
+					notesService.removeNotes(item["title"]);
+					rte.htmlText = "";
+					rte_title.text = "";
+					isEditing = false;
+					isCreateing = false;
 				}
+				
+				
 				
 				datagrid_notes_list.dataProvider = fileService.getNotesList();
 			}
