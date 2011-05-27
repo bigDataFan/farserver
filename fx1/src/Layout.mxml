@@ -229,9 +229,6 @@
 			protected function datagrid_notes_list_clickHandler(event:MouseEvent):void
 			{
 				if (isEditing) {
-					vbox_rte.left = 600;
-					vbox_rte.width = navcontent_notes.width-600;
-					
 					if (rte_title.text=="" && rte.htmlText=="") return;				
 					
 					if(isCreateing) {
@@ -242,7 +239,7 @@
 					}
 					isEditing = false;
 					datagrid_notes_list.dataProvider = notesService.getNotesList();
-				} else {
+				} else { //将右侧预览的内容修改
 					var item:Object = datagrid_notes_list.selectedItem;
 					if (item!=null) {
 						rte_title.text = item["title"];
@@ -268,30 +265,19 @@
 				*/
 				
 			}
-			
-			//便签表格的双击事件：编辑
-			protected function datagrid_notes_list_doubleClickHandler(event:MouseEvent):void
-			{
-				var target:Object = event.target;
-				var i:int = datagrid_notes_list.selectedIndex;
-				var item:Object = datagrid_notes_list.dataProvider.getItemAt(i) as Object;
-				
-				vbox_rte.left = 120;
-				vbox_rte.width = navcontent_notes.width-120;
-				isCreateing = false;
-				isEditing = true;
-				rte_title.text = item["title"];
-				var text:String = fileService.readNotes(item["title"]);
-			}
 
-
+			//点击预览栏，对内容进行编辑
 			protected function vbox_rte_clickHandler(event:MouseEvent):void
 			{
-				vbox_rte.left = 120;
-				vbox_rte.width = navcontent_notes.width-120;
+				if (isEditing) {
+					return;
+				}
 				isEditing = true;
 				if (rte.htmlText=="" && rte_title.text=="") {
 					isCreateing = true;
+					notesService.currentEditing = null;
+				} else {
+					isCreateing = false;
 				}
 			}
 
@@ -311,9 +297,19 @@
 				
 				datagrid_notes_list.dataProvider = fileService.getNotesList();
 			}
-
-
-		
+			protected function togglebutton1_clickHandler(event:MouseEvent):void
+			{
+				if (toggleEditNote.selected) {
+					this.currentState="show";
+					vbox_rte.left = 120;
+					vbox_rte.width = navcontent_notes.width-120;
+				}else {
+					this.currentState="hide";
+					vbox_rte.left = 600;
+					vbox_rte.width = navcontent_notes.width-600;
+				}
+				// TODO Auto-generated method stub
+			}
 
 		]]>
 	</fx:Script>
@@ -341,6 +337,10 @@
 		</fx:XML>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
+	<s:states> 
+		<s:State name="show"/>    
+		<s:State name="hide"/> 
+	</s:states> 
 	
 	<mx:MenuBar x="0" y="0" height="30" width="100%" dataProvider="{xmm}"   labelField="@label"  showRoot="false" iconField="">
 	</mx:MenuBar>
@@ -379,9 +379,14 @@
 							</mx:DataGrid>	
 						</s:VGroup>
 						<mx:VBox left="600" width="{navcontent_notes.width-600}" height="100%" id="vbox_rte" click="vbox_rte_clickHandler(event)">
-							<mx:TextInput width="100%" id="rte_title">
-							</mx:TextInput>
-							<mx:RichTextEditor id="rte" width="100%" height="100%" />
+							<s:HGroup width="95%" >
+								<s:ToggleButton id="toggleEditNote" width="20" click="togglebutton1_clickHandler(event)" label.hide="&lt;" label.show="&gt;">
+									
+								</s:ToggleButton>
+								<mx:TextInput id="rte_title" width="500"> </mx:TextInput>
+							</s:HGroup>
+							<mx:RichTextEditor id="rte" width="100%" height="100%"
+											   borderVisible="false"/>
 						</mx:VBox>
 					</s:NavigatorContent>
 					

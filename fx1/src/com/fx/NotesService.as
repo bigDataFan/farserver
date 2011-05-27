@@ -78,6 +78,7 @@ package com.fx
 				if (title!=currentEditing) {
 					var newTitle:String = getNewNotesTitle(title);
 					new File(filePath).moveTo(new File(notesPath + "/" + newTitle + ".html"),false);
+					currentEditing = title;
 				}
 			}
 			

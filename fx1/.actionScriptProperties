@@ -19,6 +19,9 @@
     <application path="Layout.mxml">
       <airExcludes/>
     </application>
+    <application path="ZoomDrop.mxml">
+      <airExcludes/>
+    </application>
   </applications>
   <modules>
     <module application="src/Layout.mxml" destPath="com/share115/Welcome.swf" optimize="true" sourcePath="src/com/share115/Welcome.mxml"/>
