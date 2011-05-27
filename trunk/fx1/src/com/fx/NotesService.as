@@ -87,6 +87,9 @@ package com.fx
 		public function createNotes(title:String, text:String):String {
 			
 			if (title==null || title=="") {
+				
+				title = "未命名";
+				/*
 				if (text=="") {
 					return "";
 				} else {
@@ -96,6 +99,7 @@ package com.fx
 						title = text;
 					}
 				}
+				*/
 			}
 			var newTitle:String = getNewNotesTitle(title);
 			
@@ -104,6 +108,8 @@ package com.fx
 			stream.open(new File(notesPath + "/" + newTitle + ".html"),FileMode.WRITE);
 			stream.writeUTFBytes(text);
 			stream.close();
+			
+			currentEditing = title;
 			return newTitle;
 		}
 		
