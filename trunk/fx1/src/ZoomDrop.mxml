@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication width="364" height="228" xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"  
+					  >
+	<fx:Script>
+		<![CDATA[
+			import mx.core.DragSource;
+			import mx.events.DragEvent;
+			import mx.managers.DragManager;
+			
+			public function init():void {
+				nativeWindow.alwaysInFront = true;
+			}
+			
+			
+			private function dragWin():void{//窗口拖动 
+				//NativeDragManager.a
+				if(nativeWindow.displayState == NativeWindowDisplayState.NORMAL){ 
+					nativeWindow.startMove();
+				} 
+			}
+			
+
+			protected function windowedapplication1_dragDropHandler(event:DragEvent):void
+			{
+				var s:String;
+				var dragSource:DragSource = event.dragSource;
+				dragSource.formats;
+				
+			}
+
+
+			protected function textinput1_dragDropHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+
+			protected function windowedapplication2_nativeDragDropHandler(event:NativeDragEvent):void
+			{
+				var s:String;
+				var cb:Clipboard = event.clipboard;
+				
+				var formats:Array = cb.formats;
+				
+				for (var i:int = 0; i < formats.length; i++) {
+					var data:Object = cb.getData(formats[i]);
+					bt.label = bt.label + data;
+				}
+			}
+
+
+			protected function button1_nativeDragOverHandler(event:NativeDragEvent):void
+			{
+				NativeDragManager.acceptDragDrop(bt);
+			}
+
+		]]>
+	</fx:Script>
+		
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<mx:Label text="Window Test" height="20"  mouseDown="dragWin()" right="171" left="10" top="2" fontSize="12"/> 
+	<s:Button id="bt" x="72" y="55" width="170" height="49" label="按钮" nativeDragOver="button1_nativeDragOverHandler(event)" nativeDragDrop="windowedapplication2_nativeDragDropHandler(event)"/>
+</s:WindowedApplication>
+
