@@ -1,11 +1,13 @@
 package com.fx
 {
 	import flash.filesystem.File;
+	
+	import mx.collections.ArrayCollection;
 
 	public class DataCollection
 	{
 		private var dbfile:File;
-		private var objects:Array;
+		private var objects:ArrayCollection;
 		
 		public function DataCollection(file:File)
 		{
@@ -14,37 +16,51 @@ package com.fx
 			
 			if (!file.exists) {
 				objects = [];
-				fileStream.open(file, FileMode.WRITE);
-				fileStream.writeObject(objects);
-				fileStream.close();			
+				flush();
 			} else {
-				fileStream.open(file, FileMode.READ);
-				objects = fileStream.readObject();
-				fileStream.close();
+				fetch();
 			}
+		}
+		
+
+		public function flush():void {
+			fileStream.open(file, FileMode.WRITE);
+			fileStream.writeObject(objects);
+			fileStream.close();	
+		}
+		
+		
+		public function fetch():void {
+			fileStream.open(file, FileMode.READ);
+			objects = fileStream.readObject();
+			fileStream.close();
 		}
 		
 		
 		public function insert(o:Object):String {
-			
+			objects.addItem(o);
+			flush();
 		}
+		
 		
 		public function update(id:String, o:Object) {
 			
 		}
 		
+		
 		public function find(key:String, value:String):Object {
 			
 		}
 		
+		
 		public function list():Array {
-			
+			return objejcts;
 		}
+		
 		
 		public function remove(id:String):void {
-			
+				
 		}
-		
 		
 	}
 }
