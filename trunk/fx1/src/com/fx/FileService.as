@@ -157,11 +157,6 @@ package com.fx
 		}
 		
 		
-		public function getDateFolder(date:Date):File {
-			
-		}
-		
-		
 		public function getUsefullFileList():ArrayList {
 			
 			var folder:File = new File(usefullFolder);
