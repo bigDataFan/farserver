@@ -4,7 +4,6 @@ package com.fx
 
 	public class WorkingTimeService
 	{
-		
 		public var fileService:FileService;
 		
 		
