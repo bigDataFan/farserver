@@ -142,8 +142,6 @@
 				
 				//dataProvider="{new ArrayCollection(fileService.getDays())}"
 			}
-
-
 			
 			private var fileOperations:Array=["删除","复制到今天","设置为常用"];
 			protected function buttonbar1_itemClickHandler(event:ItemClickEvent):void
@@ -292,7 +290,7 @@
 					isEditing = false;
 					isCreateing = false;
 				}
-				datagrid_notes_list.dataProvider = fileService.getNotesList();
+				datagrid_notes_list.dataProvider = notesService.getNotesList();
 			}
 			
 			protected function togglebutton1_clickHandler(event:MouseEvent):void
@@ -368,7 +366,7 @@
 								
 							<mx:DataGrid id="datagrid_notes_list" width="100%" height="100%"  
 								    allowMultipleSelection="true"
-									dataProvider="{fileService.getNotesList()}"
+									dataProvider="{notesService.getNotesList()}"
 									click="datagrid_notes_list_clickHandler(event)">
 								<mx:columns>
 									<mx:DataGridColumn headerText="标题" dataField="title"/>	

@@ -8,10 +8,9 @@ package com.fx
 		public var fileService:FileService;
 		
 		
-		public function WorkingTimeService()
-		{
+		public function WorkingTimeService() {
+				
 		}
-		
 		
 		private function getWorkTimeFolderForDay(date:Date):File {
 			var path:File = fileService.rootFolder.resolvePath(fileService.formatFolder(date) + "/worktime");
@@ -20,7 +19,8 @@ package com.fx
 		}
 		
 		public function createStartWork(String title, String desc, Boolean start):Long {
-			getWorks(	
+			var todayFolder:File = getWorkTimeFolderForDay(new Date());
+			
 		}
 		
 		public function updateWork(Long id, String title):void {
