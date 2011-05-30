@@ -48,13 +48,17 @@ package com.fx
 		}
 		
 		
-		public function update(id:String, o:Object):void {
+		public function getByKey(id:String):Object {
 			if (o[id]==null) {
-				
+				return null;
 			} else {
-				idmap[id] = o;
-				flush();
+				return o[id];
 			}
+		}
+		
+		public function update(id:String, o:Object):void {
+			idmap[id] = o;
+			flush();
 		}
 		
 		
