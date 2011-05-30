@@ -1,13 +1,14 @@
 package com.fx
 {
 	import flash.filesystem.File;
+	import flash.system.System;
 	
 	import mx.collections.ArrayCollection;
 
 	public class DataCollection
 	{
 		private var dbfile:File;
-		private var objects:ArrayCollection;
+		private var idmap:Object;
 		
 		public function DataCollection(file:File)
 		{
@@ -15,36 +16,44 @@ package com.fx
 			var fileStream:FileStream = new FileStream();
 			
 			if (!file.exists) {
-				objects = [];
+				idmap = new Object();
 				flush();
 			} else {
 				fetch();
 			}
 		}
-		
 
 		public function flush():void {
 			fileStream.open(file, FileMode.WRITE);
-			fileStream.writeObject(objects);
+			fileStream.writeObject(idmap);
 			fileStream.close();	
 		}
 		
-		
 		public function fetch():void {
 			fileStream.open(file, FileMode.READ);
-			objects = fileStream.readObject();
+			idmap = fileStream.readObject();
 			fileStream.close();
 		}
 		
-		
 		public function insert(o:Object):String {
-			objects.addItem(o);
+			if (o["id"]==null) {
+				var uid:String = uuid();
+				idmap[uid] = o;
+			} else {
+				idmap[o["id"]] = o;
+			}
+			
 			flush();
 		}
 		
 		
-		public function update(id:String, o:Object) {
-			
+		public function update(id:String, o:Object):void {
+			if (o[id]==null) {
+				
+			} else {
+				idmap[id] = o;
+				flush();
+			}
 		}
 		
 		
@@ -54,11 +63,20 @@ package com.fx
 		
 		
 		public function list():Array {
-			return objejcts;
+			var array:Array = [];
+			for each (var i:Object in idmap) {
+				array.push(i);
+			}
+			return array;
 		}
 		
 		
 		public function remove(id:String):void {
+			idmap[id] = null;
+			flush();
+		}
+		
+		public function uuid():String {
 				
 		}
 		
