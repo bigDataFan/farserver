@@ -5,11 +5,12 @@ package com.fx
 		
 		private var dataService:DataService;
 		
-		public function TaggingService() {
-						
+		public function TaggingService(ds:DataService) {
+			this.dataService = ds;
 		}
 		
 		public function addEntry(String type, String id):void {
+			coll = dataService.getCollection(type);
 			
 		}
 		
