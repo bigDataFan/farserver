@@ -3,8 +3,10 @@ package com.fx
 	public class TaggingService
 	{
 		
+		private var dataService:DataService;
+		
 		public function TaggingService() {
-			
+						
 		}
 		
 		public function addEntry(String type, String id):void {
