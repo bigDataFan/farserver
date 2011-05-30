@@ -16,6 +16,7 @@ package com.fx
 			var fileStream:FileStream = new FileStream();
 			
 			if (!file.exists) {
+				file.parent.createDirectory();
 				idmap = new Object();
 				flush();
 			} else {
