@@ -9,53 +9,46 @@ package com.fx
 			this.dataService = ds;
 		}
 		
-		public function addEntry(String type, String id):void {
-			var entries:DataCollection = dataService.getCollection("entries");
-			var entry:Object = new Object():
-			entry["id"] = id;
-			entry["type" = type;]
-			coll.insert(o);		
-		}
-		
-		public function addTag(String type, String id, String tagName):void {
+		public function addTag(String type, String entry, String tagName):void {
 			
 			//add entry to tag
-			var tags:DataCollection = dataService.getCollection(tagName);
+			var tags:DataCollection = dataService.getCollection("tags.db");
 			
-			var tag:Object = tags.getByKey(tag);
-			if (tag==null) {
-				tag = new Object():
-				tag["id"] = tag;
-			}
+			var entryTag:Object = new Object():
+			entryTag["type"] = type;
+			entryTag["entry"] = entry;
+			entryTag["tagName"] = tagName;
 			
-			if (tag["entries"]==null) {
-				tag["entries"] = new Array();
-			}			
-			(tag["entries"] as Array).push(id);
-			
-			tags.update(tag);
-			
-			
-			//update entry
-			var entries:DataCollection = dataService.getCollection("entries");
-			if (entries[id]==null) {
-				a
-			}
-			o["id"] = id;
-			coll.insert(o);		
+			tags.insert(entryTag);
 		} 
 		
-		public function removeEntryTag(String type, String id, String tag):void {
-					
-				
+		public function removeEntryTag(String type, String entry, String tagName):void {
+			var tags:DataCollection = dataService.getCollection("tags.db");
 			
+			var entryTag:Object = new Object():
+			entryTag["type"] = type;
+			entryTag["entry"] = entry;
+			entryTag["tagName"] = tagName;
+			
+			
+			tags.remove(entryTag);
 		}
-		public function removeEntryAllTags(String type, String id):void {
+		public function removeEntryAllTags(String type, String entry):void {
+			var tags:DataCollection = dataService.getCollection("tags.db");
 			
+			var entryTag:Object = new Object():
+			entryTag["type"] = type;
+			entryTag["entry"] = entry;
+			tags.remove(entryTag);
 		}
 		
-		public function getEntryTags(String type, String id):Array {
-			return null;
+		public function getEntryTags(String type, String entry):Array {
+			var tags:DataCollection = dataService.getCollection("tags.db");
+			
+			var entryTag:Object = new Object():
+			entryTag["type"] = type;
+			entryTag["entry"] = entry;
+			tags.list(entryTag);
 		}
 		
 	

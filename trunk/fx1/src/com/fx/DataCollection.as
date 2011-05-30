@@ -8,7 +8,7 @@ package com.fx
 	public class DataCollection
 	{
 		private var dbfile:File;
-		private var idmap:Object;
+		private var objects:ArrayCollection;
 		
 		public function DataCollection(file:File)
 		{
@@ -17,7 +17,7 @@ package com.fx
 			
 			if (!file.exists) {
 				file.parent.createDirectory();
-				idmap = new Object();
+				objects =[];
 				flush();
 			} else {
 				fetch();
@@ -26,63 +26,65 @@ package com.fx
 
 		public function flush():void {
 			fileStream.open(file, FileMode.WRITE);
-			fileStream.writeObject(idmap);
+			fileStream.writeObject(objects);
 			fileStream.close();	
 		}
 		
 		public function fetch():void {
 			fileStream.open(file, FileMode.READ);
-			idmap = fileStream.readObject();
+			objects = fileStream.readObject();
 			fileStream.close();
 		}
 		
 		public function insert(o:Object):String {
-			if (o["id"]==null) {
-				var uid:String = uuid();
-				idmap[uid] = o;
-			} else {
-				idmap[o["id"]] = o;
-			}
-			
+			objects.push(o);
 			flush();
 		}
 		
 		
-		public function getByKey(id:String):Object {
-			if (o[id]==null) {
-				return null;
-			} else {
-				return o[id];
+		public function findOne(filter:Object):Object {
+			for each (var o:Object in objects) {
+				if (match(o,filter)) {
+					return o;
+				}				
 			}
 		}
 		
-		public function update(id:String, o:Object):void {
-			idmap[id] = o;
-			flush();
-		}
-		
-		
-		public function find(key:String, value:String):Object {
-			
-		}
-		
-		
-		public function list():Array {
+		public function findAll(filter:Object):Array {
 			var array:Array = [];
-			for each (var i:Object in idmap) {
-				array.push(i);
+			if (filter==null) {
+				return objects;
+			} else {
+				for each (var o:Object in objects) {
+					if (match(om,filter)) {
+						array.push(o);
+					};
+				}
+				
 			}
 			return array;
 		}
 		
-		
-		public function remove(id:String):void {
-			idmap[id] = null;
+		public function remove(filter:Object):void {
+			
+			for (var i:int = 0; i < objects.length; i++) 
+			{
+				if (match(objects[i],filter)) {
+					objects.removeItemAt(i);
+				};
+			}
+			
 			flush();
 		}
 		
-		public function uuid():String {
-				
+		
+		public function match(src:Object, filter:Object):Boolean {
+			for each (var key:String in filter) {
+				if (src[key] != filter[key]) {
+					return false;
+				}
+			}
+			return true;
 		}
 		
 	}
