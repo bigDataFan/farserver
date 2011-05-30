@@ -1,6 +1,9 @@
 package com.fx
 {
+	import com.adobe.serialization.json.JSON;
+	
 	import flash.filesystem.File;
+	import flash.filesystem.FileStream;
 	import flash.system.System;
 	
 	import mx.collections.ArrayCollection;
@@ -13,11 +16,11 @@ package com.fx
 		public function DataCollection(file:File)
 		{
 			this.dbfile = file;
-			var fileStream:FileStream = new FileStream();
+			
 			
 			if (!file.exists) {
 				file.parent.createDirectory();
-				objects =[];
+				objects = new ArrayCollection([]);
 				flush();
 			} else {
 				fetch();
@@ -25,14 +28,20 @@ package com.fx
 		}
 
 		public function flush():void {
+			var fileStream:FileStream = new FileStream();
 			fileStream.open(file, FileMode.WRITE);
-			fileStream.writeObject(objects);
+			var jsonStr:String = JSON.encode(objects.source);
+			fileStream.writeUTF(jsonStr);
 			fileStream.close();	
 		}
 		
 		public function fetch():void {
+			var fileStream:FileStream = new FileStream();
 			fileStream.open(file, FileMode.READ);
-			objects = fileStream.readObject();
+			var jsonStr = fileStream.readUTF();
+			
+			objects = new ArrayCollection(JSON.decode(jsonStr));
+			
 			fileStream.close();
 		}
 		
