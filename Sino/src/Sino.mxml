@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="1024" height="600">
+
+	<fx:Script>
+		<![CDATA[
+			import com.greensock.TweenLite;
+			import com.greensock.easing.Circ;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				TweenLite.to(p262, 0.3, {x:-315, y:-262, ease:Circ.easeInOut});
+				TweenLite.to(pt2, 0.3, {x:333, y:-262, ease:Circ.easeInOut});
+			}
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Panel x="10" y="10" id="p262" width="315" height="262" title="最近文件">
+	</s:Panel>
+	<s:Panel x="333" y="10" id="pt2" width="410" height="262" title="工作进度">
+		<s:Button x="367" y="-25" width="35" label="按钮" click="button1_clickHandler(event)"/>
+	</s:Panel>
+	<s:Panel x="755" y="11" width="259" height="261" title="Web剪辑">
+	</s:Panel>
+	<s:Panel x="10" y="290" width="384" height="300" title="文档记事">
+	</s:Panel>
+	<s:Panel x="402" y="290" width="341" height="300">
+	</s:Panel>
+	<s:Panel x="755" y="290" width="259" height="300" title="定期任务">
+	</s:Panel>
+</s:WindowedApplication>
