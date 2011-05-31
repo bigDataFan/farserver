@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="windowedapplication1_initializeHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.fx.ServiceRegistry;
+			
+			import mx.events.FlexEvent;
+			
+			
+			var serviceRegistry:ServiceRegistry;
+			//初始化事件
+			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
+			{
+				serviceRegistry = new ServiceRegistry();
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+</s:WindowedApplication>
