@@ -11,6 +11,7 @@ package com.fx
 		public function DataService(root:String)
 		{
 			this.rootPath = root;
+			collections = new Object();
 		}
 		
 		

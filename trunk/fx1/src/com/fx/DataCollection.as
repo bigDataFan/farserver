@@ -3,6 +3,7 @@ package com.fx
 	import com.adobe.serialization.json.JSON;
 	
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.system.System;
 	
@@ -29,7 +30,7 @@ package com.fx
 
 		public function flush():void {
 			var fileStream:FileStream = new FileStream();
-			fileStream.open(file, FileMode.WRITE);
+			fileStream.open(dbfile, FileMode.WRITE);
 			var jsonStr:String = JSON.encode(objects.source);
 			fileStream.writeUTF(jsonStr);
 			fileStream.close();	
@@ -37,7 +38,7 @@ package com.fx
 		
 		public function fetch():void {
 			var fileStream:FileStream = new FileStream();
-			fileStream.open(file, FileMode.READ);
+			fileStream.open(dbfile, FileMode.READ);
 			var jsonStr = fileStream.readUTF();
 			
 			objects = new ArrayCollection(JSON.decode(jsonStr));
@@ -45,8 +46,8 @@ package com.fx
 			fileStream.close();
 		}
 		
-		public function insert(o:Object):String {
-			objects.push(o);
+		public function insert(o:Object):void {
+			objects.addItem(o);
 			flush();
 		}
 		
@@ -57,15 +58,16 @@ package com.fx
 					return o;
 				}				
 			}
+			return null;
 		}
 		
 		public function findAll(filter:Object):Array {
 			var array:Array = [];
 			if (filter==null) {
-				return objects;
+				return objects.source;
 			} else {
 				for each (var o:Object in objects) {
-					if (match(om,filter)) {
+					if (match(o,filter)) {
 						array.push(o);
 					};
 				}

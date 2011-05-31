@@ -9,12 +9,12 @@ package com.fx
 			this.dataService = ds;
 		}
 		
-		public function addTag(String type, String entry, String tagName):void {
+		public function addTag(type:String , entry:String, tagName:String):void {
 			
 			//add entry to tag
 			var tags:DataCollection = dataService.getCollection("tags.db");
 			
-			var entryTag:Object = new Object():
+			var entryTag:Object = new Object();
 			entryTag["type"] = type;
 			entryTag["entry"] = entry;
 			entryTag["tagName"] = tagName;
@@ -22,10 +22,10 @@ package com.fx
 			tags.insert(entryTag);
 		} 
 		
-		public function removeEntryTag(String type, String entry, String tagName):void {
+		public function removeEntryTag(type:String , entry:String, tagName:String):void {
 			var tags:DataCollection = dataService.getCollection("tags.db");
 			
-			var entryTag:Object = new Object():
+			var entryTag:Object = new Object();
 			entryTag["type"] = type;
 			entryTag["entry"] = entry;
 			entryTag["tagName"] = tagName;
@@ -33,38 +33,23 @@ package com.fx
 			
 			tags.remove(entryTag);
 		}
-		public function removeEntryAllTags(String type, String entry):void {
+		public function removeEntryAllTags(type:String , entry:String):void {
 			var tags:DataCollection = dataService.getCollection("tags.db");
 			
-			var entryTag:Object = new Object():
+			var entryTag:Object = new Object();
 			entryTag["type"] = type;
 			entryTag["entry"] = entry;
 			tags.remove(entryTag);
 		}
 		
-		public function getEntryTags(String type, String entry):Array {
+		public function getEntryTags(type:String , entry:String):Array {
 			var tags:DataCollection = dataService.getCollection("tags.db");
 			
-			var entryTag:Object = new Object():
+			var entryTag:Object = new Object();
 			entryTag["type"] = type;
 			entryTag["entry"] = entry;
-			tags.list(entryTag);
+			return tags.findAll(entryTag);
 		}
-		
-	
-		public function renameEntry(String type, String id, String newid):void {
-			
-		} 
-		
-		public function getAllTags(String type):Array {
-			return null;
-		}
-		
-		
-		public function getTagEntries(String type, String tag):Array {
-			
-		}
-		
 		
 	}
 }

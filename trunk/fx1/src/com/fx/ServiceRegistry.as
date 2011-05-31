@@ -2,20 +2,15 @@ package com.fx
 {
 	public class ServiceRegistry
 	{
-		private static const configService:ConfigService;
-		private static const fileService:FileService;
-		private static const notesService:NotesService;
-		private static const dataService:DataService;
+		public var configService:ConfigService;
+		public var fileService:FileService;
+		public var notesService:NotesService;
+		public var dataService:DataService;
 		
-		private static const taggingService:TaggingService;
+		public var taggingService:TaggingService;
 		
 		
 		public function ServiceRegistry() {
-			
-			
-		}
-		
-		public static function init() {
 			configService = new ConfigService();
 			
 			fileService = new FileService(configService);
@@ -24,11 +19,15 @@ package com.fx
 			
 			taggingService = new TaggingService(dataService);
 			
+		}
+		
+		
+		
+		public  function init() {
+			
+			
 			
 		}
 		
-		public static function getTaggingService():TaggingService {
-			
-		}
 	}
 }
