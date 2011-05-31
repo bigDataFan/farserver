@@ -4,11 +4,11 @@ package com.fx
 
 	public class WorkingTimeService
 	{
-		public var fileService:FileService;
+		private var dataService:DataService;
 		
 		
-		public function WorkingTimeService() {
-				
+		public function WorkingTimeService(ds:DataService) {
+			dataService = ds;
 		}
 		
 		private function getWorkTimeFolderForDay(date:Date):File {
@@ -18,6 +18,8 @@ package com.fx
 		}
 		
 		public function createStartWork(String title, String desc, Boolean start):Long {
+			
+			dataService.getCollection();
 			var todayFolder:File = getWorkTimeFolderForDay(new Date());
 			
 		}

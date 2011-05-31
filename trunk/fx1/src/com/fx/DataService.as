@@ -14,6 +14,15 @@ package com.fx
 			collections = new Object();
 		}
 		
+		public function getCollectionByPath(path:String):DataCollection {
+			if (collections[path]==null) {
+				var file:File = new File(path);
+				var dc:DataCollection = new DataCollection(file);
+				collections[path] = dc;
+			}	
+			return collections[path];
+		}
+		
 		
 		public function getCollection(coll:String):DataCollection {
 			if (collections[coll]==null) {
@@ -23,7 +32,5 @@ package com.fx
 			}	
 			return collections[coll];
 		}
-		
-		
 	}
 }

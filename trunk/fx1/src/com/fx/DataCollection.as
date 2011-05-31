@@ -17,8 +17,6 @@ package com.fx
 		public function DataCollection(file:File)
 		{
 			this.dbfile = file;
-			
-			
 			if (!file.exists) {
 				file.parent.createDirectory();
 				objects = new ArrayCollection([]);
