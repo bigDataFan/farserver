@@ -49,6 +49,7 @@ package com.fx
 		public var usefullFolder:String;
 		public var todayPath:String;
 		public var notesPath:String;
+		public var contentPath:String;
 		
 		public function init(root:File) : void {
 			this.rootFolder = root;
@@ -65,6 +66,10 @@ package com.fx
 			notesPath = rootFolder.nativePath + "/便笺";
 			var notesFolder:File = new File(notesPath);
 			notesFolder.createDirectory();
+			
+			contentPath = rootFolder.nativePath + "/contents";
+			var contentFolder:File = new File(contentPath);
+			contentFolder.createDirectory();
 			
 			
 			if (dates.length==0) {
@@ -201,6 +206,32 @@ package com.fx
 				}
 				
 			}
+		}
+		
+		
+		
+		public function putContent(id:String, content:String) : File {
+			var filePath:String = contentPath + "/" + id + "bin";
+			var stream:FileStream = new FileStream();
+			stream.open(new File(filePath),FileMode.WRITE);
+			stream.writeUTFBytes(content);
+			stream.close();
+			return new File(filePath);
+		}
+		
+		public function getContent(id:String): String {
+			var filePath:String = contentPath + "/" + id + "bin";
+			
+			try {
+				var fs:FileStream = new FileStream();
+				fs.open(new File(filePath), FileMode.READ);
+				var text:String = fs.readUTFBytes(fs.bytesAvailable);
+				fs.close();
+				return text;
+			} catch(e:Error) {
+				
+			}
+			return "";
 		}
 		
 		

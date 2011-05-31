@@ -14,7 +14,7 @@ package com.fx
 			configService = new ConfigService();
 			
 			fileService = new FileService(configService);
-			notesService = new NotesService(configService);
+			//notesService = new NotesService(configService);
 			dataService = new DataService(configService.rootFolder);
 			
 			taggingService = new TaggingService(dataService);

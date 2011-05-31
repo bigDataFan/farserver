@@ -69,7 +69,6 @@ package com.fx
 						array.push(o);
 					};
 				}
-				
 			}
 			return array;
 		}

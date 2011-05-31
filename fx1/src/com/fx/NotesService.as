@@ -6,7 +6,9 @@ package com.fx
 
 	public class NotesService
 	{
-		public function NotesService(config:ConfigService)
+		private var taggingService:TaggingService;
+		
+		public function NotesService(config:ConfigService, ts:TaggingService)
 		{
 			var basePath:String = config.rootFolder;
 		
@@ -39,6 +41,10 @@ package com.fx
 				o["created"] = FormatUtils.formatDate(file.creationDate);
 				o["modified"] = FormatUtils.formatDate(file.modificationDate);
 				o["size"] = file.size;
+				
+				var tags:Array = taggingService.getEntryTags("notes", o["title"]);
+				o["tags"] = tags;
+				
 				result.push(o);				
 			}
 			return result;
