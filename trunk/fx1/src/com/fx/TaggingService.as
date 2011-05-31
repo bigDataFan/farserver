@@ -17,7 +17,9 @@ package com.fx
 			var entryTag:Object = new Object();
 			entryTag["type"] = type;
 			entryTag["entry"] = entry;
-			entryTag["tagName"] = tagName;
+			entryTag["id"] = type + ":" + entry;
+			
+			
 			
 			tags.insert(entryTag);
 		} 
