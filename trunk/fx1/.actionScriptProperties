@@ -22,6 +22,9 @@
     <application path="ZoomDrop.mxml">
       <airExcludes/>
     </application>
+    <application path="Layout1.mxml">
+      <airExcludes/>
+    </application>
   </applications>
   <modules>
     <module application="src/Layout.mxml" destPath="com/share115/Welcome.swf" optimize="true" sourcePath="src/com/share115/Welcome.mxml"/>
