@@ -1,5 +1,7 @@
-package com.fx
+package com.orc.service
 {
+	import com.orc.utils.FormatUtils;
+	
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
