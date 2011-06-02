@@ -9,8 +9,9 @@ package com.orc.service
 	public class NotesService
 	{
 		private var taggingService:TaggingService;
+		private var fileService:FileService;
 		
-		public function NotesService(config:ConfigService, ts:TaggingService)
+		public function NotesService()
 		{
 			var basePath:String = config.rootFolder;
 		
@@ -95,21 +96,15 @@ package com.orc.service
 		public function createNotes(title:String, text:String):String {
 			
 			if (title==null || title=="") {
-				
 				title = "未命名";
-				/*
-				if (text=="") {
-					return "";
-				} else {
-					if (text.length>30) {
-						title = text.substr(0,30);
-					} else {
-						title = text;
-					}
-				}
-				*/
 			}
-			var newTitle:String = getNewNotesTitle(title);
+			//var newTitle:String = getNewNotesTitle(title);
+			
+			var o = new Object();
+			o["title"] = title;
+			o["created"] = new Date();
+			o["modified"] = new Date();
+			
 			
 			var stream:FileStream = new FileStream();
 			
