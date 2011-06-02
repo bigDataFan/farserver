@@ -18,7 +18,7 @@ package com.orc.service
 		//根据目录文件名称获取一个持久化的collection
 		public function getCollectionByPath(path:String):DataCollection {
 			if (collections[path]==null) {
-				var file:File = new File(path);
+				var file:File = new File(rootPath + "/" + path);
 				var dc:DataCollection = new DataCollection(file);
 				collections[path] = dc;
 			}	
