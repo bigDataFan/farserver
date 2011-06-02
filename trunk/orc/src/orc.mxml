@@ -4,16 +4,29 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="windowedapplication1_initializeHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import com.orc.service.DataCollection;
+			import com.orc.service.ServiceRegistry;
+			import com.orc.utils.TimeRelatedId;
+			
 			import mx.events.FlexEvent;
 
+			var serviceRegistry:ServiceRegistry;
 			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
 			{
-				
+				serviceRegistry = new ServiceRegistry();
+			}
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var coll:DataCollection = serviceRegistry.dataService.getCollectionByPath("2011年/02月/11日/data.db");
+				coll.insert({aa:"dd",id: new TimeRelatedId().toString()});
 			}
 
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		
 	</fx:Declarations>
+	<s:Button x="130" y="51" label="按钮" click="button1_clickHandler(event)"/>
+	
 </s:WindowedApplication>
