@@ -19,6 +19,7 @@ package com.orc.service
 			//notesService = new NotesService(configService);
 			
 			taggingService = new TaggingService(dataService);
+			notesService = new NotesService(dataService, fileService);
 			
 		}
 		

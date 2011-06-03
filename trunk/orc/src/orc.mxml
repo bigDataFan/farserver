@@ -1,32 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="windowedapplication1_initializeHandler(event)">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="windowedapplication1_initializeHandler(event)"
+					   width="1024" height="768">
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.DataCollection;
 			import com.orc.service.ServiceRegistry;
+			import com.orc.utils.FormatUtils;
 			import com.orc.utils.TimeRelatedId;
 			
+			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 
 			var serviceRegistry:ServiceRegistry;
 			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
 			{
 				serviceRegistry = new ServiceRegistry();
+				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
 			}
-
-			protected function button1_clickHandler(event:MouseEvent):void
+			
+			private var editingId = null;
+			protected function saveNotes(event:MouseEvent):void
 			{
-				var coll:DataCollection = serviceRegistry.dataService.getCollectionByPath("2011年/02月/11日/data.db");
-				coll.insert({aa:"dd",id: new TimeRelatedId().toString()});
+				if (editingId ==null) {
+					editingId = serviceRegistry.notesService.createNotes(note_title.text, note_content.htmlText);
+				} else {
+					
+				}
 			}
 
 		]]>
 	</fx:Script>
+		<fx:Style>
+			@namespace s "library://ns.adobe.com/flex/spark";
+			@namespace mx "library://ns.adobe.com/flex/mx";
+			>RichTextEditor { cornerRadius: 10; }
+		</fx:Style>
 	<fx:Declarations>
-		
 	</fx:Declarations>
-	<s:Button x="130" y="51" label="按钮" click="button1_clickHandler(event)"/>
+	
+	
+	<s:VGroup id="vg_notes" width="100%" height="100%">
+		
+		<mx:VDividedBox width="100%" height="612">
+			<mx:DataGrid id="grid_notes" width="100%" height="240"
+						dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}"
+						>
+				<mx:columns>
+					<mx:DataGridColumn headerText="">
+						
+					</mx:DataGridColumn>
+					
+					<mx:DataGridColumn headerText="标题" dataField="title" >
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="修改时间" >
+						<mx:itemRenderer>
+							<fx:Component>
+								<mx:Label text="{FormatUtils.formatDate(data.modified)}"  fontSize="12">
+									<fx:Script>
+										<![CDATA[
+											import com.orc.utils.FormatUtils;
+										]]>
+									</fx:Script>
+								</mx:Label>
+
+							</fx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					
+					<mx:DataGridColumn headerText="创建时间" >
+						<mx:itemRenderer>
+							<fx:Component>
+								<mx:Label text="{FormatUtils.formatDate(data.created)}"  fontSize="12">
+									<fx:Script>
+										<![CDATA[
+											import com.orc.utils.FormatUtils;
+										]]>
+									</fx:Script>
+								</mx:Label>
+
+							</fx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="大小" dataField="size" />
+
+					
+				</mx:columns>
+			</mx:DataGrid>
+			<s:VGroup width="100%" height="100%">
+				<s:Group width="100%" height="30">
+					<s:Button x="794" y="5" uid="" label="Save" click="saveNotes(event)"/>
+					
+					<s:Label x="6" y="9" text="标题"/>
+					<s:TextInput id="note_title" x="38" y="5" width="500"/>
+				</s:Group>
+				<mx:RichTextEditor width="100%" id="note_content" height="100%">
+							
+				</mx:RichTextEditor>		
+				
+			</s:VGroup>
+		</mx:VDividedBox>
+	</s:VGroup>
+		
 	
 </s:WindowedApplication>
