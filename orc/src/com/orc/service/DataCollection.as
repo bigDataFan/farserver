@@ -89,6 +89,23 @@ package com.orc.service
 			flush();
 		}
 		
+		public function upsert(filter:Object, o:Object):void {
+			var updated:Boolean = false;
+			for (var i:int = 0; i < objects.length; i++) 
+			{
+				if (match(objects[i],filter)) {
+					updated = true;
+					objects[i] = o;
+				};
+			}
+			
+			if (!updated) {
+				insert(o);
+			}
+			flush();
+			
+		}
+		
 		
 		public function match(src:Object, filter:Object):Boolean {
 			for each (var key:String in filter) {
