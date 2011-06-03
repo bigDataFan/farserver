@@ -55,7 +55,7 @@ package com.orc.service
 		}
 		
 		
-		public function saveNotes(o:Object):void {
+		public function saveContent(o:Object):void {
 			notesdb.upsert({"id":o["id"]}, o);
 		}
 		
@@ -74,6 +74,7 @@ package com.orc.service
 			o["title"] = title;
 			o["created"] = new Date();
 			o["modified"] = new Date();
+			o["size"] = text.length;
 			o["id"] = id;
 			
 			fileService.putContent(id, text);
@@ -83,7 +84,7 @@ package com.orc.service
 		}
 		
 		public function getNotesContent(id:String):String {
-			fileService.getContent(id);
+			return fileService.getContent(id);
 		}
 		
 		

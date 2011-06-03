@@ -193,7 +193,7 @@ package com.orc.service
 		
 		public function putContent(id:String, content:String) : File {
 			var tri:TimeRelatedId = TimeRelatedId.fromString(id);
-			var filePath:String = rootFolder + "/" + formatFolder(tri.date) + "/" + id + STORAGE_END_FIX;
+			var filePath:String = rootFolder.nativePath + "/" + formatFolder(tri.date) + "/" + id + STORAGE_END_FIX;
 			var stream:FileStream = new FileStream();
 			stream.open(new File(filePath),FileMode.WRITE);
 			stream.writeUTFBytes(content);
