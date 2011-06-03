@@ -1,6 +1,7 @@
 package com.orc.service
 {
 	import com.orc.utils.FormatUtils;
+	import com.orc.utils.TimeRelatedId;
 	
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -8,31 +9,27 @@ package com.orc.service
 
 	public class NotesService
 	{
-		private var taggingService:TaggingService;
+		private var dataService:DataService;
 		private var fileService:FileService;
 		
-		public function NotesService()
+		private var notesdb:DataCollection;
+		
+		public function NotesService(ds:DataService, fs:FileService)
 		{
-			var basePath:String = config.rootFolder;
-		
-			if (basePath!=null) {
-				init(new File(basePath));	
-			}
+			this.dataService = ds;
+			this.fileService = fs;
+			notesdb = dataService.getCollection("notes.db");
 		}
-		
-		public var currentEditing:String;
-		public var notesPath:String;
-		
-		
-		public function init(root:File) : void {
-			notesPath = root.nativePath + "/便笺";
-			var notesFolder:File = new File(notesPath);
-			notesFolder.createDirectory();
-		}
-
 		
 		
 		public function getNotesList():Array {
+			
+			return notesdb.findAll(null);
+			
+			/*
+			notesdb.getNotesList();
+			
+			
 			var notesFolder:File = new File(notesPath);
 			
 			var list:Array = notesFolder.getDirectoryListing();
@@ -45,52 +42,25 @@ package com.orc.service
 				o["modified"] = FormatUtils.formatDate(file.modificationDate);
 				o["size"] = file.size;
 				
-				var tags:Array = taggingService.getEntryTags("notes", o["title"]);
-				o["tags"] = tags;
+				//var tags:Array = taggingService.getEntryTags("notes", o["title"]);
 				
 				result.push(o);				
 			}
 			return result;
+			*/
 		}
 		
-		public function removeNotes(title:String):void {
-			var filePath:String = notesPath + "/" + title + ".html";
-			new File(filePath).deleteFile();
+		public function removeNotes(id:String):void {
+			notesdb.remove({"id":id});
 		}
 		
 		
-		public function editNotes(title:String):String {
-			var filePath:String = notesPath + "/" + title + ".html";
-			var fs:FileStream = new FileStream();
-			try {
-				fs.open(new File(filePath), FileMode.READ);
-				var text:String = fs.readUTFBytes(fs.bytesAvailable);
-				fs.close();
-				currentEditing = title;
-				return text;
-			} catch(e:Error) {
-			}
-			return "";
+		public function saveNotes(o:Object):void {
+			notesdb.upsert({"id":o["id"]}, o);
 		}
 		
-		public function saveNotes(title:String, text:String) :void {
-			if (currentEditing==null) {
-				createNotes(title,text);
-			} else {
-				var filePath:String = notesPath + "/" + currentEditing + ".html";
-				var stream:FileStream = new FileStream();
-				
-				stream.open(new File(filePath),FileMode.WRITE);
-				stream.writeUTFBytes(text);
-				stream.close();
-				
-				if (title!=currentEditing) {
-					var newTitle:String = getNewNotesTitle(title);
-					new File(filePath).moveTo(new File(notesPath + "/" + newTitle + ".html"),false);
-					currentEditing = title;
-				}
-			}
-			
+		public function addNotesTag(id:String, tag:String) :void {
+			var notesdb:DataCollection = dataService.getCollection("notes.db");
 		}
 		
 		public function createNotes(title:String, text:String):String {
@@ -98,39 +68,24 @@ package com.orc.service
 			if (title==null || title=="") {
 				title = "未命名";
 			}
+			var id:String = new TimeRelatedId().toString();
 			//var newTitle:String = getNewNotesTitle(title);
-			
 			var o = new Object();
 			o["title"] = title;
 			o["created"] = new Date();
 			o["modified"] = new Date();
+			o["id"] = id;
 			
+			fileService.putContent(id, text);
 			
-			var stream:FileStream = new FileStream();
-			
-			stream.open(new File(notesPath + "/" + newTitle + ".html"),FileMode.WRITE);
-			stream.writeUTFBytes(text);
-			stream.close();
-			
-			currentEditing = title;
-			return newTitle;
+			notesdb.insert(o);
+			return id;
 		}
 		
-		public function getNewNotesTitle(title:String) : String {
-			
-			var filePath:String = notesPath + "/" + title + ".html";
-			
-			var i:Number = 0;
-			var newTitle:String = title;
-			while(new File(filePath).exists) {
-				i = i + 1;
-				newTitle =  title + "(" + i + ")";
-				filePath = notesPath + "/" + newTitle + ".html";
-			}
-			
-			return newTitle;
-			
+		public function getNotesContent(id:String):String {
+			fileService.getContent(id);
 		}
+		
 		
 		
 	}
