@@ -43,7 +43,7 @@
 	
 	<s:VGroup id="vg_notes" width="100%" height="100%">
 		
-		<mx:VDividedBox width="100%" height="612">
+		<mx:VDividedBox width="100%" height="750">
 			<mx:DataGrid id="grid_notes" width="100%" height="240"
 						dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}"
 						>
@@ -84,18 +84,16 @@
 						</mx:itemRenderer>
 					</mx:DataGridColumn>
 					<mx:DataGridColumn headerText="大小" dataField="size" />
-
-					
 				</mx:columns>
 			</mx:DataGrid>
 			<s:VGroup width="100%" height="100%">
 				<s:Group width="100%" height="30">
-					<s:Button x="794" y="5" uid="" label="Save" click="saveNotes(event)"/>
+					<s:Button x="679" y="4" width="61" label="Save" click="saveNotes(event)" uid=""/>
 					
 					<s:Label x="6" y="9" text="标题"/>
-					<s:TextInput id="note_title" x="38" y="5" width="500"/>
+					<s:TextInput id="note_title" x="38" y="5" width="633"/>
 				</s:Group>
-				<mx:RichTextEditor width="100%" id="note_content" height="100%">
+				<mx:RichTextEditor width="100%" id="note_content" height="459">
 							
 				</mx:RichTextEditor>		
 				
