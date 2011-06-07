@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="windowedapplication1_initializeHandler(event)"
-					   width="1024" height="768" xmlns:com="com.*">
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="768" initialize="vgroup1_initializeHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.DataCollection;
@@ -11,17 +14,17 @@
 			import com.orc.utils.TimeRelatedId;
 			
 			import mx.collections.ArrayCollection;
+			import mx.core.Application;
 			import mx.events.FlexEvent;
-
-			public static const serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			
+			var serviceRegistry:ServiceRegistry;
 			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
 			{
-				//serviceRegistry = new ServiceRegistry();
-				//grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
+				
+				serviceRegistry = orc.serviceRegistry; 
+				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
 			}
 			
-			
-			/*
 			private var editingId = null;
 			protected function saveNotes(event:MouseEvent):void
 			{
@@ -37,8 +40,8 @@
 				}
 				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
 			}
-
-
+			
+			
 			protected function grid_notes_open(event:MouseEvent):void
 			{
 				if (grid_notes.selectedItem!=null) {
@@ -47,7 +50,7 @@
 					note_content.htmlText = serviceRegistry.notesService.getNotesContent(editingId);
 				}
 			}
-
+			
 			protected function linkbutton1_clickHandler(event:MouseEvent):void
 			{
 				if (grid_notes.selectedItem!=null) {
@@ -56,33 +59,24 @@
 				}
 			}
 			
-
+			
 			protected function newNotes(event:MouseEvent):void
 			{
 				editingId = null;				
 				note_title.text = "";
 				note_content.htmlText = "";
 			}
+			
 
-			*/
+			protected function vgroup1_initializeHandler(event:FlexEvent):void
+			{
+				serviceRegistry = new ServiceRegistry(); 
+				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
+			}
+
 		]]>
 	</fx:Script>
-		<fx:Style>
-			@namespace s "library://ns.adobe.com/flex/spark";
-			@namespace mx "library://ns.adobe.com/flex/mx";
-			>RichTextEditor { cornerRadius: 10; }
-		</fx:Style>
-	<fx:Declarations>
-	</fx:Declarations>
 	
-	
-	
-	<com:notesvg id="notes_g">
-		
-	</com:notesvg>	
-	
-	<!--
-	<s:VGroup id="vg_notes" width="100%" height="100%">
 		<s:HGroup width="100%" height="25">
 			<mx:LinkButton label="New" click="newNotes(event)">
 				
@@ -91,13 +85,13 @@
 		
 		<mx:VDividedBox  width="100%" height="750">
 			<mx:DataGrid id="grid_notes" width="100%" height="240" doubleClickEnabled="true" doubleClick="grid_notes_open(event)"
-						dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}">
+						 dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}">
 				<mx:columns>
 					<mx:DataGridColumn headerText="">
 						<mx:itemRenderer>
-							 <fx:Component>
+							<fx:Component>
 								<mx:LinkButton icon="@Embed('buttons/remove_item.gif')" click="linkbutton2_clickHandler(event)">
-
+									
 									<fx:Script>
 										<![CDATA[
 											import mx.collections.ArrayCollection;
@@ -110,7 +104,7 @@
 											}
 										]]>
 									</fx:Script>
-
+									
 								</mx:LinkButton>
 							</fx:Component>
 						</mx:itemRenderer>
@@ -128,7 +122,7 @@
 										]]>
 									</fx:Script>
 								</mx:Label>
-
+								
 							</fx:Component>
 						</mx:itemRenderer>
 					</mx:DataGridColumn>
@@ -143,7 +137,7 @@
 										]]>
 									</fx:Script>
 								</mx:Label>
-
+								
 							</fx:Component>
 						</mx:itemRenderer>
 					</mx:DataGridColumn>
@@ -159,12 +153,10 @@
 					<s:TextInput id="note_title" x="38" y="5" width="633"/>
 				</s:Group>
 				<mx:RichTextEditor width="100%" id="note_content" height="459">
-							
+					
 				</mx:RichTextEditor>		
 				
 			</s:VGroup>
 		</mx:VDividedBox>
-	</s:VGroup>
-		
-	-->
-</s:WindowedApplication>
+
+</s:VGroup>

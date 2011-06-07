@@ -57,6 +57,7 @@ package com.orc.service
 		
 		public function saveNote(o:Object):void {
 			fileService.putContent(o["id"], o["content"]);
+			o["size"] = o["content"].length;
 			o["content"] = null;
 			o["modified"] = new Date();
 			notesdb.upsert({"id":o["id"]}, o);
