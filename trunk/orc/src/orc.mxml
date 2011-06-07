@@ -29,7 +29,7 @@
 				TweenLite.to(p_config, 0.5, {x:-333, y:-262, ease:Circ.easeInOut});
 				TweenLite.to(p_task, 0.5, {x:-333, y:-262, ease:Circ.easeInOut});
 				
-				TweenLite.to(notes_g, 0.5, {x:0, y:0, alpha:1});
+				TweenLite.to(notes_g, 1, {x:0, y:0, alpha:1});
 			}
 			
 
@@ -52,7 +52,7 @@
 					TweenLite.to(p_config, 0.5, {x:403, y:340, ease:Circ.easeInOut});
 					TweenLite.to(p_task, 0.5, {x:755, y:340, ease:Circ.easeInOut});
 					
-					TweenLite.to(notes_g, 0.5, {x:0, y:-768, alpha:0, ease:Circ.easeOut});
+					TweenLite.to(notes_g, 1, {x:0, y:-768, alpha:0, ease:Circ.easeOut});
 					//TweenLite.to(notes_g, 2, {visible:false, alpha:0});
 				}
 			}
