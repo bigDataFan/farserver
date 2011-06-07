@@ -205,7 +205,7 @@ package com.orc.service
 		public function getContent(id:String): String {
 			var tri:TimeRelatedId = TimeRelatedId.fromString(id);
 			
-			var filePath:String = rootFolder + "/" + formatFolder(tri.date) + "/" + id + STORAGE_END_FIX;
+			var filePath:String = rootFolder.nativePath + "/" + formatFolder(tri.date) + "/" + id + STORAGE_END_FIX;
 			
 			try {
 				var fs:FileStream = new FileStream();
