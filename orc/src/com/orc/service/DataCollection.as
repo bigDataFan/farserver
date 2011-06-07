@@ -108,7 +108,7 @@ package com.orc.service
 		
 		
 		public function match(src:Object, filter:Object):Boolean {
-			for each (var key:String in filter) {
+			for (var key:String in filter) {
 				if (src[key] != filter[key]) {
 					return false;
 				}
