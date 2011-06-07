@@ -1,70 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="windowedapplication1_initializeHandler(event)"
-					   width="1024" height="768" xmlns:com="com.*">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   width="1024" height="768" xmlns:com="com.*" initialize="windowedapplication2_initializeHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import com.SlideBackEvent;
+			import com.greensock.TweenLite;
+			import com.greensock.easing.Circ;
 			import com.orc.service.DataCollection;
 			import com.orc.service.ServiceRegistry;
 			import com.orc.utils.FormatUtils;
 			import com.orc.utils.TimeRelatedId;
 			
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 
 			public static const serviceRegistry:ServiceRegistry = new ServiceRegistry();
-			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
-			{
-				//serviceRegistry = new ServiceRegistry();
-				//grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
-			}
 			
-			
-			/*
-			private var editingId = null;
-			protected function saveNotes(event:MouseEvent):void
+			protected function button1_clickHandler(event:MouseEvent):void
 			{
-				if (editingId == null) {
-					editingId = serviceRegistry.notesService.createNotes(note_title.text, note_content.htmlText);
-				} else {
-					var note:Object = serviceRegistry.notesService.getNote(editingId);
-					if (note!=null) {
-						note["title"] = note_title.text;
-						note["content"] = note_content.htmlText;
-						serviceRegistry.notesService.saveNote(note);
-					}
-				}
-				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
-			}
+				TweenLite.to(p_files, 0.5, {x:-315, y:-262, ease:Circ.easeInOut});
+				TweenLite.to(p_proc, 0.5, {x:333, y:-262, ease:Circ.easeInOut});
+				TweenLite.to(p_webclic, 0.5, {x:-1315, ease:Circ.easeInOut});
 
-
-			protected function grid_notes_open(event:MouseEvent):void
-			{
-				if (grid_notes.selectedItem!=null) {
-					editingId = grid_notes.selectedItem["id"];
-					note_title.text = grid_notes.selectedItem["title"];
-					note_content.htmlText = serviceRegistry.notesService.getNotesContent(editingId);
-				}
-			}
-
-			protected function linkbutton1_clickHandler(event:MouseEvent):void
-			{
-				if (grid_notes.selectedItem!=null) {
-					editingId = grid_notes.selectedItem["id"];
-					serviceRegistry.notesService.removeNotes(editingId);
-				}
+				TweenLite.to(p_notes, 0.5, {x:-333, ease:Circ.easeInOut});
+				TweenLite.to(p_config, 0.5, {x:-333, y:-262, ease:Circ.easeInOut});
+				TweenLite.to(p_task, 0.5, {x:-333, y:-262, ease:Circ.easeInOut});
+				
+				TweenLite.to(notes_g, 0.5, {x:0, y:0, alpha:1});
 			}
 			
 
-			protected function newNotes(event:MouseEvent):void
+
+			protected function windowedapplication2_initializeHandler(event:FlexEvent):void
 			{
-				editingId = null;				
-				note_title.text = "";
-				note_content.htmlText = "";
+				notes_g.addEventListener(SlideBackEvent.BACK, listes);
 			}
 
-			*/
+
+			protected function listes(event:Event):void
+			{
+				if (event is SlideBackEvent) {
+
+					TweenLite.to(p_files, 0.5, {x:10, y:10, ease:Circ.easeInOut});
+					TweenLite.to(p_proc, 0.5, {x:333, y:10, ease:Circ.easeInOut});
+					TweenLite.to(p_webclic, 0.5, {x:755, y:10, ease:Circ.easeInOut});
+					
+					TweenLite.to(p_notes, 0.5, {x:10, y:340, ease:Circ.easeInOut});
+					TweenLite.to(p_config, 0.5, {x:403, y:340, ease:Circ.easeInOut});
+					TweenLite.to(p_task, 0.5, {x:755, y:340, ease:Circ.easeInOut});
+					
+					TweenLite.to(notes_g, 0.5, {x:0, y:-768, alpha:0, ease:Circ.easeOut});
+					//TweenLite.to(notes_g, 2, {visible:false, alpha:0});
+				}
+			}
+
 		]]>
 	</fx:Script>
 		<fx:Style>
@@ -76,9 +68,26 @@
 	</fx:Declarations>
 	
 	
+	<s:Panel id="p_files" x="10" y="10"  width="315" height="314" title="最近文件">
+		<s:List x="10" y="10" width="292" height="262" labelField="title" dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}"></s:List>
+	</s:Panel>
 	
-	<com:notesvg id="notes_g">
+	
+	<s:Panel id="p_proc" x="333" y="10"  width="410" height="314" title="工作进度">
+		<s:Button x="367" y="-25" width="35" label="按钮" click="button1_clickHandler(event)"/>
+	</s:Panel>
+	<s:Panel id="p_webclic" x="755" y="10" width="259" height="313" title="Web剪辑">
+	</s:Panel>
+	<s:Panel id="p_notes" x="10" y="344" width="384" height="406" title="文档记事">
+	</s:Panel>
+	<s:Panel id="p_config" x="403" y="340" width="341" height="410">
+	</s:Panel>
+	<s:Panel id="p_task" x="755" y="340" width="259" height="410" title="定期任务">
+	</s:Panel>
 		
+	
+	
+	<com:notesvg id="notes_g" alpha="0" y="-768">
 	</com:notesvg>	
 	
 	<!--

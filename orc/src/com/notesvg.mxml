@@ -18,12 +18,6 @@
 			import mx.events.FlexEvent;
 			
 			var serviceRegistry:ServiceRegistry;
-			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
-			{
-				
-				serviceRegistry = orc.serviceRegistry; 
-				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
-			}
 			
 			private var editingId = null;
 			protected function saveNotes(event:MouseEvent):void
@@ -74,14 +68,22 @@
 				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
 			}
 
+
+			protected function linkbutton3_clickHandler(event:MouseEvent):void
+			{
+				var sbe : SlideBackEvent = new SlideBackEvent();
+				this.dispatchEvent(sbe);
+			}
+
 		]]>
 	</fx:Script>
 	
-		<s:HGroup width="100%" height="25">
+		<s:Group width="100%" height="25">
 			<mx:LinkButton label="New" click="newNotes(event)">
 				
 			</mx:LinkButton>
-		</s:HGroup>
+			<mx:LinkButton x="936" y="3" label="Back" click="linkbutton3_clickHandler(event)"/>
+		</s:Group>
 		
 		<mx:VDividedBox  width="100%" height="750">
 			<mx:DataGrid id="grid_notes" width="100%" height="240" doubleClickEnabled="true" doubleClick="grid_notes_open(event)"
