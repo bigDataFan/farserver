@@ -19,42 +19,54 @@
 
 			public static const serviceRegistry:ServiceRegistry = new ServiceRegistry();
 			
+			
+			protected function hideDashboard() :void {
+				TweenLite.to(p_files, 0.5, {x:-400, y:-400, ease:Circ.easeInOut});
+				TweenLite.to(p_proc, 0.5, {x:333, y:-400, ease:Circ.easeInOut});
+				TweenLite.to(p_webclic, 0.5, {x:1315, y:-400, ease:Circ.easeInOut});
+				
+				TweenLite.to(p_notes, 0.5, {x:-400, y:800, ease:Circ.easeInOut});
+				TweenLite.to(p_config, 0.5, {x:-403, y:800, ease:Circ.easeInOut});
+				TweenLite.to(p_task, 0.5, {x:-1050, y:800, ease:Circ.easeInOut});
+			}
+			
+			protected function showDashboard() :void {
+				TweenLite.to(p_files, 0.5, {x:10, y:10, ease:Circ.easeInOut});
+				TweenLite.to(p_proc, 0.5, {x:333, y:10, ease:Circ.easeInOut});
+				TweenLite.to(p_webclic, 0.5, {x:755, y:10, ease:Circ.easeInOut});
+				
+				TweenLite.to(p_notes, 0.5, {x:10, y:340, ease:Circ.easeInOut});
+				TweenLite.to(p_config, 0.5, {x:403, y:340, ease:Circ.easeInOut});
+				TweenLite.to(p_task, 0.5, {x:755, y:340, ease:Circ.easeInOut});
+			}
+			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
-				TweenLite.to(p_files, 0.5, {x:-315, y:-262, ease:Circ.easeInOut});
-				TweenLite.to(p_proc, 0.5, {x:333, y:-262, ease:Circ.easeInOut});
-				TweenLite.to(p_webclic, 0.5, {x:-1315, ease:Circ.easeInOut});
-
-				TweenLite.to(p_notes, 0.5, {x:-333, ease:Circ.easeInOut});
-				TweenLite.to(p_config, 0.5, {x:-333, y:-262, ease:Circ.easeInOut});
-				TweenLite.to(p_task, 0.5, {x:-333, y:-262, ease:Circ.easeInOut});
-				
-				TweenLite.to(notes_g, 1, {x:0, y:0, alpha:1});
+				hideDashboard();								
+				TweenLite.to(notes_g, 0.5, {scaleX:1, scaleY:1, alpha:1});
 			}
 			
 
-
 			protected function windowedapplication2_initializeHandler(event:FlexEvent):void
 			{
-				notes_g.addEventListener(SlideBackEvent.BACK, listes);
+				notes_g.addEventListener(SlideBackEvent.BACK, onSlideBack);
 			}
 
 
-			protected function listes(event:Event):void
+			protected function onSlideBack(event:Event):void
 			{
 				if (event is SlideBackEvent) {
-
-					TweenLite.to(p_files, 0.5, {x:10, y:10, ease:Circ.easeInOut});
-					TweenLite.to(p_proc, 0.5, {x:333, y:10, ease:Circ.easeInOut});
-					TweenLite.to(p_webclic, 0.5, {x:755, y:10, ease:Circ.easeInOut});
-					
-					TweenLite.to(p_notes, 0.5, {x:10, y:340, ease:Circ.easeInOut});
-					TweenLite.to(p_config, 0.5, {x:403, y:340, ease:Circ.easeInOut});
-					TweenLite.to(p_task, 0.5, {x:755, y:340, ease:Circ.easeInOut});
-					
-					TweenLite.to(notes_g, 1, {x:0, y:-768, alpha:0, ease:Circ.easeOut});
+					showDashboard();
+					TweenLite.to((event as SlideBackEvent).obj, 0.5, {alpha:0,scaleX:1.3, scaleY:1.3, ease:Circ.easeOut});
 					//TweenLite.to(notes_g, 2, {visible:false, alpha:0});
 				}
+			}
+
+
+			protected function switch2File(event:MouseEvent):void
+			{
+				hideDashboard();		
+				TweenLite.to(files_g, 0.5, {scaleX:1, scaleY:1, alpha:1});
 			}
 
 		]]>
@@ -67,113 +79,31 @@
 	<fx:Declarations>
 	</fx:Declarations>
 	
+	<s:Group>
 	
-	<s:Panel id="p_files" x="10" y="10"  width="315" height="314" title="最近文件">
-		<s:List x="10" y="10" width="292" height="262" labelField="title" dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}"></s:List>
-	</s:Panel>
-	
-	
-	<s:Panel id="p_proc" x="333" y="10"  width="410" height="314" title="工作进度">
-		<s:Button x="367" y="-25" width="35" label="按钮" click="button1_clickHandler(event)"/>
-	</s:Panel>
-	<s:Panel id="p_webclic" x="755" y="10" width="259" height="313" title="Web剪辑">
-	</s:Panel>
-	<s:Panel id="p_notes" x="10" y="344" width="384" height="406" title="文档记事">
-	</s:Panel>
-	<s:Panel id="p_config" x="403" y="340" width="341" height="410">
-	</s:Panel>
-	<s:Panel id="p_task" x="755" y="340" width="259" height="410" title="定期任务">
-	</s:Panel>
+		<s:Panel id="p_files" x="10" y="10"  width="315" height="314" title="最近文件">
+			<s:Button x="260" y="-25" width="44" label="按钮" click="switch2File(event)"/>
+			<s:List x="10" y="10" width="292" height="262" labelField="name" dataProvider="{serviceRegistry.fileService.getUsefullFileList()}"></s:List>
+		</s:Panel>
 		
-	
-	
-	<com:notesvg id="notes_g" alpha="0" y="-768">
-	</com:notesvg>	
-	
-	<!--
-	<s:VGroup id="vg_notes" width="100%" height="100%">
-		<s:HGroup width="100%" height="25">
-			<mx:LinkButton label="New" click="newNotes(event)">
-				
-			</mx:LinkButton>
-		</s:HGroup>
 		
-		<mx:VDividedBox  width="100%" height="750">
-			<mx:DataGrid id="grid_notes" width="100%" height="240" doubleClickEnabled="true" doubleClick="grid_notes_open(event)"
-						dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}">
-				<mx:columns>
-					<mx:DataGridColumn headerText="">
-						<mx:itemRenderer>
-							 <fx:Component>
-								<mx:LinkButton icon="@Embed('buttons/remove_item.gif')" click="linkbutton2_clickHandler(event)">
-
-									<fx:Script>
-										<![CDATA[
-											import mx.collections.ArrayCollection;
-											protected function linkbutton2_clickHandler(event:MouseEvent):void
-											{
-												if (outerDocument.grid_notes.selectedItem!=null) {
-													outerDocument.serviceRegistry.notesService.removeNotes(outerDocument.grid_notes.selectedItem["id"]);
-													outerDocument.grid_notes.dataProvider = new ArrayCollection(outerDocument.serviceRegistry.notesService.getNotesList());
-												}
-											}
-										]]>
-									</fx:Script>
-
-								</mx:LinkButton>
-							</fx:Component>
-						</mx:itemRenderer>
-					</mx:DataGridColumn>
-					
-					<mx:DataGridColumn headerText="标题" dataField="title" >
-					</mx:DataGridColumn>
-					<mx:DataGridColumn headerText="修改时间" >
-						<mx:itemRenderer>
-							<fx:Component>
-								<mx:Label text="{FormatUtils.formatDate(data.modified)}"  fontSize="12">
-									<fx:Script>
-										<![CDATA[
-											import com.orc.utils.FormatUtils;
-										]]>
-									</fx:Script>
-								</mx:Label>
-
-							</fx:Component>
-						</mx:itemRenderer>
-					</mx:DataGridColumn>
-					
-					<mx:DataGridColumn headerText="创建时间" >
-						<mx:itemRenderer>
-							<fx:Component>
-								<mx:Label text="{FormatUtils.formatDate(data.created)}"  fontSize="12">
-									<fx:Script>
-										<![CDATA[
-											import com.orc.utils.FormatUtils;
-										]]>
-									</fx:Script>
-								</mx:Label>
-
-							</fx:Component>
-						</mx:itemRenderer>
-					</mx:DataGridColumn>
-					<mx:DataGridColumn headerText="大小" dataField="size" />
-					<mx:DataGridColumn headerText="大小" dataField="id" />
-				</mx:columns>
-			</mx:DataGrid>
-			<s:VGroup width="100%" height="100%">
-				<s:Group width="100%" height="30">
-					<s:Button x="679" y="4" width="61" label="Save" click="saveNotes(event)" uid=""/>
-					
-					<s:Label x="6" y="9" text="标题"/>
-					<s:TextInput id="note_title" x="38" y="5" width="633"/>
-				</s:Group>
-				<mx:RichTextEditor width="100%" id="note_content" height="459">
-							
-				</mx:RichTextEditor>		
-				
-			</s:VGroup>
-		</mx:VDividedBox>
-	</s:VGroup>
+		<s:Panel id="p_proc" x="333" y="10"  width="410" height="314" title="工作进度">
+			<s:Button x="367" y="-25" width="35" label="按钮" click="button1_clickHandler(event)"/>
+		</s:Panel>
+		<s:Panel id="p_webclic" x="755" y="10" width="259" height="313" title="Web剪辑">
+		</s:Panel>
+		<s:Panel id="p_notes" x="10" y="344" width="384" height="406" title="文档记事">
+			<s:List x="10" y="10" width="292" height="262" labelField="title" dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}"></s:List>
+		</s:Panel>
+		<s:Panel id="p_config" x="403" y="340" width="341" height="410">
+		</s:Panel>
+		<s:Panel id="p_task" x="755" y="340" width="259" height="410" title="定期任务">
+		</s:Panel>
 		
-	-->
+		<com:notesvg id="notes_g" alpha="0" y="0" scaleX="1.3" scaleY="1.3">
+		</com:notesvg>	
+		
+		<com:filesvg id="files_g" x="-131" y="0" alpha="0" scaleX="1.3" scaleY="1.3">
+		</com:filesvg>
+	</s:Group>
 </s:WindowedApplication>
