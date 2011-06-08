@@ -178,6 +178,11 @@ package com.orc.service
 				if (child.isDirectory) {
 					//scanAndAddFiles(root,child);
 				} else {
+					
+					if (child.name.indexOf(".db")>-1) {
+						continue;	
+					}
+					
 					var modified:Date = child.modificationDate;
 					var folderPath:String = root.nativePath + "/" + formatFolder(modified) + "/" + child.name;
 					var dateFolder:File = new File(folderPath);
