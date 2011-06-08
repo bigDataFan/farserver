@@ -17,7 +17,7 @@
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 
-			public static const serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
 			
 			
 			protected function hideDashboard() :void {
@@ -75,6 +75,22 @@
 				TweenLite.to(files_g, 0.5, {x:0, y:0,alpha:1});
 			}
 
+
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				var f:File = new File(serviceRegistry.configService.rootFolder);
+				
+				f.browseForDirectory("选择目录");
+				
+				f.addEventListener(Event.SELECT, function (event:Event):void {
+					var dir:File = event.target as File;
+					serviceRegistry.configService.setRoot(dir.nativePath);
+					serviceRegistry = new ServiceRegistry();
+					serviceRegistry.fileService.organizeFolder(dir);
+										
+				});
+			}
+
 		]]>
 	</fx:Script>
 		<fx:Style>
@@ -97,11 +113,16 @@
 			<s:Button x="367" y="-25" width="35" label="按钮" click="button1_clickHandler(event)"/>
 		</s:Panel>
 		<s:Panel id="p_webclic" x="755" y="10" width="259" height="313" title="Web剪辑">
+			<s:Label x="10" y="10" width="114" height="16" text="本地工作目录"/>
+			<s:TextInput x="10" y="25" width="210" color="#7A7A7A" editable="false"
+						 text="{serviceRegistry.configService.rootFolder}"/>
+			<mx:LinkButton x="228" y="25" label="..." click="linkbutton1_clickHandler(event)"/>
 		</s:Panel>
 		<s:Panel id="p_notes" x="10" y="344" width="384" height="406" title="文档记事">
 			<s:List x="10" y="10" width="292" height="262" labelField="title" dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}"></s:List>
 		</s:Panel>
 		<s:Panel id="p_config" x="403" y="340" width="341" height="410">
+			
 		</s:Panel>
 		<s:Panel id="p_task" x="755" y="340" width="259" height="410" title="定期任务">
 		</s:Panel>

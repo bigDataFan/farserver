@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="768">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="768" initialize="group1_initializeHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import mx.events.FlexEvent;
 			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
@@ -11,6 +12,13 @@
 				sbe.obj = this;
 				this.dispatchEvent(sbe);
 			}
+
+			protected function group1_initializeHandler(event:FlexEvent):void
+			{
+				datechooser["dateGrid"];
+				
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -24,7 +32,7 @@
 		<s:VGroup width="224" height="554">
 			<mx:Tree width="221">
 			</mx:Tree>
-			<mx:DateChooser width="222" height="208" yearNavigationEnabled="true" />
+			<mx:DateChooser id="datechooser" width="222" height="208" yearNavigationEnabled="true" />
 			
 		</s:VGroup>
 		<s:VGroup height="100%">
