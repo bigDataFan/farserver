@@ -103,24 +103,21 @@ package com.orc.service
 		}
 
 		
-		public function getMonthSummaries(year:Number, month:Number):ArrayList {
+		public function getMonthSummaries(year:Number, month:Number):Object {
 			var monthFolder:File = new File(rootFolder.nativePath + "/" + year + "年/" + (month+1) + "月");
 			if (monthFolder.exists) {
-				var result:ArrayList = new ArrayList();
+				var result:Object = new Object();
 				
 				var listing:Array = monthFolder.getDirectoryListing();
 				for (var i:int = 0; i < listing.length; i++) {
 					var child:File = listing[i] as File;
 					if (child.isDirectory) {
-						var o = new Object();
-						o["name"] = child.name;
-						o["count"] = child.getDirectoryListing().length;
-						result.addItem(o);
+						result[child.name] = child.getDirectoryListing().length;
 					}
 				}
 				return result;
 			} else {
-				return new ArrayList();
+				return new Object();
 			}
 			
 		} 

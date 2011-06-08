@@ -7,10 +7,13 @@
 			import com.orc.service.ServiceRegistry;
 			
 			import mx.collections.ArrayList;
+			import mx.controls.ColorPicker;
 			import mx.core.UIComponent;
 			import mx.core.UITextField;
 			import mx.events.CalendarLayoutChangeEvent;
 			import mx.events.FlexEvent;
+			
+			import spark.effects.interpolation.RGBInterpolator;
 			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
@@ -35,7 +38,7 @@
 			}
 			
 			private function events():void {
-				var summaryies:ArrayList = serviceRegistry.fileService.getMonthSummaries(datechooser.displayedYear, datechooser.displayedMonth+1);
+				var summaryies:Object = serviceRegistry.fileService.getMonthSummaries(datechooser.displayedYear, datechooser.displayedMonth+1);
 				
 				for(var i:Number=0; i<datechooser.numChildren; i++) {
 					var calendarObj:Object = datechooser.getChildAt(i);
@@ -52,7 +55,19 @@
 									day.selectable=true;
 									day.wordWrap=true;
 									day.multiline=true;
-									day.htmlText="very good";
+									//day.htmlText="very good";
+									try {
+										var n:Number =  new Number(day.text);
+										if (n>0 && n<32) {
+											day.backgroundColor = 0xff00ff;
+											if (summaryies[n+"日"]!=null) {
+												day.htmlText= n + "(" + summaryies[n+"日"] + ")";
+											}
+										}
+									} catch (e:Error) {
+										
+									}
+									
 								}
 								
 							}
