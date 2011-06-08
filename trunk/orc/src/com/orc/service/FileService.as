@@ -85,8 +85,7 @@ package com.orc.service
 				var child:File = children[i] as File;
 				if (child.name.match(/\d{1,2}日/i)) {
 					var o:Object = new Object();
-					
-					
+
 					var year:Number = new Number(child.parent.parent.name.substr(0,4));
 					var month:Number = new Number(child.parent.name.substr(0,2));
 					var day:Number = new Number(child.name.substr(0,2));
@@ -102,6 +101,29 @@ package com.orc.service
 				}
 			}
 		}
+
+		
+		public function getMonthSummaries(year:Number, month:Number):ArrayList {
+			var monthFolder:File = new File(rootFolder.nativePath + "/" + year + "年/" + (month+1) + "月");
+			if (monthFolder.exists) {
+				var result:ArrayList = new ArrayList();
+				
+				var listing:Array = monthFolder.getDirectoryListing();
+				for (var i:int = 0; i < listing.length; i++) {
+					var child:File = listing[i] as File;
+					if (child.isDirectory) {
+						var o = new Object();
+						o["name"] = child.name;
+						o["count"] = child.getDirectoryListing().length;
+						result.addItem(o);
+					}
+				}
+				return result;
+			} else {
+				return new ArrayList();
+			}
+			
+		} 
 		
 		
 		function scanDateDic(root:File) {
@@ -164,12 +186,22 @@ package com.orc.service
 			//var d:String = dateStr.indexOf("日");
 		}
 		
+		/*
 		public function formatFolder(date:Date):String {
 			return date.getFullYear() + "年/" 
 				+ (((date.getMonth()+1)<10)?("0"+ (date.getMonth()+1)): (date.getMonth()+1)) + "月/" 
 				+ ((date.getDate()<10)?("0"+date.getDate()):date.getDate()) + "日"
 			
 		}
+		*/
+		
+		public function formatFolder(date:Date):String {
+			return date.getFullYear() + "年/" 
+				+ (date.getMonth()+1) + "月/" 
+				+ (date.getDate()) + "日"
+			
+		}
+		
 		
 		public function organizeFolder(root:File) : void {
 			var children:Array = root.getDirectoryListing();
