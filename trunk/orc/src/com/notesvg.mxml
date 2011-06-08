@@ -72,6 +72,7 @@
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
 				var sbe : SlideBackEvent = new SlideBackEvent();
+				sbe.obj = this;
 				this.dispatchEvent(sbe);
 			}
 

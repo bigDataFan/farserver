@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="768">
+	<fx:Script>
+		<![CDATA[
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:HGroup width="100%" height="100%">
+		<s:VGroup width="224" height="554">
+			<mx:Tree width="221"></mx:Tree>
+			<mx:DateChooser width="222" height="208"/>
+			
+		</s:VGroup>
+		<s:VGroup height="800">
+			<mx:DataGrid id="datagrid_file_list_view" width="784" height="768"
+						 doubleClickEnabled="true" allowMultipleSelection="true">
+				<mx:columns>
+					<mx:DataGridColumn headerText="" width="64">
+						<mx:itemRenderer>
+							<fx:Component>
+								<mx:Image source="{data.iconpath}" width="64" height="64">
+								</mx:Image>
+							</fx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn >
+					<mx:DataGridColumn headerText="名称" dataField="name"/>	
+					<mx:DataGridColumn headerText="修改时间" dataField="modified"/>
+					<mx:DataGridColumn dataField="size" sortable="true" resizable="true"/>
+				</mx:columns>
+			</mx:DataGrid>	
+			
+		</s:VGroup>
+	</s:HGroup>
+</s:Group>

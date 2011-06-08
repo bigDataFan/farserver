@@ -5,6 +5,7 @@ package com
 	public class SlideBackEvent extends Event
 	{
 		
+		public var obj:Object;
 		public function SlideBackEvent(bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(BACK, bubbles, cancelable);

@@ -52,6 +52,10 @@ package com.orc.service
 			var todayFolder:File = new File(todayPath);
 			todayFolder.createDirectory();
 			
+			usefullFolder = rootFolder.nativePath + "/常用文件";
+			var uf:File = new File(usefullFolder);
+			uf.createDirectory();
+			
 			//扫描日期文件夹  获取所有日期文件夹信息
 			var children:Array = rootFolder.getDirectoryListing();
 			for (var i:int = 0; i < children.length; i++) {
