@@ -37,8 +37,10 @@
 				}
 			}
 			
+			
+			var summaryies:Object;
 			private function events():void {
-				var summaryies:Object = serviceRegistry.fileService.getMonthSummaries(datechooser.displayedYear, datechooser.displayedMonth);
+				summaryies= serviceRegistry.fileService.getMonthSummaries(datechooser.displayedYear, datechooser.displayedMonth);
 				
 				for(var i:Number=0; i<datechooser.numChildren; i++) {
 					var calendarObj:Object = datechooser.getChildAt(i);
@@ -52,17 +54,16 @@
 								var children:DisplayObject = uic.getChildAt(j);
 								if (children.hasOwnProperty("text")) {
 									var day:UITextField = UITextField(children);
-									day.selectable = true;
-									day.wordWrap = true;
-									day.multiline = true;
+									//day.selectable = true;
+									//day.wordWrap = true;
+									//day.multiline = true;
 									//day.htmlText="very good";
 									try {
 										var n:Number =  new Number(day.text);
 										if (n>0 && n<32) {
 											day.backgroundColor = 0xff00ff;
 											if (summaryies[n+"日"]!=null) {
-												day.htmlText= n + "<br>(" + summaryies[n+"日"] + ")";
-												//day["numday"] = n;
+												day.htmlText= "<font color=\"#ff0000\">" + n + "</font>";
 											} else {
 											}
 										}
@@ -84,8 +85,8 @@
 				if (target is UITextField) {
 					var uit:UITextField = target as UITextField;
 					
-					if (uit.text.indexOf("\r")>-1) {
-						var dayStr:String = uit.text.substr(0, uit.text.indexOf("\r"));
+					if (uit.htmlText.indexOf("#FF0000")>-1) {
+						var dayStr:String = uit.text;
 						var folderPath:String = serviceRegistry.fileService.getRootFolder() + "/" + datechooser.displayedYear + "年/" 
 							+ datechooser.displayedMonth + "月/" + dayStr + "日";
 						datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getDateFileList(folderPath);
@@ -94,12 +95,7 @@
 				}
 			}
 			
-			protected function datechooser_changeHandler(event:CalendarLayoutChangeEvent):void
-			{
-				events();
-				
-			}
-			
+			/**click="datechooser_clickHandler(event)"*/
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -113,7 +109,8 @@
 		<s:VGroup width="260" height="554">
 			<mx:Tree width="221">
 			</mx:Tree>
-			<mx:DateChooser id="datechooser" width="256" height="341" mouseMove="onMouseMove(event)" click="datechooser_clickHandler(event)"
+			<mx:DateChooser id="datechooser" width="256" height="341" mouseMove="onMouseMove(event)" 
+							click="datechooser_clickHandler(event)"
 							creationComplete="events()" updateComplete="events()"  />
 			<s:Label id="txtlb">
 				
