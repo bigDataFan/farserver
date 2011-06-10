@@ -6,7 +6,6 @@
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
 			
-			import mx.charts.CategoryAxis;
 			import mx.collections.ArrayList;
 			import mx.controls.ColorPicker;
 			import mx.core.UIComponent;
@@ -15,6 +14,12 @@
 			import mx.events.FlexEvent;
 			
 			import spark.effects.interpolation.RGBInterpolator;
+			
+			
+			[Embed(source="/filetypes32/acp.gif")]          //这是单位图标  
+			[Bindable]  
+			public var danwei:Class;  
+			
 			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
@@ -127,7 +132,19 @@
 	
 	<s:HGroup width="100%" height="740" y="25">
 		<s:VGroup width="260" height="554">
-			<mx:Tree width="221">
+			<mx:Tree width="258" labelField="@label" iconField="@icon" showRoot="false">
+				<mx:dataProvider>
+					<fx:XML id="data_ltree" xmlns="http://www.g-qu.net/powspace/" >
+						<node label="便笺" >
+							<node label="文档" icon="danwei">
+							</node>
+							<node label="音乐视频">
+							</node>
+							<node label="工作文件">
+							</node>
+						</node>
+					</fx:XML>
+				</mx:dataProvider>
 			</mx:Tree>
 			<mx:DateChooser id="datechooser" width="256" height="341"
 							click="datechooser_clickHandler(event)"
