@@ -6,6 +6,7 @@
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
 			
+			import mx.charts.CategoryAxis;
 			import mx.collections.ArrayList;
 			import mx.controls.ColorPicker;
 			import mx.core.UIComponent;
@@ -31,11 +32,18 @@
 				
 				if(e.target.className == "UITextField"){
 					if(lastDate != e.target.text){
-						e.target.toolTip = datechooser.displayedMonth + "-" + e.target.text;
+						
+						var n:Number =  new Number(e.target.text);
+						if (n>0 && n<32) {
+							if (summaryies!=null && summaryies[n+"日"]!=null) {
+								e.target.toolTip = summaryies[n+"日"] + "个文件"
+							}
+						}
 					}
 					lastDate = e.target.text;
 				}
 			}
+			
 			
 			
 			var summaryies:Object;
@@ -77,27 +85,39 @@
 					}
 					
 				}
+				
 			}
 
 			protected function datechooser_clickHandler(event:MouseEvent):void
 			{
 				var target:Object = event.target;
-				if (target is UITextField) {
-					var uit:UITextField = target as UITextField;
-					
-					if (uit.htmlText.indexOf("#FF0000")>-1) {
+				try {
+					if (target is UITextField) {
+						var uit:UITextField = target as UITextField;
+						
 						var dayStr:String = uit.text;
-						var folderPath:String = serviceRegistry.fileService.getRootFolder() + "/" + datechooser.displayedYear + "年/" 
-							+ datechooser.displayedMonth + "月/" + dayStr + "日";
-						datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getDateFileList(folderPath);
+						if (summaryies!=null && summaryies[dayStr+"日"]!=null) {
+							var folderPath:String = serviceRegistry.fileService.getRootFolder() + "/" + datechooser.displayedYear + "年/" 
+								+ (datechooser.displayedMonth+1) + "月/" + dayStr + "日";
+							datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getDateFileList(folderPath);
+						}
+						
 					}
+				} catch (e : Error) {
 					
 				}
+				events();
 			}
 			
-			/**click="datechooser_clickHandler(event)"*/
+			
 		]]>
 	</fx:Script>
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		
+		
+	</fx:Style>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -109,22 +129,23 @@
 		<s:VGroup width="260" height="554">
 			<mx:Tree width="221">
 			</mx:Tree>
-			<mx:DateChooser id="datechooser" width="256" height="341" mouseMove="onMouseMove(event)" 
+			<mx:DateChooser id="datechooser" width="256" height="341"
 							click="datechooser_clickHandler(event)"
+							mouseMove="onMouseMove(event)"
 							creationComplete="events()" updateComplete="events()"  />
 			<s:Label id="txtlb">
 				
 			</s:Label>
 		</s:VGroup>
 		<s:VGroup height="100%">
-			<mx:DataGrid id="datagrid_file_list_view" width="758" height="100%"
+			<mx:DataGrid id="datagrid_file_list_view" width="758" height="100%" verticalGridLines="false"
 						 doubleClickEnabled="true" allowMultipleSelection="true">
 				<mx:columns>
-					<mx:DataGridColumn headerText="" width="64">
+					<mx:DataGridColumn headerText="" width="36">
 						<mx:itemRenderer>
 							<fx:Component>
-								<mx:Image source="{data.iconpath}" width="64" height="64">
-								</mx:Image>
+									<mx:Image source="{data.iconpath}" width="32" height="32">
+									</mx:Image>
 							</fx:Component>
 						</mx:itemRenderer>
 					</mx:DataGridColumn >

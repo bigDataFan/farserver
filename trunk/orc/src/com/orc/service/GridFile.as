@@ -12,8 +12,66 @@ package com.orc.service
 		
 		public const min60:Number = 60*60*1000;
 		
-		var icons1:Array = 
-			["ac3","ai","aiff","asf","au","avi","bat","bin","bmp","cab","cal","cat","cur","dat","dcr","der","dic","dll","doc","docx","dvd","dwg","dwt","fon","gif","hlp","hst","html","ico","ifo","inf","ini","java","jif","jpg","log","m4a","mmf","mmm","mov","mp2","mp2v","mp3","mp4","mpeg","msp","pdf","ppt","pptx","psd","ra","rar","reg","rtf","theme","tiff","tlb","ttf","txt","vob","wav","wma","wmv","wpl","wri","xls","xlsx","xml","xsl","zip"];
+		var icons1:Array =
+			
+			["_default",
+				"acp",
+				"asf",
+				"avi",
+				"bmp",
+				"csv",
+				"cab",
+				"doc",
+				"docx",
+				"eml",
+				"exe",
+				"ftl",
+				"gif",
+				"htm",
+				"html",
+				"jp2",
+				"jpe",
+				"jpeg",
+				"jpg",
+				"jpm",
+				"jpx",
+				"js",
+				"lnk",
+				"mp2",
+				"mp3",
+				"mp4",
+				"mpeg",
+				"mpg",
+				"msg",
+				"odf",
+				"odg",
+				"odp",
+				"ods",
+				"odt",
+				"pdf",
+				"png",
+				"ppt",
+				"pptx",
+				"psd",
+				"rtf",
+				"shtml",
+				"swf",
+				"tif",
+				"tiff",
+				"txt",
+				"url",
+				"wmv",
+				"wpd",
+				"xdp",
+				"xdp",
+				"png",
+				"xls",
+				"xml",
+				"xsd",
+				"xsl",
+				"gz",
+				"tar",
+				"zip"];
 		
 		public function GridFile(f:File)
 		{
@@ -30,9 +88,9 @@ package com.orc.service
 		
 		public function get iconpath():String {
 			if (icons1.indexOf(file.extension.toLowerCase())>-1) {
-				return "img/" + file.extension.toLowerCase() + ".png";
+				return "filetypes32/" + file.extension.toLowerCase() + ".gif";
 			} else {
-				return "img/unknown.png"
+				return "filetypes32/_default.gif"
 			}
 		}
 		
