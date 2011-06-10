@@ -2,6 +2,7 @@
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   showStatusBar="false"
 					   width="1024" height="768" xmlns:com="com.*" initialize="windowedapplication2_initializeHandler(event)">
 	<fx:Script>
 		<![CDATA[
@@ -90,17 +91,71 @@
 										
 				});
 			}
+			
+			protected function switchFullModel(event:MouseEvent):void
+			{
+				NativeApplication.nativeApplication.activeWindow.alwaysInFront = false;
+				NativeApplication.nativeApplication.activeWindow.width = 1024;
+				NativeApplication.nativeApplication.activeWindow.height = 768;
+				NativeApplication.nativeApplication.activeWindow.x = 30;
+				NativeApplication.nativeApplication.activeWindow.y = 30;
+				fullmodel.visible = true;
+				dragModel.visible = false;				
+			}
+			
+			protected function switchModel2(event:MouseEvent):void
+			{
+				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
+				NativeApplication.nativeApplication.activeWindow.width = 80;
+				NativeApplication.nativeApplication.activeWindow.height = 40;
+				fullmodel.visible = false;
+				dragModel.visible = true;				
+			}
+			
+			
+			private function dragWin():void{//窗口拖动
+				if(NativeApplication.nativeApplication.activeWindow.displayState == NativeWindowDisplayState.NORMAL){
+					NativeApplication.nativeApplication.activeWindow.startMove();
+				}
+			}
+			
+			
+			protected function onDragDrop(event:NativeDragEvent):void
+			{
+				var s:String;
+				var cb:Clipboard = event.clipboard;
+				
+				var formats:Array = cb.formats;
+				
+				for (var i:int = 0; i < formats.length; i++) {
+					if (formats[i]=="air:file list") {
+						var data:Array = cb.getData(formats[i]) as Array;
+						for each (var j:int in data) 
+						{
+							var file:File = data[i] as File;
+							serviceRegistry.fileService.moveFileToToday(file);
+						}
+						
+						
+					}
+					dropButton.label = dropButton.label;
+				}
+			}
+			
+			
+			protected function onAcceptDrag(event:NativeDragEvent):void
+			{
+				NativeDragManager.acceptDragDrop(dropButton);
+			}
+			
+			
 		]]>
 	</fx:Script>
-		<fx:Style>
-			@namespace s "library://ns.adobe.com/flex/spark";
-			@namespace mx "library://ns.adobe.com/flex/mx";
-			>RichTextEditor { cornerRadius: 10; }
-		</fx:Style>
+		
 	<fx:Declarations>
 	</fx:Declarations>
 	
-	<s:Group>
+	<s:Group id="fullmodel">
 	
 		<s:Panel id="p_files" x="10" y="10"  width="315" height="314" title="最近文件">
 			<s:Button x="260" y="-25" width="44" label="按钮" click="switch2File(event)"/>
@@ -116,6 +171,7 @@
 			<s:TextInput x="10" y="25" width="210" color="#7A7A7A" editable="false"
 						 text="{serviceRegistry.configService.rootFolder}"/>
 			<mx:LinkButton x="228" y="25" label="..." click="linkbutton1_clickHandler(event)"/>
+			<s:Button x="189" y="-26" width="60" label="按钮" click="switchModel2(event)"/>
 		</s:Panel>
 		<s:Panel id="p_notes" x="10" y="344" width="384" height="406" title="文档记事">
 			<s:List x="10" y="10" width="292" height="262" labelField="title" dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}"></s:List>
@@ -134,4 +190,13 @@
 		
 		
 	</s:Group>
+
+	
+	
+	<s:Group id="dragModel" width="100" height="40" visible="false" x="0" y="0">
+		<s:Button id="dropButton" width="100" height="40" label="拖入内容" doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
+				  nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)"> 
+		</s:Button>
+	</s:Group>
+	
 </s:WindowedApplication>

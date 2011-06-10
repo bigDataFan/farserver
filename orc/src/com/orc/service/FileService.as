@@ -26,6 +26,13 @@ package com.orc.service
 			}
 		}
 		
+		public function moveFileToToday(file1:File) :void {
+			var todayFolder:File = new File(todayPath + "/" + file1.name);
+			//todayFolder.createDirectory();
+			
+			file1.moveTo(todayFolder, false);
+		}
+		
 		public function getRootFolder():String {
 			if (rootFolder==null) {
 				return "";
