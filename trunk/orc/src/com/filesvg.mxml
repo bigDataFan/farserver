@@ -28,7 +28,7 @@
 				this.dispatchEvent(sbe);
 			}
 
-			private var serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			var serviceRegistry:ServiceRegistry = new ServiceRegistry();
 			
 			
 			private var lastDate:String = "";
@@ -93,6 +93,8 @@
 				
 			}
 
+			
+			var currentFolderPath:String;
 			protected function datechooser_clickHandler(event:MouseEvent):void
 			{
 				var target:Object = event.target;
@@ -105,6 +107,8 @@
 							var folderPath:String = serviceRegistry.fileService.getRootFolder() + "/" + datechooser.displayedYear + "年/" 
 								+ (datechooser.displayedMonth+1) + "月/" + dayStr + "日";
 							datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getDateFileList(folderPath);
+							
+							currentFolderPath = folderPath;
 						}
 						
 					}
@@ -117,12 +121,7 @@
 			
 		]]>
 	</fx:Script>
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		
-		
-	</fx:Style>
+
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -166,9 +165,30 @@
 							</fx:Component>
 						</mx:itemRenderer>
 					</mx:DataGridColumn >
-					<mx:DataGridColumn headerText="名称" dataField="name"/>	
-					<mx:DataGridColumn headerText="修改时间" dataField="modified"/>
-					<mx:DataGridColumn dataField="size" sortable="true" resizable="true"/>
+					<mx:DataGridColumn headerText="名称" width="500" dataField="name" resizable="true"/>	
+					<mx:DataGridColumn headerText="修改时间" width="80" dataField="modified"/>
+					<mx:DataGridColumn dataField="size" sortable="true" width="80" />
+					
+					<mx:DataGridColumn>
+						<mx:itemRenderer>
+							<fx:Component>
+								<mx:LinkButton icon="@Embed('buttons/remove_item.gif')" click="linkbutton2_clickHandler(event)">
+									<fx:Script>
+										<![CDATA[
+											import mx.collections.ArrayCollection;
+											protected function linkbutton2_clickHandler(event:MouseEvent):void
+											{
+												if (outerDocument.datagrid_file_list_view.selectedItem!=null) {
+													(outerDocument.datagrid_file_list_view.selectedItem["file"] as File).moveToTrash();
+													outerDocument.datagrid_file_list_view.dataProvider = outerDocument.serviceRegistry.fileService.getDateFileList(outerDocument.currentFolderPath);
+												}
+											}
+										]]>
+									</fx:Script>
+								</mx:LinkButton>
+							</fx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
 				</mx:columns>
 			</mx:DataGrid>	
 			
