@@ -6,7 +6,7 @@ package com.orc.service
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-
+	[Bindable]
 	public class NotesService
 	{
 		private var dataService:DataService;

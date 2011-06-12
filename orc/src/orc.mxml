@@ -14,6 +14,7 @@
 			import com.orc.utils.FormatUtils;
 			import com.orc.utils.TimeRelatedId;
 			
+			import mx.charts.CategoryAxis;
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
@@ -126,17 +127,31 @@
 				
 				var formats:Array = cb.formats;
 				
+				var ignoreText:Boolean = false;
+				
 				for (var i:int = 0; i < formats.length; i++) {
 					if (formats[i]=="air:file list") {
 						var data:Array = cb.getData(formats[i]) as Array;
 						for each (var j:int in data) 
 						{
-							var file:File = data[i] as File;
-							serviceRegistry.fileService.moveFileToToday(file);
+							var file:File = data[j] as File;
+							try {
+								serviceRegistry.fileService.moveFileToToday(file);
+							} catch (e:Error) {
+								
+							}
 						}
-						
-						
 					}
+					if (formats[i]=="air:html") {
+						serviceRegistry.notesService.createNotes("网页剪辑" + new Date(), String(cb.getData(formats[i])));
+						break;
+					}
+					
+					if (formats[i]=="air:text") {
+						serviceRegistry.notesService.createNotes("文本剪辑" + new Date(), String(cb.getData(formats[i])));
+						break;
+					}
+					
 					dropButton.label = dropButton.label;
 				}
 			}
