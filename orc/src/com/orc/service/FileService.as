@@ -52,10 +52,7 @@ package com.orc.service
 				log.time = new Date().getTime();
 				
 				filelogs.insertCapped(log,1000);
-				
-				
-				
-				
+				sendNotify();
 			} catch (e:Error) {
 				
 			}

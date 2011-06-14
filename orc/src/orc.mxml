@@ -75,14 +75,11 @@
 			{
 				if (event is SlideBackEvent) {
 					showDashboard();
-					((event as SlideBackEvent).obj as Group).y = -1024;
-					((event as SlideBackEvent).obj as Group).visible = false;
-					
-					//TweenLite.to((event as SlideBackEvent).obj, 0.5, {alpha:0, ease:Circ.easeOut});
-					//TweenLite.to(notes_g, 2, {alpha:0});
+					var w:Number = NativeApplication.nativeApplication.activeWindow.width;
+					var srcGroup:Group = ((event as SlideBackEvent).obj as Group);
+					TweenLite.to(srcGroup , 0.5, {x:-w, y:0, width:w, alpha:0, visible:false}); 
 				}
 			}
-
 
 			protected function switch2File(event:MouseEvent):void
 			{
@@ -182,6 +179,7 @@
 			{
 				(event.target as DataGrid).dataProvider = serviceRegistry.fileService.getRecentFiles(10);
 				
+				serviceRegistry.fileService.addEventDispatcher((event.target as DataGrid));
 				
 				(event.target as DataGrid).addEventListener(FileEvent.MODIFY, function (event:Event):void {
 					(event.target as DataGrid).dataProvider = serviceRegistry.fileService.getRecentFiles(10);
@@ -197,10 +195,21 @@
 	<s:Group id="fullmodel" width="100%" height="100%">
 		
 		<s:TileGroup id="dashboard" width="100%" height="100%">
-			<s:Panel width="337" height="323" title="最近文件">
-				<mx:DataGrid width="100%" height="100%" initialize="dashboard_recentfile_grid_init(event)">
-					
+			<s:Panel width="337" height="323">
+				<mx:DataGrid width="100%" height="100%" showHeaders="false" initialize="dashboard_recentfile_grid_init(event)">
+					<mx:columns>
+						<mx:DataGridColumn  headerText="" width="36">
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:Image source="{data.name}" width="32" height="32">
+									</mx:Image>
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn >
+					</mx:columns>
 				</mx:DataGrid>
+				<mx:LinkButton x="5" click="switch2File(event)" y="-28" width="119" icon="@Embed('buttons/folder.gif')" label="最近文件"/>
+				
 			</s:Panel>
 			<s:Panel >
 				<s:Button x="10" y="-26" label="按钮" click="switch2notes(event)"/>
