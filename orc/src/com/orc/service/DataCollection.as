@@ -53,6 +53,29 @@ package com.orc.service
 			flush();
 		}
 		
+		public function insertCapped(o:Object,limit:int):void {
+			
+			objects.source.push(o);
+			
+			while (objects.length>limit) {
+				objects.source.shift();	
+			}
+			flush();
+		}
+
+		
+		
+		public function list(i:int):Array {
+			var result:Array = new Array();
+			
+			for (var j:int = i; j < objects.length; j++) 
+			{
+				result.push(objects.getItemAt(j));
+				
+			}
+			
+			return result;
+		}
 		
 		public function findOne(filter:Object):Object {
 			for each (var o:Object in objects) {
@@ -62,6 +85,8 @@ package com.orc.service
 			}
 			return null;
 		}
+		
+		
 		
 		public function findAll(filter:Object):Array {
 			var array:Array = [];
