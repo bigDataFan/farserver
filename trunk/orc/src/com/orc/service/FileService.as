@@ -1,13 +1,17 @@
 package com.orc.service
 {
+	import com.orc.service.file.FileEvent;
 	import com.orc.utils.TimeRelatedId;
 	
+	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.FileReference;
 	import flash.utils.Dictionary;
 	
+	import mx.charts.CategoryAxis;
+	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 
 	public class FileService
@@ -17,20 +21,56 @@ package com.orc.service
 		var dates:Array = new Array();
 		var dateDic:Dictionary = new Dictionary();
 		
+		var eventDispatches:Array = new Array();
+		var filelogs:DataCollection;
 		
-		public function FileService(config:ConfigService)
+		public function FileService(config:ConfigService, ds:DataService)
 		{
+			filelogs = ds.getCollection("filelogs.db");
 			var basePath:String = config.rootFolder; 
 			if (basePath!=null) {
 				init(new File(basePath));	
 			}
 		}
 		
-		public function moveFileToToday(file1:File) :void {
+		public function addEventDispatcher(ed:EventDispatcher):void {
+			this.eventDispatches.push(ed);
+		}
+		
+		public function addFile(file1:File) :void {
 			var todayFolder:File = new File(todayPath + "/" + file1.name);
 			//todayFolder.createDirectory();
 			
-			file1.moveTo(todayFolder, false);
+			try {
+				file1.moveTo(todayFolder, false);
+				
+				
+				var log:Object = new Object();
+				log.id = new TimeRelatedId().toString();
+				log.filePath = todayFolder.nativePath;
+				log.name = todayFolder.name;
+				log.time = new Date().getTime();
+				
+				filelogs.insertCapped(log,1000);
+				
+				
+				
+				
+			} catch (e:Error) {
+				
+			}
+		}
+		
+		public function sendNotify():void {
+			var fe:FileEvent = new FileEvent(FileEvent.MODIFY);
+			for (var i:int = 0; i < eventDispatches.length; i++) 
+			{
+				(eventDispatches[i] as EventDispatcher).dispatchEvent(fe);
+			}
+		}
+
+		public function getRecentFiles(c:int):ArrayCollection {
+			return new ArrayCollection(filelogs.list(c));
 		}
 		
 		public function getRootFolder():String {

@@ -15,7 +15,7 @@ package com.orc.service
 			
 			dataService = new DataService(configService.rootFolder);
 
-			fileService = new FileService(configService);
+			fileService = new FileService(configService, dataService);
 			//notesService = new NotesService(configService);
 			
 			taggingService = new TaggingService(dataService);

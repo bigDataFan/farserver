@@ -11,6 +11,7 @@
 			import com.greensock.easing.Circ;
 			import com.orc.service.DataCollection;
 			import com.orc.service.ServiceRegistry;
+			import com.orc.service.file.FileEvent;
 			import com.orc.utils.FormatUtils;
 			import com.orc.utils.TimeRelatedId;
 			
@@ -150,7 +151,7 @@
 						{
 							var file:File = data[j] as File;
 							try {
-								serviceRegistry.fileService.moveFileToToday(file);
+								serviceRegistry.fileService.addFile(file);
 							} catch (e:Error) {
 								
 							}
@@ -177,6 +178,17 @@
 			}
 			
 			
+			protected function dashboard_recentfile_grid_init(event:FlexEvent):void
+			{
+				(event.target as DataGrid).dataProvider = serviceRegistry.fileService.getRecentFiles(10);
+				
+				
+				(event.target as DataGrid).addEventListener(FileEvent.MODIFY, function (event:Event):void {
+					(event.target as DataGrid).dataProvider = serviceRegistry.fileService.getRecentFiles(10);
+					}
+				);
+			}
+			
 		]]>
 	</fx:Script>
 
@@ -186,6 +198,9 @@
 		
 		<s:TileGroup id="dashboard" width="100%" height="100%">
 			<s:Panel width="337" height="323" title="最近文件">
+				<mx:DataGrid width="100%" height="100%" initialize="dashboard_recentfile_grid_init(event)">
+					
+				</mx:DataGrid>
 			</s:Panel>
 			<s:Panel >
 				<s:Button x="10" y="-26" label="按钮" click="switch2notes(event)"/>
