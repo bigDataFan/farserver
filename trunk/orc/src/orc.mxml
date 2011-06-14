@@ -194,22 +194,21 @@
 		@namespace s "library://ns.adobe.com/flex/spark";
 		@namespace mx "library://ns.adobe.com/flex/mx";
 		@namespace com "com.*";
-		mx|ApplicationControlBar{
+		s|BorderContainer {
 			backgroundColor:#ACACAC;
 			color: #323232;
 			paddingBottom:2px;
 			
 		}
-		ApplicationControlBar{
-		}
 	</fx:Style>
 	
 	<s:Group id="fullmodel" width="100%" height="100%" horizontalCenter="true">
-		<mx:ApplicationControlBar id="controlbar" x="0" width="100%" height="30" color="#817A7A">
-			<mx:Label text="搜索:" color="0x323232" />
-			<mx:TextInput width="100%" maxWidth="200" />
-			<mx:Button label="悬浮模式" color="0x000000"  paddingRight="10"/>
-		</mx:ApplicationControlBar>
+		<s:BorderContainer id="controlbar" x="0" width="100%" height="30">
+			<mx:Button x="7" y="4" label="悬浮模式" color="0x000000" paddingRight="10"/>
+			<mx:Label x="779" y="4" color="0x323232" text="搜索:"/>
+			<mx:TextInput x="819" y="2" width="100%" maxWidth="200"/>
+			
+		</s:BorderContainer>
 		<s:TileGroup id="dashboard" width="100%" y="30">
 			<s:Panel width="337" height="323">
 				<mx:DataGrid width="100%" height="100%" showHeaders="false" initialize="dashboard_recentfile_grid_init(event)">
