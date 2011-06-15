@@ -24,8 +24,6 @@
 			[Bindable]  
 			public var media:Class;  
 			
-			
-			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
 				var sbe : SlideBackEvent = new SlideBackEvent();
@@ -151,7 +149,7 @@
 						<node label="便笺" >
 							<node label="文档" icon="danwei" type=".doc,.txt,.xml,.rtf,.xls">
 							</node>
-							<node label="音乐视频" icon="media" type=".mp3,.flv,.jpg,.jpeg,.gif,.png,.bmp,.mp4,.avi,.mid,.wav">
+							<node label="多媒体" icon="media" type=".mp3,.flv,.jpg,.jpeg,.gif,.png,.bmp,.mp4,.avi,.mid,.wav">
 							</node>
 							<node label="工作文件">
 							</node>
