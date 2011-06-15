@@ -82,6 +82,14 @@ package com.orc.service
 			return file;
 		}
 		
+		public function get path():String {
+			if (file.parent.name.indexOf("日")>-1) {
+				return file.modificationDate.fullYear + "-" + (file.modificationDate.month+1) + "-" + file.modificationDate.date;
+			} else {
+				return file.parent.name;
+			}
+		}
+		
 		public function get name():String {
 			return file.name;
 		}
