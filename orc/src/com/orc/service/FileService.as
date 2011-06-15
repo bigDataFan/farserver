@@ -313,7 +313,7 @@ package com.orc.service
 				
 				for (var j:int = 0; j < ac.length; j++) 
 				{
-					if(!(ac.getItemAt(j) as GridFile).rawfile.exists) {
+					if((ac.getItemAt(j) as GridFile).rawfile.exists) {
 						newresult.addItem(ac.getItemAt(j));
 					}
 				}

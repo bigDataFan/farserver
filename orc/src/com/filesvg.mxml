@@ -20,6 +20,11 @@
 			[Bindable]  
 			public var danwei:Class;  
 			
+			[Embed(source="/icon/media.png")]          //这是单位图标  
+			[Bindable]  
+			public var media:Class;  
+			
+			
 			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
@@ -124,20 +129,7 @@
 				var target:Object = event.target;
 				if (target is UITextField) {
 					var text:UITextField = target as UITextField;
-					if (text.text=="文档") {
-						datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(".doc,.txt,.xml,.rtf,.xls");
-						return;
-					} 
-					if (text.text=="常用文件") {
-						
-						return;
-					} 
-					
-					if (text.text=="列表") {
-						
-						return;
-					} 
-					
+					datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(text.toolTip);
 				}
 			}
 			
@@ -153,13 +145,13 @@
 	
 	<s:HGroup width="100%" height="740" y="25">
 		<s:VGroup width="260" height="554">
-			<mx:Tree width="258" labelField="@label" id="typeTree" iconField="@icon" showRoot="false" click="tree1_clickHandler(event)">
+			<mx:Tree width="258" labelField="@label" id="typeTree" iconField="@icon" showRoot="false" toolTip="@type" click="tree1_clickHandler(event)">
 				<mx:dataProvider>
 					<fx:XML id="data_ltree" xmlns="http://www.g-qu.net/powspace/" >
 						<node label="便笺" >
-							<node label="文档" icon="danwei">
+							<node label="文档" icon="danwei" type=".doc,.txt,.xml,.rtf,.xls">
 							</node>
-							<node label="音乐视频">
+							<node label="音乐视频" icon="media" type=".mp3,.flv,.jpg,.jpeg,.gif,.png,.bmp,.mp4,.avi,.mid,.wav">
 							</node>
 							<node label="工作文件">
 							</node>
