@@ -26,16 +26,30 @@ package com.orc.service
 		
 		var eventDispatches:Array = new Array();
 		var filelogs:DataCollection;
+		var filetypes:DataCollection;
 		
 		public function FileService(config:ConfigService, ds:DataService)
 		{
 			filelogs = ds.getCollection("filelogs.db");
+			filetypes = ds.getCollection("filetypes.db");
+			
+			if (filetypes.findAll(null).length==0) {
+				filetypes.insert(
+					{
+						"id" :new TimeRelatedId().toString(),
+						"label": "文档",
+						"":""
+						
+					}
+				);
+			}
+			
 			var basePath:String = config.rootFolder; 
 			if (basePath!=null) {
 				init(new File(basePath));	
 			}
 		}
-		
+				
 		
 		
 		public function addEventDispatcher(ed:EventDispatcher):void {
@@ -356,6 +370,10 @@ package com.orc.service
 		}
 		
 		
+		public function getFileTypes():ArrayCollection {
+			filelogs = ds.getCollection("filelogs.db");
+		}
+		
 		
 		public function putContent(id:String, content:String) : File {
 			var tri:TimeRelatedId = TimeRelatedId.fromString(id);
@@ -384,6 +402,7 @@ package com.orc.service
 			}
 			return "";
 		}
+		
 		
 		
 		
