@@ -68,10 +68,9 @@ package com.orc.service
 		public function list(i:int):Array {
 			var result:Array = new Array();
 			
-			for (var j:int = i; j < objects.length; j++) 
+			for (var j:int = objects.length-1; j > objects.length-i  && j>-1; j--) 
 			{
 				result.push(objects.getItemAt(j));
-				
 			}
 			
 			return result;
@@ -81,11 +80,10 @@ package com.orc.service
 			for each (var o:Object in objects) {
 				if (match(o,filter)) {
 					return o;
-				}				
+				}
 			}
 			return null;
 		}
-		
 		
 		
 		public function findAll(filter:Object):Array {

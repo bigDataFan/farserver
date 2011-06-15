@@ -8,6 +8,7 @@ package com.orc.service
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.FileReference;
+	import flash.system.System;
 	import flash.utils.Dictionary;
 	
 	import mx.charts.CategoryAxis;
@@ -17,6 +18,8 @@ package com.orc.service
 	public class FileService
 	{
 		public static const STORAGE_END_FIX = ".sto";
+		
+		var typedic:Object = new Object();
 		
 		var dates:Array = new Array();
 		var dateDic:Dictionary = new Dictionary();
@@ -32,6 +35,8 @@ package com.orc.service
 				init(new File(basePath));	
 			}
 		}
+		
+		
 		
 		public function addEventDispatcher(ed:EventDispatcher):void {
 			this.eventDispatches.push(ed);
@@ -67,7 +72,21 @@ package com.orc.service
 		}
 
 		public function getRecentFiles(c:int):ArrayCollection {
-			return new ArrayCollection(filelogs.list(c));
+			
+			var files:Array = filelogs.list(c);
+			
+			var result:ArrayCollection = new ArrayCollection();
+			
+			for (var i:int = 0; i < files.length; i++) 
+			{
+				var file:File = new File(files[i]["filePath"]);
+				if (file.exists) {
+					result.addItem(new GridFile(file));
+				}
+			}
+			
+			
+			return result;
 		}
 		
 		public function getRootFolder():String {
@@ -240,7 +259,6 @@ package com.orc.service
 			return date.getFullYear() + "年/" 
 				+ (date.getMonth()+1) + "月/" 
 				+ (date.getDate()) + "日"
-			
 		}
 		
 		
@@ -271,6 +289,73 @@ package com.orc.service
 			}
 		}
 
+		
+		
+		public function getByTypeCategory(type:String):ArrayCollection {
+			
+			if (this.dateDic[type]==null) {
+				//列举所有文件
+				
+				var result:Array = new Array();
+				
+				var filtered:ArrayCollection = filterDir(this.rootFolder, type);
+				
+				for (var i:int = 0; i < filtered.length; i++) 
+				{
+					result[filtered.length-1-i] = new GridFile(filtered[i] as File); 
+				}
+				
+				this.dateDic[type] = new ArrayCollection(result);
+			} else {
+				var ac:ArrayCollection = this.dateDic[type]  as ArrayCollection;
+				
+				var newresult: ArrayCollection = new ArrayCollection();
+				
+				for (var j:int = 0; j < ac.length; j++) 
+				{
+					if(!(ac.getItemAt(j) as GridFile).rawfile.exists) {
+						newresult.addItem(ac.getItemAt(j));
+					}
+				}
+				this.dateDic[type] = newresult;
+			}
+			
+			return this.dateDic[type]  as ArrayCollection;
+		}
+		
+		
+		public function filterDir(dir:File, type:String):ArrayCollection {
+			
+			var types:Array = type.split(",");
+			
+			var result:ArrayCollection = new ArrayCollection();
+			
+			var listing:Array = dir.getDirectoryListing();
+			for (var i:int = 0; i < listing.length; i++) 
+			{
+				var child:File = listing[i] as File;
+				
+				if (child.isDirectory) {
+					result.addAll(filterDir(child, type));
+				} else {
+					var matched = false;
+					for (var j:int = 0; j < types.length; j++) 
+					{
+						if (child.name.indexOf(types[j])>-1 ) {
+							matched = true;
+							break;
+						}
+					}
+					
+					if (matched) {
+						result.addItem(child);
+					}
+				}
+			}
+			return result;
+		}
+		
+		
 		
 		public function putContent(id:String, content:String) : File {
 			var tri:TimeRelatedId = TimeRelatedId.fromString(id);

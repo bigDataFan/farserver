@@ -119,6 +119,28 @@
 			}
 			
 			
+			protected function tree1_clickHandler(event:MouseEvent):void
+			{
+				var target:Object = event.target;
+				if (target is UITextField) {
+					var text:UITextField = target as UITextField;
+					if (text.text=="文档") {
+						datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(".doc,.txt,.xml,.rtf,.xls");
+						return;
+					} 
+					if (text.text=="常用文件") {
+						
+						return;
+					} 
+					
+					if (text.text=="列表") {
+						
+						return;
+					} 
+					
+				}
+			}
+			
 		]]>
 	</fx:Script>
 
@@ -131,7 +153,7 @@
 	
 	<s:HGroup width="100%" height="740" y="25">
 		<s:VGroup width="260" height="554">
-			<mx:Tree width="258" labelField="@label" iconField="@icon" showRoot="false">
+			<mx:Tree width="258" labelField="@label" id="typeTree" iconField="@icon" showRoot="false" click="tree1_clickHandler(event)">
 				<mx:dataProvider>
 					<fx:XML id="data_ltree" xmlns="http://www.g-qu.net/powspace/" >
 						<node label="便笺" >

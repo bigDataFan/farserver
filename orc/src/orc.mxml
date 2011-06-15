@@ -5,7 +5,7 @@
 					   showStatusBar="false"
 					   width="1024"
 					   height="768"
-					   xmlns:com="com.*" initialize="windowedapplication2_initializeHandler(event)">
+					   xmlns:com="com.*">
 	<fx:Script>
 		<![CDATA[
 			import com.SlideBackEvent;
@@ -27,70 +27,52 @@
 			public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
 			
 			protected function hideDashboard() :void {
-				
 				var w:Number = NativeApplication.nativeApplication.activeWindow.width;
-				
-				TweenLite.to(dashboard, 0.5, {x:w, y:controlbar.height, width:w,visible:false}); 
-				/*
-				TweenLite.to(p_files, 0.5, {x:-400, y:-400, ease:Circ.easeInOut});
-				TweenLite.to(p_proc, 0.5, {x:333, y:-400, ease:Circ.easeInOut});
-				TweenLite.to(p_webclic, 0.5, {x:1315, y:-400, ease:Circ.easeInOut});
-				
-				TweenLite.to(p_notes, 0.5, {x:-400, y:800, ease:Circ.easeInOut});
-				TweenLite.to(p_config, 0.5, {x:-403, y:800, ease:Circ.easeInOut});
-				TweenLite.to(p_task, 0.5, {x:-1050, y:800, ease:Circ.easeInOut});
-				*/
+				TweenLite.to(dashboard, 0.5, {x:-w, y:controlbar.height, width:w,visible:false}); 
+				btn_return.visible = true;
 			}
 			
 			protected function showDashboard() :void {
-				TweenLite.to(dashboard, 0.5, {x:0, y:controlbar.height, percentWidth:"100",visible:true}); 
-				/*
-				TweenLite.to(p_files, 0.5, {x:10, y:10, ease:Circ.easeInOut});
-				TweenLite.to(p_proc, 0.5, {x:333, y:10, ease:Circ.easeInOut});
-				TweenLite.to(p_webclic, 0.5, {x:755, y:10, ease:Circ.easeInOut});
-				
-				TweenLite.to(p_notes, 0.5, {x:10, y:340, ease:Circ.easeInOut});
-				TweenLite.to(p_config, 0.5, {x:403, y:340, ease:Circ.easeInOut});
-				TweenLite.to(p_task, 0.5, {x:755, y:340, ease:Circ.easeInOut});
-				*/
+				TweenLite.to(dashboard, 0.5, {x:0, y:controlbar.height, percentWidth:"100",visible:true});
+				btn_return.visible = false;
 			}
 			
 			protected function switch2notes(event:MouseEvent):void
 			{
 				hideDashboard();
-				var w:Number = NativeApplication.nativeApplication.activeWindow.width;
-				notes_g.x = -w;
-				notes_g.y = controlbar.height;
-				notes_g.visible = true;
-				TweenLite.to(notes_g, 0.5, {alpha:1, x:0, y:0});
+				slideIn(notes_g);
 			}
 			
-
-			protected function windowedapplication2_initializeHandler(event:FlexEvent):void
-			{
-				notes_g.addEventListener(SlideBackEvent.BACK, onSlideBack);
-				files_g.addEventListener(SlideBackEvent.BACK, onSlideBack);
-			}
-
-
-			protected function onSlideBack(event:Event):void
-			{
-				if (event is SlideBackEvent) {
-					showDashboard();
-					var w:Number = NativeApplication.nativeApplication.activeWindow.width;
-					var srcGroup:Group = ((event as SlideBackEvent).obj as Group);
-					TweenLite.to(srcGroup , 0.5, {x:-w, y:controlbar.height, width:w, visible:false}); 
-				}
-			}
-
 			protected function switch2File(event:MouseEvent):void
 			{
 				hideDashboard();	
-				files_g.visible = true;
-				TweenLite.to(files_g, 0.5, {x:0, y:controlbar.height,alpha:1});
+				slideIn(files_g);
+			}
+			
+			var slidedIn:Group = null;
+			
+			protected function slideIn(g:Group) : void {
+				slidedIn = g;
+				var w:Number = NativeApplication.nativeApplication.activeWindow.width;
+				g.x = w;
+				g.y = controlbar.height;
+				g.visible = true;
+				TweenLite.to(g, 0.5, {x:0});
 			}
 
+			protected function slideOut(g:Group) : void {
+				slidedIn = null;
+				var w:Number = NativeApplication.nativeApplication.activeWindow.width;
+				
+				TweenLite.to(g, 0.5, {x:w, y:controlbar.height, visible:false});
+			}
 
+			
+			protected function click_return(event:MouseEvent) : void {
+				showDashboard();
+				slideOut(slidedIn);
+			}
+			
 			protected function linkbutton1_clickHandler(event:MouseEvent):void
 			{
 				var f:File = new File(serviceRegistry.configService.rootFolder);
@@ -204,23 +186,26 @@
 	
 	<s:Group id="fullmodel" width="100%" height="100%" horizontalCenter="true">
 		<s:BorderContainer id="controlbar" x="0" width="100%" height="30">
-			<mx:Button x="7" y="4" label="悬浮模式" color="0x000000" paddingRight="10"/>
+			<mx:Button x="7" y="4" label="悬浮模式" color="0x000000" click="switchModel2(event)" paddingRight="10"/>
+			<mx:Button x="85" id="btn_return" y="4"  click="click_return(event)" label="返回" color="0x000000" visible="false"/>
 			<mx:Label x="779" y="4" color="0x323232" text="搜索:"/>
 			<mx:TextInput x="819" y="2" width="100%" maxWidth="200"/>
 			
 		</s:BorderContainer>
 		<s:TileGroup id="dashboard" width="100%" y="30">
-			<s:Panel width="337" height="323">
-				<mx:DataGrid width="100%" height="100%" showHeaders="false" initialize="dashboard_recentfile_grid_init(event)">
+			<s:Panel width="333" height="323">
+				<mx:DataGrid width="100%" height="100%" showHeaders="false" initialize="dashboard_recentfile_grid_init(event)"  verticalGridLines="false" verticalScrollPolicy="off">
 					<mx:columns>
-						<mx:DataGridColumn  headerText="" width="36">
+						<mx:DataGridColumn headerText="" width="36">
 							<mx:itemRenderer>
 								<fx:Component>
-									<mx:Image source="{data.name}" width="32" height="32">
+									<mx:Image source="{data.iconpath}" width="32" height="32">
 									</mx:Image>
 								</fx:Component>
 							</mx:itemRenderer>
 						</mx:DataGridColumn >
+						<mx:DataGridColumn dataField="name"/>
+						<mx:DataGridColumn dataField="modified" />	
 					</mx:columns>
 				</mx:DataGrid>
 				<mx:LinkButton x="5" click="switch2File(event)" y="-28" width="92" icon="@Embed('buttons/folder.gif')" label="最近文件"/>
@@ -263,10 +248,10 @@
 		</s:Panel>
 		-->
 		
-		<com:filesvg id="files_g" x="-1024" y="0" alpha="0" visible="false">
+		<com:filesvg id="files_g" x="1024" y="0" visible="false">
 		</com:filesvg>
 		
-		<com:notesvg id="notes_g" alpha="0" x="-1024" y="0" visible="false">
+		<com:notesvg id="notes_g"  x="1024" y="0" visible="false">
 		</com:notesvg>
 	</s:Group>
 	
