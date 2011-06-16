@@ -38,10 +38,18 @@ package com.orc.service
 					{
 						"id" :new TimeRelatedId().toString(),
 						"label": "文档",
-						"":""
-						
+						"type":".doc,.txt,.xml,.rtf,.xls",
+						"icon": "doc"
 					}
 				);
+				
+				filetypes.insert({
+					"id" :new TimeRelatedId().toString(),
+					"label": "图片",
+					"type":".jpg,.gif,.png,.bmp",
+					"icon": "image"
+				});
+				
 			}
 			
 			var basePath:String = config.rootFolder; 
@@ -371,7 +379,7 @@ package com.orc.service
 		
 		
 		public function getFileTypes():ArrayCollection {
-			filelogs = ds.getCollection("filelogs.db");
+			return new ArrayCollection(filetypes.findAll(null));
 		}
 		
 		

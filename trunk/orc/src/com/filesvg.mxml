@@ -16,13 +16,13 @@
 			import spark.effects.interpolation.RGBInterpolator;
 			
 			
-			[Embed(source="/filetypes32/acp.gif")]          //这是单位图标  
+			[Embed(source="/icon/doc.png")]          //这是单位图标  
 			[Bindable]  
-			public var danwei:Class;  
+			public var doc:Class;
 			
 			[Embed(source="/icon/media.png")]          //这是单位图标  
 			[Bindable]  
-			public var media:Class;  
+			public var image:Class;  
 			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
@@ -124,10 +124,12 @@
 			
 			protected function tree1_clickHandler(event:MouseEvent):void
 			{
+				
+				
 				var target:Object = event.target;
 				if (target is UITextField) {
 					var text:UITextField = target as UITextField;
-					datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(text.toolTip);
+					datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(typeTree.selectedItem[text]);
 				}
 			}
 			
@@ -143,19 +145,9 @@
 	
 	<s:HGroup width="100%" height="740" y="25">
 		<s:VGroup width="260" height="554">
-			<mx:Tree width="258" labelField="@label" id="typeTree" iconField="@icon" showRoot="false" toolTip="@type" click="tree1_clickHandler(event)">
-				<mx:dataProvider>
-					<fx:XML id="data_ltree" xmlns="http://www.g-qu.net/powspace/" >
-						<node label="便笺" >
-							<node label="文档" icon="danwei" type=".doc,.txt,.xml,.rtf,.xls">
-							</node>
-							<node label="多媒体" icon="media" type=".mp3,.flv,.jpg,.jpeg,.gif,.png,.bmp,.mp4,.avi,.mid,.wav">
-							</node>
-							<node label="工作文件">
-							</node>
-						</node>
-					</fx:XML>
-				</mx:dataProvider>
+			<mx:Tree width="258" labelField="label" id="typeTree" iconField="@icon" showRoot="false"
+					 dataProvider="{serviceRegistry.fileService.getFileTypes()}"
+					 click="tree1_clickHandler(event)">
 			</mx:Tree>
 			<mx:DateChooser id="datechooser" width="256" height="341"
 							click="datechooser_clickHandler(event)"
