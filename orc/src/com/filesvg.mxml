@@ -124,12 +124,10 @@
 			
 			protected function tree1_clickHandler(event:MouseEvent):void
 			{
-				
-				
 				var target:Object = event.target;
 				if (target is UITextField) {
 					var text:UITextField = target as UITextField;
-					datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(typeTree.selectedItem[text]);
+					datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(typeTree.selectedItem["type"]);
 				}
 			}
 			
@@ -139,11 +137,8 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:Group width="100%" height="25">
-		<mx:LinkButton x="936" y="3" label="Back" click="linkbutton3_clickHandler(event)"/>
-	</s:Group>
 	
-	<s:HGroup width="100%" height="740" y="25">
+	<s:HGroup width="100%" height="740" y="0">
 		<s:VGroup width="260" height="554">
 			<mx:Tree width="258" labelField="label" id="typeTree" iconField="@icon" showRoot="false"
 					 dataProvider="{serviceRegistry.fileService.getFileTypes()}"
@@ -153,9 +148,6 @@
 							click="datechooser_clickHandler(event)"
 							mouseMove="onMouseMove(event)"
 							creationComplete="events()" updateComplete="events()"  />
-			<s:Label id="txtlb">
-				
-			</s:Label>
 		</s:VGroup>
 		<s:VGroup height="100%">
 			<mx:DataGrid id="datagrid_file_list_view" width="758" height="100%" verticalGridLines="false"

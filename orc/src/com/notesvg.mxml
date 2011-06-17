@@ -155,7 +155,7 @@
 					<s:Label x="6" y="9" text="标题"/>
 					<s:TextInput id="note_title" x="38" y="5" width="633"/>
 				</s:Group>
-				<mx:RichTextEditor width="100%" id="note_content" height="459">
+				<mx:RichTextEditor width="100%" id="note_content" height="430" headerHeight="0">
 					
 				</mx:RichTextEditor>		
 				

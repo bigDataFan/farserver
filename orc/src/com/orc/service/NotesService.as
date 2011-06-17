@@ -25,29 +25,6 @@ package com.orc.service
 		public function getNotesList():Array {
 			
 			return notesdb.findAll(null);
-			
-			/*
-			notesdb.getNotesList();
-			
-			
-			var notesFolder:File = new File(notesPath);
-			
-			var list:Array = notesFolder.getDirectoryListing();
-			
-			var result:Array = new Array();
-			for each (var file:File in list) {
-				var o:Object = new Object();
-				o["title"] = file.name.substr(0,file.name.length-5);
-				o["created"] = FormatUtils.formatDate(file.creationDate);
-				o["modified"] = FormatUtils.formatDate(file.modificationDate);
-				o["size"] = file.size;
-				
-				//var tags:Array = taggingService.getEntryTags("notes", o["title"]);
-				
-				result.push(o);				
-			}
-			return result;
-			*/
 		}
 		
 		public function removeNotes(id:String):void {

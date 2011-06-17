@@ -169,6 +169,14 @@
 					}
 				);
 			}
+
+			
+			protected function dashboard_recentnotes_grid_init(event:FlexEvent):void
+			{
+				(event.target as DataGrid).dataProvider = serviceRegistry.notesService.getNotesList()
+			}
+
+			
 			
 		]]>
 	</fx:Script>
@@ -192,7 +200,7 @@
 			<mx:TextInput x="819" y="2" width="100%" maxWidth="200"/>
 			
 		</s:BorderContainer>
-		<s:TileGroup id="dashboard" width="100%" y="30">
+		<s:TileGroup id="dashboard" width="1024" y="30">
 			<s:Panel width="333" height="323">
 				<mx:DataGrid width="100%" height="100%" showHeaders="false" initialize="dashboard_recentfile_grid_init(event)"  verticalGridLines="false" verticalScrollPolicy="off">
 					<mx:columns>
@@ -213,6 +221,21 @@
 			</s:Panel>
 			<s:Panel >
 				<s:Button x="10" y="-26" width="48" label="按钮" click="switch2notes(event)"/>
+				<mx:DataGrid width="100%" height="100%" showHeaders="false" initialize="dashboard_recentnotes_grid_init(event)"  verticalGridLines="false" verticalScrollPolicy="off">
+					<mx:columns>
+						<mx:DataGridColumn headerText="" width="36">
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:Image source="{data.iconpath}" width="32" height="32">
+									</mx:Image>
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn >
+						<mx:DataGridColumn dataField="name"/>
+						<mx:DataGridColumn dataField="modified" />	
+					</mx:columns>
+				</mx:DataGrid>
+				
 			</s:Panel>
 			<s:Panel >
 			</s:Panel>
