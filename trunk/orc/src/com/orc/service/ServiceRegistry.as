@@ -1,5 +1,8 @@
 package com.orc.service
 {
+	import com.orc.service.task.LocalTaskService;
+	import com.orc.service.task.TaskService;
+
 	public class ServiceRegistry
 	{
 		public var configService:ConfigService;
@@ -8,6 +11,7 @@ package com.orc.service
 		public var dataService:DataService;
 		
 		public var taggingService:TaggingService;
+		public var taskService:TaskService;
 		
 		
 		public function ServiceRegistry() {
@@ -20,6 +24,8 @@ package com.orc.service
 			
 			taggingService = new TaggingService(dataService);
 			notesService = new NotesService(dataService, fileService);
+			
+			taskService = new LocalTaskService(this);
 			
 		}
 		
