@@ -276,6 +276,9 @@
 		
 		<com:notesvg id="notes_g"  x="1024" y="0" visible="false">
 		</com:notesvg>
+		<com:tasksvg>
+			
+		</com:tasksvg>
 	</s:Group>
 	
 	

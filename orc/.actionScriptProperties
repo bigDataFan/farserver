@@ -16,6 +16,9 @@
     <application path="orc.mxml">
       <airExcludes/>
     </application>
+    <application path="Simple.mxml">
+      <airExcludes/>
+    </application>
   </applications>
   <modules/>
   <buildCSSFiles/>
