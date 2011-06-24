@@ -5,40 +5,39 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-
 	
-	
-	
-	<s:Form width="100%">
-		<s:FormItem width="767" label="任务名称">
-			<s:TextInput width="580"/>
-		</s:FormItem>
-		<s:FormItem width="771" label="描述">
-			<s:TextArea width="583" height="52"/>
-		</s:FormItem>
-		<s:FormItem width="276" label="开始" direction="horizontal">
-			<s:NumericStepper/>
-			<s:TextInput width="94"/>
-		</s:FormItem>
+	<s:BorderContainer width="100%" height="154" backgroundColor="#FAF6F6">
+		<s:Label x="10" y="16" text="任务名称"></s:Label>  <s:TextInput id="tsk_title" x="83" y="10" width="363"/>
+		<s:Label x="6" y="49" text="描述"></s:Label>  <s:TextArea id="tsk_desc" x="84" y="48" width="362" height="81"/>
+		<s:Label x="489" y="14" height="22" text="开始时间"/>
+		<s:TextInput x="546" y="10" width="92"/>
+		<s:NumericStepper x="646" y="10"/>
+		<s:NumericStepper x="738" y="10"/>
+		<s:Label x="707" y="16" text="时"/>
+		<s:Label x="803" y="17" text="分"/>
 		
-	</s:Form>
+	</s:BorderContainer>
 	
 	
-	<mx:DataGrid width="100%" height="205" showHeaders="false" verticalGridLines="false" verticalScrollPolicy="off">
-		<mx:columns>
-			<mx:DataGridColumn headerText="" >
-				<mx:itemRenderer>
-					<fx:Component>
-							<s:Label text="{data.title}">
-							</s:Label>
-						
-					</fx:Component>
-				</mx:itemRenderer>
-			</mx:DataGridColumn >
-			<mx:DataGridColumn dataField="name"/>
-			<mx:DataGridColumn dataField="modified" />	
-		</mx:columns>
-	</mx:DataGrid>`
-	
+	<s:DataGrid width="100%" height="205" >
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="title">
+					<s:itemRenderer>
+						<fx:Component>
+							<s:DefaultGridItemRenderer
+								fontSize="24"
+								color="#333333"
+								fontWeight="bold"
+								textAlign="center"
+								fontFamily="Courier New" />
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+				<s:GridColumn dataField="desc"/>
+				<s:GridColumn dataField="modified"/>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
 	
 </s:VGroup>
