@@ -6,24 +6,28 @@ package com.orc.utils
 	{
 		public static const ID:String = "id";
 		
-		public var date:Date;		
 		
-		public function TimeRelatedId()
+		public var date:Date;
+		public var type:String;
+		
+		public function TimeRelatedId(t:String)
 		{
+			type = t;
 			date = new Date();
 		}
 		
 		
-		public static function fromString(id:String):TimeRelatedId {
-			id  = id.substr(2);
-			var tri:TimeRelatedId = new TimeRelatedId();
-			tri.date = new Date();
-			tri.date.time = parseInt(id);
+		public static function fromString(str:String):TimeRelatedId {
+			var splits:Array = str.split(".");
+			
+			var tri:TimeRelatedId = new TimeRelatedId(splits[0]);
+			tri.date.time = parseInt(splits[2]);
+			
 			return tri;
 		}
 		
 		public function toString():String {
-			return ID + date.time;
+			return type + "." + ID + "." + date.time;
 		}
 	}
 }

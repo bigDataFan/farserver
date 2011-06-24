@@ -8,6 +8,8 @@ package com.orc.service.task
 		
 		function listTask():ArrayCollection;
 		
+		function updateTask(task:Task):void;
+		
 	}
 	
 }
