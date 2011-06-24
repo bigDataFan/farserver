@@ -2,6 +2,7 @@ package com.orc.service
 {
 	import com.orc.service.task.LocalTaskService;
 	import com.orc.service.task.TaskService;
+	import com.orc.service.file.FileService;
 
 	public class ServiceRegistry
 	{

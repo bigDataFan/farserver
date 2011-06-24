@@ -6,9 +6,13 @@ package com.orc.service
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import com.orc.service.file.FileService;
+
 	[Bindable]
 	public class NotesService
 	{
+		public static const TYPE_NOTE:String = "n";
+		
 		private var dataService:DataService;
 		private var fileService:FileService;
 		
@@ -49,7 +53,7 @@ package com.orc.service
 			if (title==null || title=="") {
 				title = "未命名";
 			}
-			var id:String = new TimeRelatedId().toString();
+			var id:String = new TimeRelatedId(TYPE_NOTE).toString();
 			//var newTitle:String = getNewNotesTitle(title);
 			var o = new Object();
 			o["title"] = title;

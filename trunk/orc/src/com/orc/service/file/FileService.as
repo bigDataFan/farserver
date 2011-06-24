@@ -1,6 +1,5 @@
-package com.orc.service
+package com.orc.service.file
 {
-	import com.orc.service.file.FileEvent;
 	import com.orc.utils.TimeRelatedId;
 	
 	import flash.events.EventDispatcher;
@@ -14,10 +13,16 @@ package com.orc.service
 	import mx.charts.CategoryAxis;
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
+	import com.orc.service.ConfigService;
+	import com.orc.service.DataCollection;
+	import com.orc.service.DataService;
 
 	public class FileService
 	{
 		public static const STORAGE_END_FIX = ".sto";
+		
+		public static const TYPE_FILE_TYPE = "a";
+		public static const TYPE_LOG_TYPE = "l";
 		
 		var typedic:Object = new Object();
 		
@@ -36,7 +41,7 @@ package com.orc.service
 			if (filetypes.findAll(null).length==0) {
 				filetypes.insert(
 					{
-						"id" :new TimeRelatedId().toString(),
+						"id" :new TimeRelatedId(TYPE_FILE_TYPE).toString(),
 						"label": "文档",
 						"type":".doc,.txt,.xml,.rtf,.xls",
 						"icon": "doc"
@@ -44,7 +49,7 @@ package com.orc.service
 				);
 				
 				filetypes.insert({
-					"id" :new TimeRelatedId().toString(),
+					"id" :new TimeRelatedId(TYPE_FILE_TYPE).toString(),
 					"label": "图片",
 					"type":".jpg,.gif,.png,.bmp",
 					"icon": "image"
@@ -73,7 +78,7 @@ package com.orc.service
 				
 				
 				var log:Object = new Object();
-				log.id = new TimeRelatedId().toString();
+				log.id = new TimeRelatedId(TYPE_LOG_TYPE).toString();
 				log.filePath = todayFolder.nativePath;
 				log.name = todayFolder.name;
 				log.time = new Date().getTime();
