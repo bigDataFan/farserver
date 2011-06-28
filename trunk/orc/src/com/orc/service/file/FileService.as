@@ -394,6 +394,7 @@ package com.orc.service.file
 				if (list.length>0) {
 					var grouped:Object = new Object();
 					grouped["label"] = days[i].label;
+					grouped["name"] = days[i].label;
 					grouped["children"] = list.source;
 					grouped["groupName"] = days[i].label;
 					result.push(grouped);

@@ -80,6 +80,8 @@
 		</s:VGroup>
 		<s:VGroup height="100%">
 			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 
+								 disclosureClosedIcon="{null}"
+								 disclosureOpenIcon="{null}"
 								  doubleClickEnabled="true" allowMultipleSelection="true"
 								  dataProvider="{new HierarchicalData(serviceRegistry.fileService.getAllFilesGrouped())}"
 								  displayItemsExpanded="true">
@@ -107,7 +109,7 @@
 											{
 												if (outerDocument.datagrid_file_list_view.selectedItem!=null) {
 													(outerDocument.datagrid_file_list_view.selectedItem["file"] as File).moveToTrash();
-													outerDocument.datagrid_file_list_view.dataProvider = outerDocument.serviceRegistry.fileService.getAllFilesGrouped();
+													outerDocument.datagrid_file_list_view.dataProvider = new HierarchicalData(outerDocument.serviceRegistry.fileService.getAllFilesGrouped());
 												}
 											}
 										]]>
