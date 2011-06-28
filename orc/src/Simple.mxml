@@ -3,21 +3,193 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:com="com.*"
-					   width="1024">
+					   width="1024" height="768">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.greensock.TweenLite;
+			import com.orc.service.ServiceRegistry;
+			
+			import mx.core.UITextField;
+			
+			
+			public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			
+			
+			protected function leftTree_clickHandler(event:MouseEvent):void
+			{
+				var target:Object = event.target;
+				if (target is UITextField) {
+					var text:UITextField = target as UITextField;
+					
+					if (text.text=="文件管理") {
+						slideIn(files_g);
+						return;
+					} 
+					if (text.text=="时间管理") {
+						
+						return;
+					} 
+					
+					if (text.text=="随意贴") {
+						slideOut(files_g);
+						slideIn(notes_g);
+						return;
+					} 
+				}
+			}
+			
+			protected function click_return(event:MouseEvent) : void {
+				//showDashboard();
+				slideOut(slidedIn);
+			}
+			
+			
+			var slidedIn:Group = null;
+			protected function slideIn(g:Group) : void {
+				slidedIn = g;
+				var w:Number = right_group.width;
+				g.x = w;
+				g.y = 0;
+				g.visible = true;
+				TweenLite.to(g, 0.5, {x:0});
+			}
+			
+			protected function slideOut(g:Group) : void {
+				slidedIn = null;
+				var w:Number = right_group.width;
+				
+				TweenLite.to(g, 0.5, {x:w, y:controlbar.height, visible:false});
+			}
+			
+			
+			protected function switchFullModel(event:MouseEvent):void
+			{
+				NativeApplication.nativeApplication.activeWindow.alwaysInFront = false;
+				NativeApplication.nativeApplication.activeWindow.width = 1024;
+				NativeApplication.nativeApplication.activeWindow.height = 768;
+				NativeApplication.nativeApplication.activeWindow.x = 30;
+				NativeApplication.nativeApplication.activeWindow.y = 30;
+				fullmodel.visible = true;
+				dragModel.visible = false;				
+			}
+			
+			protected function switchModel2(event:MouseEvent):void
+			{
+				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
+				NativeApplication.nativeApplication.activeWindow.width = 80;
+				NativeApplication.nativeApplication.activeWindow.height = 40;
+				fullmodel.visible = false;
+				dragModel.visible = true;				
+			}
+			
+			
+			
+			
+			
+			
+			//.....................................
+			//以下是悬浮框的操作
+			//.....................................
+			private function dragWin():void{//窗口拖动
+				if(NativeApplication.nativeApplication.activeWindow.displayState == NativeWindowDisplayState.NORMAL){
+					NativeApplication.nativeApplication.activeWindow.startMove();
+				}
+			}
+			
+			
+			protected function onDragDrop(event:NativeDragEvent):void
+			{
+				var s:String;
+				var cb:Clipboard = event.clipboard;
+				
+				var formats:Array = cb.formats;
+				
+				var ignoreText:Boolean = false;
+				
+				for (var i:int = 0; i < formats.length; i++) {
+					if (formats[i]=="air:file list") {
+						var data:Array = cb.getData(formats[i]) as Array;
+						for each (var j:int in data) 
+						{
+							var file:File = data[j] as File;
+							try {
+								serviceRegistry.fileService.addFile(file);
+							} catch (e:Error) {
+								
+							}
+						}
+					}
+					if (formats[i]=="air:html") {
+						serviceRegistry.notesService.createNotes("网页剪辑" + new Date(), String(cb.getData(formats[i])));
+						break;
+					}
+					
+					if (formats[i]=="air:text") {
+						serviceRegistry.notesService.createNotes("文本剪辑" + new Date(), String(cb.getData(formats[i])));
+						break;
+					}
+					
+					dropButton.label = dropButton.label;
+				}
+			}
+			
+			
+			protected function onAcceptDrag(event:NativeDragEvent):void
+			{
+				NativeDragManager.acceptDragDrop(dropButton);
+			}
+			
+		]]>
+	</fx:Script>
+	
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:HGroup x="0" y="34" width="100%" height="584">
-		<s:VGroup width="155" height="580">
+	<s:Group id="fullmodel" width="100%" height="100%" horizontalCenter="true">
+	<s:BorderContainer id="controlbar" x="0" width="100%" height="30">
+		<mx:Button x="7" y="4" label="悬浮模式" color="0x000000" click="switchModel2(event)" paddingRight="10"/>
+		<mx:Button x="85" id="btn_return" y="4"  click="click_return(event)" label="返回" color="0x000000" visible="false"/>
+		<mx:Label x="779" y="4" color="0x323232" text="搜索:"/>
+		<mx:TextInput x="819" y="2" width="100%" maxWidth="200"/>
+		
+	</s:BorderContainer>
+	<s:HGroup x="0" y="34" width="1024">
+		<s:VGroup width="200">
+			<mx:Tree width="100%" height="100%" labelField="@label" showRoot="false" click="leftTree_clickHandler(event)">
+				<mx:dataProvider>
+					<fx:XML id="data_ltree" xmlns="http://www.g-qu.net/powspace/" >
+						<node label="便笺">
+							<node label="文件管理">
+							</node>
+							<node label="时间管理">
+							</node>
+							<node label="随意贴">
+							</node>
+							<node label="配置">
+							</node>
+						</node>
+					</fx:XML>
+				</mx:dataProvider>
+			</mx:Tree>
 		</s:VGroup>
-		<s:Group width="703" height="580">
-			<com:tasksvg>
-				
+		<s:Group id="right_group" width="824" >
+			<com:filesvg id="files_g" x="824" y="0" visible="false">
+			</com:filesvg>
+			
+			<com:notesvg id="notes_g"  x="824" y="0" visible="false">
+			</com:notesvg>
+			
+			<com:tasksvg id="task_g" x="824" visible="false">
 			</com:tasksvg>
 		</s:Group>
 	</s:HGroup>
+	</s:Group>
 	
-	
-	
+	<s:Group id="dragModel" width="100" height="40" visible="false" x="0" y="0">
+		<s:Button id="dropButton" width="150" height="40" label="拖入内容" doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
+				  nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)"> 
+		</s:Button>
+	</s:Group>
 	
 </s:WindowedApplication>

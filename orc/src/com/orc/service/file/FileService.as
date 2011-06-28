@@ -1,5 +1,8 @@
 package com.orc.service.file
 {
+	import com.orc.service.ConfigService;
+	import com.orc.service.DataCollection;
+	import com.orc.service.DataService;
 	import com.orc.utils.TimeRelatedId;
 	
 	import flash.events.EventDispatcher;
@@ -13,9 +16,6 @@ package com.orc.service.file
 	import mx.charts.CategoryAxis;
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
-	import com.orc.service.ConfigService;
-	import com.orc.service.DataCollection;
-	import com.orc.service.DataService;
 
 	public class FileService
 	{
@@ -377,6 +377,26 @@ package com.orc.service.file
 					if (matched) {
 						result.addItem(child);
 					}
+				}
+			}
+			return result;
+		}
+		
+		
+		public function getAllFilesGrouped():Array {
+			var result:Array = new Array();
+			
+			var days:Array = getDays();
+			
+			for (var i:int = 0; i < days.length; i++) 
+			{
+				var list:ArrayList = getDateFileList(days[i].path);
+				if (list.length>0) {
+					var grouped:Object = new Object();
+					grouped["label"] = days[i].label;
+					grouped["children"] = list.source;
+					grouped["groupName"] = days[i].label;
+					result.push(grouped);
 				}
 			}
 			return result;

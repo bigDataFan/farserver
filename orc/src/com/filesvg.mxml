@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="768">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="824" height="700">
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
 			
 			import mx.collections.ArrayList;
+			import mx.collections.HierarchicalData;
 			import mx.controls.ColorPicker;
 			import mx.core.UIComponent;
 			import mx.core.UITextField;
@@ -24,6 +25,10 @@
 			[Bindable]  
 			public var image:Class;  
 			
+			
+			
+			public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
 				var sbe : SlideBackEvent = new SlideBackEvent();
@@ -31,106 +36,34 @@
 				this.dispatchEvent(sbe);
 			}
 
-			var serviceRegistry:ServiceRegistry = new ServiceRegistry();
-			
-			
-			private var lastDate:String = "";
-			
-			private function onMouseMove(e:MouseEvent):void {
-				
-				if(e.target.className == "UITextField"){
-					if(lastDate != e.target.text){
-						
-						var n:Number =  new Number(e.target.text);
-						if (n>0 && n<32) {
-							if (summaryies!=null && summaryies[n+"日"]!=null) {
-								e.target.toolTip = summaryies[n+"日"] + "个文件"
-							}
-						}
-					}
-					lastDate = e.target.text;
-				}
-			}
-			
-			
-			
 			var summaryies:Object;
-			private function events():void {
-				summaryies= serviceRegistry.fileService.getMonthSummaries(datechooser.displayedYear, datechooser.displayedMonth);
-				
-				for(var i:Number=0; i<datechooser.numChildren; i++) {
-					var calendarObj:Object = datechooser.getChildAt(i);
-					
-					if (calendarObj.hasOwnProperty("className"))
-					{
-						if (calendarObj.className == "CalendarLayout")
-						{
-							var uic:UIComponent = calendarObj as UIComponent;
-							for(var j:Number=0; j<uic.numChildren; j++) {
-								var children:DisplayObject = uic.getChildAt(j);
-								if (children.hasOwnProperty("text")) {
-									var day:UITextField = UITextField(children);
-									//day.selectable = true;
-									//day.wordWrap = true;
-									//day.multiline = true;
-									//day.htmlText="very good";
-									try {
-										var n:Number =  new Number(day.text);
-										if (n>0 && n<32) {
-											day.backgroundColor = 0xff00ff;
-											if (summaryies[n+"日"]!=null) {
-												day.htmlText= "<font color=\"#ff0000\">" + n + "</font>";
-											} else {
-											}
-										}
-									} catch (e:Error) {
-									}
-									
-								}
-								
-							}
-						}
-					}
-					
-				}
-				
-			}
-
-			
-			var currentFolderPath:String;
-			protected function datechooser_clickHandler(event:MouseEvent):void
-			{
-				var target:Object = event.target;
-				try {
-					if (target is UITextField) {
-						var uit:UITextField = target as UITextField;
-						
-						var dayStr:String = uit.text;
-						if (summaryies!=null && summaryies[dayStr+"日"]!=null) {
-							var folderPath:String = serviceRegistry.fileService.getRootFolder() + "/" + datechooser.displayedYear + "年/" 
-								+ (datechooser.displayedMonth+1) + "月/" + dayStr + "日";
-							datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getDateFileList(folderPath);
-							
-							currentFolderPath = folderPath;
-						}
-						
-					}
-				} catch (e : Error) {
-					
-				}
-				events();
-			}
-			
-			
+		
 			protected function tree1_clickHandler(event:MouseEvent):void
 			{
 				var target:Object = event.target;
 				if (target is UITextField) {
 					var text:UITextField = target as UITextField;
-					datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(typeTree.selectedItem["type"]);
+					//datagrid_file_list_view.dataProvider = serviceRegistry.fileService.getByTypeCategory(typeTree.selectedItem["type"]);
 				}
 			}
 			
+			
+			public var fileSystemStructure:Array =  
+				 [ 
+					{label:"Containers", children: [ 
+						{label:"Accordian", children:[]}, 
+						{label:"DividedBox", children: [ 
+							{label:"BoxDivider.as", data:"BoxDivider.as"},  
+							{label:"BoxUniter.as", data:"BoxUniter.as"}]}, 
+						{label: "Grid", children:[]}]}, 
+					{label: "Controls", children: [ 
+						{label: "Alert", data: "Alert.as"}, 
+						{label: "Styles", children: [ 
+							{label: "AlertForm.as", data:"AlertForm.as"}]}, 
+						{label: "Tree", data: "Tree.as"}, 
+						{label: "Button", data: "Button.as"}]}, 
+					{label: "Core", children:[]} 
+				];
 		]]>
 	</fx:Script>
 
@@ -138,34 +71,32 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<s:HGroup width="100%" height="740" y="0">
-		<s:VGroup width="260" height="554">
-			<mx:Tree width="258" labelField="label" id="typeTree" iconField="@icon" showRoot="false"
-					 dataProvider="{serviceRegistry.fileService.getFileTypes()}"
-					 click="tree1_clickHandler(event)">
+	<s:HGroup x="10" y="0" width="100%" height="100%">
+		<s:VGroup width="182" height="554">
+			<mx:Tree id="typeTree" width="177" height="341" click="tree1_clickHandler(event)"
+					 dataProvider="{serviceRegistry.fileService.getFileTypes()}" iconField="@icon"
+					 labelField="label" showRoot="false">
 			</mx:Tree>
-			<mx:DateChooser id="datechooser" width="256" height="341"
-							click="datechooser_clickHandler(event)"
-							mouseMove="onMouseMove(event)"
-							creationComplete="events()" updateComplete="events()"  />
 		</s:VGroup>
 		<s:VGroup height="100%">
-			<mx:DataGrid id="datagrid_file_list_view" width="758" height="100%" verticalGridLines="false"
-						 doubleClickEnabled="true" allowMultipleSelection="true">
+			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 
+								  doubleClickEnabled="true" allowMultipleSelection="true"
+								  dataProvider="{new HierarchicalData(serviceRegistry.fileService.getAllFilesGrouped())}"
+								  displayItemsExpanded="true">
 				<mx:columns>
-					<mx:DataGridColumn headerText="" width="36">
+					<mx:AdvancedDataGridColumn  headerText="" width="36">
 						<mx:itemRenderer>
 							<fx:Component>
-									<mx:Image source="{data.iconpath}" width="32" height="32">
-									</mx:Image>
+								<mx:Image source="{data.iconpath}" width="32" height="32">
+								</mx:Image>
 							</fx:Component>
 						</mx:itemRenderer>
-					</mx:DataGridColumn >
-					<mx:DataGridColumn headerText="名称" width="500" dataField="name" resizable="true"/>	
-					<mx:DataGridColumn headerText="修改时间" width="80" dataField="modified"/>
-					<mx:DataGridColumn dataField="size" sortable="true" width="80" />
+					</mx:AdvancedDataGridColumn >
+					<mx:AdvancedDataGridColumn headerText="名称" width="500" dataField="name" resizable="true"/>	
+					<mx:AdvancedDataGridColumn headerText="修改时间" width="80" dataField="modified"/>
+					<mx:AdvancedDataGridColumn dataField="size" sortable="true" width="80" />
 					
-					<mx:DataGridColumn>
+					<mx:AdvancedDataGridColumn>
 						<mx:itemRenderer>
 							<fx:Component>
 								<mx:LinkButton icon="@Embed('buttons/remove_item.gif')" click="linkbutton2_clickHandler(event)">
@@ -176,7 +107,7 @@
 											{
 												if (outerDocument.datagrid_file_list_view.selectedItem!=null) {
 													(outerDocument.datagrid_file_list_view.selectedItem["file"] as File).moveToTrash();
-													outerDocument.datagrid_file_list_view.dataProvider = outerDocument.serviceRegistry.fileService.getDateFileList(outerDocument.currentFolderPath);
+													outerDocument.datagrid_file_list_view.dataProvider = outerDocument.serviceRegistry.fileService.getAllFilesGrouped();
 												}
 											}
 										]]>
@@ -184,10 +115,9 @@
 								</mx:LinkButton>
 							</fx:Component>
 						</mx:itemRenderer>
-					</mx:DataGridColumn>
-				</mx:columns>
-			</mx:DataGrid>	
-			
+					</mx:AdvancedDataGridColumn>
+				</mx:columns>	
+			</mx:AdvancedDataGrid>
 		</s:VGroup>
 	</s:HGroup>
 </s:Group>
