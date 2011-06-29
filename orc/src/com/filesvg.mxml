@@ -63,13 +63,14 @@
 				for (var i:int = 0; i < grouped.length; i++) 
 				{
 					var vg:VGroup = new VGroup();
+					vg.gap = 0;
 					vg.percentWidth=100;
 					//vg.height = 80;
 					//vg.y = i * 80;
 					
-					
 					var gTitle:BorderContainer = new BorderContainer();
-						
+					gTitle.percentWidth=100;
+					gTitle.height = 20;
 					var titleLabel:Label = new Label();
 					titleLabel.x = 20;
 					titleLabel.y = 5;
@@ -103,7 +104,7 @@
 	<s:HGroup x="10" y="0" width="824" height="100%">
 
 		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
-			<s:VGroup id="vg_file_bydate" height="100%" width="800" >
+			<s:VGroup id="vg_file_bydate" height="100%" width="780" >
 			</s:VGroup>
 		</s:Scroller>
 	
