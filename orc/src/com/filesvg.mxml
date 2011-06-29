@@ -6,6 +6,7 @@
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
 			import com.orc.service.file.FileItemDisplayGroup;
+			import com.orc.service.file.GridFile;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.HierarchicalData;
@@ -79,8 +80,8 @@
 				{
 					var vg:VGroup = new VGroup();
 					vg.percentWidth=100;
-					vg.height = 80;
-					vg.y = i * 80;
+					//vg.height = 80;
+					//vg.y = i * 80;
 					
 					
 					var gTitle:VGroup = new VGroup();
@@ -98,13 +99,11 @@
 					for (var j:int = 0; j < childFiles.length; j++) 
 					{
 						var fid : FileItemDisplayGroup = new FileItemDisplayGroup();
-						fid.labelx = childFiles[j].name;
-						fid.y = j * 20;
+						fid.gridfile = childFiles[j] as GridFile;
+						fid.y = j * 48;
 						vg.addElement(fid);
 						
 					}
-					
-					
 					vg_file_bydate.addElement(vg);
 					
 				}
@@ -135,7 +134,7 @@
 			
 		</s:Button>
 		
-		<s:BorderContainer id="vg_file_bydate" height="100%" width="500" >
+		<s:VGroup id="vg_file_bydate" height="100%" width="500" >
 			<!--
 			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 
 								 disclosureClosedIcon="{null}"
@@ -179,6 +178,6 @@
 				</mx:columns>	
 			</mx:AdvancedDataGrid>
 			-->
-		</s:BorderContainer>
+		</s:VGroup>
 	</s:HGroup>
 </s:Group>
