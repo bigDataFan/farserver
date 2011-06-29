@@ -13,7 +13,24 @@
 			import mx.core.UITextField;
 			
 			
-			public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			//public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			
+			
+			
+			
+			private var onScreen:Group = null;
+			
+			private function switchGroup(v:Group):void {
+				
+				if (onScreen!=null) {
+					slideOut(onScreen);
+				}
+				
+				slideIn(v);
+				
+				onScreen = v;
+				
+			}
 			
 			
 			protected function leftTree_clickHandler(event:MouseEvent):void
@@ -23,17 +40,18 @@
 					var text:UITextField = target as UITextField;
 					
 					if (text.text=="文件管理") {
-						slideIn(files_g);
+						switchGroup(files_g);
+						files_g.init();
 						return;
 					} 
+					
 					if (text.text=="时间管理") {
 						
 						return;
 					} 
 					
 					if (text.text=="随意贴") {
-						slideOut(files_g);
-						slideIn(notes_g);
+						switchGroup(notes_g);
 						return;
 					} 
 				}
@@ -97,7 +115,7 @@
 				}
 			}
 			
-			
+			public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
 			protected function onDragDrop(event:NativeDragEvent):void
 			{
 				var s:String;
@@ -174,7 +192,7 @@
 			</mx:Tree>
 		</s:VGroup>
 		<s:Group id="right_group" width="824" >
-			<com:filesvg id="files_g" x="824" y="0" visible="false">
+			<com:filesvg id="files_g" x="824" width="824" y="0" visible="false">
 			</com:filesvg>
 			
 			<com:notesvg id="notes_g"  x="824" y="0" visible="false">

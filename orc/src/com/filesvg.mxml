@@ -17,6 +17,7 @@
 			import mx.events.FlexEvent;
 			import mx.graphics.SolidColor;
 			
+			import spark.components.BorderContainer;
 			import spark.components.Label;
 			import spark.effects.interpolation.RGBInterpolator;
 			import spark.primitives.Rect;
@@ -31,13 +32,16 @@
 			[Bindable]  
 			public var image:Class;  
 			
+			public var serviceRegistry:ServiceRegistry;
 			
-			
-			public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
+			public function init():void {
+				serviceRegistry = new ServiceRegistry();
+				fillByDate();
+			}
 			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
-				var sbe : SlideBackEvent = new SlideBackEvent();
+				var sbe:SlideBackEvent = new SlideBackEvent();
 				sbe.obj = this;
 				this.dispatchEvent(sbe);
 			}
@@ -53,28 +57,8 @@
 				}
 			}
 			
-			
-			public var fileSystemStructure:Array =  
-				 [ 
-					{label:"Containers", children: [ 
-						{label:"Accordian", children:[]}, 
-						{label:"DividedBox", children: [ 
-							{label:"BoxDivider.as", data:"BoxDivider.as"},  
-							{label:"BoxUniter.as", data:"BoxUniter.as"}]}, 
-						{label: "Grid", children:[]}]}, 
-					{label: "Controls", children: [ 
-						{label: "Alert", data: "Alert.as"}, 
-						{label: "Styles", children: [ 
-							{label: "AlertForm.as", data:"AlertForm.as"}]}, 
-						{label: "Tree", data: "Tree.as"}, 
-						{label: "Button", data: "Button.as"}]}, 
-					{label: "Core", children:[]} 
-				];
-			
-			
 			public function fillByDate():void {
 				var grouped:Array = serviceRegistry.fileService.getAllFilesGrouped();
-
 				
 				for (var i:int = 0; i < grouped.length; i++) 
 				{
@@ -84,7 +68,7 @@
 					//vg.y = i * 80;
 					
 					
-					var gTitle:VGroup = new VGroup();
+					var gTitle:BorderContainer = new BorderContainer();
 						
 					var titleLabel:Label = new Label();
 					titleLabel.x = 20;
@@ -100,20 +84,13 @@
 					{
 						var fid : FileItemDisplayGroup = new FileItemDisplayGroup();
 						fid.gridfile = childFiles[j] as GridFile;
-						fid.y = j * 48;
+						//fid.y = j * 48;
 						vg.addElement(fid);
 						
 					}
 					vg_file_bydate.addElement(vg);
 					
 				}
-				btn1.label = "个数" + vg_file_bydate.numElements;
-				
-			}
-			
-			protected function button1_clickHandler(event:MouseEvent):void
-			{
-				fillByDate();				
 			}
 			
 		]]>
@@ -123,18 +100,13 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<s:HGroup x="10" y="0" width="100%" height="100%">
-		<s:VGroup width="182" height="554">
-			<mx:Tree id="typeTree" width="177" height="341" click="tree1_clickHandler(event)"
-					 dataProvider="{serviceRegistry.fileService.getFileTypes()}" iconField="@icon"
-					 labelField="label" showRoot="false">
-			</mx:Tree>
-		</s:VGroup>
-		<s:Button id="btn1" click="button1_clickHandler(event)">
-			
-		</s:Button>
-		
-		<s:VGroup id="vg_file_bydate" height="100%" width="500" >
+	<s:HGroup x="10" y="0" width="824" height="100%">
+
+		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
+			<s:VGroup id="vg_file_bydate" height="100%" width="800" >
+			</s:VGroup>
+		</s:Scroller>
+	
 			<!--
 			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 
 								 disclosureClosedIcon="{null}"
@@ -178,6 +150,6 @@
 				</mx:columns>	
 			</mx:AdvancedDataGrid>
 			-->
-		</s:VGroup>
+		
 	</s:HGroup>
 </s:Group>
