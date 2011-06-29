@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="638" height="48">
 		<fx:Script>
 			<![CDATA[
+				import mx.core.IVisualElement;
+				
+				import spark.components.VGroup;
 				[Bindable]
-				public var labelx:String;
+				public var gridfile:GridFile;
+				
+				
+				
+				protected function linkbutton3_clickHandler(event:MouseEvent):void
+				{
+					(parent as VGroup).removeElement(this);	
+				}
+				
 			]]>
 		</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<s:Label text="{labelx}">
+	<s:Label x="64" y="10" width="427" height="17" fontWeight="bold" text="{gridfile.name}">
 		
 	</s:Label>
 	
-	<s:Label x="200" text="vava">
+	<s:Label x="467" y="27" text="{gridfile.size}">
 		
 	</s:Label>
+	<s:Image x="10" y="8" width="32" height="32" source="{gridfile.iconpath}"/>
+	<s:Label x="325" y="26" width="118" text="{gridfile.rawfile.modificationDate.toTimeString()}"/>
+	<mx:LinkButton x="540" y="7" width="24" click="linkbutton3_clickHandler(event)"
+				   icon="@Embed('buttons/remove_item.gif')">
+	</mx:LinkButton>
 </s:Group>
