@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="824" height="700">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="824" height="700" >
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
+			import com.orc.service.file.FileItemDisplayGroup;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.HierarchicalData;
@@ -13,8 +14,12 @@
 			import mx.core.UITextField;
 			import mx.events.CalendarLayoutChangeEvent;
 			import mx.events.FlexEvent;
+			import mx.graphics.SolidColor;
 			
+			import spark.components.Label;
 			import spark.effects.interpolation.RGBInterpolator;
+			import spark.primitives.Rect;
+			import spark.primitives.supportClasses.FilledElement;
 			
 			
 			[Embed(source="/icon/doc.png")]          //这是单位图标  
@@ -64,6 +69,54 @@
 						{label: "Button", data: "Button.as"}]}, 
 					{label: "Core", children:[]} 
 				];
+			
+			
+			public function fillByDate():void {
+				var grouped:Array = serviceRegistry.fileService.getAllFilesGrouped();
+
+				
+				for (var i:int = 0; i < grouped.length; i++) 
+				{
+					var vg:VGroup = new VGroup();
+					vg.percentWidth=100;
+					vg.height = 80;
+					vg.y = i * 80;
+					
+					
+					var gTitle:VGroup = new VGroup();
+						
+					var titleLabel:Label = new Label();
+					titleLabel.x = 20;
+					titleLabel.y = 5;
+					titleLabel.text = grouped[i].label;
+					gTitle.addElement(titleLabel);
+					vg.addElement(gTitle);
+					
+					
+					var childFiles:Array = grouped[i].children as Array;
+					
+					for (var j:int = 0; j < childFiles.length; j++) 
+					{
+						var fid : FileItemDisplayGroup = new FileItemDisplayGroup();
+						fid.labelx = childFiles[j].name;
+						fid.y = j * 20;
+						vg.addElement(fid);
+						
+					}
+					
+					
+					vg_file_bydate.addElement(vg);
+					
+				}
+				btn1.label = "个数" + vg_file_bydate.numElements;
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				fillByDate();				
+			}
+			
 		]]>
 	</fx:Script>
 
@@ -78,7 +131,12 @@
 					 labelField="label" showRoot="false">
 			</mx:Tree>
 		</s:VGroup>
-		<s:VGroup height="100%">
+		<s:Button id="btn1" click="button1_clickHandler(event)">
+			
+		</s:Button>
+		
+		<s:BorderContainer id="vg_file_bydate" height="100%" width="500" >
+			<!--
 			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 
 								 disclosureClosedIcon="{null}"
 								 disclosureOpenIcon="{null}"
@@ -120,6 +178,7 @@
 					</mx:AdvancedDataGridColumn>
 				</mx:columns>	
 			</mx:AdvancedDataGrid>
-		</s:VGroup>
+			-->
+		</s:BorderContainer>
 	</s:HGroup>
 </s:Group>
