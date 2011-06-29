@@ -3,7 +3,8 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:com="com.*"
-					   width="1024" height="768">
+					   width="1024" height="768"
+					   showStatusBar="false">
 	
 	<fx:Script>
 		<![CDATA[
@@ -15,9 +16,6 @@
 			
 			//public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
 			
-			
-			
-			
 			private var onScreen:Group = null;
 			
 			private function switchGroup(v:Group):void {
@@ -27,9 +25,7 @@
 				}
 				
 				slideIn(v);
-				
 				onScreen = v;
-				
 			}
 			
 			
@@ -86,8 +82,6 @@
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = false;
 				NativeApplication.nativeApplication.activeWindow.width = 1024;
 				NativeApplication.nativeApplication.activeWindow.height = 768;
-				NativeApplication.nativeApplication.activeWindow.x = 30;
-				NativeApplication.nativeApplication.activeWindow.y = 30;
 				fullmodel.visible = true;
 				dragModel.visible = false;				
 			}
@@ -95,8 +89,10 @@
 			protected function switchModel2(event:MouseEvent):void
 			{
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
+				//NativeApplication.nativeApplication.activeWindow.systemChrome = "none";
 				NativeApplication.nativeApplication.activeWindow.width = 80;
-				NativeApplication.nativeApplication.activeWindow.height = 40;
+				NativeApplication.nativeApplication.activeWindow.height = 80;
+				
 				fullmodel.visible = false;
 				dragModel.visible = true;				
 			}
