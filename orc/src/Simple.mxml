@@ -90,8 +90,8 @@
 			{
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
 				//NativeApplication.nativeApplication.activeWindow.systemChrome = "none";
-				NativeApplication.nativeApplication.activeWindow.width = 80;
-				NativeApplication.nativeApplication.activeWindow.height = 80;
+				NativeApplication.nativeApplication.activeWindow.width = 150;
+				NativeApplication.nativeApplication.activeWindow.height = 70;
 				
 				fullmodel.visible = false;
 				dragModel.visible = true;				
@@ -124,7 +124,7 @@
 				for (var i:int = 0; i < formats.length; i++) {
 					if (formats[i]=="air:file list") {
 						var data:Array = cb.getData(formats[i]) as Array;
-						for each (var j:int in data) 
+						for (var j:int = 0; j < data.length; j++) 
 						{
 							var file:File = data[j] as File;
 							try {
@@ -132,6 +132,7 @@
 							} catch (e:Error) {
 								
 							}
+							
 						}
 					}
 					if (formats[i]=="air:html") {
