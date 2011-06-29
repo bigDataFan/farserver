@@ -63,6 +63,6 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<mx:Label text="Window Test" height="20"  mouseDown="dragWin()" right="171" left="10" top="2" fontSize="12"/> 
-	<s:Button id="bt" x="72" y="55" width="170" height="49" label="按钮" nativeDragOver="button1_nativeDragOverHandler(event)" nativeDragDrop="windowedapplication2_nativeDragDropHandler(event)"/>
+	<s:Button id="bt" x="72" y="55" width="170" height="49" label="按钮" mouseDown="dragWin()" nativeDragOver="button1_nativeDragOverHandler(event)" nativeDragDrop="windowedapplication2_nativeDragDropHandler(event)"/>
 </s:WindowedApplication>
 
