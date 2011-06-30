@@ -11,7 +11,7 @@ package com.orc.service
 	[Bindable]
 	public class NotesService
 	{
-		public static const TYPE_NOTE:String = "n";
+		public static const TYPE_NOTE:String = "N";
 		
 		private var dataService:DataService;
 		private var fileService:FileService;
@@ -48,7 +48,7 @@ package com.orc.service
 			var notesdb:DataCollection = dataService.getCollection("notes.db");
 		}
 		
-		public function createNotes(title:String, text:String):String {
+		public function createNotes(title:String, text:String):Object {
 			
 			if (title==null || title=="") {
 				title = "未命名";
@@ -65,7 +65,7 @@ package com.orc.service
 			fileService.putContent(id, text);
 			
 			notesdb.insert(o);
-			return id;
+			return o;
 		}
 		
 		public function getNote(id:String) :Object {

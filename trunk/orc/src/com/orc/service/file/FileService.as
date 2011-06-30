@@ -36,7 +36,7 @@ package com.orc.service.file
 		
 		public function FileService(config:ConfigService, ds:DataService)
 		{
-		
+			
 		}
 		
 		
@@ -93,14 +93,15 @@ package com.orc.service.file
 				log.time = new Date().getTime();
 				
 				filelogs.insertCapped(log,1000);
-				sendNotify();
+				sendNotify(file1);
 			} catch (e:Error) {
 				
 			}
 		}
 		
-		public function sendNotify():void {
+		public function sendNotify(file1:File):void {
 			var fe:FileEvent = new FileEvent(FileEvent.MODIFY);
+			fe.file = new GridFile(file1);
 			for (var i:int = 0; i < eventDispatches.length; i++) 
 			{
 				(eventDispatches[i] as EventDispatcher).dispatchEvent(fe);
@@ -403,7 +404,7 @@ package com.orc.service.file
 				if (list.length>0) {
 					var grouped:Object = new Object();
 					grouped["label"] = days[i].label;
-					grouped["id"] = days[i].date;
+					grouped["date"] = new Date(days[i].dateTime);
 					grouped["children"] = list.source;
 					grouped["groupName"] = days[i].label;
 					result.push(grouped);

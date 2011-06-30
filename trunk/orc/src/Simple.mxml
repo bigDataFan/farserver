@@ -4,7 +4,7 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:com="com.*"
 					   width="1024" height="768"
-					   showStatusBar="false">
+					   showStatusBar="false" xmlns:easypaste="com.orc.service.easypaste.*" initialize="windowedapplication1_initializeHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
@@ -12,6 +12,7 @@
 			import com.orc.service.ServiceRegistry;
 			
 			import mx.core.UITextField;
+			import mx.events.FlexEvent;
 			
 			
 			//public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
@@ -36,7 +37,7 @@
 					
 					if (text.text=="文件管理") {
 						switchGroup(files_g);
-						files_g.init();
+						//files_g.init();
 						return;
 					} 
 					
@@ -83,10 +84,6 @@
 				NativeApplication.nativeApplication.activeWindow.height = 768;
 				fullmodel.visible = true;
 				dragModel.visible = false;		
-				
-				if(slidedIn == files_g) {
-					files_g.init();
-				}
 			}
 			
 			protected function switchModel2(event:MouseEvent):void
@@ -151,6 +148,12 @@
 				NativeDragManager.acceptDragDrop(dropButton);
 			}
 			
+			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
+			{
+				files_g.init();
+				notes_g.drawList();
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -188,8 +191,9 @@
 			<com:filesvg id="files_g" x="824" width="824" y="0" visible="false">
 			</com:filesvg>
 			
-			<com:notesvg id="notes_g"  x="824" y="0" visible="false">
-			</com:notesvg>
+			<easypaste:EasyPaste id="notes_g" visible="false">
+				
+			</easypaste:EasyPaste>
 			
 			<com:tasksvg id="task_g" x="824" visible="false">
 			</com:tasksvg>

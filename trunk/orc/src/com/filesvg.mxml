@@ -8,6 +8,7 @@
 			import com.orc.service.file.FileEvent;
 			import com.orc.service.file.FileItemDisplayGroup;
 			import com.orc.service.file.GridFile;
+			import com.orc.utils.FormatUtils;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.HierarchicalData;
@@ -47,8 +48,6 @@
 				this.dispatchEvent(sbe);
 			}
 			
-			
-			
 			var summaryies:Object;
 		
 			protected function tree1_clickHandler(event:MouseEvent):void
@@ -82,10 +81,12 @@
 					panel.title = grouped[i].label;
 					panel.verticalScrollPolicy = "off";
 					panel.horizontalScrollPolicy = "off";
-						*/				
+					*/
+					
 					
 					var vg:VGroup = new VGroup();
-					
+					vg.id = FormatUtils.formatDateToId(grouped[i].date);
+					vg_file_bydate.addElement(vg);
 					vg.gap = 0;
 					vg.percentWidth=95;
 					//vg.height = 80;
@@ -114,8 +115,6 @@
 						
 					}
 					//panel.addElement(vg);
-					vg_file_bydate.addElement(vg);
-					
 				}
 				
 				var t4:Date = new Date();
@@ -124,8 +123,19 @@
 			
 			protected function onChange(event:Event):void
 			{
+				var fe:FileEvent = event as FileEvent;
+				var date:Date = new Date();
 								
+				fillByDate();
 			}
+			
+			protected function vg_file_bydate_mouseWheelHandler(event:MouseEvent):void
+			{
+				if (vg_file_bydate.y >0) return;
+				if (vg_file_bydate.y < -vg_file_bydate.height) return;
+				vg_file_bydate.y +=event.delta * 5;
+			}
+			
 			
 		]]>
 	</fx:Script>
@@ -135,12 +145,12 @@
 	</fx:Declarations>
 	
 	<s:HGroup x="10" y="0" width="824" height="100%">
-
+		
 		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
-			<s:VGroup id="vg_file_bydate" height="100%" width="785" >
+			<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="785" >
 			</s:VGroup>
 		</s:Scroller>
-	
+		
 			<!--
 			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 
 								 disclosureClosedIcon="{null}"
