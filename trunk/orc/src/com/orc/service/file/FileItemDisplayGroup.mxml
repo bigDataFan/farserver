@@ -5,6 +5,8 @@
 				   width="780" height="48" backgroundColor="#F7F8F8" rollOverColor="0xCEDBEF" borderVisible="false">
 		<fx:Script>
 			<![CDATA[
+				import com.orc.utils.FormatUtils;
+				
 				import mx.core.IVisualElement;
 				
 				import spark.components.VGroup;
@@ -22,24 +24,23 @@
 					gridfile.file.openWithDefaultApplication();
 				}
 				
-				
 			]]>
 		</fx:Script>
 	<fx:Declarations>
 	</fx:Declarations>
-	<s:Label x="48" y="10" width="494" height="17" fontWeight="bold" fontSize="13" text="{gridfile.name}">
+	<s:Label x="48" y="10" width="453" height="79" fontWeight="bold" fontSize="13" text="{gridfile.name}">
 	</s:Label>
 	
-	<s:Label x="453" y="27" width="48" height="11" text="{gridfile.size}">
+	<s:Label x="453" y="28" width="48" height="11" text="{gridfile.size}">
 	</s:Label>
 	
 	<s:Image x="10" y="8" width="32" height="32" source="{gridfile.iconpath}"/>
-	<s:Label x="328" y="28" width="118" text="{gridfile.rawfile.modificationDate.toTimeString()}"/>
+	<s:Label x="385" y="28" width="64" text="{FormatUtils.formatHT(gridfile.file.modificationDate)}"/>
 	
-	<mx:LinkButton x="647" y="-1" width="24" click="linkbutton3_clickHandler(event)"
-				   icon="@Embed('buttons/remove_item.gif')">
+	<mx:LinkButton x="597" y="5" width="65" label="删除" click="linkbutton3_clickHandler(event)"
+				   icon="@Embed('buttons/delete.gif')">
 	</mx:LinkButton>
-	<mx:LinkButton x="546" y="14" width="24" click="open(event)"
-				   icon="@Embed('buttons/remove_item.gif')">
+	<mx:LinkButton x="546" y="5" width="63" label="打开" click="open(event)"
+				   icon="@Embed('buttons/open_file.gif')">
 	</mx:LinkButton>
 </s:BorderContainer>

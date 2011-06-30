@@ -1,42 +1,37 @@
 package com.orc.service
 {
+	import com.orc.service.file.FileService;
 	import com.orc.service.task.LocalTaskService;
 	import com.orc.service.task.TaskService;
-	import com.orc.service.file.FileService;
 
 	public class ServiceRegistry
 	{
-		public var configService:ConfigService;
-		public var fileService:FileService;
-		public var notesService:NotesService;
-		public var dataService:DataService;
+		public static var configService:ConfigService = new ConfigService();
 		
-		public var taggingService:TaggingService;
-		public var taskService:TaskService;
+		public static var dataService:DataService = new DataService(configService.rootFolder);
+		
+		public static var fileService:FileService = new FileService(configService, dataService);
+		
+		public static const notesService:NotesService =  new NotesService(dataService, fileService);
+		
+		public static var taggingService:TaggingService =new TaggingService(dataService);
+		
+		public static var taskService:TaskService = new LocalTaskService(dataService);
 		
 		
 		public function ServiceRegistry() {
-			configService = new ConfigService();
-			
-			dataService = new DataService(configService.rootFolder);
-
-			fileService = new FileService(configService, dataService);
-			//notesService = new NotesService(configService);
-			
-			taggingService = new TaggingService(dataService);
-			notesService = new NotesService(dataService, fileService);
-			
-			taskService = new LocalTaskService(this);
 			
 		}
-		
-		
 		
 		public  function init() {
 			
-			
-			
 		}
+		
+		public static function getNotesService():NotesService {
+			return notesService;
+		}
+	
+		
 		
 	}
 }

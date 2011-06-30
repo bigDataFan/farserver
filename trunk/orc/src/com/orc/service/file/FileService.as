@@ -3,6 +3,7 @@ package com.orc.service.file
 	import com.orc.service.ConfigService;
 	import com.orc.service.DataCollection;
 	import com.orc.service.DataService;
+	import com.orc.service.ServiceRegistry;
 	import com.orc.utils.TimeRelatedId;
 	
 	import flash.events.EventDispatcher;
@@ -35,8 +36,16 @@ package com.orc.service.file
 		
 		public function FileService(config:ConfigService, ds:DataService)
 		{
-			filelogs = ds.getCollection("filelogs.db");
-			filetypes = ds.getCollection("filetypes.db");
+		
+		}
+		
+		
+		
+		public function load():void {
+			if (dates.length!=0) return;
+			
+			filelogs = ServiceRegistry.dataService.getCollection("filelogs.db");
+			filetypes = ServiceRegistry.dataService.getCollection("filetypes.db");
 			
 			if (filetypes.findAll(null).length==0) {
 				filetypes.insert(
@@ -57,7 +66,7 @@ package com.orc.service.file
 				
 			}
 			
-			var basePath:String = config.rootFolder; 
+			var basePath:String = ServiceRegistry.configService.rootFolder; 
 			if (basePath!=null) {
 				init(new File(basePath));	
 			}
@@ -154,7 +163,7 @@ package com.orc.service.file
 					scanMonth(folder);
 				}
 			}
-			dates.reverse();
+			dates.sortOn("dateTime",Array.DESCENDING);
 		}
 		
 		
@@ -177,15 +186,15 @@ package com.orc.service.file
 					var o:Object = new Object();
 
 					var year:Number = new Number(child.parent.parent.name.substr(0,4));
-					var month:Number = new Number(child.parent.name.substr(0,2));
-					var day:Number = new Number(child.name.substr(0,2));
+					var month:Number = new Number(child.parent.name.substr(0,child.name.indexOf("月")));
+					var day:Number = new Number(child.name.substr(0,child.name.indexOf("日")));
 					
 					if (today.getFullYear()==year && (today.getMonth()+1)==month && today.getDate()==day) {
 						o["label"] = "今日";	
 					} else {
 						o["label"] = child.parent.parent.name + child.parent.name + child.name;
 					}
-					
+					o["dateTime"] = new Date(year,month,day).getTime();
 					o["path"] = child.nativePath;
 					dates.push(o);
 				}
@@ -394,7 +403,7 @@ package com.orc.service.file
 				if (list.length>0) {
 					var grouped:Object = new Object();
 					grouped["label"] = days[i].label;
-					grouped["name"] = days[i].label;
+					grouped["id"] = days[i].date;
 					grouped["children"] = list.source;
 					grouped["groupName"] = days[i].label;
 					result.push(grouped);
