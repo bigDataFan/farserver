@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="824" height="700" >
+	<fx:Script>
+		<![CDATA[
+			import com.orc.service.ServiceRegistry;
+			import com.orc.utils.TimeRelatedId;
+			
+			public function load():void {
+				
+			}
+			
+			var editingItem:PasteItem = null;
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				
+				if(editingItem) {
+					editingItem.notesItem["content"] = paste_ta.text;
+					ServiceRegistry.notesService.saveNote(editingItem.notesItem);
+					editingItem = null;
+				} else {
+				  var o:Object = ServiceRegistry.notesService.createNotes("NoTitle",paste_ta.text);
+				  var pi:PasteItem = new PasteItem();
+				  pi.notesItem = o;
+				  display_vg.addElementAt(pi, 0);
+				}
+			  paste_ta.text = "";
+			}
+			
+			
+			public function drawList():void {
+				display_vg.removeAllElements();
+				
+				var notesList:Array = ServiceRegistry.notesService.getNotesList();
+				
+				for (var i:int = 0; i < notesList.length; i++) 
+				{
+					var pi:PasteItem = new PasteItem();
+					pi.notesItem = notesList[i];
+					display_vg.addElement(pi);
+				}
+				
+				
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:BorderContainer x="10" y="10" width="804" height="94" backgroundColor="#F9F5F5">
+		<s:Label x="11" y="20" width="34" height="34" fontFamily="Times New Roman" fontSize="15"
+				 text="输入内容"/>
+		<s:TextArea id="paste_ta" x="61" y="10" width="662" height="75"/>
+		<mx:LinkButton x="735" y="16" width="58" height="57" icon="@Embed('buttons/paste_save.gif')" click="linkbutton1_clickHandler(event)"/>
+		
+		
+	</s:BorderContainer>
+	<s:Scroller x="10" y="125" verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="545">
+		<s:VGroup x="10" y="125" width="785" height="543" id="display_vg">
+		</s:VGroup>
+	</s:Scroller>
+</s:Group>

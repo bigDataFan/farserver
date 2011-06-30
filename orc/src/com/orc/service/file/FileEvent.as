@@ -6,6 +6,8 @@ package com.orc.service.file
 	{
 		
 		public static const MODIFY = "filemodify";
+		public var file:GridFile;
+		
 		public function FileEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(MODIFY, bubbles, cancelable);
