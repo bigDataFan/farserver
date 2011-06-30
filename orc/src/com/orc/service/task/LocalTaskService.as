@@ -8,13 +8,10 @@ package com.orc.service.task
 	public class LocalTaskService implements TaskService
 	{
 		
-		private var serviceRegistry:ServiceRegistry;
-		
 		var taskdb:DataCollection;
-		public function LocalTaskService(sr:ServiceRegistry)
+		public function LocalTaskService(ds)
 		{
-			serviceRegistry = sr;
-			taskdb = serviceRegistry.dataService.getCollection("task.db");
+			taskdb = ds.getCollection("task.db");
 		}
 		
 		

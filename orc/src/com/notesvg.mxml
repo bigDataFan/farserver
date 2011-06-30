@@ -23,16 +23,16 @@
 			protected function saveNotes(event:MouseEvent):void
 			{
 				if (editingId == null) {
-					editingId = serviceRegistry.notesService.createNotes(note_title.text, note_content.htmlText);
+					editingId = ServiceRegistry.notesService.createNotes(note_title.text, note_content.htmlText);
 				} else {
-					var note:Object = serviceRegistry.notesService.getNote(editingId);
+					var note:Object = ServiceRegistry.notesService.getNote(editingId);
 					if (note!=null) {
 						note["title"] = note_title.text;
 						note["content"] = note_content.htmlText;
-						serviceRegistry.notesService.saveNote(note);
+						ServiceRegistry.notesService.saveNote(note);
 					}
 				}
-				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
+				grid_notes.dataProvider = new ArrayCollection(ServiceRegistry.notesService.getNotesList());
 			}
 			
 			
@@ -41,7 +41,7 @@
 				if (grid_notes.selectedItem!=null) {
 					editingId = grid_notes.selectedItem["id"];
 					note_title.text = grid_notes.selectedItem["title"];
-					note_content.htmlText = serviceRegistry.notesService.getNotesContent(editingId);
+					note_content.htmlText = ServiceRegistry.notesService.getNotesContent(editingId);
 				}
 			}
 			
@@ -49,7 +49,7 @@
 			{
 				if (grid_notes.selectedItem!=null) {
 					editingId = grid_notes.selectedItem["id"];
-					serviceRegistry.notesService.removeNotes(editingId);
+					ServiceRegistry.notesService.removeNotes(editingId);
 				}
 			}
 			
@@ -64,8 +64,7 @@
 
 			protected function vgroup1_initializeHandler(event:FlexEvent):void
 			{
-				serviceRegistry = new ServiceRegistry(); 
-				grid_notes.dataProvider = new ArrayCollection(serviceRegistry.notesService.getNotesList());
+				grid_notes.dataProvider = new ArrayCollection(ServiceRegistry.getNotesService().getNotesList());
 			}
 
 
@@ -88,21 +87,23 @@
 		
 		<mx:VDividedBox  width="100%" height="750">
 			<mx:DataGrid id="grid_notes" width="100%" height="240" doubleClickEnabled="true" doubleClick="grid_notes_open(event)"
-						 dataProvider="{new ArrayCollection(serviceRegistry.notesService.getNotesList())}">
+						 dataProvider="{new ArrayCollection(ServiceRegistry.notesService.getNotesList())}">
 				<mx:columns>
 					<mx:DataGridColumn headerText="">
 						<mx:itemRenderer>
 							<fx:Component>
-								<mx:LinkButton icon="@Embed('buttons/remove_item.gif')" click="linkbutton2_clickHandler(event)">
+								<mx:LinkButton icon="@Embed('buttons/delete.gif')" click="linkbutton2_clickHandler(event)">
 									
 									<fx:Script>
 										<![CDATA[
+											import com.orc.service.ServiceRegistry;
+											
 											import mx.collections.ArrayCollection;
 											protected function linkbutton2_clickHandler(event:MouseEvent):void
 											{
 												if (outerDocument.grid_notes.selectedItem!=null) {
-													outerDocument.serviceRegistry.notesService.removeNotes(outerDocument.grid_notes.selectedItem["id"]);
-													outerDocument.grid_notes.dataProvider = new ArrayCollection(outerDocument.serviceRegistry.notesService.getNotesList());
+													ServiceRegistry.notesService.removeNotes(outerDocument.grid_notes.selectedItem["id"]);
+													outerDocument.grid_notes.dataProvider = new ArrayCollection(ServiceRegistry.notesService.getNotesList());
 												}
 											}
 										]]>

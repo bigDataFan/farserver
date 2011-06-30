@@ -5,11 +5,13 @@
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
+			import com.orc.service.file.FileEvent;
 			import com.orc.service.file.FileItemDisplayGroup;
 			import com.orc.service.file.GridFile;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.HierarchicalData;
+			import mx.containers.Panel;
 			import mx.controls.ColorPicker;
 			import mx.core.UIComponent;
 			import mx.core.UITextField;
@@ -32,10 +34,9 @@
 			[Bindable]  
 			public var image:Class;  
 			
-			public var serviceRegistry:ServiceRegistry;
-			
 			public function init():void {
-				serviceRegistry = new ServiceRegistry();
+				ServiceRegistry.fileService.addEventDispatcher(this);
+				this.addEventListener(FileEvent.MODIFY, onChange);
 				fillByDate();
 			}
 			
@@ -45,7 +46,9 @@
 				sbe.obj = this;
 				this.dispatchEvent(sbe);
 			}
-
+			
+			
+			
 			var summaryies:Object;
 		
 			protected function tree1_clickHandler(event:MouseEvent):void
@@ -58,15 +61,36 @@
 			}
 			
 			public function fillByDate():void {
-				var grouped:Array = serviceRegistry.fileService.getAllFilesGrouped();
+				
+				vg_file_bydate.removeAllElements();
+				
+				var t1:Date = new Date();
+				ServiceRegistry.fileService.load();
+				var t2:Date = new Date();
+				trace( t2.getTime()-t1.getTime());
+				
+				var grouped:Array = ServiceRegistry.fileService.getAllFilesGrouped();
+				
+				var t3:Date = new Date();
+				trace( t3.getTime()-t2.getTime());
 				
 				for (var i:int = 0; i < grouped.length; i++) 
 				{
+					/*
+					var panel:Panel = new Panel();
+					panel.percentWidth = 100;
+					panel.title = grouped[i].label;
+					panel.verticalScrollPolicy = "off";
+					panel.horizontalScrollPolicy = "off";
+						*/				
+					
 					var vg:VGroup = new VGroup();
+					
 					vg.gap = 0;
-					vg.percentWidth=100;
+					vg.percentWidth=95;
 					//vg.height = 80;
 					//vg.y = i * 80;
+					
 					
 					var gTitle:BorderContainer = new BorderContainer();
 					gTitle.percentWidth=100;
@@ -89,9 +113,18 @@
 						vg.addElement(fid);
 						
 					}
+					//panel.addElement(vg);
 					vg_file_bydate.addElement(vg);
 					
 				}
+				
+				var t4:Date = new Date();
+				trace( t4.getTime()-t3.getTime());
+			}
+			
+			protected function onChange(event:Event):void
+			{
+								
 			}
 			
 		]]>
@@ -104,7 +137,7 @@
 	<s:HGroup x="10" y="0" width="824" height="100%">
 
 		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
-			<s:VGroup id="vg_file_bydate" height="100%" width="780" >
+			<s:VGroup id="vg_file_bydate" height="100%" width="785" >
 			</s:VGroup>
 		</s:Scroller>
 	

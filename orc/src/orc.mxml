@@ -75,15 +75,14 @@
 			
 			protected function linkbutton1_clickHandler(event:MouseEvent):void
 			{
-				var f:File = new File(serviceRegistry.configService.rootFolder);
+				var f:File = new File(ServiceRegistry.configService.rootFolder);
 				
 				f.browseForDirectory("选择目录");
 				
 				f.addEventListener(Event.SELECT, function (event:Event):void {
 					var dir:File = event.target as File;
-					serviceRegistry.configService.setRoot(dir.nativePath);
-					serviceRegistry = new ServiceRegistry();
-					serviceRegistry.fileService.organizeFolder(dir);
+					ServiceRegistry.configService.setRoot(dir.nativePath);
+					ServiceRegistry.fileService.organizeFolder(dir);
 				});
 			}
 			
@@ -131,19 +130,19 @@
 						{
 							var file:File = data[j] as File;
 							try {
-								serviceRegistry.fileService.addFile(file);
+								ServiceRegistry.fileService.addFile(file);
 							} catch (e:Error) {
 								
 							}
 						}
 					}
 					if (formats[i]=="air:html") {
-						serviceRegistry.notesService.createNotes("网页剪辑" + new Date(), String(cb.getData(formats[i])));
+						ServiceRegistry.notesService.createNotes("网页剪辑" + new Date(), String(cb.getData(formats[i])));
 						break;
 					}
 					
 					if (formats[i]=="air:text") {
-						serviceRegistry.notesService.createNotes("文本剪辑" + new Date(), String(cb.getData(formats[i])));
+						ServiceRegistry.notesService.createNotes("文本剪辑" + new Date(), String(cb.getData(formats[i])));
 						break;
 					}
 					
@@ -160,12 +159,12 @@
 			
 			protected function dashboard_recentfile_grid_init(event:FlexEvent):void
 			{
-				(event.target as DataGrid).dataProvider = serviceRegistry.fileService.getRecentFiles(10);
+				(event.target as DataGrid).dataProvider = ServiceRegistry.fileService.getRecentFiles(10);
 				
-				serviceRegistry.fileService.addEventDispatcher((event.target as DataGrid));
+				ServiceRegistry.fileService.addEventDispatcher((event.target as DataGrid));
 				
 				(event.target as DataGrid).addEventListener(FileEvent.MODIFY, function (event:Event):void {
-					(event.target as DataGrid).dataProvider = serviceRegistry.fileService.getRecentFiles(10);
+					(event.target as DataGrid).dataProvider = ServiceRegistry.fileService.getRecentFiles(10);
 					}
 				);
 			}
@@ -173,7 +172,7 @@
 			
 			protected function dashboard_recentnotes_grid_init(event:FlexEvent):void
 			{
-				(event.target as DataGrid).dataProvider = serviceRegistry.notesService.getNotesList()
+				(event.target as DataGrid).dataProvider = ServiceRegistry.notesService.getNotesList()
 			}
 
 			
