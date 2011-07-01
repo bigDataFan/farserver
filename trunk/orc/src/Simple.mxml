@@ -11,6 +11,8 @@
 			import com.greensock.TweenLite;
 			import com.orc.service.ServiceRegistry;
 			
+			import mx.controls.HTML;
+			import mx.controls.RichTextEditor;
 			import mx.core.UITextField;
 			import mx.events.FlexEvent;
 			
@@ -128,16 +130,21 @@
 							
 						}
 					}
-					if (formats[i]=="air:html") {
-						ServiceRegistry.notesService.createNotes("网页剪辑" + new Date(), String(cb.getData(formats[i])));
-						break;
-					}
 					
 					if (formats[i]=="air:text") {
 						ServiceRegistry.notesService.createNotes("文本剪辑" + new Date(), String(cb.getData(formats[i])));
 						break;
 					}
 					
+					if (formats[i]=="air:html") {
+						var h : HTML = new HTML();
+						
+						h.htmlText = String(cb.getData(formats[i]));
+						var text:String = h.textSnapshot.getText(0,1000000);
+						var o:Object = ServiceRegistry.notesService.createNotes("网页剪辑" + new Date(), text);
+						notes_g.pushItem(o, text);
+						break;
+					}
 					dropButton.label = dropButton.label;
 				}
 			}
