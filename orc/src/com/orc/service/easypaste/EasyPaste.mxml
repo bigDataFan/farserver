@@ -18,31 +18,42 @@
 				if(editingItem) {
 					editingItem.notesItem["content"] = paste_ta.text;
 					ServiceRegistry.notesService.saveNote(editingItem.notesItem);
+					editingItem.content =  paste_ta.text;
+					editingItem.ep = this;
 					editingItem = null;
 				} else {
 				  var o:Object = ServiceRegistry.notesService.createNotes("NoTitle",paste_ta.text);
-				  var pi:PasteItem = new PasteItem();
-				  pi.notesItem = o;
-				  display_vg.addElementAt(pi, 0);
+				  pushItem(o, paste_ta.text);
 				}
 			  paste_ta.text = "";
 			}
 			
+			public function editItem(pi: PasteItem):void {
+				this.editingItem = pi;
+				paste_ta.text = ServiceRegistry.fileService.getContent(pi.notesItem['id']);
+			}
+			
+			
+			public function pushItem(o:Object, content:String):void {
+				var pi:PasteItem = new PasteItem();
+				pi.notesItem = o;
+				pi.ep = this;
+				pi.content = content; //ServiceRegistry.notesService.getNotesContent(o["id"]);
+				display_vg.addElementAt(pi, 0);
+			}
 			
 			public function drawList():void {
+				
 				display_vg.removeAllElements();
 				
 				var notesList:Array = ServiceRegistry.notesService.getNotesList();
 				
+				//notesList.reverse();
+				
 				for (var i:int = 0; i < notesList.length; i++) 
 				{
-					var pi:PasteItem = new PasteItem();
-					pi.notesItem = notesList[i];
-					display_vg.addElement(pi);
+					pushItem(notesList[i], ServiceRegistry.notesService.getNotesContent(notesList[i]["id"]));
 				}
-				
-				
-				
 			}
 			
 		]]>
