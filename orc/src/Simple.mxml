@@ -116,36 +116,27 @@
 				
 				var ignoreText:Boolean = false;
 				
-				for (var i:int = 0; i < formats.length; i++) {
-					if (formats[i]=="air:file list") {
-						var data:Array = cb.getData(formats[i]) as Array;
-						for (var j:int = 0; j < data.length; j++) 
-						{
-							var file:File = data[j] as File;
-							try {
-								ServiceRegistry.fileService.addFile(file);
-							} catch (e:Error) {
-								
-							}
+				//文本 
+					if (formats.indexOf("air:text")>-1) {
+					var txtString:String = cb.getData("air:text") as String;
+					var o:Object = ServiceRegistry.notesService.createNotes("文本剪辑" + new Date(), txtString);
+					notes_g.pushItem(o, txtString);
+					return;
+				}
+				//文件
+				if (formats.indexOf("air:file list")>-1) {
+					var data:Array = cb.getData("air:file list") as Array;
+					for (var j:int = 0; j < data.length; j++) 
+					{
+						var file:File = data[j] as File;
+						try {
+							ServiceRegistry.fileService.addFile(file);
+						} catch (e:Error) {
 							
 						}
-					}
-					
-					if (formats[i]=="air:text") {
-						ServiceRegistry.notesService.createNotes("文本剪辑" + new Date(), String(cb.getData(formats[i])));
-						break;
-					}
-					
-					if (formats[i]=="air:html") {
-						var h : HTML = new HTML();
 						
-						h.htmlText = String(cb.getData(formats[i]));
-						var text:String = h.textSnapshot.getText(0,1000000);
-						var o:Object = ServiceRegistry.notesService.createNotes("网页剪辑" + new Date(), text);
-						notes_g.pushItem(o, text);
-						break;
 					}
-					dropButton.label = dropButton.label;
+					return;
 				}
 			}
 			
