@@ -119,6 +119,8 @@ package com.orc.service.file
 		}
 		
 		public function get size():String {
+			return Math.floor(file.size/1024) + "KB";
+			/*
 			if (file.size<1024) {
 				return file.size + "字节"; 
 			} else if (file.size<1024*1024) {
@@ -128,6 +130,7 @@ package com.orc.service.file
 			} else {
 				return Math.floor(file.size/(1024*1024*1024)) + "G";
 			}
+			*/
 		}
 		
 	}
