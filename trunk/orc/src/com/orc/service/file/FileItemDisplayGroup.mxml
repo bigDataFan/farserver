@@ -35,15 +35,12 @@
 		</fx:Script>
 	<fx:Declarations>
 	</fx:Declarations>
-	<s:Label x="48" y="10" width="453" height="16" fontWeight="bold" fontSize="15" text="{gridfile.name}">
-	</s:Label>
-	
-	<s:Label x="190" y="28" width="48" height="11" color="#ABA6A6" text="{'大小' + gridfile.size}">
+	<s:Label x="48" y="10" width="453" height="16" fontWeight="normal" fontSize="15" text="{gridfile.name}">
 	</s:Label>
 	
 	<s:Image x="10" y="8" width="32" height="32" source="{gridfile.iconpath}"/>
-	<s:Label x="47" y="28" width="135" color="#A6A1A1"
-			 text="{'创建于'  + FormatUtils.formatHT(gridfile.file.modificationDate)}"/>
+	<s:Label x="49" y="28" width="352" color="#A6A1A1"
+			 text="{'创建于'  + FormatUtils.formatHT(gridfile.file.modificationDate) + '  大小' + gridfile.size}"/>
 	
 	<mx:LinkButton x="597" y="13" width="65" label="删除" click="linkbutton3_clickHandler(event)"
 				   icon="@Embed('buttons/delete.gif')">
