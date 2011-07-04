@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   width="{running?800:700}" height="40" backgroundColor="#FBF5F5" borderAlpha="1.0"
+				   borderWeight="1" cornerRadius="5" dropShadowVisible="true">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.orc.service.ServiceRegistry;
+			
+			[Bindable]
+			public var trackingObject:Object;
+			
+			[Bindable]
+			public var running:Boolean;
+			
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				ServiceRegistry.trackingService.startTrackingItem(trackingObject[TimeTrackingService.CREATED]);
+				labelDura.text = ServiceRegistry.trackingService.getDura(trackingObject);
+				this.running = true;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="12" y="8" width="456" fontSize="15" text="{trackingObject['desc']}"/>
+	<s:Label x="12" y="25" width="329" color="#646262" fontSize="10" text="{'初始于'+ trackingObject['cr']}"/>
+	<s:Label x="482" y="11" width="81" id="labelDura" height="20" fontSize="15" fontWeight="bold" text="{ServiceRegistry.trackingService.getDura(trackingObject)}"/>
+	<mx:LinkButton x="527" y="10" label="启动" visible="{running?false:true}" click="linkbutton1_clickHandler(event)"/>
+	
+	<mx:LinkButton x="527" y="10" label="停止" visible="{running?false:true}"/>
+	
+	
+</s:BorderContainer>

@@ -4,7 +4,7 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:com="com.*"
 					   width="1024" height="768"
-					   showStatusBar="false" xmlns:easypaste="com.orc.service.easypaste.*" initialize="windowedapplication1_initializeHandler(event)">
+					   showStatusBar="false" xmlns:easypaste="com.orc.service.easypaste.*" initialize="windowedapplication1_initializeHandler(event)" xmlns:timetrack="com.orc.service.timetrack.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -44,7 +44,7 @@
 					} 
 					
 					if (text.text=="时间管理") {
-						
+						switchGroup(timetrack_g);
 						return;
 					} 
 					
@@ -150,6 +150,7 @@
 			{
 				files_g.init();
 				notes_g.drawList();
+				timetrack_g.load();
 			}
 			
 		]]>
@@ -195,6 +196,11 @@
 			
 			<com:tasksvg id="task_g" x="824" visible="false">
 			</com:tasksvg>
+			
+			<timetrack:TimeTrack id="timetrack_g" x="824" visible="false">
+				
+			</timetrack:TimeTrack>
+			
 		</s:Group>
 	</s:HGroup>
 	</s:Group>

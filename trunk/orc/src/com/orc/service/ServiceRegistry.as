@@ -3,6 +3,7 @@ package com.orc.service
 	import com.orc.service.file.FileService;
 	import com.orc.service.task.LocalTaskService;
 	import com.orc.service.task.TaskService;
+	import com.orc.service.timetrack.TimeTrackingService;
 
 	public class ServiceRegistry
 	{
@@ -12,11 +13,14 @@ package com.orc.service
 		
 		public static var fileService:FileService = new FileService(configService, dataService);
 		
-		public static const notesService:NotesService =  new NotesService(dataService, fileService);
+		public static var notesService:NotesService =  new NotesService(dataService, fileService);
 		
 		public static var taggingService:TaggingService =new TaggingService(dataService);
 		
 		public static var taskService:TaskService = new LocalTaskService(dataService);
+		
+		public static var trackingService:TimeTrackingService = new TimeTrackingService(dataService);
+		
 		
 		
 		public function ServiceRegistry() {

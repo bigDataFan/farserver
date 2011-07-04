@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="824" height="700">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.orc.service.ServiceRegistry;
+			
+			
+			protected function linkbutton2_clickHandler(event:MouseEvent):void
+			{
+				var o:Object  = ServiceRegistry.trackingService.addTrackingItem(timeTrackInput.text, null);
+				addUITrackingItem(o);
+			}
+			
+			public function addUITrackingItem(o:Object) {
+				var ti : TrackingItem = new TrackingItem();
+				ti.trackingObject = o;
+				ti.running = o[TimeTrackingService.LAST_START]!=null;
+				
+				listTrackingItem.addElement(ti);
+			}
+			
+			public function load() {
+				var list:Array = ServiceRegistry.trackingService.getTrackingItems(new Date());
+				for (var i:int = 0; i < list.length; i++) 
+				{
+					addUITrackingItem(list[i]);
+				}
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:BorderContainer x="10" y="10" width="804" height="50" backgroundColor="#EFEAEA">
+		<s:Label x="8" y="13" width="100" height="28" fontSize="16" text="增加时间项"/>
+		<s:TextInput x="103" id="timeTrackInput" y="10" width="621" fontSize="15"/>
+		<mx:LinkButton x="735" y="8" width="47" height="29" icon="@Embed('buttons/paste_save.gif')" click="linkbutton2_clickHandler(event)"/>
+	</s:BorderContainer>
+	<s:VGroup x="10" y="68" width="804" horizontalAlign="center" id="listTrackingItem">
+	</s:VGroup>
+</s:Group>

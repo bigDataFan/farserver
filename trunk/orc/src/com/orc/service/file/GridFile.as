@@ -69,6 +69,7 @@ package com.orc.service.file
 				"xml",
 				"xsd",
 				"xsl",
+				"xlsx",
 				"gz",
 				"tar",
 				"zip"];
