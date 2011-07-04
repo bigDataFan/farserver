@@ -26,7 +26,7 @@ package com.orc.service.timetrack
 			var ti:Object = new Object();
 			ti[CREATED] = new Date().getTime();
 			ti[DURA] = 0;
-			ti[LAST_START] = new Date().getTime(); 
+			ti[LAST_START] = null; 
 			ti[DESC] = desc;
 			ti[DAY] = FormatUtils.formatYMD(new Date());
 			//ti[CAT] = cat;
@@ -34,8 +34,8 @@ package com.orc.service.timetrack
 			return ti;
 		}
 		
-		public function removeTrackingItem(start:Date):void {
-			tts.remove({CREATED:start.getTime()});
+		public function removeTrackingItem(start:Number):void {
+			tts.remove({"cr":start});
 		}
 		
 		public function getDura(o:Object):String {
@@ -47,7 +47,7 @@ package com.orc.service.timetrack
 			}
 		}
 		
-		public function startTrackingItem(created:int):void {
+		public function startTrackingItem(created:Number):void {
 			var todayList:Array = getTrackingItems(new Date());
 
 			var itemToStart:Object  = null;
@@ -62,11 +62,11 @@ package com.orc.service.timetrack
 					}
 				}
 			}
-			
-			itemToStart[LAST_START] = new Date().getTime();
-			
-			tts.upsert({CREATED:created}, itemToStart);
-			
+			if (itemToStart!=null) {
+				itemToStart[LAST_START] = new Date().getTime();
+				
+				tts.upsert({"cr":created}, itemToStart);
+			}
 		}
 		
 		public function stopTrackingItem(o:Object):void {
@@ -75,14 +75,14 @@ package com.orc.service.timetrack
 				o[DURA] = o[DURA] + duraToAdd;
 				o[LAST_START] = null;
 				o[LAST_STOP] = new Date().getTime();
-				tts.upsert({CREATED:o[CREATED]}, o);
+				tts.upsert({"cr":o["cr"]}, o);
 			}
 		}
 	
 		
 		public function getTrackingItems(date:Date):Array {
 			var dateStr:String = FormatUtils.formatYMD(date);
-			var list:Array = tts.findAll({DAY:dateStr});
+			var list:Array = tts.findAll({"day":dateStr});
 		
 			if (FormatUtils.formatYMD(new Date())!= FormatUtils.formatYMD(date)) {
 				for (var i:int = 0; i < list.length; i++) 

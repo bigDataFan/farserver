@@ -30,7 +30,7 @@ package com.orc.utils
 				date = new Date(o["time"]);
 			}
 			if (date==null) return "错误的时间格式";
-			return date.getHours() + ":" + date.getMinutes();
+			return date.getHours() + ":" + (date.getMinutes()<10?("0" + date.getMinutes()):date.getMinutes());
 		}
 		
 		

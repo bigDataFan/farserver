@@ -2,7 +2,7 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
 				   xmlns:s="library://ns.adobe.com/flex/spark"
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
-				   width="785" height="48" backgroundColor="#F7F8F8" mouseOver="bordercontainer1_mouseOverHandler(event)">
+				   width="785" height="48" backgroundColor="#F7F8F8" mouseOver="bordercontainer1_mouseOverHandler(event)" borderVisible="false">
 	<!--backgroundColor="#F7F8F8" rollOverColor="0xCEDBEF" borderVisible="false"-->
 		<fx:Script>
 			<![CDATA[
@@ -35,19 +35,20 @@
 		</fx:Script>
 	<fx:Declarations>
 	</fx:Declarations>
-	<s:Label x="48" y="10" width="453" height="79" fontWeight="bold" fontSize="13" text="{gridfile.name}">
+	<s:Label x="48" y="10" width="453" height="16" fontWeight="bold" fontSize="15" text="{gridfile.name}">
 	</s:Label>
 	
-	<s:Label x="453" y="28" width="48" height="11" text="{gridfile.size}">
+	<s:Label x="190" y="28" width="48" height="11" color="#ABA6A6" text="{'大小' + gridfile.size}">
 	</s:Label>
 	
 	<s:Image x="10" y="8" width="32" height="32" source="{gridfile.iconpath}"/>
-	<s:Label x="385" y="28" width="64" text="{FormatUtils.formatHT(gridfile.file.modificationDate)}"/>
+	<s:Label x="47" y="28" width="135" color="#A6A1A1"
+			 text="{'创建于'  + FormatUtils.formatHT(gridfile.file.modificationDate)}"/>
 	
-	<mx:LinkButton x="597" y="5" width="65" label="删除" click="linkbutton3_clickHandler(event)"
+	<mx:LinkButton x="597" y="13" width="65" label="删除" click="linkbutton3_clickHandler(event)"
 				   icon="@Embed('buttons/delete.gif')">
 	</mx:LinkButton>
-	<mx:LinkButton x="546" y="5" width="63" label="打开" click="open(event)"
+	<mx:LinkButton x="540" y="13" width="63" label="打开" click="open(event)"
 				   icon="@Embed('buttons/open_file.gif')">
 	</mx:LinkButton>
 </s:BorderContainer>

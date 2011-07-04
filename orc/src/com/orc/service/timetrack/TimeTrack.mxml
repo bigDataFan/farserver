@@ -8,26 +8,56 @@
 			import com.orc.service.ServiceRegistry;
 			
 			
+			public var runningItemUI:TrackingItem = null;
+			
 			protected function linkbutton2_clickHandler(event:MouseEvent):void
 			{
 				var o:Object  = ServiceRegistry.trackingService.addTrackingItem(timeTrackInput.text, null);
-				addUITrackingItem(o);
+				
+				ServiceRegistry.trackingService.startTrackingItem(o[TimeTrackingService.CREATED]);
+				
+				stopRunningItem();
+				
+				var added:TrackingItem = addUITrackingItem(o);
+			}
+
+			
+			public function stopRunningItem():void {
+				if (runningItemUI) {
+					runningItemUI.running = false;
+					runningItemUI = null;
+				}	
 			}
 			
-			public function addUITrackingItem(o:Object) {
+			public function addUITrackingItem(o:Object): TrackingItem {
 				var ti : TrackingItem = new TrackingItem();
 				ti.trackingObject = o;
-				ti.running = o[TimeTrackingService.LAST_START]!=null;
+				ti.timeTrack = this;
+				if (o["lastStart"]==null) {
+					ti.running = false;
+				} else {
+					ti.running = true;
+					runningItemUI = ti;
+				}
 				
 				listTrackingItem.addElement(ti);
+				return ti;
 			}
 			
 			public function load() {
 				var list:Array = ServiceRegistry.trackingService.getTrackingItems(new Date());
 				for (var i:int = 0; i < list.length; i++) 
 				{
-					addUITrackingItem(list[i]);
+					var ti:TrackingItem = addUITrackingItem(list[i]);
 				}
+				
+				var timer:Timer = new Timer(60*1000);
+				timer.addEventListener(TimerEvent.TIMER,function onTimer() {
+					if (runningItemUI!=null) {
+						runningItemUI.refresh();
+					}
+				});
+				timer.start();
 				
 			}
 		]]>
