@@ -137,6 +137,11 @@
 			}
 			
 			
+			protected function groupMouseMove(event:MouseEvent):void
+			{
+				trace("moved");				
+			}
+			
 		]]>
 	</fx:Script>
 
@@ -144,12 +149,10 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<s:HGroup x="10" y="0" width="824" height="100%">
+	<s:HGroup x="0" y="0" width="1024" height="100%">
 		
-		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
-			<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="785" >
-			</s:VGroup>
-		</s:Scroller>
+		<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="1024">
+		</s:VGroup>
 		
 			<!--
 			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 

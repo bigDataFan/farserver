@@ -4,7 +4,6 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:com="com.*"
 					   width="1024" height="768"
-					   skinClass="com.orc.skin.MainSkin"
 					   showStatusBar="false" xmlns:easypaste="com.orc.service.easypaste.*" initialize="windowedapplication1_initializeHandler(event)" xmlns:timetrack="com.orc.service.timetrack.*">
 	
 	<fx:Script>
@@ -31,31 +30,6 @@
 				onScreen = v;
 			}
 			
-			
-			protected function leftTree_clickHandler(event:MouseEvent):void
-			{
-				var target:Object = event.target;
-				if (target is UITextField) {
-					var text:UITextField = target as UITextField;
-					
-					if (text.text=="文件管理") {
-						switchGroup(files_g);
-						//files_g.init();
-						return;
-					} 
-					
-					if (text.text=="时间管理") {
-						switchGroup(timetrack_g);
-						return;
-					} 
-					
-					if (text.text=="随意贴") {
-						switchGroup(notes_g);
-						return;
-					} 
-				}
-			}
-			
 			protected function click_return(event:MouseEvent) : void {
 				//showDashboard();
 				slideOut(slidedIn);
@@ -69,14 +43,17 @@
 				g.x = w;
 				g.y = 0;
 				g.visible = true;
-				TweenLite.to(g, 0.5, {x:0});
+				g.x = 0;
+				//TweenLite.to(g, 0.5, {x:0});
 			}
 			
 			protected function slideOut(g:Group) : void {
 				slidedIn = null;
 				var w:Number = right_group.width;
-				
-				TweenLite.to(g, 0.5, {x:w, y:controlbar.height, visible:false});
+				g.x = w;
+				g.y = controlbar.height;
+				g.visible = true;
+				//TweenLite.to(g, 0.5, {x:w, y:controlbar.height, visible:false});
 			}
 			
 			
@@ -154,6 +131,21 @@
 				timetrack_g.load();
 			}
 			
+			protected function openFiles(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				switchGroup(files_g);	
+			}
+			
+			protected function openTimes(event:MouseEvent):void
+			{
+				switchGroup(timetrack_g);				
+			}
+			
+			protected function openPastes(event:MouseEvent):void
+			{
+				switchGroup(notes_g);				
+			}
 		]]>
 	</fx:Script>
 	
@@ -161,41 +153,28 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Group id="fullmodel" width="100%" height="100%" horizontalCenter="true">
-	<s:BorderContainer id="controlbar" x="0" width="100%" height="30">
-		<mx:Button x="7" y="4" label="悬浮模式" color="0x000000" click="switchModel2(event)" paddingRight="10"/>
-		<mx:Button x="85" id="btn_return" y="4"  click="click_return(event)" label="返回" color="0x000000" visible="false"/>
-		<mx:Label x="779" y="4" color="0x323232" text="搜索:"/>
-		<mx:TextInput x="819" y="2" width="100%" maxWidth="200"/>
+		<s:BorderContainer id="controlbar" x="0" y="0" width="1025" height="71"
+						   backgroundColor="#EAE7E7"
+						   contentBackgroundAlpha="1.0" contentBackgroundColor="#EAE4E4"
+						  
+						   mouseDown="dragWin()">
+			<mx:LinkButton x="10" y="0" width="72" height="69" label="Files" click="openFiles(event)"/>
+			<mx:LinkButton x="87" y="0" width="72" height="69" label="Time" click="openTimes(event)"/>
+			<mx:LinkButton x="256" y="0" width="72" height="69" label="Config"/>
+			<mx:LinkButton x="341" y="1" width="72" height="69" label="FloatBox" click="switchModel2(event)"/>
+			<mx:LinkButton x="169" y="0" width="72" height="69" label="Pastes" click="openPastes(event)"/>
+		</s:BorderContainer>
 		
-	</s:BorderContainer>
-	<s:HGroup x="0" y="34" width="1024">
-		<s:VGroup width="200">
-			<mx:Tree width="100%" height="100%" labelField="@label" showRoot="false" click="leftTree_clickHandler(event)">
-				<mx:dataProvider>
-					<fx:XML id="data_ltree" xmlns="http://www.g-qu.net/powspace/" >
-						<node label="便笺">
-							<node label="文件管理">
-							</node>
-							<node label="时间管理">
-							</node>
-							<node label="随意贴">
-							</node>
-							<node label="配置">
-							</node>
-						</node>
-					</fx:XML>
-				</mx:dataProvider>
-			</mx:Tree>
-		</s:VGroup>
-		<s:Group id="right_group" width="824" >
-			<com:filesvg id="files_g" x="824" width="824" y="0" visible="false">
+		<s:HGroup x="0" y="71" width="1024" height="663">
+		<s:Group id="right_group" width="100%" >
+			<com:filesvg id="files_g" x="0" width="1024" y="0" visible="false">
 			</com:filesvg>
 			
 			<easypaste:EasyPaste id="notes_g" visible="false">
 				
 			</easypaste:EasyPaste>
 			
-			<com:tasksvg id="task_g" x="824" visible="false">
+			<com:tasksvg id="task_g" x="0" visible="false">
 			</com:tasksvg>
 			
 			<timetrack:TimeTrack id="timetrack_g" x="824" visible="false">
@@ -211,5 +190,6 @@
 				  nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)"> 
 		</s:Button>
 	</s:Group>
+	
 	
 </s:WindowedApplication>
