@@ -4,6 +4,7 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:com="com.*"
 					   width="1024" height="768"
+					   skinClass="com.orc.skin.MainSkin"
 					   showStatusBar="false" xmlns:easypaste="com.orc.service.easypaste.*" initialize="windowedapplication1_initializeHandler(event)" xmlns:timetrack="com.orc.service.timetrack.*">
 	
 	<fx:Script>
