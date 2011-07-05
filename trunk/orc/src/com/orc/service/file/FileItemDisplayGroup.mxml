@@ -2,7 +2,7 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
 				   xmlns:s="library://ns.adobe.com/flex/spark"
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
-				   width="785" height="48" backgroundColor="#F7F8F8" mouseOver="bordercontainer1_mouseOverHandler(event)" borderVisible="false">
+				   width="1024" height="48" backgroundColor="#F7F8F8" mouseOver="bordercontainer1_mouseOverHandler(event)" borderVisible="false">
 	<!--backgroundColor="#F7F8F8" rollOverColor="0xCEDBEF" borderVisible="false"-->
 		<fx:Script>
 			<![CDATA[
@@ -42,10 +42,10 @@
 	<s:Label x="49" y="28" width="352" color="#A6A1A1"
 			 text="{'创建于'  + FormatUtils.formatHT(gridfile.file.modificationDate) + '  大小' + gridfile.size}"/>
 	
-	<mx:LinkButton x="597" y="13" width="65" label="删除" click="linkbutton3_clickHandler(event)"
+	<mx:LinkButton x="944" y="14" width="65" label="删除" click="linkbutton3_clickHandler(event)"
 				   icon="@Embed('buttons/delete.gif')">
 	</mx:LinkButton>
-	<mx:LinkButton x="540" y="13" width="63" label="打开" click="open(event)"
+	<mx:LinkButton x="887" y="14" width="63" label="打开" click="open(event)"
 				   icon="@Embed('buttons/open_file.gif')">
 	</mx:LinkButton>
 </s:BorderContainer>
