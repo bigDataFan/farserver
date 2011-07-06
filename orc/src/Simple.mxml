@@ -154,15 +154,17 @@
 	</fx:Declarations>
 	<s:Group id="fullmodel" width="100%" height="100%" horizontalCenter="true">
 		<s:BorderContainer id="controlbar" x="0" y="0" width="1025" height="71"
-						   backgroundColor="#EAE7E7"
+						   backgroundColor="#4B4A4A"
 						   contentBackgroundAlpha="1.0" contentBackgroundColor="#EAE4E4"
 						  
 						   mouseDown="dragWin()">
-			<mx:LinkButton x="10" y="0" width="72" height="69" label="Files" click="openFiles(event)"/>
-			<mx:LinkButton x="87" y="0" width="72" height="69" label="Time" click="openTimes(event)"/>
-			<mx:LinkButton x="256" y="0" width="72" height="69" label="Config"/>
-			<mx:LinkButton x="341" y="1" width="72" height="69" label="FloatBox" click="switchModel2(event)"/>
-			<mx:LinkButton x="169" y="0" width="72" height="69" label="Pastes" click="openPastes(event)"/>
+			<mx:LinkButton x="10" y="0" width="72" height="69" label="Files" click="openFiles(event)"
+						   color="#FCF7F7" icon="@Embed('icon/Folder.png')"
+						   labelPlacement="bottom"/>
+			<mx:LinkButton x="87" y="0" width="72" height="69" label="Time"  color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Clock.png')" click="openTimes(event)"/>
+			<mx:LinkButton x="256" y="0" width="72" height="69" label="Config" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Tools.png')"/>
+			<mx:LinkButton x="341" y="1" width="72" height="69" label="FloatBox" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Wallet.png')" click="switchModel2(event)"/>
+			<mx:LinkButton x="169" y="0" width="72" height="69" label="Pastes" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Clipboard.png')" click="openPastes(event)"/>
 		</s:BorderContainer>
 		
 		<s:HGroup x="0" y="71" width="1024" height="663">

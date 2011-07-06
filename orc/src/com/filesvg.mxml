@@ -26,15 +26,6 @@
 			import spark.primitives.Rect;
 			import spark.primitives.supportClasses.FilledElement;
 			
-			
-			[Embed(source="/icon/doc.png")]          //这是单位图标  
-			[Bindable]  
-			public var doc:Class;
-			
-			[Embed(source="/icon/media.png")]          //这是单位图标  
-			[Bindable]  
-			public var image:Class;  
-			
 			public function init():void {
 				ServiceRegistry.fileService.addEventDispatcher(this);
 				this.addEventListener(FileEvent.MODIFY, onChange);
