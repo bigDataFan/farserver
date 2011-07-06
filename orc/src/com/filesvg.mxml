@@ -133,17 +133,57 @@
 				trace("moved");				
 			}
 			
+			protected function gridMouseDown(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</fx:Script>
 
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		Scroller {
+			downArrowUpSkin: Embed(source="/assets/downArrow.png");
+			downArrowOverSkin: Embed(source="/assets/downArrow.png");
+			downArrowDownSkin: Embed(source="/assets/downArrow.png");
+			upArrowUpSkin: Embed(source="/assets/upArrow.png");
+			upArrowOverSkin: Embed(source="/assets/upArrow.png");
+			upArrowDownSkin: Embed(source="/assets/upArrow.png");
+			thumbDownSkin: 
+				Embed(source="/assets/thumb.png",
+				scaleGridLeft="7", scaleGridTop="5", 
+				scaleGridRight="8", scaleGridBottom="7");
+			
+			thumbUpSkin: 
+				Embed(source="/assets/thumb.png",
+				scaleGridLeft="7", scaleGridTop="5", 
+				scaleGridRight="8", scaleGridBottom="7");
+			
+			thumbOverSkin: 
+				Embed(source="/assets/thumb.png",
+				scaleGridLeft="7", scaleGridTop="5", 
+				scaleGridRight="8", scaleGridBottom="7");
+			
+			trackSkin: 
+				Embed(source="/assets/scrolltrack.png",
+				scaleGridLeft="7", scaleGridTop="4", 
+				scaleGridRight="8", scaleGridBottom="6" );   
+		}
+	</fx:Style>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
 	<s:HGroup x="0" y="0" width="1024" height="100%">
 		
-		<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="1024">
-		</s:VGroup>
+		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
+			<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="800">
+			</s:VGroup>
+		</s:Scroller>
+		
 		
 			<!--
 			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 

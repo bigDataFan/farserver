@@ -1,0 +1,38 @@
+VScrollBar {
+    downArrowUpSkin: Embed(source="/assets/downArrow.png");
+    downArrowOverSkin: Embed(source="/assets/downArrow.png");
+    downArrowDownSkin: Embed(source="/assets/downArrow.png");
+    upArrowUpSkin: Embed(source="/assets/upArrow.png");
+    upArrowOverSkin: Embed(source="/assets/upArrow.png");
+    upArrowDownSkin: Embed(source="/assets/upArrow.png");
+    thumbDownSkin: 
+    	Embed(source="/assets/thumb.png",
+        scaleGridLeft="7", scaleGridTop="5", 
+        scaleGridRight="8", scaleGridBottom="7");
+        
+    thumbUpSkin: 
+    	Embed(source="/assets/thumb.png",
+        scaleGridLeft="7", scaleGridTop="5", 
+        scaleGridRight="8", scaleGridBottom="7");
+        
+    thumbOverSkin: 
+    	Embed(source="/assets/thumb.png",
+        scaleGridLeft="7", scaleGridTop="5", 
+        scaleGridRight="8", scaleGridBottom="7");
+        
+    trackSkin: 
+    	Embed(source="/assets/scrolltrack.png",
+        scaleGridLeft="7", scaleGridTop="4", 
+        scaleGridRight="8", scaleGridBottom="6" );       
+} 
+
+Application {
+   backgroundGradientColors: #000033, #ffffff;
+}
+Panel {
+   borderStyle: solid;
+   cornerRadius: 7;
+   headerColors: #000033, #006633;
+   backgroundColor: #333333;
+   shadowDistance: 1;
+}
