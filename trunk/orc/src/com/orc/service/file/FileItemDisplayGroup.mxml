@@ -2,7 +2,7 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
 				   xmlns:s="library://ns.adobe.com/flex/spark"
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
-				   width="1024" height="48" backgroundColor="#F7F8F8" mouseOver="bordercontainer1_mouseOverHandler(event)" borderVisible="false">
+				   width="1000" height="48" backgroundColor="#F7F8F8" mouseOver="bordercontainer1_mouseOverHandler(event)" borderVisible="false">
 	<!--backgroundColor="#F7F8F8" rollOverColor="0xCEDBEF" borderVisible="false"-->
 		<fx:Script>
 			<![CDATA[
