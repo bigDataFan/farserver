@@ -2,8 +2,8 @@
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
 				   xmlns:s="library://ns.adobe.com/flex/spark"
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
-				   width="{running?800:750}" height="40" backgroundColor="#FBF5F5" borderAlpha="1.0"
-				   borderWeight="1" cornerRadius="5" dropShadowVisible="true">
+				   width="1024" height="40" backgroundColor="{running?0xFBF5F5:0xF7F8F8}" borderAlpha="1.0"
+				   borderVisible="false">
 	
 	<fx:Script>
 		<![CDATA[
@@ -66,11 +66,11 @@
 	</fx:Declarations>
 	<s:Label x="12" y="8" width="456" fontSize="15" text="{trackingObject['desc']}"/>
 	<s:Label x="12" y="25" width="329" color="#646262" fontSize="10" text="{'初始于'+ FormatUtils.formatHT(new Date(trackingObject['cr']))}"/>
-	<s:Label x="482" y="11" width="81" id="labelDura" height="20" fontSize="15" fontWeight="bold" text="{ServiceRegistry.trackingService.getDura(trackingObject)}"/>
-	<mx:LinkButton x="527" y="10" label="启动" visible="{running?false:true}" click="startHandler(event)"/>
+	<s:Label x="804" y="12" width="81" id="labelDura" height="20" fontSize="15" fontWeight="bold" text="{ServiceRegistry.trackingService.getDura(trackingObject)}"/>
+	<mx:LinkButton x="872" y="9" label="启动" visible="{running?false:true}" click="startHandler(event)"/>
 	
-	<mx:LinkButton x="527" y="10" label="停止" visible="{running?true:false}" click="stopHandler(event)"/>
-	<mx:LinkButton x="578" y="10" label="删除" click="deleteHandler(event)"/>
+	<mx:LinkButton x="872" y="9" label="" visible="{running?true:false}" icon="@Embed('buttons/btn_running.gif')" click="stopHandler(event)"/>
+	<mx:LinkButton x="941" y="9" label="删除" click="deleteHandler(event)"/>
 	
-	
+	<mx:HRule x="-36" y="39" width="100%" strokeColor="#E0E0E0"/>
 </s:BorderContainer>

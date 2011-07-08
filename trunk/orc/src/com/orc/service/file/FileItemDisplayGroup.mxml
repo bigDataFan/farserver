@@ -48,4 +48,5 @@
 	<mx:LinkButton x="871" y="14" width="62" label="打开" click="open(event)"
 				   icon="@Embed('buttons/open_file.gif')">
 	</mx:LinkButton>
+	<mx:HRule x="0" y="47" width="100%" strokeColor="#E0E0E0"/>
 </s:BorderContainer>
