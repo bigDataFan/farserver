@@ -57,6 +57,16 @@ package com.orc.utils
 			if (date==null) return "错误的时间格式";
 			return date.getFullYear() + "" + (date.getMonth()+1) + "" + date.getDate();
 		}
+
+		
+		public static function isToday(date:Date):Boolean {
+			var today:Date = new Date();
+			
+			return (today.getFullYear()==date.getFullYear()) && (today.getMonth()==date.getMonth()) && (today.getDate()==date.getDate());
+			
+		}
+		
+		
 		
 	}
 }
