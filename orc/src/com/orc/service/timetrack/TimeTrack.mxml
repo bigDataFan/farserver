@@ -8,6 +8,8 @@
 			import com.orc.service.ServiceRegistry;
 			import com.orc.utils.FormatUtils;
 			
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
 			import mx.events.FlexEvent;
 			
 			
@@ -59,9 +61,12 @@
 			
 			var currentDate:Date = new Date();
 			
-			public function load() {
-				var list:Array = ServiceRegistry.trackingService.getTrackingItems(currentDate);
+			public function load(date:Date) {
+				this.currentDate = date;
 				
+				listTrackingItem.removeAllElements();
+				
+				var list:Array = ServiceRegistry.trackingService.getTrackingItems(currentDate);
 				 
 				
 				for (var i:int = 0; i < list.length; i++) 
@@ -88,6 +93,11 @@
 				
 			}
 			
+			protected function datefield1_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				this.load(event.newDate);				
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -111,6 +121,6 @@
 					   borderColor="#CEDBEF" dropShadowVisible="true">
 		<s:Label x="835" y="11" width="53" fontSize="15" fontWeight="bold" text="总计:"/>
 		<s:Label x="898" y="11" id="labelTotal" width="70" fontSize="15" fontWeight="bold" text="00:00"/>
-		<mx:DateField formatString="YYYY-MM-DD" x="16" y="7" width="126" />
+		<mx:DateField formatString="YYYY-MM-DD" change="datefield1_changeHandler(event)" x="16" y="7" width="126" />
 	</s:BorderContainer>
 </s:Group>

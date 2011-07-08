@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx"  width="790" height="76" backgroundColor="#F7F8F8">
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  width="1005" height="76" backgroundColor="#F7F8F8" borderVisible="false">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
 			
+			import spark.components.Group;
 			import spark.components.VGroup;
 			[Bindable]
 			public var notesItem:Object;
 			
 			[Bindable]
 			public var content:String;
+			
+			[Bindable]
+			public var parentGroup:Group;
 			
 			
 			[Bindable]
@@ -34,7 +38,12 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:RichEditableText x="10" y="6" width="778" height="41" text="{content}" editable="false" selectable="true"/>
-	<mx:LinkButton x="687" y="52" label="编辑" click="linkbutton1_clickHandler(event)"/>
-	<mx:LinkButton x="739" y="52" label="删除" click="deleteNotes(event)"/>
+	<s:RichEditableText x="74" y="10" width="860" height="55" text="{content}" editable="false" selectable="true"/>
+	<mx:LinkButton x="948" y="10" label="编辑" click="linkbutton1_clickHandler(event)"/>
+	<mx:LinkButton x="948" y="32" label="删除" click="deleteNotes(event)"/>
+	
+	<mx:HRule x="0" y="73" width="100%" strokeColor="#E0E0E0"/>
+	<s:Label x="10" y="10" width="56" height="56" backgroundColor="#55740B" chromeColor="#FAF9F9"
+			 color="#FAF7F7" fontSize="26" fontWeight="bold" text="{parentGroup.getElementIndex(this)}" textAlign="center"
+			 verticalAlign="middle"/>
 </s:BorderContainer>

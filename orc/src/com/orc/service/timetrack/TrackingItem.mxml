@@ -67,13 +67,13 @@
 	</fx:Declarations>
 	<s:Label x="12" y="8" width="456" fontSize="15" text="{trackingObject['desc']}"/>
 	<s:Label x="12" y="25" width="329" color="#646262" fontSize="10" text="{'初始于'+ FormatUtils.formatHT(new Date(trackingObject['cr']))}"/>
-	<s:Label x="789" y="12" width="81" id="labelDura" height="20" fontSize="15" fontWeight="bold" text="{ServiceRegistry.trackingService.getDura(trackingObject)}"/>
-	<s:Group visible="{isToday?true:false}">
+	<s:Label x="789" y="13" width="81" id="labelDura" height="20" fontSize="15" fontWeight="bold" text="{ServiceRegistry.trackingService.getDura(trackingObject)}"/>
+	<s:Group visible="{isToday?true:false}" height="41">
 		<mx:LinkButton x="872" y="9" visible="{running?false:true}" icon="@Embed('buttons/btn_start.png')" click="startHandler(event)"/>
 		<mx:LinkButton x="872" y="9" label="" visible="{running?true:false}" icon="@Embed('buttons/btn_running.gif')" click="stopHandler(event)"/>
 		<mx:LinkButton x="941" y="9" label="删除" click="deleteHandler(event)"/>
 		
 	</s:Group>
 	
-	<mx:HRule x="-36" y="39" width="100%" strokeColor="#E0E0E0"/>
+	<mx:HRule x="0" y="40" width="100%" strokeColor="#E0E0E0"/>
 </s:BorderContainer>
