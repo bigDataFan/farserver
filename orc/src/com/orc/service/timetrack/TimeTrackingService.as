@@ -38,6 +38,16 @@ package com.orc.service.timetrack
 			tts.remove({"cr":start});
 		}
 		
+		
+		public function getDuraAsTime(o:Object):Number {
+			if (o[LAST_START]!=null) {
+				var realdura:Number = o[DURA] + (new Date().getTime()-o[LAST_START]);
+				return realdura;
+			} else {
+				return o[DURA];
+			}
+		}
+		
 		public function getDura(o:Object):String {
 			if (o[LAST_START]!=null) {
 				var realdura:Number = o[DURA] + (new Date().getTime()-o[LAST_START]);
@@ -92,6 +102,20 @@ package com.orc.service.timetrack
 			}
 			
 			return list;
+		}
+		
+		public function getDayTotalTime(date:Date):Number {
+			var dateStr:String = FormatUtils.formatYMD(date);
+			var list:Array = tts.findAll({"day":dateStr});
+		
+			
+			var totalMills:Number = 0; 
+			for (var i:int = 0; i < list.length; i++) 
+			{
+				totalMills += getDuraAsTime(list[i]);
+			}
+			return totalMills;
+			
 		}
 		
 		
