@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="700" >
+	<fx:Script>
+		<![CDATA[
+			import com.orc.service.ServiceRegistry;
+			
+			protected function selectRootFolder(event:MouseEvent):void
+			{
+				var f:File = new File(ServiceRegistry.configService.rootFolder);
+				
+				f.browseForDirectory("选择目录");
+				
+				f.addEventListener(Event.SELECT, function (event:Event):void {
+					var dir:File = event.target as File;
+					ServiceRegistry.configService.setRoot(dir.nativePath);
+					ServiceRegistry.fileService.organizeFolder(dir);
+					
+					rootFolderEdit.text = ServiceRegistry.configService.rootFolder;
+				});				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Panel x="27" y="22" width="975" height="200" title="基本配置">
+		<s:Label x="12" y="15" text="数据文件夹位置"/>
+		<s:TextInput id="rootFolderEdit" x="104" y="10" width="677" text="{ServiceRegistry.configService.rootFolder}"/>
+		<s:Button x="800" y="10" width="26" label=".." click="selectRootFolder(event)"/>
+	</s:Panel>
+</s:Group>

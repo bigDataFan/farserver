@@ -60,6 +60,8 @@
 			protected function switchFullModel(event:MouseEvent):void
 			{
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = false;
+				nativeApplication.activeWindow.x = 20;
+				nativeApplication.activeWindow.y = 20;
 				NativeApplication.nativeApplication.activeWindow.width = 1024;
 				NativeApplication.nativeApplication.activeWindow.height = 768;
 				fullmodel.visible = true;
@@ -128,7 +130,7 @@
 			{
 				files_g.init();
 				notes_g.drawList();
-				timetrack_g.load();
+				timetrack_g.load(new Date());
 			}
 			
 			protected function openFiles(event:MouseEvent):void
@@ -146,6 +148,13 @@
 			{
 				switchGroup(notes_g);				
 			}
+			
+			protected function openConfig(event:MouseEvent):void
+			{
+				switchGroup(config_g);
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -162,7 +171,7 @@
 						   color="#FCF7F7" icon="@Embed('icon/Folder.png')"
 						   labelPlacement="bottom"/>
 			<mx:LinkButton x="87" y="0" width="72" height="69" label="Time"  color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Clock.png')" click="openTimes(event)"/>
-			<mx:LinkButton x="256" y="0" width="72" height="69" label="Config" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Tools.png')"/>
+			<mx:LinkButton x="256" y="0" width="72" height="69" label="Config" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Tools.png')" click="openConfig(event)"/>
 			<mx:LinkButton x="341" y="1" width="72" height="69" label="FloatBox" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Wallet.png')" click="switchModel2(event)"/>
 			<mx:LinkButton x="169" y="0" width="72" height="69" label="Pastes" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Clipboard.png')" click="openPastes(event)"/>
 		</s:BorderContainer>
@@ -183,6 +192,9 @@
 				
 			</timetrack:TimeTrack>
 			
+			<com:ConfigSVG id="config_g" x="0" visible="false">
+				
+			</com:ConfigSVG>
 		</s:Group>
 	</s:HGroup>
 	</s:Group>

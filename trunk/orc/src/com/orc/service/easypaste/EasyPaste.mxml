@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="824" height="700" >
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="700" >
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
@@ -39,6 +39,7 @@
 				pi.notesItem = o;
 				pi.ep = this;
 				pi.content = content; //ServiceRegistry.notesService.getNotesContent(o["id"]);
+				pi.parentGroup = display_vg;
 				display_vg.addElementAt(pi, 0);
 			}
 			
@@ -61,16 +62,15 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:BorderContainer x="10" y="10" width="804" height="94" backgroundColor="#F9F5F5">
-		<s:Label x="11" y="20" width="34" height="34" fontFamily="Times New Roman" fontSize="15"
-				 text="输入内容"/>
-		<s:TextArea id="paste_ta" x="61" y="10" width="662" height="75"/>
-		<mx:LinkButton x="735" y="16" width="58" height="57" icon="@Embed('buttons/paste_save.gif')" click="linkbutton1_clickHandler(event)"/>
-		
-		
+	<s:BorderContainer x="0" y="0" width="1024" height="82" backgroundColor="#E0E0E0" borderColor="#CEDBEF" dropShadowVisible="true">
+		<s:Label x="14" y="12" width="34" height="34" fontFamily="Times New Roman" fontSize="15"
+				 text="便签"/>
+		<s:TextArea id="paste_ta" x="61" y="6" width="880" height="70"/>
+		<mx:LinkButton x="949" y="10" width="58" height="57" icon="@Embed('buttons/paste_save.gif')" click="linkbutton1_clickHandler(event)"/>
 	</s:BorderContainer>
-	<s:Scroller x="10" y="125" verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="545">
-		<s:VGroup x="10" y="125" width="785" height="543" id="display_vg">
+	<s:Scroller x="0" y="90" width="1024" height="601" horizontalScrollPolicy="off"
+				verticalScrollPolicy="auto">
+		<s:VGroup x="10" y="125" width="1005" height="573" id="display_vg" gap="0">
 		</s:VGroup>
 	</s:Scroller>
 </s:Group>
