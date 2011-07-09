@@ -75,5 +75,5 @@
 		
 	</s:Group>
 	
-	<mx:HRule x="0" y="40" width="100%" strokeColor="#E0E0E0"/>
+	<mx:HRule x="0" y="39" width="100%" strokeColor="#E0E0E0"/>
 </s:BorderContainer>
