@@ -38,6 +38,13 @@
 		//55740B  chromeColor="#FAF9F9"
 		]]>
 	</fx:Script>
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		s|Button {
+			
+		}
+	</fx:Style>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -46,7 +53,7 @@
 	<mx:LinkButton x="948" y="32" label="删除" click="deleteNotes(event)"/>
 	
 	<mx:HRule x="0" y="73" width="100%" strokeColor="#E0E0E0"/>
-	<s:Button x="10" y="10" width="56" height="56" label="A" chromeColor="#A1B9D9" color="#726D6D" 
+	<s:Button x="10" y="10" width="56" height="56"  label="A" chromeColor="#A1B9D9" color="#726D6D" 
 			  cornerRadius="0" focusColor="#4887C1" fontSize="26" fontStyle="normal"
 			  fontWeight="bold"/>
 	

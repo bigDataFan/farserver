@@ -161,7 +161,7 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:Group id="fullmodel" width="100%" height="100%" horizontalCenter="true">
+	<s:BorderContainer id="fullmodel" width="100%" height="100%" horizontalCenter="true" backgroundColor="#EAE4E4">
 		<s:BorderContainer id="controlbar" x="0" y="0" width="1025" height="71"
 						   backgroundColor="#4B4A4A"
 						   contentBackgroundAlpha="1.0" contentBackgroundColor="#EAE4E4"
@@ -178,7 +178,7 @@
 		
 		<s:HGroup x="0" y="71" width="1024" height="663">
 		<s:Group id="right_group" width="100%" >
-			<com:filesvg id="files_g" x="0" width="1024" y="0" visible="false">
+			<com:filesvg id="files_g" x="0" width="1024" y="0" visible="true">
 			</com:filesvg>
 			
 			<easypaste:EasyPaste id="notes_g" visible="false">
@@ -197,7 +197,7 @@
 			</com:ConfigSVG>
 		</s:Group>
 	</s:HGroup>
-	</s:Group>
+	</s:BorderContainer>
 	
 	<s:Group id="dragModel" width="100" height="40" visible="false" x="0" y="0">
 		<s:Button id="dropButton" width="150" height="40" label="拖入内容" doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
