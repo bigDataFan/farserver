@@ -16,6 +16,8 @@
 			import mx.core.UITextField;
 			import mx.events.FlexEvent;
 			
+			import spark.components.Application;
+			
 			
 			//public var serviceRegistry:ServiceRegistry = new ServiceRegistry();
 			
@@ -57,11 +59,14 @@
 			}
 			
 			
+			var full_x:int = 0;
+			var full_y:int = 0;
+			
 			protected function switchFullModel(event:MouseEvent):void
 			{
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = false;
-				nativeApplication.activeWindow.x = 20;
-				nativeApplication.activeWindow.y = 20;
+				nativeApplication.activeWindow.x = full_x;
+				nativeApplication.activeWindow.y = full_y;
 				NativeApplication.nativeApplication.activeWindow.width = 1024;
 				NativeApplication.nativeApplication.activeWindow.height = 768;
 				fullmodel.visible = true;
@@ -70,6 +75,8 @@
 			
 			protected function switchModel2(event:MouseEvent):void
 			{
+				full_x = nativeApplication.activeWindow.x;
+				full_y = nativeApplication.activeWindow.y;
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
 				NativeApplication.nativeApplication.activeWindow.width = 150;
 				NativeApplication.nativeApplication.activeWindow.height = 70;
@@ -131,6 +138,7 @@
 				files_g.init();
 				notes_g.drawList();
 				timetrack_g.load(new Date());
+				onScreen = files_g;
 			}
 			
 			protected function openFiles(event:MouseEvent):void
@@ -155,6 +163,16 @@
 				
 			}
 			
+			protected function closeApp(event:MouseEvent):void
+			{
+				nativeApplication.exit();		
+			}
+			
+			protected function minApp(event:MouseEvent):void
+			{
+				nativeApplication.activeWindow.minimize();				
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -174,25 +192,29 @@
 			<mx:LinkButton x="256" y="0" width="72" height="69" label="Config" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Tools.png')" click="openConfig(event)"/>
 			<mx:LinkButton x="341" y="1" width="72" height="69" label="FloatBox" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Wallet.png')" click="switchModel2(event)"/>
 			<mx:LinkButton x="169" y="0" width="72" height="69" label="Pastes" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Clipboard.png')" click="openPastes(event)"/>
+			
+			
+			<mx:LinkButton x="975" y="0" width="21" icon="@Embed('buttons/min.gif')" click="minApp(event)"/>
+			<mx:LinkButton x="998" y="0" width="21" icon="@Embed('buttons/close.gif')" click="closeApp(event)"/>
 		</s:BorderContainer>
 		
-		<s:HGroup x="0" y="71" width="1024" height="663">
+		<s:HGroup y="71" height="694">
 		<s:Group id="right_group" width="100%" >
-			<com:filesvg id="files_g" x="0" width="1024" y="0" visible="true">
+			<com:filesvg id="files_g" visible="true" x="0" y="0" width="1019" height="694">
 			</com:filesvg>
 			
-			<easypaste:EasyPaste id="notes_g" visible="false">
+			<easypaste:EasyPaste id="notes_g"  x="0" y="0" width="1016" visible="false">
 				
 			</easypaste:EasyPaste>
 			
-			<com:tasksvg id="task_g" x="0" visible="false">
+			<com:tasksvg id="task_g" x="0" y="0" width="1016" visible="false">
 			</com:tasksvg>
 			
-			<timetrack:TimeTrack id="timetrack_g" x="824" visible="false">
+			<timetrack:TimeTrack id="timetrack_g" x="0" y="0" width="1016" visible="false">
 				
 			</timetrack:TimeTrack>
 			
-			<com:ConfigSVG id="config_g" x="0" visible="false">
+			<com:ConfigSVG id="config_g" x="0" y="0" width="1016" visible="false">
 				
 			</com:ConfigSVG>
 		</s:Group>
@@ -204,6 +226,5 @@
 				  nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)"> 
 		</s:Button>
 	</s:Group>
-	
-	
+		
 </s:WindowedApplication>
