@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx"  width="1005" height="76" backgroundColor="#F7F8F8" borderVisible="false">
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   width="1005" height="76" backgroundColor="#F7F8F8" borderVisible="false"
+				   cornerRadius="3">
 	
 	<fx:Script>
 		<![CDATA[
@@ -33,17 +35,20 @@
 				(parent as VGroup).removeElement(this);
 			}
 			
+		//55740B  chromeColor="#FAF9F9"
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:RichEditableText x="74" y="10" width="860" height="55" text="{content}" editable="false" selectable="true"/>
+	<s:RichEditableText x="74" y="10" width="860" height="55" text="{content.substr(0,500)}" editable="false" selectable="true"/>
 	<mx:LinkButton x="948" y="10" label="编辑" click="linkbutton1_clickHandler(event)"/>
 	<mx:LinkButton x="948" y="32" label="删除" click="deleteNotes(event)"/>
 	
 	<mx:HRule x="0" y="73" width="100%" strokeColor="#E0E0E0"/>
-	<s:Label x="10" y="10" width="56" height="56" backgroundColor="#55740B" chromeColor="#FAF9F9"
-			 color="#FAF7F7" fontSize="26" fontWeight="bold" text="{parentGroup.getElementIndex(this)}" textAlign="center"
-			 verticalAlign="middle"/>
+	<s:Button x="10" y="10" width="56" height="56" label="A" chromeColor="#A1B9D9" color="#726D6D" 
+			  cornerRadius="0" focusColor="#4887C1" fontSize="26" fontStyle="normal"
+			  fontWeight="bold"/>
+	
+	
 </s:BorderContainer>
