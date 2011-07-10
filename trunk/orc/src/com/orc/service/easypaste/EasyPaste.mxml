@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="700" >
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1000" height="700" >
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
@@ -62,15 +62,15 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:BorderContainer x="0" y="0" width="1024" height="82" backgroundColor="#E0E0E0" borderColor="#CEDBEF" dropShadowVisible="true">
+	<s:BorderContainer x="0" y="0" width="100%" height="82" backgroundColor="#E0E0E0" borderColor="#CEDBEF" dropShadowVisible="true">
 		<s:Label x="14" y="12" width="34" height="34" fontFamily="Times New Roman" fontSize="15"
 				 text="便签"/>
 		<s:TextArea id="paste_ta" x="61" y="6" width="880" height="70"/>
 		<mx:LinkButton x="949" y="10" width="58" height="57" icon="@Embed('buttons/paste_save.gif')" click="linkbutton1_clickHandler(event)"/>
 	</s:BorderContainer>
-	<s:Scroller x="0" y="90" width="1024" height="601" horizontalScrollPolicy="off"
+	<s:Scroller x="0" y="90" width="100%" height="601" horizontalScrollPolicy="off"
 				verticalScrollPolicy="auto">
-		<s:VGroup x="10" y="125" width="1005" height="573" id="display_vg" gap="0">
+		<s:VGroup x="10" y="125" width="1000" height="573" id="display_vg" gap="0">
 		</s:VGroup>
 	</s:Scroller>
 </s:Group>

@@ -182,7 +182,7 @@
 	<s:HGroup x="0" y="0" width="1016" height="100%">
 		
 		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
-			<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="1005" gap="0">
+			<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="1008" gap="0">
 			</s:VGroup>
 		</s:Scroller>
 		
