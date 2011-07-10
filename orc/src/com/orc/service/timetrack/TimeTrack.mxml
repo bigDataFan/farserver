@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="700">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1022" height="700">
 	
 	<fx:Script>
 		<![CDATA[
@@ -104,23 +104,24 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:BorderContainer x="0" y="0" width="1023" height="60" backgroundColor="#E0E0E0"
+	<s:BorderContainer x="0" y="0" width="1014" height="60" backgroundColor="#E0E0E0"
 					   borderColor="#CEDBEF" dropShadowVisible="true">
 		<s:Label x="17" y="20" width="100" height="28" fontSize="16" text="增加时间项"/>
 		<s:TextInput x="116" id="timeTrackInput" y="15" width="806" fontSize="15"/>
 		<mx:LinkButton x="954" y="14" width="47" height="29" icon="@Embed('buttons/paste_save.gif')" click="linkbutton2_clickHandler(event)"/>
 	</s:BorderContainer>
-	<s:BorderContainer y="62" width="1024" height="599" backgroundColor="#F7F8F8"
-					   borderColor="#E0E0E0" cornerRadius="5">
+	<s:BorderContainer y="62" width="1016" height="599" backgroundColor="#F7F8F8"
+					   borderColor="#E0E0E0" >
 		<s:VGroup id="listTrackingItem" x="0" y="1" width="1024" gap="0" horizontalAlign="center">
 			
 		</s:VGroup>
 	</s:BorderContainer>
 	
-	<s:BorderContainer x="0" y="659" width="1023" height="37" backgroundColor="#E0E0E0"
+	<s:BorderContainer x="0" y="659" width="1016" height="37" backgroundColor="#E0E0E0"
 					   borderColor="#CEDBEF" dropShadowVisible="true">
 		<s:Label x="835" y="11" width="53" fontSize="15" fontWeight="bold" text="总计:"/>
 		<s:Label x="898" y="11" id="labelTotal" width="70" fontSize="15" fontWeight="bold" text="00:00"/>
-		<mx:DateField formatString="YYYY-MM-DD" change="datefield1_changeHandler(event)" x="16" y="7" width="126" />
+		<mx:DateField formatString="YYYY-MM-DD" change="datefield1_changeHandler(event)" x="99" y="7" width="126" />
+		<s:Label x="14" y="12" text="选择其他日期"/>
 	</s:BorderContainer>
 </s:Group>
