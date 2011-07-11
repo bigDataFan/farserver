@@ -25,10 +25,8 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="C:/Users/Administrator/Desktop/key.p12" airTimestamp="true" version="1">
-        <airExcludes>
-          <pathEntry path="buttons"/>
-        </airExcludes>
+      <airSettings airCertificatePath="C:/Users/Administrator/Desktop/gqukey.p12" airTimestamp="true" version="1">
+        <airExcludes/>
       </airSettings>
       <actionScriptSettings version="1"/>
     </buildTarget>
