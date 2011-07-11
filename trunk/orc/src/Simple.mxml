@@ -8,7 +8,6 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import com.greensock.TweenLite;
 			import com.orc.service.ServiceRegistry;
 			
 			import mx.controls.HTML;
