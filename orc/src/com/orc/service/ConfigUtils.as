@@ -11,7 +11,7 @@ package com.orc.service
 		public function ConfigUtils() {
 			
 		}
-		public static const CONFIG_FILE:String = "GCenter/config.properties";
+		public static const CONFIG_FILE:String = "GQOffice/config.properties";
 		
 		public static var REQUEST_COUNT:int = 40;
 		public static var EXTEND_COUNT:int = 50;
