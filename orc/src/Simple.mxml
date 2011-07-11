@@ -77,8 +77,8 @@
 				full_x = nativeApplication.activeWindow.x;
 				full_y = nativeApplication.activeWindow.y;
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
-				NativeApplication.nativeApplication.activeWindow.width = 100;
-				NativeApplication.nativeApplication.activeWindow.height = 50;
+				NativeApplication.nativeApplication.activeWindow.width = 135;
+				NativeApplication.nativeApplication.activeWindow.height = 73;
 				
 				fullmodel.visible = false;
 				dragModel.visible = true;				
@@ -228,8 +228,9 @@
 	</s:HGroup>
 	</s:BorderContainer>
 	
-	<s:Group id="dragModel" width="100" height="50" visible="false" x="0" y="0">
-		<mx:LinkButton id="dropButton" width="150" height="40" label="拖入内容" doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
+	<s:Group id="dragModel" width="135" height="73" visible="false"  x="0" y="0">
+		<mx:LinkButton icon="@Embed('buttons/dropp.png')"  id="dropButton" width="135" height="73" x="0" y="0" 
+					   doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
 				  nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)"> 
 		</mx:LinkButton>
 	</s:Group>

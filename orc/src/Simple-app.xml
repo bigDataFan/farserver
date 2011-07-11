@@ -18,7 +18,7 @@
 	<id>GQOfiice</id>
 
 	<!-- Used as the filename for the application. Required. -->
-	<filename>G趣办公通</filename>
+	<filename>GQOfiice</filename>
 
 	<!-- The name that is displayed in the AIR application installer. 
 	May have multiple values for each language. See samples or xsd schema file. Optional. -->
@@ -55,7 +55,7 @@
 		<systemChrome>none</systemChrome>
 
 		<!-- Whether the window is transparent. Only applicable when systemChrome is none. Optional. Default false. -->
-		<!-- <transparent></transparent> -->
+		<transparent>true</transparent>
 
 		<!-- Whether the window is initially visible. Optional. Default false. -->
 		<!-- <visible></visible> -->
