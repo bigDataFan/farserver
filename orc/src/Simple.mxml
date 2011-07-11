@@ -78,8 +78,8 @@
 				full_x = nativeApplication.activeWindow.x;
 				full_y = nativeApplication.activeWindow.y;
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
-				NativeApplication.nativeApplication.activeWindow.width = 150;
-				NativeApplication.nativeApplication.activeWindow.height = 70;
+				NativeApplication.nativeApplication.activeWindow.width = 100;
+				NativeApplication.nativeApplication.activeWindow.height = 50;
 				
 				fullmodel.visible = false;
 				dragModel.visible = true;				
@@ -176,6 +176,14 @@
 		]]>
 	</fx:Script>
 	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		@namespace com "com.*";
+		@namespace easypaste "com.orc.service.easypaste.*";
+		@namespace timetrack "com.orc.service.timetrack.*";
+		
+	</fx:Style>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -221,10 +229,10 @@
 	</s:HGroup>
 	</s:BorderContainer>
 	
-	<s:Group id="dragModel" width="100" height="40" visible="false" x="0" y="0">
-		<s:Button id="dropButton" width="150" height="40" label="拖入内容" doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
+	<s:Group id="dragModel" width="100" height="50" visible="false" x="0" y="0">
+		<mx:LinkButton id="dropButton" width="150" height="40" label="拖入内容" doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
 				  nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)"> 
-		</s:Button>
+		</mx:LinkButton>
 	</s:Group>
 		
 </s:WindowedApplication>
