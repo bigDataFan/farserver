@@ -37,16 +37,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.Vector;
 
-import com.ever365.security.AuthenticationUtil;
-import com.ever365.vfile.File;
-
 import net.gqu.utils.FileCopyUtils;
 import net.gqu.utils.StringUtils;
+
+import com.ever365.security.AuthenticationUtil;
+import com.ever365.vfile.File;
 
 /**
  * FTP Server Session Class
@@ -187,6 +186,12 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 	private File rootFile;
 	
 	
+	
+	
+	public void setRootFile(File rootFile) {
+		this.rootFile = rootFile;
+	}
+
 	/**
 	 * Class constructor
 	 * 
@@ -1665,7 +1670,7 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 					return;
 				}
 				
-				parentFile.makeFile(parentFile.getObjectId(), fileName, false, is);
+				parentFile.createFile(fileName, is);
 			}
 			sendFTPResponse(226, "Closing data connection");
 

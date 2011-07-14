@@ -26,6 +26,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+import com.ever365.vfile.File;
+import com.ever365.vfile.VFileService;
+
 /**
  * <p>Create an FTP server on the specified port. The default server port is 21.
  *
@@ -33,6 +36,7 @@ import java.util.Enumeration;
  */
 public class FTPServer extends NetworkServer implements Runnable {
 
+	
 	//	Constants
 	//
 	//	Server version
@@ -51,9 +55,15 @@ public class FTPServer extends NetworkServer implements Runnable {
   
 	protected static final ThreadGroup FTPThreadGroup = new ThreadGroup( "FTPSessions");
   
+	private VFileService fileService;
+	
   	//  FTP server configuration
   
-  	private FTPConfigSection m_configSection;
+  	public void setFileService(VFileService fileService) {
+		this.fileService = fileService;
+	}
+
+	private FTPConfigSection m_configSection;
   
 	//	Server socket
 	
@@ -467,7 +477,7 @@ public class FTPServer extends NetworkServer implements Runnable {
 		    srvSess.setSessionId(getNextSessionId());
 		    srvSess.setUniqueId("FTP" + srvSess.getSessionId());
 		    srvSess.setDebugPrefix("[FTP" + srvSess.getSessionId() + "] ");
-
+		    srvSess.setRootFile(fileService.getRootFile());
 			//	Initialize the root path for the new session, if configured
 				
 			if ( hasRootPath())
