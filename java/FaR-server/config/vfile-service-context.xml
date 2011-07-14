@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="local-file-store" class=""></bean>
+	
+	
+	
+	<bean id="ftpserver" class="net.gqu.network.ftp.FTPServer" init-method="startServer">
+		<property name="m_configSection" ref="ftpconfig"></property>
+		<property name="runtime" ref="runtime"></property>
+	</bean>
+
+	<bean id="ftpconfig" class="com.ever365.vfile.protocol.ftp.FTPConfigSection">
+		<property name="FTPPort"><value>21</value></property>
+		<property name="allowAnonymousFTP"><value>false</value></property>
+		<property name="authenticator" ref="ftpauth"></property>
+	</bean>		
+
+	
+
+	<bean id="ftpauth" class="net.gqu.network.ftp.GFTPAuthenticator">
+		<property name="userService" ref="userService"></property>
+	</bean>		
+	
+	
+</beans>
