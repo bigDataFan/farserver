@@ -94,7 +94,7 @@
 	
 	<bean id="cacheService" class="net.gqu.cache.EhCacheService"></bean>
 
-	<bean id="userService" class="net.gqu.security.BasicUserService">
+	<bean id="userService" class="com.ever365.security.BasicUserService">
 		<property name="dbProvider">
 			<ref bean="dbProvider"/>
 		</property>
