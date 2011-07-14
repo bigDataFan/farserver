@@ -3,10 +3,11 @@ package net.gqu.webscript.object;
 import java.io.InputStream;
 import java.util.Date;
 
+import net.gqu.content.ContentService;
+
 import org.mozilla.javascript.NativeObject;
 
-import net.gqu.content.ContentService;
-import net.gqu.security.BasicUserService;
+import com.ever365.security.BasicUserService;
 
 public class ScriptContent {
 	

@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.gqu.logging.Logger;
-import net.gqu.security.AuthenticationUtil;
 import net.gqu.webscript.GQServlet;
 import net.gqu.webscript.GQServlet.GQRequest;
 
+import com.ever365.security.AuthenticationUtil;
 import com.mongodb.DBCollection;
 
 public class ScriptLogger extends Logger {

@@ -1,7 +1,6 @@
 package net.gqu.webscript.object;
 
-import net.gqu.security.AuthenticationUtil;
-
+import com.ever365.security.AuthenticationUtil;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 

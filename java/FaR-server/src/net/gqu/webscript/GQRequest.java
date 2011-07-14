@@ -5,9 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.security.Role;
-import net.gqu.security.User;
-import net.gqu.utils.StringUtils;
 
 public class GQRequest {
 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import net.gqu.security.User;
 import net.gqu.utils.GUID;
 
 
@@ -18,7 +17,6 @@ public class FileContentStore {
 		this.storeUri = storeUri;
 		root = new File(storeUri);
 	}
-	
 	
 
 	public FileContentWriter getContentWriter() {
@@ -160,7 +158,7 @@ public class FileContentStore {
 		return new FileContentReader(new File(root, contentUrl), encoding);
 	}
 	
-	public void remove(User owner, String contentUrl) {
+	public void remove(String contentUrl) {
 		File targetFile = new File(root, contentUrl);
 		try {
 			targetFile.delete();
