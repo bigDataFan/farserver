@@ -4,9 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ever365.security.AuthenticationUtil;
 import com.mongodb.DBCollection;
-
-import net.gqu.security.AuthenticationUtil;
 
 public class SystemLogger extends Logger {
 

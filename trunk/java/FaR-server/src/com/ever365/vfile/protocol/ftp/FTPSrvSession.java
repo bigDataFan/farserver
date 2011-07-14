@@ -2066,19 +2066,11 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 
 		try {
 			
-			AuthenticationUtil.setCurrentUser(getClientInformation().getUser());
-			WebApplication webapp = getFTPServer().getRuntime().getApplicationService().getApplication(getClientInformation().getUser(), ftpPath.getShareName());
-			if (webapp!=null) {
-		        Node node = getFTPServer().getRuntime().getNodeService().getNodeByPath(webapp.getSpace().getRoot(), ftpPath.getSharePath());
-		        if (node==null) {
-		        	sendFTPResponse(550, "Access denied, can not find the target Node " + ftpPath.getFTPPath());
-		        	return;
-		        }
-		        getFTPServer().getRuntime().getNodeService().deleteNode(node);
-		        HibernateDAOService.commitCurrentTransaction();
-			} else {
-				sendFTPResponse(550, "Access denied, can not find the application " + ftpPath.getShareName());
-	        	return;
+			AuthenticationUtil.setCurrentUser(getClientInformation().getUser().getName());
+			
+			File target = rootFile.getByPath(ftpPath.getSharePath());
+			if (target!=null) {
+				target.remove();
 			}
 			// Create a temporary tree connection
 /*
@@ -2127,7 +2119,6 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 		}
 		catch (Exception ex) {
 			sendFTPResponse(550, "Failed to delete directory");
-			HibernateDAOService.rollbackAndClean();
 			return;
 		}
 

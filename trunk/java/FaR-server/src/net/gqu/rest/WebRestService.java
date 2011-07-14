@@ -11,15 +11,16 @@ import java.util.Set;
 import net.gqu.application.ApplicationService;
 import net.gqu.application.InstalledApplication;
 import net.gqu.cache.EhCacheService;
-import net.gqu.security.AuthenticationUtil;
-import net.gqu.security.BasicUserService;
-import net.gqu.security.Role;
-import net.gqu.security.User;
+
 import net.gqu.utils.GUID;
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 
+import com.ever365.security.AuthenticationUtil;
+import com.ever365.security.BasicUserService;
+import com.ever365.security.Role;
+import com.ever365.security.User;
 import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.util.AuthenticationException;

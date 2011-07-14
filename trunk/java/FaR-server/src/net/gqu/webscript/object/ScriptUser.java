@@ -1,7 +1,7 @@
 package net.gqu.webscript.object;
 
-import net.gqu.security.AuthenticationUtil;
-import net.gqu.security.BasicUserService;
+import com.ever365.security.AuthenticationUtil;
+import com.ever365.security.BasicUserService;
 
 
 public class ScriptUser {

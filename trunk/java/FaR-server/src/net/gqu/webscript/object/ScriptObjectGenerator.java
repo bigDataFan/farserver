@@ -5,14 +5,12 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.application.InstalledApplication;
-import net.gqu.security.AuthenticationUtil;
-import net.gqu.security.BasicUserService;
-import net.gqu.security.User;
-import net.gqu.webscript.GQServlet.GQRequest;
 import net.gqu.webscript.object.google.ScriptCalendar;
 
 import org.mozilla.javascript.NativeObject;
+
+import com.ever365.security.BasicUserService;
+import com.ever365.security.User;
 
 public class ScriptObjectGenerator {
 
