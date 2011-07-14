@@ -22,7 +22,7 @@
  * the FLOSS exception, and it is also available here: 
  * http://www.alfresco.com/legal/licensing"
  */
-package com.gqu.vfile;
+package com.ever365.vfile;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

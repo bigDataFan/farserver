@@ -1,4 +1,4 @@
-package com.gqu.vfile;
+package com.ever365.vfile;
 
 import java.io.InputStream;
 import java.io.Serializable;
