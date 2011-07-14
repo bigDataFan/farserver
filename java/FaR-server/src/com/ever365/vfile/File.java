@@ -2,6 +2,7 @@ package com.ever365.vfile;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.utils.MimeTypeUtils;
@@ -135,6 +136,22 @@ public class File {
 
 	public void createFolder(String folderName) {
 		
+	}
+
+	public List<File> getChildren() {
+		return null;
+	}
+
+	public String getName() {
+		return (String) dbObject.get(NAME);
+	}
+
+	public Date getModified() {
+		return null;
+	}
+
+	public long getSize() {
+		return 0;
 	}
 	
 }

@@ -2975,36 +2975,25 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 		Vector<Object> files = new Vector<Object>();
 		
 		if (path.isRootPath()) {
-			Map<String, WebApplication> webapps = getFTPServer().getRuntime().getApplicationService().getUserApplications(getClientInformation().getUser());
-			for (WebApplication webapp : webapps.values()) {
-				//generateResponseForNode(req, xml, webapp.getSpace().getRoot(), WEBDAV_MAPPING + WebDAV.PathSeperator + user.getName() + WebDAV.PathSeperator + webapp.getName());
-				FileInfo finfo = new FileInfo(webapp.getName(), 0L, FileAttribute.Directory);
-				files.add(finfo);
-			}
+			FileInfo finfo = new FileInfo(this.getClientInformation().getUserName(), 0L, FileAttribute.Directory);
+			files.add(finfo);
 		} else if (path.getShareName()!=null) {
-			WebApplication webapp = getFTPServer().getRuntime().getApplicationService().getApplication(getClientInformation().getUser(), path.getShareName());
-			if (webapp!=null) {
-				net.gqu.dao.Node node = getFTPServer().getRuntime().getNodeService().getNodeByPath(webapp.getSpace().getRoot(), path.getSharePath());
-				if (node!=null) {
-					if (node.getIsCollection()) {
-						ChildAssoc[] childAssocs = getFTPServer().getRuntime().getNodeService().getChildAssocs(node, 0, -1);
-						
-						for (ChildAssoc childAssoc : childAssocs) {
-							if (childAssoc.getChild().getIsCollection()) {
-								FileInfo fileInfo = new FileInfo(path.getFTPPath() + FTP_SEPERATOR + childAssoc.getChildNodeName(), childAssoc.getChildNodeName(), 
-										0L, FileAttribute.Directory);
-								fileInfo.setModifyDateTime(childAssoc.getChild().getModified().getTime());
-								files.add(fileInfo);
-							} else {
-								FileInfo fileInfo = new FileInfo(path.getFTPPath() + FTP_SEPERATOR + childAssoc.getChildNodeName(), childAssoc.getChildNodeName(), 
-										childAssoc.getChild().getContentSize(), FileAttribute.Normal);
-								fileInfo.setModifyDateTime(childAssoc.getChild().getModified().getTime());
-								files.add(fileInfo);
-							}
-							//generateResponseForNode(req, xml, childAssoc.getChild(), basePath + childAssoc.getChild().getName());
-						}
-						
+			File file = rootFile.getByPath(path.getSharePath());
+			if (file!=null && file.isFolder()) {
+				List<File> children = file.getChildren();
+				
+				for (File child : children) {
+					FileInfo fileInfo = null;
+					if (child.isFolder()) {
+						 fileInfo = new FileInfo(path.getFTPPath() + FTP_SEPERATOR + child.getName(), child.getName(), 
+								0L, FileAttribute.Directory);
+					} else {
+						fileInfo = new FileInfo(path.getFTPPath() + FTP_SEPERATOR + child.getName(), child.getName(), 
+								child.getSize(), FileAttribute.Normal);
 					}
+					fileInfo.setModifyDateTime(file.getModified().getTime());
+					files.add(fileInfo);
+					//generateResponseForNode(req, xml, childAssoc.getChild(), basePath + childAssoc.getChild().getName());
 				}
 			}
 		}
