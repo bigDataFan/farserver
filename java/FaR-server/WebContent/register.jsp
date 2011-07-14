@@ -5,9 +5,9 @@
 
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <%@page import="org.springframework.web.context.WebApplicationContext"%>
-<%@page import="net.gqu.security.BasicUserService"%>
 <%@page import="java.util.List"%>
-<%@page import="net.gqu.security.Role"%><html>
+<%@page import="com.ever365.security.BasicUserService"%>
+<%@page import="com.ever365.security.Role"%><html>
 <head>
 <title></title>
 <link rel="stylesheet" type="text/css" href="main.css">
@@ -103,7 +103,7 @@ List<Role> openRoles = userService.getOpenRoles();
 				<option value="<%=role.getId().toString() %>"><%=role.getName() %></option>
 			<% }%>
 		</select> </p>
-		<p><label for="password">密&nbsp;&nbsp;&nbsp;码：</label></p>
+		<p><label for="password">密&nbsp;&nbsp;码：</label></p>
 		<input class="text" type="password" name="pwd"  value="" /><font color="red"><%=session.getAttribute("pwd")==null?"":session.getAttribute("pwd")%></font>
 		
 		<p><label for="password">请再输一次密码：</label><br>
