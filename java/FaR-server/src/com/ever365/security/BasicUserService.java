@@ -1,4 +1,4 @@
-package net.gqu.security;
+package com.ever365.security;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -363,7 +363,6 @@ public class BasicUserService {
 		inc.put("$inc", zz);
 		db.getCollection(COLL_USERS).update(new BasicDBObject("name", name), inc);
 	}
-	
 	
 	public String getUserCalToken(String server) {
 		String requestUrl =
