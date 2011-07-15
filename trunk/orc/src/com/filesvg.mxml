@@ -50,6 +50,14 @@
 				}
 			}
 			
+			private var loadedItem:int = 0;
+			private var dateIndex:int = 0;
+			
+			
+			public function more():void {
+				
+			}
+			
 			public function fillByDate():void {
 				
 				vg_file_bydate.removeAllElements();
@@ -106,7 +114,10 @@
 						//fid.y = j * 48;
 						vg.addElement(fid);
 						
+						loadedItem ++;
 					}
+					
+					if (loadedItem>)
 					//panel.addElement(vg);
 				}
 				

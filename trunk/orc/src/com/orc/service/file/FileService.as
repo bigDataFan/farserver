@@ -86,6 +86,7 @@ package com.orc.service.file
 				file1.moveTo(todayFolder, false);
 				
 				
+				/*
 				var log:Object = new Object();
 				log.id = new TimeRelatedId(TYPE_LOG_TYPE).toString();
 				log.filePath = todayFolder.nativePath;
@@ -93,6 +94,7 @@ package com.orc.service.file
 				log.time = new Date().getTime();
 				
 				filelogs.insertCapped(log,1000);
+				*/
 				sendNotify(file1);
 			} catch (e:Error) {
 				
@@ -139,9 +141,9 @@ package com.orc.service.file
 		}
 		
 		var rootFolder:File;
-		public var usefullFolder:String;
 		public var todayPath:String;
 		public var notesPath:String;
+		
 		
 		public function init(root:File) : void {
 			this.rootFolder = root;
@@ -152,9 +154,6 @@ package com.orc.service.file
 			var todayFolder:File = new File(todayPath);
 			todayFolder.createDirectory();
 			
-			usefullFolder = rootFolder.nativePath + "/常用文件";
-			var uf:File = new File(usefullFolder);
-			uf.createDirectory();
 			
 			//扫描日期文件夹  获取所有日期文件夹信息
 			var children:Array = rootFolder.getDirectoryListing();
@@ -266,7 +265,7 @@ package com.orc.service.file
 		}
 
 				
-		
+		/*
 		public function getUsefullFileList():ArrayList {
 			
 			var folder:File = new File(usefullFolder);
@@ -282,6 +281,7 @@ package com.orc.service.file
 			//var m:String = dateStr.indexOf("月");
 			//var d:String = dateStr.indexOf("日");
 		}
+		*/
 		
 		/*
 		public function formatFolder(date:Date):String {
