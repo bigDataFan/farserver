@@ -30,7 +30,7 @@
 	<filter>
 		<display-name>SetUserFilter</display-name>
 		<filter-name>SetUserFilter</filter-name>
-		<filter-class>net.gqu.security.SetUserFilter</filter-class>
+		<filter-class>com.ever365.security.SetUserFilter</filter-class>
 	</filter>
 	
 	<filter-mapping>
