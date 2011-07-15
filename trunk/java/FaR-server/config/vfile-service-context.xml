@@ -25,7 +25,7 @@
 
 	
 
-	<bean id="ftpauth" class="net.gqu.network.ftp.GFTPAuthenticator">
+	<bean id="ftpauth" class="com.ever365.vfile.protocol.ftp.GFTPAuthenticator">
 		<property name="userService" ref="userService"></property>
 	</bean>		
 	
