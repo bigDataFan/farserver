@@ -48,7 +48,8 @@ public class File {
 		String[] paths = path.split("/");
 		File found = this;
 		for (int i = 0; i < paths.length; i++) {
-			DBObject foundObj = coll.findOne(BasicDBObjectBuilder.start(PARENT_ID, found.fileId).append("parentName", paths[i]).get());
+			if ("".equals(paths[i])) continue;
+			DBObject foundObj = coll.findOne(BasicDBObjectBuilder.start(PARENT_ID, found.fileId).append(NAME, paths[i]).get());
 			if (foundObj!=null) {
 				found = new File(fileService,(ObjectId)foundObj.get(ID), foundObj);
 			} else {
@@ -83,16 +84,15 @@ public class File {
 	}
 
 	public void rename(String tName) {
-		
+		fileService.rename(this.dbObject, tName);
 	}
-
+	
 	public void moveTo(File parent, boolean b) {
-		
+		fileService.moveTo(parent.dbObject, this.dbObject, b);
 	}
-
 
 	public List<File> getChildren() {
-		return null;
+		return fileService.getChildren(this.fileId);
 	}
 
 	public String getName() {
@@ -100,11 +100,11 @@ public class File {
 	}
 
 	public Date getModified() {
-		return null;
+		return (Date)dbObject.get(MODIFIED);
 	}
 
 	public long getSize() {
-		return 0;
+		return (Long) dbObject.get(SIZE);
 	}
 
 

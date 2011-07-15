@@ -1,7 +1,9 @@
 package com.ever365.vfile;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.utils.MimeTypeUtils;
@@ -12,6 +14,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 
@@ -68,9 +71,29 @@ public class VFileService {
 		}
 		
 		WriteResult result = getFileCollection().update(BasicDBObjectBuilder.start(File.PARENT_ID, parentId).append(File.NAME, name).get(), dbo, true, false);
-		return new File(this, (ObjectId)dbo.get(File.ID), dbo);
+		
+		ObjectId newId = null;
+		if ((Boolean)result.getField("updatedExisting")) {
+			
+		} else {
+			newId = (ObjectId)result.getField("upserted");
+		}
+		
+		return new File(this, newId, dbo);
 	}
 
+	public List<File> getChildren(ObjectId parentId) {
+		
+		List<File> list = new ArrayList<File>();
+		
+		DBCursor result = getFileCollection().find(new BasicDBObject(File.PARENT_ID, parentId));
+		
+		while (result.hasNext()) {
+			DBObject dbo = result.next();
+			list.add(new File(this, (ObjectId)dbo.get(File.ID),dbo));
+		}
+		return list;
+	}
 	
 	public DBCollection getFileCollection() {
 		DB db = provider.getMongo().getDB(V_FILE_DB);
@@ -80,6 +103,34 @@ public class VFileService {
 	public FileContentReader getContentReader(String contentUrl, Object object) {
 		// TODO Auto-generated method stub
 		return fileContentStore.getContentReader(contentUrl, null);
+	}
+
+	public void rename(DBObject dbo, String tName) {
+		if (dbo.get(File.NAME).equals(tName)) {
+			return;
+		}
+		DBObject found = getFileCollection().findOne(BasicDBObjectBuilder.start().add(File.PARENT_ID, dbo.get(File.PARENT_ID))
+				.add(File.NAME, tName).get());
+		
+		if (found==null) {
+			dbo.put(File.NAME, tName);
+			getFileCollection().update(new BasicDBObject(File.ID, dbo.get(File.ID)), dbo);
+		}
+	}
+
+	public void moveTo(DBObject targetParent, DBObject current, boolean b) {
+		
+		if (current.get(File.PARENT_ID).equals(targetParent.get(File.ID))) return;
+		
+		
+		DBObject found = getFileCollection().findOne(BasicDBObjectBuilder.start().add(File.PARENT_ID, targetParent.get(File.ID))
+				.add(File.NAME, current.get(File.NAME)).get());
+		
+		if (found==null) {
+			current.put(File.PARENT_ID, targetParent.get(File.ID));
+			getFileCollection().update(new BasicDBObject(File.ID, current.get(File.ID)), current);
+		}
+		
 	}
 
 	

@@ -54,17 +54,17 @@
 	<servlet>
 		<display-name>LogoutServlet</display-name>
 		<servlet-name>LogoutServlet</servlet-name>
-		<servlet-class>net.gqu.security.LogoutServlet</servlet-class>
+		<servlet-class>com.ever365.security.LogoutServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<display-name>LoginServlet</display-name>
 		<servlet-name>LoginServlet</servlet-name>
-		<servlet-class>net.gqu.security.LoginServlet</servlet-class>
+		<servlet-class>com.ever365.security.LoginServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<display-name>RegisterServlet</display-name>
 		<servlet-name>RegisterServlet</servlet-name>
-		<servlet-class>net.gqu.security.RegisterServlet</servlet-class>
+		<servlet-class>com.ever365.security.RegisterServlet</servlet-class>
 	</servlet>
 
 	
@@ -88,6 +88,13 @@
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
+	
+	
+	<servlet-mapping>
+		<servlet-name>RestServiceServlet</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+	
 	
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
