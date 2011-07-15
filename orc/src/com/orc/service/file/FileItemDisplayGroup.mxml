@@ -6,6 +6,7 @@
 	<!--backgroundColor="#F7F8F8" rollOverColor="0xCEDBEF" borderVisible="false"-->
 		<fx:Script>
 			<![CDATA[
+				import com.orc.service.ServiceRegistry;
 				import com.orc.utils.FormatUtils;
 				
 				import mx.core.IVisualElement;
@@ -31,6 +32,25 @@
 					
 				}
 				
+				protected function saveAs(event:MouseEvent):void
+				{
+					//var f:File = new File(ServiceRegistry.configService.rootFolder);
+					var oldPath:String = gridfile.file.nativePath;
+					
+					gridfile.file.browseForSave("保存文件到");
+					
+					gridfile.file.addEventListener(Event.SELECT, function (event:Event):void {
+						var targetFile:File = event.target as File;
+						
+						var oldFile:File = new File(oldPath);
+						
+						oldFile.copyTo(targetFile,true);
+						gridfile.file = oldFile;
+						//gridfile.file.copyTo(targetFile, true);
+					})
+											
+				}
+				
 			]]>
 		</fx:Script>
 	<fx:Declarations>
@@ -42,11 +62,14 @@
 	<s:Label x="49" y="28" width="352" color="#A6A1A1" fontFamily="Times New Roman"
 			 text="{'创建于'  + FormatUtils.formatHT(gridfile.file.modificationDate) + '  大小' + gridfile.size}"/>
 	
-	<mx:LinkButton x="938" y="14" width="65" label="删除" click="linkbutton3_clickHandler(event)"
-				   fontFamily="Times New Roman" icon="@Embed('buttons/delete.gif')">
+	<mx:LinkButton x="930" y="14" width="53" label="删除" click="linkbutton3_clickHandler(event)"
+				   fontFamily="Times New Roman" icon="@Embed('buttons/close_panel.gif')" paddingLeft="0"
+				   paddingRight="0">
 	</mx:LinkButton>
-	<mx:LinkButton x="871" y="14" width="62" label="打开" click="open(event)"
-				   icon="@Embed('buttons/open_file.gif')">
+	<mx:LinkButton x="810" y="14" width="59" label="打开" click="open(event)"
+				   icon="@Embed('buttons/open_file.gif')" paddingLeft="0" paddingRight="0">
 	</mx:LinkButton>
 	<mx:HRule x="0" y="47" width="100%" strokeColor="#E0E0E0"/>
+	<mx:LinkButton x="870" y="14" label="另存" icon="@Embed('buttons/save_as.gif')" paddingLeft="0"
+				   paddingRight="0" click="saveAs(event)"/>
 </s:BorderContainer>
