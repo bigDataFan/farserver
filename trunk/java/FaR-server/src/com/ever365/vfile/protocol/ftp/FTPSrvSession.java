@@ -1529,7 +1529,7 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 		try {
 			AuthenticationUtil.setCurrentUser(getClientInformation().getUser().getName());
 			
-			File file = rootFile.getByPath(ftpPath.getSharePath());
+			File file = rootFile.getByPath(ftpPath.getFTPPath());
 
 			if (file!=null) {
 				if (file.isFolder()) {
@@ -1627,7 +1627,7 @@ public class FTPSrvSession extends SrvSession implements Runnable {
         
 		try {
 			AuthenticationUtil.setCurrentUser(getClientInformation().getUser().getName());
-			File file = rootFile.getByPath(ftpPath.getSharePath());
+			File file = rootFile.getByPath(ftpPath.getFTPPath());
 			
 			
 			
@@ -1639,10 +1639,10 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 				
 				//getFTPServer().getRuntime().getNodeService().deleteNode(targetNode);
 			} else {
-				String parentPath = StringUtils.getParentPath(ftpPath.getSharePath(), FTP_SEPERATOR);
-				String fileName = StringUtils.getFileName(ftpPath.getSharePath(), FTP_SEPERATOR);
+				String parentPath = StringUtils.getParentPath(ftpPath.getFTPPath(), FTP_SEPERATOR);
+				String fileName = StringUtils.getFileName(ftpPath.getFTPPath(), FTP_SEPERATOR);
 				
-				File parentFile = file.getParent();
+				File parentFile = rootFile.getByPath(parentPath);
 				
 				if (parentFile==null || !parentFile.isFolder()) {
 					sendFTPResponse(425, "Can't open data connection");
@@ -1856,11 +1856,11 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 			return;
 		}
 
-		if ( !m_renameFrom.isEditableFile()) {
+		/*if ( !m_renameFrom.isEditableFile()) {
 			sendFTPResponse(550, "You can not rename an application");
 			return;
 		}
-
+*/
 		
 		// Create the path for the new file name
 
@@ -1880,11 +1880,11 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 			return;
 		}
 		try {
-			String o_parent = StringUtils.getParentPath(m_renameFrom.getSharePath(), FTP_SEPERATOR);
-			String t_parent = StringUtils.getParentPath(ftpPath.getSharePath(), FTP_SEPERATOR);
+			String o_parent = StringUtils.getParentPath(m_renameFrom.getFTPPath(), FTP_SEPERATOR);
+			String t_parent = StringUtils.getParentPath(ftpPath.getFTPPath(), FTP_SEPERATOR);
 			String t_name = StringUtils.getFileName(ftpPath.getFTPPath(), FTP_SEPERATOR);
 			
-			File file = rootFile.getByPath(m_renameFrom.getSharePath());
+			File file = rootFile.getByPath(m_renameFrom.getFTPPath());
 			
 			
 			if (file == null) {
@@ -1953,8 +1953,8 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 
 		// Create the new directory
 		try {
-			String parentPath = StringUtils.getParentPath(ftpPath.getSharePath(), FTP_SEPERATOR);
-	        String folderName =  StringUtils.getFileName(ftpPath.getSharePath(), FTP_SEPERATOR);
+			String parentPath = StringUtils.getParentPath(ftpPath.getFTPPath(), FTP_SEPERATOR);
+	        String folderName =  StringUtils.getFileName(ftpPath.getFTPPath(), FTP_SEPERATOR);
 		    
 	        File parentFile = rootFile.getByPath(parentPath);
 	        
@@ -2973,8 +2973,8 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 		if (path.isRootPath()) {
 			FileInfo finfo = new FileInfo(this.getClientInformation().getUserName(), 0L, FileAttribute.Directory);
 			files.add(finfo);
-		} else if (path.getShareName()!=null) {
-			File file = rootFile.getByPath(path.getSharePath());
+		} else if (path.getFTPPath()!=null) {
+			File file = rootFile.getByPath(path.getFTPPath());
 			if (file!=null && file.isFolder()) {
 				List<File> children = file.getChildren();
 				

@@ -11,6 +11,7 @@ import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 
+import com.ever365.vfile.VFileService;
 import com.google.gdata.client.http.AuthSubUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
@@ -32,7 +33,7 @@ public class BasicUserService {
 	private String userdb;
 	private String adminPassword;
 	private ApplicationService applicationService; 
-	
+	private VFileService fileService;
 	
 	/*
 	public String getMainPage() {
@@ -58,6 +59,10 @@ public class BasicUserService {
 	}
 	*/
 	
+	public void setFileService(VFileService fileService) {
+		this.fileService = fileService;
+	}
+
 	private MongoDBProvider dbProvider = null;
 	
 	public MongoDBProvider getDbProvider() {
@@ -325,6 +330,8 @@ public class BasicUserService {
 			user.setContentUsed(0);
 			user.setDisabled(false);
 			BasicDBObject bdo = new BasicDBObject(user.getMap());
+			
+			fileService.getRootFile().createFolder(name);
 			
 			WriteResult result = coll.insert(bdo, WriteConcern.SAFE);
 			return true;

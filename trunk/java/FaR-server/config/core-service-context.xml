@@ -98,6 +98,7 @@
 		<property name="dbProvider">
 			<ref bean="dbProvider"/>
 		</property>
+		<property name="fileService" ref="fileService"></property>
 		<property name="adminPassword">
 			<value>${auth.adminpassword}</value>
 		</property>
