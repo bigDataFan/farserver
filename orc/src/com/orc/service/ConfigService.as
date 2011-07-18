@@ -15,7 +15,9 @@ package com.orc.service
 		public var email:String;
 		public var password:String;
 		
-		
+		public var dropbox_id:String;
+		public var dropbox_pwd:String;
+				
 		public function ConfigService() {
 			rootFolder = ConfigUtils.readProp("root");
 			if (rootFolder==null) {
@@ -28,6 +30,8 @@ package com.orc.service
 			email = ConfigUtils.readProp("email");
 			password = ConfigUtils.readProp("password");
 			
+			dropbox_id = ConfigUtils.readProp("dropbox_id");
+			dropbox_pwd = ConfigUtils.readProp("dropbox_pwd");
 		}
 		
 		
