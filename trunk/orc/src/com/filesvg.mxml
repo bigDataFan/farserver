@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="700" >
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1020" height="700" >
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
@@ -186,16 +186,16 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<s:VGroup x="0" y="0" width="1010" height="665" gap="0">
+	<s:VGroup x="0" y="0" width="1024" height="665" gap="0">
 		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="665">
-			<s:VGroup id="vg_file_bydate" height="665" width="1000" gap="0">
+			<s:VGroup id="vg_file_bydate" height="665" width="1007" gap="0">
 			</s:VGroup>
 		</s:Scroller>
 	</s:VGroup>
 	
-	<s:BorderContainer x="0" y="671" width="1016" height="25" backgroundColor="#E0E0E0"
+	<s:BorderContainer x="0" y="671" width="1020" height="25" backgroundColor="#E0E0E0"
 					   borderColor="#CEDBEF" dropShadowVisible="true">
-		<mx:LinkButton x="3" y="1" label="增加文件" click="click_addFile(event)"/>
+		<mx:LinkButton icon="@Embed('buttons/add_green.png')" x="3" y="1" label="增加文件" click="click_addFile(event)"/>
 		
 		<mx:LinkButton x="941" y="0" label="显示更多." click="click_showMore(event)"/>
 			

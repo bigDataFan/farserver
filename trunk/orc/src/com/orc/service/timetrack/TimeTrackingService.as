@@ -38,6 +38,19 @@ package com.orc.service.timetrack
 			tts.remove({"cr":start});
 		}
 		
+		public function getRunningItem():Object {
+			var items:Array = getTrackingItems(new Date());
+			
+			for (var i:int = 0; i < items.length; i++) 
+			{
+				if (items[i]["lastStart"]!=null) {
+					return items[i];					
+				}
+			}
+			
+			return null;
+			
+		}
 		
 		public function getDuraAsTime(o:Object):Number {
 			if (o[LAST_START]!=null) {
