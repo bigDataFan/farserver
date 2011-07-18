@@ -61,8 +61,8 @@
 			var full_x:int = 0;
 			var full_y:int = 0;
 			
-			var float_x:int = 200;
-			var float_y:int = 200;
+			var float_x:int = 20;
+			var float_y:int = 20;
 			
 			
 			protected function switchFullModel(event:MouseEvent):void
@@ -90,8 +90,26 @@
 				nativeApplication.activeWindow.y = float_y;
 				
 				NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
-				NativeApplication.nativeApplication.activeWindow.width = 100;
-				NativeApplication.nativeApplication.activeWindow.height = 36;
+				NativeApplication.nativeApplication.activeWindow.width = 154;
+				NativeApplication.nativeApplication.activeWindow.height = 40;
+				
+				var runningItem:Object = ServiceRegistry.trackingService.getRunningItem();
+				if (runningItem==null) {
+					busy_img.visible = false;
+					busy_time.text = "0:00";
+					busy_label.text= "当前没有事项在进行";
+				} else {
+					busy_img.visible = true;
+					busy_time.text = ServiceRegistry.trackingService.getDura(runningItem);
+					busy_label.text= runningItem["desc"];
+					
+					var timer:Timer = new Timer(60*1000);
+					timer.addEventListener(TimerEvent.TIMER,function onTimer() {
+						busy_time.text = ServiceRegistry.trackingService.getDura(runningItem);
+					});
+					timer.start();
+					
+				}
 				
 				fullmodel.visible = false;
 				dragModel.visible = true;				
@@ -142,7 +160,7 @@
 			
 			protected function onAcceptDrag(event:NativeDragEvent):void
 			{
-				NativeDragManager.acceptDragDrop(dropButton);
+				NativeDragManager.acceptDragDrop(dragModel);
 			}
 			
 			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
@@ -211,17 +229,19 @@
 						   labelPlacement="bottom"/>
 			<mx:LinkButton x="87" y="0" width="72" height="69" label="时间"  color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Clock.png')" click="openTimes(event)"/>
 			<mx:LinkButton x="256" y="0" width="72" height="69" label="配置" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Tools.png')" click="openConfig(event)"/>
-			<mx:LinkButton x="341" y="1" width="72" height="69" label="悬浮窗口" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Wallet.png')" click="switchModel2(event)"/>
+			<!-- <mx:LinkButton x="341" y="1" width="72" height="69" label="悬浮窗口" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Wallet.png')" click="switchModel2(event)"/> -->
 			<mx:LinkButton x="169" y="0" width="72" height="69" label="随意贴" color="#FCF7F7" labelPlacement="bottom" icon="@Embed('icon/Clipboard.png')" click="openPastes(event)"/>
 			
-			
-			<mx:LinkButton x="975" y="0" width="21" icon="@Embed('buttons/min.gif')" click="minApp(event)"/>
-			<mx:LinkButton x="998" y="0" width="21" icon="@Embed('buttons/close.gif')" click="closeApp(event)"/>
+			<mx:LinkButton x="903" y="0" width="69" label="悬浮模式" click="switchModel2(event)"
+						   color="#FCF7F7" fontSize="11" icon="@Embed('buttons/profile.png')"
+						   paddingLeft="0" paddingRight="0"/>
+			<mx:LinkButton x="975" y="0" width="21" icon="@Embed('buttons/minus.png')" click="minApp(event)"/>
+			<mx:LinkButton x="998" y="0" width="21" icon="@Embed('buttons/window-close.png')" click="closeApp(event)"/>
 		</s:BorderContainer>
 		
-		<s:HGroup x="5" y="70" width="100%" height="696">
+		<s:HGroup x="0" y="70" width="100%" height="696">
 		<s:Group id="right_group" width="100%" >
-			<com:filesvg id="files_g" visible="true" x="0" y="0" width="1009" height="694">
+			<com:filesvg id="files_g" visible="true" x="0" y="0" width="1024" height="694">
 			</com:filesvg>
 			
 			<easypaste:EasyPaste id="notes_g"  x="0" y="0" width="1016" visible="false">
@@ -242,7 +262,16 @@
 	</s:HGroup>
 	</s:BorderContainer>
 	
-	<s:Group id="dragModel" width="100%" height="36" visible="false"  x="0" y="0" >
+	<s:BorderContainer width="154" height="40" id="dragModel" visible="false"  x="0" y="0" mouseDown="dragWin()" nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)">
+		<mx:LinkButton x="124" y="2" width="27"  fontSize="11"
+					   icon="@Embed('buttons/profile.png')" paddingLeft="0" paddingRight="0" click="switchFullModel(event)"/>
+		<s:Label x="8" y="23" width="144" fontSize="10" text="标签" id="busy_label"/>
+		<s:Label x="7" y="7" width="71" fontSize="16" fontWeight="bold" text="0:00" id="busy_time"/>
+		<s:Image id="busy_img" x="48" y="5" width="16" height="16" source="buttons/busy.png"/>
+		
+	</s:BorderContainer>
+	
+	<s:Group id="dragModelxx" width="100%" height="36" visible="false"  x="0" y="0" >
 		<mx:LinkButton labelPlacement="bottom" icon="@Embed('buttons/dragpo.png')" id="dropButton" width="100%" paddingLeft="0" paddingRight="0" height="36" x="0" y="0" 
 					   doubleClickEnabled="true" doubleClick="switchFullModel(event)" mouseDown="dragWin()"
 				  nativeDragOver="onAcceptDrag(event)" nativeDragDrop="onDragDrop(event)"> 
