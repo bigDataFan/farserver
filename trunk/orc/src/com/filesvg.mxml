@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1010" height="700" >
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="700" >
 	<fx:Script>
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
 			import com.orc.service.file.FileEvent;
 			import com.orc.service.file.FileItemDisplayGroup;
+			import com.orc.service.file.FileService;
 			import com.orc.service.file.GridFile;
 			import com.orc.utils.FormatUtils;
 			
@@ -29,8 +30,10 @@
 			public function init():void {
 				ServiceRegistry.fileService.addEventDispatcher(this);
 				this.addEventListener(FileEvent.MODIFY, onChange);
-				fillByDate();
+				loadMore();
 			}
+			
+			
 			
 			protected function linkbutton3_clickHandler(event:MouseEvent):void
 			{
@@ -50,106 +53,99 @@
 				}
 			}
 			
-			private var loadedItem:int = 0;
-			private var dateIndex:int = 0;
 			
-			
-			public function more():void {
+			var todayVG:VGroup = null;  //表示今天的组  拖入文件时需要将其增加到组中
+			public function drawDate(label:String, fileList:ArrayList) {
 				
-			}
-			
-			public function fillByDate():void {
-				
-				vg_file_bydate.removeAllElements();
-				
-				var t1:Date = new Date();
-				ServiceRegistry.fileService.load();
-				var t2:Date = new Date();
-				trace( t2.getTime()-t1.getTime());
-				
-				var grouped:Array = ServiceRegistry.fileService.getAllFilesGrouped();
-				
-				var t3:Date = new Date();
-				trace( t3.getTime()-t2.getTime());
-				
-				for (var i:int = 0; i < grouped.length; i++) 
-				{
-					/*
-					var panel:Panel = new Panel();
-					panel.percentWidth = 100;
-					panel.title = grouped[i].label;
-					panel.verticalScrollPolicy = "off";
-					panel.horizontalScrollPolicy = "off";
-					*/
-					
-					
-					var vg:VGroup = new VGroup();
-					vg.id = FormatUtils.formatDateToId(grouped[i].date);
-					vg_file_bydate.addElement(vg);
-					vg.gap = 0;
-					vg.percentWidth=95;
-					//vg.height = 80;
-					//vg.y = i * 80;
-					
-					
-					var gTitle:BorderContainer = new BorderContainer();
-					gTitle.percentWidth=100;
-					gTitle.height = 25;
-					gTitle.setStyle("backgroundColor","#E0E0E0");
-					gTitle.setStyle("borderColor","#cedbef");
-					var titleLabel:Label = new Label();
-					titleLabel.x = 20;
-					titleLabel.y = 5;
-					titleLabel.text = grouped[i].label;
-					gTitle.addElement(titleLabel);
-					vg.addElement(gTitle);
-					
-					
-					var childFiles:Array = grouped[i].children as Array;
-					
-					for (var j:int = 0; j < childFiles.length; j++) 
-					{
-						var fid : FileItemDisplayGroup = new FileItemDisplayGroup();
-						fid.gridfile = childFiles[j] as GridFile;
-						//fid.y = j * 48;
-						vg.addElement(fid);
-						
-						loadedItem ++;
-					}
-					
-					if (loadedItem>)
-					//panel.addElement(vg);
+				if (label!=FileService.LABEL_TODAY && fileList.length==0) {
+					return;
 				}
 				
-				var t4:Date = new Date();
-				trace( t4.getTime()-t3.getTime());
+				var vg:VGroup = new VGroup();
+				
+				if (todayVG==null) {  
+					todayVG = vg; 
+				}
+				
+				vg.gap = 0;
+				vg.width = 1010;
+				
+				var gTitle:BorderContainer = new BorderContainer();
+				gTitle.percentWidth=100;
+				gTitle.height = 25;
+				gTitle.setStyle("backgroundColor","#E0E0E0");
+				gTitle.setStyle("borderColor","#cedbef");
+				var titleLabel:Label = new Label();
+				titleLabel.x = 20;
+				titleLabel.y = 5;
+				titleLabel.text = label;
+				gTitle.addElement(titleLabel);
+				vg.addElement(gTitle);
+				
+				for (var i:int = 0; i < fileList.length; i++) 
+				{
+					var fid : FileItemDisplayGroup = new FileItemDisplayGroup();
+					fid.gridfile = fileList.source[i] as GridFile;
+					//fid.y = j * 48;
+					vg.addElement(fid);
+				}
+				
+				vg_file_bydate.addElement(vg);
+				//vg.height = 80;
 			}
+			
+			public function addFile(gf:GridFile) {
+				if(todayVG!=null) {
+					var fid : FileItemDisplayGroup = new FileItemDisplayGroup();
+					fid.gridfile = gf;
+					todayVG.addElementAt(fid,1);
+				}
+			}
+			
+			
+			
+			private var loadedDateIndex:int = 0;
+			public static const ITEMS_PER_PAGE:int = 15;
+			public function loadMore():void {
+				var days:Array = ServiceRegistry.fileService.getDays();
+				
+				var loaded:int = 0;
+				
+				while (loadedDateIndex<days.length && loaded<ITEMS_PER_PAGE) {
+					var fileList:ArrayList = ServiceRegistry.fileService.getDateFileList(days[loadedDateIndex].path);
+					
+					drawDate(days[loadedDateIndex].label, fileList);
+					loadedDateIndex ++;
+					loaded += fileList.length;
+				}
+			}
+			
+			
 			
 			protected function onChange(event:Event):void
 			{
 				var fe:FileEvent = event as FileEvent;
 				var date:Date = new Date();
 								
-				fillByDate();
+				addFile(fe.file);
 			}
 			
-			protected function vg_file_bydate_mouseWheelHandler(event:MouseEvent):void
+			protected function click_showMore(event:MouseEvent):void
 			{
-				if (vg_file_bydate.y >0) return;
-				if (vg_file_bydate.y < -vg_file_bydate.height) return;
-				vg_file_bydate.y +=event.delta * 5;
+				loadMore();
 			}
 			
-			
-			protected function groupMouseMove(event:MouseEvent):void
+			protected function click_addFile(event:MouseEvent):void
 			{
-				trace("moved");				
-			}
-			
-			protected function gridMouseDown(event:MouseEvent):void
-			{
-				// TODO Auto-generated method stub
-				
+				var file = new File();
+				file.addEventListener(FileListEvent.SELECT_MULTIPLE, function (event:FileListEvent):void {
+					var files:Array = event.files;
+					for (var i:int = 0; i < files.length; i++) 
+					{
+						ServiceRegistry.fileService.addFile(files[i]);
+					}
+				});
+				file.browseForOpenMultiple("选择文件...");
 			}
 			
 		]]>
@@ -190,57 +186,19 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<s:HGroup x="0" y="0" width="1010" height="100%">
-		
-		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="100%">
-			<s:VGroup id="vg_file_bydate" mouseWheel="vg_file_bydate_mouseWheelHandler(event)" height="100%" width="1000" gap="0">
+	<s:VGroup x="0" y="0" width="1010" height="665" gap="0">
+		<s:Scroller verticalScrollPolicy="auto" horizontalScrollPolicy="off" height="665">
+			<s:VGroup id="vg_file_bydate" height="665" width="1000" gap="0">
 			</s:VGroup>
 		</s:Scroller>
+	</s:VGroup>
+	
+	<s:BorderContainer x="0" y="671" width="1016" height="25" backgroundColor="#E0E0E0"
+					   borderColor="#CEDBEF" dropShadowVisible="true">
+		<mx:LinkButton x="3" y="1" label="增加文件" click="click_addFile(event)"/>
 		
-		
-			<!--
-			<mx:AdvancedDataGrid id="datagrid_file_list_view" width="617" height="100%" verticalGridLines="false" 
-								 disclosureClosedIcon="{null}"
-								 disclosureOpenIcon="{null}"
-								  doubleClickEnabled="true" allowMultipleSelection="true"
-								  dataProvider="{new HierarchicalData(serviceRegistry.fileService.getAllFilesGrouped())}"
-								  displayItemsExpanded="true">
-				<mx:columns>
-					<mx:AdvancedDataGridColumn  headerText="" width="36">
-						<mx:itemRenderer>
-							<fx:Component>
-								<mx:Image source="{data.iconpath}" width="32" height="32">
-								</mx:Image>
-							</fx:Component>
-						</mx:itemRenderer>
-					</mx:AdvancedDataGridColumn >
-					<mx:AdvancedDataGridColumn headerText="名称" width="500" dataField="name" resizable="true"/>	
-					<mx:AdvancedDataGridColumn headerText="修改时间" width="80" dataField="modified"/>
-					<mx:AdvancedDataGridColumn dataField="size" sortable="true" width="80" />
-					
-					<mx:AdvancedDataGridColumn>
-						<mx:itemRenderer>
-							<fx:Component>
-								<mx:LinkButton icon="@Embed('buttons/remove_item.gif')" click="linkbutton2_clickHandler(event)">
-									<fx:Script>
-										<![CDATA[
-											import mx.collections.ArrayCollection;
-											protected function linkbutton2_clickHandler(event:MouseEvent):void
-											{
-												if (outerDocument.datagrid_file_list_view.selectedItem!=null) {
-													(outerDocument.datagrid_file_list_view.selectedItem["file"] as File).moveToTrash();
-													outerDocument.datagrid_file_list_view.dataProvider = new HierarchicalData(outerDocument.serviceRegistry.fileService.getAllFilesGrouped());
-												}
-											}
-										]]>
-									</fx:Script>
-								</mx:LinkButton>
-							</fx:Component>
-						</mx:itemRenderer>
-					</mx:AdvancedDataGridColumn>
-				</mx:columns>	
-			</mx:AdvancedDataGrid>
-			-->
-		
-	</s:HGroup>
+		<mx:LinkButton x="941" y="0" label="显示更多." click="click_showMore(event)"/>
+			
+	</s:BorderContainer>
+
 </s:Group>

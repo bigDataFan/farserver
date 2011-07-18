@@ -25,6 +25,9 @@ package com.orc.service.file
 		public static const TYPE_FILE_TYPE = "a";
 		public static const TYPE_LOG_TYPE = "l";
 		
+		
+		public static const LABEL_TODAY = "今日";
+		
 		var typedic:Object = new Object();
 		
 		var dates:Array = new Array();
@@ -79,13 +82,11 @@ package com.orc.service.file
 		}
 		
 		public function addFile(file1:File) :void {
-			var todayFolder:File = new File(todayPath + "/" + file1.name);
+			var newFile:File = new File(todayPath + "/" + file1.name);
 			//todayFolder.createDirectory();
 			
 			try {
-				file1.moveTo(todayFolder, false);
-				
-				
+				file1.copyTo(newFile, false);
 				/*
 				var log:Object = new Object();
 				log.id = new TimeRelatedId(TYPE_LOG_TYPE).toString();
@@ -95,7 +96,7 @@ package com.orc.service.file
 				
 				filelogs.insertCapped(log,1000);
 				*/
-				sendNotify(file1);
+				sendNotify(newFile);
 			} catch (e:Error) {
 				
 			}
@@ -190,7 +191,7 @@ package com.orc.service.file
 					var day:Number = new Number(child.name.substr(0,child.name.indexOf("日")));
 					
 					if (today.getFullYear()==year && (today.getMonth()+1)==month && today.getDate()==day) {
-						o["label"] = "今日";	
+						o["label"] = LABEL_TODAY;	
 					} else {
 						o["label"] = child.parent.parent.name + child.parent.name + child.name;
 					}
@@ -391,6 +392,7 @@ package com.orc.service.file
 			}
 			return result;
 		}
+		
 		
 		
 		public function getAllFilesGrouped():Array {
