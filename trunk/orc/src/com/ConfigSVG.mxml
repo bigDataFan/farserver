@@ -6,6 +6,10 @@
 		<![CDATA[
 			import com.orc.service.ServiceRegistry;
 			
+			import mx.controls.Alert;
+			
+			import org.hamster.dropbox.DropboxEvent;
+			
 			protected function selectRootFolder(event:MouseEvent):void
 			{
 				var f:File = new File(ServiceRegistry.configService.rootFolder);
@@ -21,14 +25,41 @@
 				});				
 			}
 			
+			protected function checkDropBoxPwd(event:MouseEvent):void
+			{
+				ServiceRegistry.dropAPI.token(dropbox_id.text, dropbox_pwd.text);
+				var handler:Function = function (evt:DropboxEvent):void
+				{
+					ServiceRegistry.dropAPI.removeEventListener(DropboxEvent.TOKEN_RESULT, handler);
+					var obj:Object = evt.resultObject;
+					Alert.show(obj.toString());			
+				};
+				ServiceRegistry.dropAPI.addEventListener(DropboxEvent.TOKEN_RESULT, handler);
+				if (!ServiceRegistry.dropAPI.hasEventListener(DropboxEvent.TOKEN_FAULT)) {
+					ServiceRegistry.dropAPI.addEventListener(DropboxEvent.TOKEN_FAULT, faultHandler);
+				}
+			}
+			
+			private function faultHandler(evt:Event):void
+			{
+				Alert.show((evt as Object).resultObject);
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:Panel x="27" y="22" width="975" height="200" title="基本配置">
-		<s:Label x="12" y="15" text="数据文件夹位置"/>
+	<s:Panel x="27" y="22" width="975" height="94" title="基本配置">
+		<s:Label x="12" y="15" text="本地存储目录"/>
 		<s:TextInput id="rootFolderEdit" x="104" y="10" width="677" text="{ServiceRegistry.configService.rootFolder}"/>
 		<s:Button x="800" y="10" width="26" label=".." click="selectRootFolder(event)"/>
+	</s:Panel>
+	<s:Panel x="27" y="132" width="975" height="140" title="DropBox同步">
+		<s:Label x="12" y="15" text="Dropbox用户名"/>
+		<s:TextInput id="dropbox_id" x="104" y="10" width="227" text="{ServiceRegistry.configService.dropbox_id}"/>
+		<s:Label x="12" y="49" text="Dropbox密码"/>
+		<s:TextInput id="dropbox_pwd" x="104" y="43" width="227" text="{ServiceRegistry.configService.dropbox_id}"/>
+		<s:Button x="261" y="73" label="设置" click="checkDropBoxPwd(event)"/>
+		
 	</s:Panel>
 </s:Group>

@@ -218,6 +218,7 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
+
 	<s:BorderContainer id="fullmodel" width="100%" height="100%" horizontalCenter="true" backgroundColor="#EAE4E4">
 		<s:BorderContainer id="controlbar" x="-1" y="0" width="1025" height="71"
 						   backgroundColor="#4B4A4A"
