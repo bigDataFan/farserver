@@ -1,5 +1,6 @@
 package com.elfish.ftp.worker
 {
+	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.Config;
@@ -63,8 +64,10 @@ package com.elfish.ftp.worker
 		public function response(rsp:Response):void
 		{
 			if(rsp.code == ResponseStatus.LOGIN.NEED_PASS) {
+				Client.result("NEED_PASS", "Yes");
 				executeCommand();
 			}else if(rsp.code == ResponseStatus.LOGIN.SUCCESS) {
+				Client.result("LOGIN.SUCCESS", "Yes");
 				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
 				dispatchEvent(event);
 			}
