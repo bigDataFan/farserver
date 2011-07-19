@@ -37,9 +37,8 @@ package com.elfish.ftp.model
 		private var socket:Socket = null;
 		
 		public var rsp:Response = null;
-		public var iworker:IWorker = null;
-		public var received:Boolean = false;
 		public var command:String = null;
+		public var client:Client = null;		
 		
 		/**
 		 * 所接收到的数据
@@ -106,8 +105,7 @@ package com.elfish.ftp.model
 			var byte:ByteArray = new ByteArray();
 			socket.readBytes(byte);
 			bytes.writeBytes(byte);
-			
-			Client.result(command, new String());
+			client.result(command, bytes);
 		}
 
 	}

@@ -9,6 +9,8 @@ package com.orc.service.sync.ftp
 	import com.orc.service.file.FileService;
 	import com.orc.service.sync.Synchronizer;
 	
+	import spark.components.Label;
+	
 	public class FileFtpSynchronizer implements Synchronizer
 	{
 		private var synchronizedb;
@@ -17,27 +19,99 @@ package com.orc.service.sync.ftp
 		
 		public var ready:Boolean = false;
 		
+
+		private var ftp_ip:String;
+		private var ftp_port:String;
+		private var ftp_user:String;
+		private var ftp_pwd:String;
+		private var ftp_path:String;
+
+		public var output:Label;
 		
-		public function FileFtpSynchronizer()
-		{
-			
-			var config:Config = new Config(ServiceRegistry.configService.ftp_ip, 
-				ServiceRegistry.configService.ftp_port, 
-				ServiceRegistry.configService.ftp_user,
+		
+		public function FileFtpSynchronizer(ip:String, port:String, user:String, pwd:String, path:String) {
+			ftp_ip = ip;
+			ftp_port = port;
+			ftp_user = user;
+			ftp_pwd = pwd;
+			ftp_path = path;
+		}
+		
+		public function check():void {
+			var config:Config = new Config(ftp_ip, 
+				ftp_port, 
+				ftp_user,
+				ftp_pwd);
 			
 			client = new Client();
 			client.ftpSync = this;
 			client.connect(config);
-			
-			synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
 		}
 		
+		private var currentPath: String = "";
 		
-		public function tellAnswer(String cmd, Object result) {
+		public function commandResult(cmd:String ,result:Object):void {
 			
+			output.text = cmd;
+			
+			
+			if (cmd==Client.IO_ERROR) {
+				return;
+			}
+			
+			if (!ready) {
+				
+				if (cmd==Client.LOGIN_SUCCESS) {
+					client.setDirectory(ftp_path);
+				}
+				
+				if (cmd==Client.CWD_SUCCESS) {
+					if (result.toString()==ftp_path) {
+						ready = true;
+						synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
+					} else {
+						currentPath = getNextPath(currentPath, ftp_path);
+						client.setDirectory(currentPath);
+					}
+				}
+				
+				if (cmd==Client.CWD_ERROR) {
+					if (currentPath=="") {
+						currentPath = getNextPath(currentPath, ftp_path);
+						client.setDirectory(currentPath);
+					} else {
+						client.createDirectory(currentPath);
+					}
+				}
+				
+				if (cmd==Client.MK_DIR) {
+					if (result.toString()==ftp_path) {
+						ready = true;
+						synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
+					} else {
+						currentPath = getNextPath(currentPath, ftp_path);
+						client.createDirectory(currentPath);
+					}
+				}
+			
+			}
 		}
 		
-		
+		private function getNextPath(src:String, target:String):String {
+			
+			if (src==target) return src;
+			
+			if (target.indexOf(src)>-1) {
+				var remains:String = target.substr(src.length + 1);
+				var pos:int = remains.indexOf("/");
+				if (pos>-1) {
+					return src + "/" + remains.substr(0,pos);			
+				} else {
+					return src + "/" + remains;
+				}
+			}
+			return src;
+		}
 		
 		
 		public function isReady():Boolean {
@@ -62,5 +136,4 @@ package com.orc.service.sync.ftp
 		}
 		
 		
-	}
-}
+	}}

@@ -8,6 +8,7 @@ package com.elfish.ftp.model
 	//
 	////////////////////////////////////////////////////////////////////////////////
 	
+	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.core.Console;
 	import com.elfish.ftp.util.Parser;
 	
@@ -35,6 +36,8 @@ package com.elfish.ftp.model
 		 * 控制连接实例
 		 */
 		public static var control:ControlSocket = null;
+		
+		public var client:Client = null;
 		
 		/**
 		 * 回调函数
@@ -98,6 +101,9 @@ package com.elfish.ftp.model
 			if(event is IOErrorEvent) {
 				if(Console.target)
 					Console.console("连接失败!");
+				if (client) {
+					client.result(Client.IO_ERROR,null);
+				}
 			}else
 				socket.close();
 		}

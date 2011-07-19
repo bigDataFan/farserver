@@ -51,16 +51,6 @@ package com.orc.service
 		}
 		
 		
-		public function getFtpSynchronizer():Synchronizer {
-			if (ftp_ip!=null) {
-				var ftpSynchronizer:FileFtpSynchronizer = new FileFtpSynchronizer();
-				
-				return ftpSynchronizer;
-			} else {
-				return null;
-			}
-		}
-		
 		public function setRoot(root:String):void {
 			rootFolder = root;
 			ConfigUtils.writeProp("root", rootFolder);
