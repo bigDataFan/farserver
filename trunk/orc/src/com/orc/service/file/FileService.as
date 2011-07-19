@@ -37,6 +37,8 @@ package com.orc.service.file
 		var filelogs:DataCollection;
 		var filetypes:DataCollection;
 		
+		private var sychronizers:Array = new Array();
+		
 		public function FileService(config:ConfigService, ds:DataService)
 		{
 			
@@ -45,8 +47,8 @@ package com.orc.service.file
 		
 		
 		public function load():void {
+						
 			if (dates.length!=0) return;
-			
 			filelogs = ServiceRegistry.dataService.getCollection("filelogs.db");
 			filetypes = ServiceRegistry.dataService.getCollection("filetypes.db");
 			
