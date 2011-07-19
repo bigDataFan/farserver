@@ -11,6 +11,7 @@ package com.elfish.ftp.core
 	import com.elfish.ftp.worker.LoginWorker;
 	import com.elfish.ftp.worker.MkdWorker;
 	import com.elfish.ftp.worker.UploadWorker;
+	import com.orc.service.sync.ftp.FileFtpSynchronizer;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -29,6 +30,7 @@ package com.elfish.ftp.core
 	{
 		include "../../Version.as";
 		
+		public var ftpSync:FileFtpSynchronizer;
 		/**
 		 * @private
 		 * @default null

@@ -81,6 +81,7 @@ package com.elfish.ftp.worker
 				executeCommand();
 			else if(rsp.code == ResponseStatus.PASV.SUCCESS) {
 				data = new DataSocket();
+				data.command = "list " + path;
 				data.connect(rsp.data as Config);
 				data.addEventListener(FTPEvent.FTP_WORLFINISH, response);
 				executeCommand();

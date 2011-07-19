@@ -1,5 +1,6 @@
 package com.elfish.ftp.model
 {
+	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.core.Console;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.worker.IWorker;
@@ -38,6 +39,7 @@ package com.elfish.ftp.model
 		public var rsp:Response = null;
 		public var iworker:IWorker = null;
 		public var received:Boolean = false;
+		public var command:String = null;
 		
 		/**
 		 * 所接收到的数据
@@ -104,9 +106,8 @@ package com.elfish.ftp.model
 			var byte:ByteArray = new ByteArray();
 			socket.readBytes(byte);
 			bytes.writeBytes(byte);
-			if(Console.target) {
-				Console.console(new String(bytes));
-			}
+			
+			Client.result(command, new String());
 		}
 
 	}
