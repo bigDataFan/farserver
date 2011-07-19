@@ -28,6 +28,8 @@ package com.elfish.ftp.worker
 		private var list:Array;
 		private var config:Config;
 		private var control:ControlSocket;
+		public var ftpClient:Client;
+		
 		
 		public function LoginWorker(control:ControlSocket, config:Config)
 		{
@@ -64,12 +66,12 @@ package com.elfish.ftp.worker
 		public function response(rsp:Response):void
 		{
 			if(rsp.code == ResponseStatus.LOGIN.NEED_PASS) {
-				Client.result("NEED_PASS", "Yes");
+				ftpClient.result(Client.LOGIN_NEED_PASS, "Yes");
 				executeCommand();
 			}else if(rsp.code == ResponseStatus.LOGIN.SUCCESS) {
-				Client.result("LOGIN.SUCCESS", "Yes");
-				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
-				dispatchEvent(event);
+				ftpClient.result(Client.LOGIN_SUCCESS, "Yes");
+				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
+				//dispatchEvent(event);
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package com.elfish.ftp.worker
 {
+	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.ControlSocket;
@@ -26,6 +27,7 @@ package com.elfish.ftp.worker
 		private var list:Array;
 		private var name:String;
 		private var control:ControlSocket;
+		public var ftpClient:Client;
 		
 		public function MkdWorker(control:ControlSocket, name:String)
 		{
@@ -36,7 +38,9 @@ package com.elfish.ftp.worker
 			
 			var names:Array = name.split(",");
 			for(var i:int=0;i<names.length;i++)
-				list.push(new Command(CommandsStatus.MKD, names[i]));
+				if (names[i]!="") {
+					list.push(new Command(CommandsStatus.MKD, names[i]));
+				}
 			
 			list = list.reverse();
 			
@@ -64,8 +68,9 @@ package com.elfish.ftp.worker
 		public function response(rsp:Response):void
 		{
 			if(list.length == 0) {
-				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
-				dispatchEvent(event);
+				ftpClient.result(Client.MK_DIR, name);
+				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
+				//dispatchEvent(event);
 			}
 			else
 				executeCommand();

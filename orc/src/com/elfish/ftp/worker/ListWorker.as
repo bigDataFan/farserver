@@ -1,5 +1,6 @@
 package com.elfish.ftp.worker
 {
+	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.Config;
@@ -30,6 +31,7 @@ package com.elfish.ftp.worker
 		private var path:String;
 		private var control:ControlSocket;
 		private var data:DataSocket;
+		public var client:Client;
 		
 		public function ListWorker(control:ControlSocket, path:String)
 		{

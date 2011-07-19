@@ -4,7 +4,9 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="700" >
 	<fx:Script>
 		<![CDATA[
+			import com.orc.service.ConfigUtils;
 			import com.orc.service.ServiceRegistry;
+			import com.orc.service.sync.ftp.FileFtpSynchronizer;
 			
 			import mx.controls.Alert;
 			
@@ -27,23 +29,18 @@
 			
 			protected function checkDropBoxPwd(event:MouseEvent):void
 			{
-				ServiceRegistry.dropAPI.token(dropbox_id.text, dropbox_pwd.text);
-				var handler:Function = function (evt:DropboxEvent):void
-				{
-					ServiceRegistry.dropAPI.removeEventListener(DropboxEvent.TOKEN_RESULT, handler);
-					var obj:Object = evt.resultObject;
-					Alert.show(obj.toString());			
-				};
-				ServiceRegistry.dropAPI.addEventListener(DropboxEvent.TOKEN_RESULT, handler);
-				if (!ServiceRegistry.dropAPI.hasEventListener(DropboxEvent.TOKEN_FAULT)) {
-					ServiceRegistry.dropAPI.addEventListener(DropboxEvent.TOKEN_FAULT, faultHandler);
-				}
+				ConfigUtils.writeProp("ftp_ip", ftp_ip.text);
+				ConfigUtils.writeProp("ftp_port", ftp_port.text);
+				ConfigUtils.writeProp("ftp_user", ftp_user.text);
+				ConfigUtils.writeProp("ftp_pwd", ftp_pwd.text);
+				ConfigUtils.writeProp("ftp_path", ftp_path.text);
+				
+				var ftpsync:FileFtpSynchronizer = new FileFtpSynchronizer(ftp_ip.text, ftp_port.text,
+					ftp_user.text, ftp_pwd.text,ftp_path.text);
+				ftpsync.output = ftp_result;
+				ftpsync.check();
 			}
 			
-			private function faultHandler(evt:Event):void
-			{
-				Alert.show((evt as Object).resultObject);
-			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -54,12 +51,19 @@
 		<s:TextInput id="rootFolderEdit" x="104" y="10" width="677" text="{ServiceRegistry.configService.rootFolder}"/>
 		<s:Button x="800" y="10" width="26" label=".." click="selectRootFolder(event)"/>
 	</s:Panel>
-	<s:Panel x="27" y="132" width="975" height="140" title="DropBox同步">
-		<s:Label x="12" y="15" text="Dropbox用户名"/>
-		<s:TextInput id="dropbox_id" x="104" y="10" width="227" text="{ServiceRegistry.configService.dropbox_id}"/>
-		<s:Label x="12" y="49" text="Dropbox密码"/>
-		<s:TextInput id="dropbox_pwd" x="104" y="43" width="227" text="{ServiceRegistry.configService.dropbox_id}"/>
-		<s:Button x="261" y="73" label="设置" click="checkDropBoxPwd(event)"/>
+	<s:Panel x="27" y="140" width="975" height="160" title="FTP文件同步">
+		<s:Label x="17" y="16" text="FTP地址"/>
+		<s:TextInput id="ftp_ip" x="104" y="10" width="227" text="{ServiceRegistry.configService.ftp_ip}"/>
+		<s:Label x="343" y="16" text="："/>
+		<s:TextInput id="ftp_port" x="359" y="11" width="58" text="{ServiceRegistry.configService.ftp_port}"/>
+		<s:Label x="18" y="49" text="用户名"/>
+		<s:TextInput id="ftp_user" x="104" y="49" width="313" text="{ServiceRegistry.configService.ftp_user}"/>
+		<s:Label x="522" y="45" text="密码"/>
+		<s:Label x="522" y="16" text="路径"/>
+		<s:TextInput id="ftp_path" x="574" y="11" width="305" text="{ServiceRegistry.configService.ftp_path}"/>
+		<s:TextInput id="ftp_pwd" x="574" y="45" width="305" text="{ServiceRegistry.configService.ftp_pwd}"/>
+		<s:Button x="29" y="88" label="设置" click="checkDropBoxPwd(event)"/>
+		<s:Label x="522" y="97" width="425" text="标签" id="ftp_result"/>
 		
 	</s:Panel>
 </s:Group>

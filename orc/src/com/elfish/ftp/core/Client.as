@@ -30,6 +30,15 @@ package com.elfish.ftp.core
 	{
 		include "../../Version.as";
 		
+		
+		public static const IO_ERROR:String =  "connection i/o error";
+		public static const LOGIN_NEED_PASS:String = "LOGIN_NEED_PASS";
+		public static const LOGIN_SUCCESS:String = "LOGIN_SUCCESS";
+		public static const CWD_SUCCESS:String = "CWD_SUCCESS";
+		public static const CWD_ERROR:String = "CWD_ERROR";
+		public static const MK_DIR:String = "MK_DIR";
+		
+		
 		public var ftpSync:FileFtpSynchronizer;
 		/**
 		 * @private
@@ -49,6 +58,7 @@ package com.elfish.ftp.core
 		public function Client()
 		{
 			control = ControlSocket.getInstance();
+			control.client = this;
 		}
 		
 		/**
@@ -73,6 +83,7 @@ package com.elfish.ftp.core
 		public function login(config:Config):void
 		{
 			var worker:LoginWorker = new LoginWorker(control, config);
+			worker.ftpClient = this;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -111,6 +122,7 @@ package com.elfish.ftp.core
 		public function setDirectory(name:String):void
 		{
 			var worker:CwdWorker = new CwdWorker(control, name);
+			worker.ftpClient = this;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -123,6 +135,7 @@ package com.elfish.ftp.core
 		public function createDirectory(name:String):void
 		{
 			var worker:MkdWorker = new MkdWorker(control, name);
+			worker.ftpClient = this;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -149,6 +162,7 @@ package com.elfish.ftp.core
 		public function list(path:String = ""):void
 		{
 			var worker:ListWorker = new ListWorker(control, path);
+			
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -175,7 +189,7 @@ package com.elfish.ftp.core
 		{
 			if(response.code == 220) {
 				login(ControlSocket.config);
-			}
+			} 
 		}
 		
 		/**
@@ -217,13 +231,10 @@ package com.elfish.ftp.core
 		{
 			return this._responseCall;
 		}
-
-		private static var results:Object = new Object();
 		
-		
-		public static function result(type:String, result:String):void
+		public function result(type:String, result:Object):void
 		{
-			results[type] = result;
+			ftpSync.commandResult(type, result);
 		}
 	}
 }
