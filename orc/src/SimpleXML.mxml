@@ -2,8 +2,8 @@
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx" 
-					   width="1000" height="600"
-					   applicationComplete="appCompleteHandler()">
+					   width="1000" height="600" initialize="windowedapplication1_initializeHandler(event)"
+					   >
 	<fx:Style>
 		@namespace s "library://ns.adobe.com/flex/spark";
 		@namespace mx "library://ns.adobe.com/flex/mx";
@@ -14,78 +14,53 @@
 			paddingRight    : 5;
 		}
 	</fx:Style>
+	<fx:Script>
+		<![CDATA[
+			import com.elfish.ftp.core.Client;
+			import com.elfish.ftp.core.Console;
+			import com.elfish.ftp.model.Config;
+			import com.elfish.ftp.model.Response;
+			
+			import mx.events.FlexEvent;
+			
+			protected function windowedapplication1_initializeHandler(event:FlexEvent):void
+			{
+				
+			}
+			var client:Client = new Client();
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				Console.setTarget(ta);
+				// TODO Auto-generated method stub
+				var config:Config = new Config("123.100.1.16", "21", "storage.300.cn:liuhan@300.cn", "01171819");
+				
+				client.responseCall = serverResponse;
+				client.connect(config);
+				
+				//client.setDirectory("liuhan@300.cn");
+			}
+			
+			public function serverResponse(response:Response):void
+			{
+				if(Console.target) {
+					Console.console("\n\n"+ new String(response.data), true);
+				}
+			}
+			
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				client.setDirectory(path.text);
+				
+			}
+			
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 	</fx:Declarations>
-	<fx:Script source="HsDropboxAPIAppAs.as" />
-	<mx:VBox width="100%" height="100%">
-		<mx:VBox width="100%" borderStyle="solid" cornerRadius="5">
-			<s:Label fontSize="20" fontWeight="bold" text="Create Account" />
-			<s:Button label="Create" click="createAccount()" />
-		</mx:VBox>
-		<mx:VBox width="100%" borderStyle="solid" cornerRadius="5">
-			<s:Label fontSize="20" fontWeight="bold" text="Authentication" />
-			<mx:HBox width="100%">
-				<s:RadioButton id="oauthRadioBtn" groupName="loginTypeRadio" value="oauth" selected="true" label="OAuth" />
-				<s:RadioButton id="tokenRadioBtn" groupName="loginTypeRadio" value="token" label="Token" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Request Token" click="getRequestToken()" width="130" />
-				<s:TextInput id="reqTokenKeyLabel" width="150" editable="false"/>
-				<s:TextInput id="reqTokenSecretLabel" width="150" editable="false"/>
-			</mx:HBox>
-			<mx:HBox id="emailPwdForm" width="100%" enabled="{tokenRadioBtn.selected}" verticalAlign="middle">
-				<s:Label text="email :"/>
-				<s:TextInput id="eMailLabel" width="200"/>
-				<s:Label text="password :" />
-				<s:TextInput id="passwordLabel" width="150" displayAsPassword="true"/>
-				<s:Button label="EMail / Password" click="emailLogin()" width="130"  />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Access Token" click="getAccessToken()" width="130" />
-				<s:TextInput id="accTokenKeyLabel" width="150" editable="false" />
-				<s:TextInput id="accTokenSecretLabel" width="150" editable="false" />
-			</mx:HBox>
-		</mx:VBox>
-		
-		<mx:VBox id="loginedAPIContainer" width="100%" height="100%" enabled="false" borderStyle="solid" cornerRadius="5">
-			<s:Label fontSize="20" fontWeight="bold" text="APIs" />
-			<mx:HBox width="100%">
-				<s:Button label="Account Info" click="accountInfo()" width="130" />
-				<s:TextInput id="accountInfoLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Upload File" click="uploadFile()" width="130" />
-				<s:TextInput id="uploadFileLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Copy File" click="copyFile()" width="130" />
-				<s:TextInput id="copyFileLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Create Folder" click="createFolder()" width="130" />
-				<s:TextInput id="createFolderLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Move File" click="moveFile()" width="130" />
-				<s:TextInput id="moveFileLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Delete File" click="deleteFile()" width="130" />
-				<s:TextInput id="deleteFileLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Get File" click="getFile()" width="130" />
-				<s:TextInput id="getFileLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Metadata" click="metadata()" width="130" />
-				<s:TextInput id="metadataLabel" width="100%" />
-			</mx:HBox>
-			<mx:HBox width="100%">
-				<s:Button label="Thumbnails" click="thumbnails()" width="130" />
-				<s:TextInput id="thumbnailsLabel" width="100%" />
-			</mx:HBox>
-		</mx:VBox>
-		
-	</mx:VBox>
+	<s:Button x="55" y="23" label="按钮" click="button1_clickHandler(event)"/>
+	<s:Button x="55" y="284" label="按钮" click="button2_clickHandler(event)"/>
+	<mx:TextArea id="ta" x="152" y="23" width="643" height="200"/>
+	<s:TextInput x="55" y="243" width="255" id="path"/>
+
 </s:WindowedApplication>
