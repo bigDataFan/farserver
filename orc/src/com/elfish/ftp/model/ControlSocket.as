@@ -16,7 +16,9 @@ package com.elfish.ftp.model
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.TimerEvent;
 	import flash.net.Socket;
+	import flash.utils.Timer;
 	
 	/**
 	 * 控制连接
@@ -56,6 +58,13 @@ package com.elfish.ftp.model
 			socket.addEventListener(ProgressEvent.SOCKET_DATA, response);
 			socket.addEventListener(IOErrorEvent.IO_ERROR, close);
 			socket.addEventListener(Event.CLOSE, close);
+			
+			timer = new Timer(20*1000);
+			timer.addEventListener(TimerEvent.TIMER, function():void {
+						send(new Command("NOOP",""));
+			});
+			
+		
 		}
 		
 		/**
@@ -87,9 +96,12 @@ package com.elfish.ftp.model
 		{
 			if(Console.target)
 				Console.console(comm.toExecuteString());
-				
+			trace(	comm.toExecuteString());
 			socket.writeMultiByte(comm.toExecuteString(), "utf8");
 			socket.flush();
+			if (timer.running) {
+				timer.stop();
+			}
 		}
 		
 		/**
@@ -108,7 +120,7 @@ package com.elfish.ftp.model
 				socket.close();
 		}
 		
-	
+		private var timer:Timer = null;	
 		
 		/**
 		 * 状态返回监听函数
@@ -136,6 +148,8 @@ package com.elfish.ftp.model
 					responseCall.call(null, result);
 				}
 			}
+			timer.start();			
+			
 		}
 
 	}

@@ -10,7 +10,6 @@ package com.orc.service.sync.ftp
 		
 		public function MakeFolderTask()
 		{
-			ftpClient.listener = this;
 		}
 		
 
@@ -29,23 +28,23 @@ package com.orc.service.sync.ftp
 					currentPath = getNextPath(currentPath, path);
 					ftpClient.setDirectory(currentPath);
 				}
+			}
 			
-				if (cmd==Client.CWD_ERROR) {
-					if (currentPath=="") {
-						currentPath = getNextPath(currentPath, path);
-						ftpClient.setDirectory(currentPath);
-					} else {
-						ftpClient.createDirectory(currentPath);
-					}
+			if (cmd==Client.CWD_ERROR) {
+				if (currentPath=="") {
+					currentPath = getNextPath(currentPath, path);
+					ftpClient.setDirectory(currentPath);
+				} else {
+					ftpClient.createDirectory(currentPath);
 				}
-				
-				if (cmd==Client.MK_DIR) {
-					if (o.toString()==path) {
-						listener.tell(TaskMessage.TASK_OK, "OK");
-					} else {
-						currentPath = getNextPath(currentPath, path);
-						ftpClient.createDirectory(currentPath);
-					}
+			}
+			
+			if (cmd==Client.MK_DIR) {
+				if (o.toString()==path) {
+					listener.tell(TaskMessage.TASK_OK, "OK");
+				} else {
+					currentPath = getNextPath(currentPath, path);
+					ftpClient.createDirectory(currentPath);
 				}
 			}
 		}
