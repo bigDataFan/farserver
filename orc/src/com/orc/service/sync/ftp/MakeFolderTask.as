@@ -42,7 +42,7 @@ package com.orc.service.sync.ftp
 			
 			if (cmd==Client.MK_DIR) {
 				if (o.toString()==path) {
-					listener.tell(TaskMessage.TASK_OK, "OK");
+					listener.tell(TaskMessage.TASK_OK, true);
 				} else {
 					currentPath = getNextPath(currentPath, path);
 					ftpClient.createDirectory(currentPath);
