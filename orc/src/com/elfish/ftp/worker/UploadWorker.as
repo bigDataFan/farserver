@@ -14,6 +14,7 @@ package com.elfish.ftp.worker
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
+	import com.elfish.ftp.core.Client;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -34,6 +35,7 @@ package com.elfish.ftp.worker
 		private var fileData:*;
 		private var control:ControlSocket;
 		private var data:DataSocket;
+		public var ftpClient:Client;
 		
 		public function UploadWorker(control:ControlSocket, name:String, fileData:*)
 		{
@@ -92,6 +94,7 @@ package com.elfish.ftp.worker
 			}
 			else if(rsp.code == ResponseStatus.STOR.END) {
 				rsp.code = 999;
+				ftpClient.result("UPLOAD_OK", name);
 				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
 				dispatchEvent(event);
 			}

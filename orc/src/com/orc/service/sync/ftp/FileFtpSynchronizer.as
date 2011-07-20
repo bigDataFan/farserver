@@ -4,27 +4,32 @@ package com.orc.service.sync.ftp
 	
 	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.model.Config;
+	import com.orc.service.DataCollection;
 	import com.orc.service.DataService;
 	import com.orc.service.ServiceRegistry;
 	import com.orc.service.file.FileService;
 	import com.orc.service.sync.Synchronizer;
 	
+	import flash.filesystem.File;
+	
+	import mx.collections.ArrayList;
+	
 	import spark.components.Label;
 	
-	public class FileFtpSynchronizer implements Synchronizer
+	public class FileFtpSynchronizer implements Synchronizer, FtpListener
 	{
-		private var synchronizedb;
+		private var synchronizedb:DataCollection;
 		private var fileSerice:FileService;
 		private var client:Client;
 		
 		public var ready:Boolean = false;
 		
 
-		private var ftp_ip:String;
-		private var ftp_port:String;
-		private var ftp_user:String;
-		private var ftp_pwd:String;
-		private var ftp_path:String;
+		public var ftp_ip:String;
+		public var ftp_port:String;
+		public var ftp_user:String;
+		public var ftp_pwd:String;
+		public var ftp_path:String;
 
 		public var output:Label;
 		
@@ -44,88 +49,119 @@ package com.orc.service.sync.ftp
 				ftp_pwd);
 			
 			client = new Client();
-			client.ftpSync = this;
+			client.listener = this;
 			client.connect(config);
 		}
 		
 		private var currentPath: String = "";
 		
-		public function commandResult(cmd:String ,result:Object):void {
+		public function tell(cmd:String ,result:Object):void {
 			
 			output.text = cmd;
-			
 			
 			if (cmd==Client.IO_ERROR) {
 				return;
 			}
 			
+			
+			//处理登陆ftp、转到指定目录的相关处理
 			if (!ready) {
 				
 				if (cmd==Client.LOGIN_SUCCESS) {
-					client.setDirectory(ftp_path);
+					var mft : MakeFolderTask = new MakeFolderTask();
+					mft.ftpClient = client;
+					mft.listener  = this;
+					mft.path = ftp_path;
+					mft.execute();
 				}
 				
-				if (cmd==Client.CWD_SUCCESS) {
-					if (result.toString()==ftp_path) {
-						ready = true;
-						synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
-					} else {
-						currentPath = getNextPath(currentPath, ftp_path);
-						client.setDirectory(currentPath);
-					}
-				}
-				
-				if (cmd==Client.CWD_ERROR) {
-					if (currentPath=="") {
-						currentPath = getNextPath(currentPath, ftp_path);
-						client.setDirectory(currentPath);
-					} else {
-						client.createDirectory(currentPath);
-					}
-				}
-				
-				if (cmd==Client.MK_DIR) {
-					if (result.toString()==ftp_path) {
-						ready = true;
-						synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
-					} else {
-						currentPath = getNextPath(currentPath, ftp_path);
-						client.createDirectory(currentPath);
-					}
-				}
-			
-			}
-		}
-		
-		private function getNextPath(src:String, target:String):String {
-			
-			if (src==target) return src;
-			
-			if (target.indexOf(src)>-1) {
-				var remains:String = target.substr(src.length + 1);
-				var pos:int = remains.indexOf("/");
-				if (pos>-1) {
-					return src + "/" + remains.substr(0,pos);			
-				} else {
-					return src + "/" + remains;
+				if (cmd==TaskMessage.TASK_OK) {
+					ready = true;
+					synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
 				}
 			}
-			return src;
+			
+			if (ready) {
+				if (cmd==TaskMessage.TASK_OK && result==true) {
+					if (tasks.length>0) {
+						var nextTask:FtpTask = tasks.source.shift() as FtpTask;
+						if (nextTask!=null) {
+							nextTask.execute();
+						}
+					}
+				}
+			}
 		}
-		
 		
 		public function isReady():Boolean {
 			return ready;
-			
 		}
 		
+		
+		//0 local  1 modified   2   sync to server  3 conflict
 		public function getStatus(o:Object):int {
+			if (!ready) return -1;
+			
+			if (o is File) {
+				var file:File = o as File;
+				var pf:Object = synchronizedb.findOne({"path":file.nativePath});
+				if (pf==null) {
+					return 	0;			
+				}
+				
+				if ((pf["modified"] as Date)==file.modificationDate) {
+					return 2;
+				}
+				
+				if ((pf["modified"] as Date)!=file.modificationDate) {
+					return 1;
+				}
+			}
 			return 0;
 		}
 		
 		public function commit(o:Object):void {
+			if (!ready) return;
+			
+			if (o is File) {
+				var file:File = o as File;
+				var filePath:String = ftp_path + "/" + file.parent.nativePath.substr(ServiceRegistry.configService.rootFolder.length);
+				
+				var pf:Object = synchronizedb.findOne({"path":file.nativePath});
+				
+				
+				
+				if (pf==null) {
+					var mft:MakeFolderTask = new MakeFolderTask();
+					mft.ftpClient = client;
+					mft.path = filePath;
+					mft.listener = this;
+					tasks.source.push(mft);
+					
+					var fct:FileCommitTask = new FileCommitTask();
+					fct.listener = this;
+					fct.ftpClient = client;
+					fct.file = file;
+					fct.relativePath = filePath;
+					tasks.source.push(mft);
+					
+					
+					
+					
+				}
+				
+				if ((pf["modified"] as Date)==file.modificationDate) {
+					return ;
+				}
+				
+				if ((pf["modified"] as Date)!=file.modificationDate) {
+					return;
+				}
+			}
+			
 			
 		}
+		
 		
 		public function updateAll():void {
 			
@@ -136,4 +172,17 @@ package com.orc.service.sync.ftp
 		}
 		
 		
-	}}
+		private var tasks:ArrayList = new ArrayList();
+		
+		
+		public function taskOK(ct:FileCommitTask):void {
+			
+			
+			var fileCommitTask:FileCommitTask = tasks.source.pop();
+			
+			fileCommitTask.execute();
+			
+		}
+		
+	}
+}
