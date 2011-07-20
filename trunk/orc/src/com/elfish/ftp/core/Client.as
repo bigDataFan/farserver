@@ -12,6 +12,7 @@ package com.elfish.ftp.core
 	import com.elfish.ftp.worker.MkdWorker;
 	import com.elfish.ftp.worker.UploadWorker;
 	import com.orc.service.sync.ftp.FileFtpSynchronizer;
+	import com.orc.service.sync.ftp.FtpListener;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -39,7 +40,7 @@ package com.elfish.ftp.core
 		public static const MK_DIR:String = "MK_DIR";
 		
 		
-		public var ftpSync:FileFtpSynchronizer;
+		public var listener:FtpListener;
 		/**
 		 * @private
 		 * @default null
@@ -98,6 +99,7 @@ package com.elfish.ftp.core
 		public function upload(name:String, fileData:*):void
 		{
 			var worker:UploadWorker = new UploadWorker(control, name, fileData);
+			worker.ftpClient = this;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -234,7 +236,7 @@ package com.elfish.ftp.core
 		
 		public function result(type:String, result:Object):void
 		{
-			ftpSync.commandResult(type, result);
+			listener.tell(type, result);
 		}
 	}
 }
