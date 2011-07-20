@@ -4,6 +4,8 @@ package com.orc.service.file
 	import com.orc.service.DataCollection;
 	import com.orc.service.DataService;
 	import com.orc.service.ServiceRegistry;
+	import com.orc.service.sync.Synchronizer;
+	import com.orc.service.sync.ftp.FileFtpSynchronizer;
 	import com.orc.utils.TimeRelatedId;
 	
 	import flash.events.EventDispatcher;
@@ -37,13 +39,12 @@ package com.orc.service.file
 		var filelogs:DataCollection;
 		var filetypes:DataCollection;
 		
-		private var sychronizers:Array = new Array();
+		public var ftpSync:FileFtpSynchronizer;
 		
 		public function FileService(config:ConfigService, ds:DataService)
 		{
 			
 		}
-		
 		
 		
 		public function load():void {
@@ -76,7 +77,25 @@ package com.orc.service.file
 				init(new File(basePath));	
 			}
 		}
+		
+		public function ftpuploadToSync():void {
+			
+			for (var i:int = 0; i < this.dates.length; i++) 
+			{
+				var files:ArrayList = getDateFileList(dates[i].path);
+				for (var j:int = 0; j < files.length; j++) 
+				{
+					var status:int = ftpSync.getStatus((files.getItemAt(j) as GridFile).file);
+					if (status==0 || status==1) {
+						ftpSync.commit((files.getItemAt(j) as GridFile).file);
+					}
+				}
 				
+			}
+			
+			
+			
+		}
 		
 		
 		public function addEventDispatcher(ed:EventDispatcher):void {

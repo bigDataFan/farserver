@@ -72,23 +72,22 @@ package com.orc.service.sync.ftp
 					mft.ftpClient = client;
 					mft.listener  = this;
 					mft.path = ftp_path;
+					client.listener = mft;
 					mft.execute();
 				}
 				
 				if (cmd==TaskMessage.TASK_OK) {
 					ready = true;
 					synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
+					ServiceRegistry.fileService.ftpSync = this;
+					ServiceRegistry.fileService.ftpuploadToSync();
 				}
 			}
 			
 			if (ready) {
+				running = false;
 				if (cmd==TaskMessage.TASK_OK && result==true) {
-					if (tasks.length>0) {
-						var nextTask:FtpTask = tasks.source.shift() as FtpTask;
-						if (nextTask!=null) {
-							nextTask.execute();
-						}
-					}
+					popRun();	
 				}
 			}
 		}
@@ -125,7 +124,8 @@ package com.orc.service.sync.ftp
 			
 			if (o is File) {
 				var file:File = o as File;
-				var filePath:String = ftp_path + "/" + file.parent.nativePath.substr(ServiceRegistry.configService.rootFolder.length);
+				var filePath:String = ftp_path + "/" + file.parent.nativePath.substr(ServiceRegistry.configService.rootFolder.length+1).replace(/\\/g,"/");
+				
 				
 				var pf:Object = synchronizedb.findOne({"path":file.nativePath});
 				
@@ -143,21 +143,18 @@ package com.orc.service.sync.ftp
 					fct.ftpClient = client;
 					fct.file = file;
 					fct.relativePath = filePath;
+					fct.synchronizedb = synchronizedb;
 					tasks.source.push(mft);
 					
 					
-					
-					
-				}
-				
-				if ((pf["modified"] as Date)==file.modificationDate) {
+				} else if ((pf["modified"] as Date)==file.modificationDate) {
 					return ;
-				}
-				
-				if ((pf["modified"] as Date)!=file.modificationDate) {
+				} else if ((pf["modified"] as Date)!=file.modificationDate) {
 					return;
 				}
 			}
+			
+			popRun();
 			
 			
 		}
@@ -171,18 +168,18 @@ package com.orc.service.sync.ftp
 			
 		}
 		
-		
+		private var running:Boolean = false;
 		private var tasks:ArrayList = new ArrayList();
 		
 		
-		public function taskOK(ct:FileCommitTask):void {
-			
-			
-			var fileCommitTask:FileCommitTask = tasks.source.pop();
-			
-			fileCommitTask.execute();
-			
+		public function popRun() {
+			if (!running && tasks.length>0) {0
+				var nextTask:FtpTask = tasks.source.shift() as FtpTask;
+				if (nextTask!=null) {
+					running = true;
+					nextTask.execute();
+				}
+			}
 		}
-		
 	}
 }
