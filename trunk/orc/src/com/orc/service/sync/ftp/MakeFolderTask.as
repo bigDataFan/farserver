@@ -14,6 +14,7 @@ package com.orc.service.sync.ftp
 		
 
 		public function execute():void {
+			ftpClient.listener = this;
 			ftpClient.setDirectory(path);
 		}
 		
