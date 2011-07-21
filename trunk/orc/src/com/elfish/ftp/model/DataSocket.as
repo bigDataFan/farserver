@@ -2,6 +2,7 @@ package com.elfish.ftp.model
 {
 	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.core.Console;
+	import com.elfish.ftp.core.FtpListener;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.worker.IWorker;
 	
@@ -38,7 +39,8 @@ package com.elfish.ftp.model
 		
 		public var rsp:Response = null;
 		public var command:String = null;
-		public var client:Client = null;		
+		public var listener:FtpListener = null;
+		public var worker:IWorker;
 		
 		/**
 		 * 所接收到的数据
@@ -105,7 +107,9 @@ package com.elfish.ftp.model
 			var byte:ByteArray = new ByteArray();
 			socket.readBytes(byte);
 			bytes.writeBytes(byte);
-			client.result(command, bytes);
+			if (listener) {
+				listener.tell(worker, null);
+			}
 		}
 
 	}

@@ -1,5 +1,6 @@
 package com.elfish.ftp.worker
 {
+	import com.elfish.ftp.core.FtpListener;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.ControlSocket;
@@ -26,6 +27,7 @@ package com.elfish.ftp.worker
 		private var name:String;
 		private var isFile:Boolean;
 		private var control:ControlSocket;
+		public var listener:FtpListener;
 		
 		public function DeleWorker(control:ControlSocket, name:String, isFile:Boolean)
 		{
@@ -69,6 +71,7 @@ package com.elfish.ftp.worker
 		public function response(rsp:Response):void
 		{
 			if(list.length == 0) {
+				
 				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
 				dispatchEvent(event);
 			}

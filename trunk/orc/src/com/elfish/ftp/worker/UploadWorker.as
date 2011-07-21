@@ -1,5 +1,6 @@
 package com.elfish.ftp.worker
 {
+	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.Config;
@@ -8,13 +9,13 @@ package com.elfish.ftp.worker
 	import com.elfish.ftp.model.Response;
 	import com.elfish.ftp.status.CommandsStatus;
 	import com.elfish.ftp.status.ResponseStatus;
+	import com.elfish.ftp.core.FtpListener;
 	
 	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
-	import com.elfish.ftp.core.Client;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -35,7 +36,10 @@ package com.elfish.ftp.worker
 		private var fileData:*;
 		private var control:ControlSocket;
 		private var data:DataSocket;
-		public var ftpClient:Client;
+		public var listener:FtpListener;
+		
+		public static const UPLOAD_RESULT = "";
+		
 		
 		public function UploadWorker(control:ControlSocket, name:String, fileData:*)
 		{
@@ -85,6 +89,8 @@ package com.elfish.ftp.worker
 		{
 			if(rsp.code == ResponseStatus.PASV.SUCCESS) {
 				data = new DataSocket();
+				data.worker = this;
+				data.listener = listener;
 				data.connect(rsp.data as Config);
 				executeCommand();
 			}
@@ -94,7 +100,7 @@ package com.elfish.ftp.worker
 			}
 			else if(rsp.code == ResponseStatus.STOR.END) {
 				rsp.code = 999;
-				ftpClient.result("UPLOAD_OK", name);
+				listener.tell(this, rsp);
 				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
 				dispatchEvent(event);
 			}

@@ -1,6 +1,12 @@
 package com.orc.service.sync.ftp
 {
 	import com.elfish.ftp.core.Client;
+	import com.elfish.ftp.core.FtpListener;
+	import com.elfish.ftp.model.Response;
+	import com.elfish.ftp.status.ResponseStatus;
+	import com.elfish.ftp.worker.CwdWorker;
+	import com.elfish.ftp.worker.IWorker;
+	import com.elfish.ftp.worker.MkdWorker;
 
 	public class MakeFolderTask implements FtpListener, FtpTask
 	{
@@ -14,38 +20,35 @@ package com.orc.service.sync.ftp
 		
 
 		public function execute():void {
-			ftpClient.listener = this;
-			ftpClient.setDirectory(path);
+			ftpClient.setDirectory(path, this);
 		}
 		
 		private var currentPath: String = "";
-		public function tell(cmd:String, o:Object):void {
+		
+		public function tell(worker:IWorker, resp:Response):void {
 			
-			if (cmd==Client.CWD_SUCCESS) {
-				
-				if (o.toString()==path) {
-					listener.tell(TaskMessage.TASK_OK, "OK");
+			if (worker is CwdWorker) {
+				if (resp.code==ResponseStatus.CWD.SUCCESS) {
+					if ((worker as CwdWorker).name==path) {
+						listener.tell(worker, resp);
+					} else {
+						currentPath = getNextPath(currentPath, path);
+						ftpClient.setDirectory(currentPath, this);
+					}
 				} else {
-					currentPath = getNextPath(currentPath, path);
-					ftpClient.setDirectory(currentPath);
+					if (currentPath=="") {
+						currentPath = getNextPath(currentPath, path);
+						ftpClient.setDirectory(currentPath, this);
+					} else {
+						ftpClient.createDirectory(currentPath, this);
+					}
 				}
-			}
-			
-			if (cmd==Client.CWD_ERROR) {
-				if (currentPath=="") {
-					currentPath = getNextPath(currentPath, path);
-					ftpClient.setDirectory(currentPath);
-				} else {
-					ftpClient.createDirectory(currentPath);
-				}
-			}
-			
-			if (cmd==Client.MK_DIR) {
-				if (o.toString()==path) {
-					listener.tell(TaskMessage.TASK_OK, true);
+			} else if (worker is MkdWorker) {
+				if ((worker as MkdWorker).name==path) {
+					listener.tell(worker, resp);
 				} else {
 					currentPath = getNextPath(currentPath, path);
-					ftpClient.createDirectory(currentPath);
+					ftpClient.createDirectory(currentPath, this);
 				}
 			}
 		}

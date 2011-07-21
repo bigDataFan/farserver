@@ -1,6 +1,7 @@
 package com.elfish.ftp.worker
 {
 	import com.elfish.ftp.core.Client;
+	import com.elfish.ftp.core.FtpListener;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.Config;
@@ -28,7 +29,7 @@ package com.elfish.ftp.worker
 		private var list:Array;
 		private var config:Config;
 		private var control:ControlSocket;
-		public var ftpClient:Client;
+		public var listener:FtpListener;
 		
 		
 		public function LoginWorker(control:ControlSocket, config:Config)
@@ -65,14 +66,13 @@ package com.elfish.ftp.worker
 		
 		public function response(rsp:Response):void
 		{
+
 			if(rsp.code == ResponseStatus.LOGIN.NEED_PASS) {
-				ftpClient.result(Client.LOGIN_NEED_PASS, "Yes");
 				executeCommand();
 			}else if(rsp.code == ResponseStatus.LOGIN.SUCCESS) {
-				ftpClient.result(Client.LOGIN_SUCCESS, "Yes");
-				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
-				//dispatchEvent(event);
+				listener.tell(this,rsp);
 			}
+
 		}
 	}
 }

@@ -12,7 +12,6 @@ package com.elfish.ftp.core
 	import com.elfish.ftp.worker.MkdWorker;
 	import com.elfish.ftp.worker.UploadWorker;
 	import com.orc.service.sync.ftp.FileFtpSynchronizer;
-	import com.orc.service.sync.ftp.FtpListener;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -84,7 +83,7 @@ package com.elfish.ftp.core
 		public function login(config:Config):void
 		{
 			var worker:LoginWorker = new LoginWorker(control, config);
-			worker.ftpClient = this;
+			worker.listener = this.listener;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -96,10 +95,10 @@ package com.elfish.ftp.core
 		 * @param fileData
 		 * Infomation of the File could be uploaded
 		 */
-		public function upload(name:String, fileData:*):void
+		public function upload(name:String, fileData:*, ftpListener:FtpListener):void
 		{
 			var worker:UploadWorker = new UploadWorker(control, name, fileData);
-			worker.ftpClient = this;
+			worker.listener = ftpListener;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -121,10 +120,10 @@ package com.elfish.ftp.core
 		 * @param name
 		 * String Path to set
 		 */
-		public function setDirectory(name:String):void
+		public function setDirectory(name:String, ftpListener:FtpListener):void
 		{
 			var worker:CwdWorker = new CwdWorker(control, name);
-			worker.ftpClient = this;
+			worker.listener = ftpListener;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -134,10 +133,10 @@ package com.elfish.ftp.core
 		 * @param name
 		 * String Name to create
 		 */
-		public function createDirectory(name:String):void
+		public function createDirectory(name:String, ftpListener:FtpListener):void
 		{
 			var worker:MkdWorker = new MkdWorker(control, name);
-			worker.ftpClient = this;
+			worker.listener = ftpListener;
 			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
@@ -232,11 +231,6 @@ package com.elfish.ftp.core
 		public function get responseCall():Function
 		{
 			return this._responseCall;
-		}
-		
-		public function result(type:String, result:Object):void
-		{
-			listener.tell(type, result);
 		}
 	}
 }

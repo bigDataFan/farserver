@@ -1,6 +1,7 @@
 package com.elfish.ftp.worker
 {
 	import com.elfish.ftp.core.Client;
+	import com.elfish.ftp.core.FtpListener;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.ControlSocket;
@@ -25,9 +26,9 @@ package com.elfish.ftp.worker
 		include "../../Version.as";
 		
 		private var list:Array;
-		private var name:String;
+		public var name:String;
 		private var control:ControlSocket;
-		public var ftpClient:Client;
+		public var listener:FtpListener;
 		
 		public function MkdWorker(control:ControlSocket, name:String)
 		{
@@ -68,9 +69,7 @@ package com.elfish.ftp.worker
 		public function response(rsp:Response):void
 		{
 			if(list.length == 0) {
-				ftpClient.result(Client.MK_DIR, name);
-				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
-				//dispatchEvent(event);
+				listener.tell(this, rsp);
 			}
 			else
 				executeCommand();

@@ -1,6 +1,7 @@
 package com.elfish.ftp.worker
 {
 	import com.elfish.ftp.core.Client;
+	import com.elfish.ftp.core.FtpListener;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.ControlSocket;
@@ -25,9 +26,9 @@ package com.elfish.ftp.worker
 		include "../../Version.as";
 		
 		private var list:Array;
-		private var name:String;
+		public var name:String;
 		private var control:ControlSocket;
-		public var ftpClient:Client;
+		public var listener:FtpListener;
 		
 		public function CwdWorker(control:ControlSocket, name:String)
 		{
@@ -41,7 +42,8 @@ package com.elfish.ftp.worker
 			
 			this.control.responseCall = response;
 		}
-
+		
+		
 		public function set commandList(list:Array):void
 		{
 			this.list = list;
@@ -62,19 +64,8 @@ package com.elfish.ftp.worker
 		
 		public function response(rsp:Response):void
 		{
-			if(rsp.code == ResponseStatus.CWD.SUCCESS) {
-				if (ftpClient) {
-					ftpClient.result(Client.CWD_SUCCESS,  name);
-				}
-				/*
-				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
-				dispatchEvent(event);
-				*/
-			}
-			if (rsp.code == ResponseStatus.CWD.ERROR) {
-				if (ftpClient) {
-					ftpClient.result(Client.CWD_ERROR, name);
-				}
+			if (listener) {
+				listener.tell(this, rsp);
 			}
 		}
 	}
