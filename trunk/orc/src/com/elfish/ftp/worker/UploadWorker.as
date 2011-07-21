@@ -101,8 +101,8 @@ package com.elfish.ftp.worker
 			else if(rsp.code == ResponseStatus.STOR.END) {
 				rsp.code = 999;
 				listener.tell(this, rsp);
-				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
-				dispatchEvent(event);
+				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
+				//dispatchEvent(event);
 			}
 		}
 		

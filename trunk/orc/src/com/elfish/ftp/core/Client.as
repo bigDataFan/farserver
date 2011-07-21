@@ -209,7 +209,7 @@ package com.elfish.ftp.core
 				case 550:	// Mkd, error
 				case 999:	// Upload end
 				{
-					list();
+					//list();
 				}break;
 				case 226:	// Transform end
 				{

@@ -90,5 +90,10 @@ package com.elfish.ftp.status
 			SUCCESS:250,
 			ERROR:550
 		}
+			
+		public static const NOOP:Object = {
+			OK:200
+		}
+		
 	}
 }

@@ -23,7 +23,8 @@ package com.orc.service.sync.ftp
 			ftpClient.setDirectory(path, this);
 		}
 		
-		private var currentPath: String = "";
+		public var currentPath: String = "";
+		public var basePath:String = "";
 		
 		public function tell(worker:IWorker, resp:Response):void {
 			
@@ -36,7 +37,7 @@ package com.orc.service.sync.ftp
 						ftpClient.setDirectory(currentPath, this);
 					}
 				} else {
-					if (currentPath=="") {
+					if (currentPath==basePath) {
 						currentPath = getNextPath(currentPath, path);
 						ftpClient.setDirectory(currentPath, this);
 					} else {
@@ -45,7 +46,7 @@ package com.orc.service.sync.ftp
 				}
 			} else if (worker is MkdWorker) {
 				if ((worker as MkdWorker).name==path) {
-					listener.tell(worker, resp);
+					ftpClient.setDirectory(path, this);
 				} else {
 					currentPath = getNextPath(currentPath, path);
 					ftpClient.createDirectory(currentPath, this);

@@ -10,6 +10,7 @@ package com.elfish.ftp.model
 	
 	import com.elfish.ftp.core.Client;
 	import com.elfish.ftp.core.Console;
+	import com.elfish.ftp.status.ResponseStatus;
 	import com.elfish.ftp.util.Parser;
 	
 	import flash.events.Event;
@@ -132,6 +133,9 @@ package com.elfish.ftp.model
 		 */
 		public function response(event:*):void
 		{
+			if (timer.running) timer.stop();
+			
+			
 			var message:String = socket.readMultiByte(socket.bytesAvailable, "utf8");
 			trace(message);
 			var messageList:Array = message.split("\r\n");
@@ -142,15 +146,21 @@ package com.elfish.ftp.model
 						Console.console(messageList[i], true);
 					
 					var result:Response = Parser.standableParse(messageList[i]);
+					
+					if (result.code == ResponseStatus.NOOP.OK) {
+						timer.start();
+						return;
+					}
+					
 					if(result.code == 257)
 						result = Parser.directoryParse(result);
 					else if(result.code == 227)
 						result = Parser.modelParse(result);
-	
+					
 					responseCall.call(null, result);
 				}
 			}
-			timer.start();			
+						
 			
 		}
 
