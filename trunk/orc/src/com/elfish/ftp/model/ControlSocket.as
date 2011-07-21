@@ -97,7 +97,8 @@ package com.elfish.ftp.model
 			if(Console.target)
 				Console.console(comm.toExecuteString());
 			trace(	comm.toExecuteString());
-			socket.writeMultiByte(comm.toExecuteString(), "utf8");
+			socket.writeUTFBytes(comm.toExecuteString());
+			//socket.writeMultiByte(comm.toExecuteString(), "utf8");
 			socket.flush();
 			if (timer.running) {
 				timer.stop();
