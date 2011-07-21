@@ -3,7 +3,13 @@ package com.orc.service.sync.ftp
 	import air.net.ServiceMonitor;
 	
 	import com.elfish.ftp.core.Client;
+	import com.elfish.ftp.core.FtpListener;
 	import com.elfish.ftp.model.Config;
+	import com.elfish.ftp.model.Response;
+	import com.elfish.ftp.status.ResponseStatus;
+	import com.elfish.ftp.worker.CwdWorker;
+	import com.elfish.ftp.worker.IWorker;
+	import com.elfish.ftp.worker.LoginWorker;
 	import com.orc.service.DataCollection;
 	import com.orc.service.DataService;
 	import com.orc.service.ServiceRegistry;
@@ -55,19 +61,21 @@ package com.orc.service.sync.ftp
 		
 		private var currentPath: String = "";
 		
-		public function tell(cmd:String ,result:Object):void {
+		public function tell(worker:IWorker, resp:Response):void {
 			
-			output.text = cmd;
-			
-			if (cmd==Client.IO_ERROR) {
+			if (worker==null && resp==null) {
+				output.text = "无法连接到 " + ftp_ip + ":" + ftp_port;
 				return;
+				
 			}
 			
+			trace("ftp tell->" + resp.code + "  " + resp.text);
+			output.text = resp.text;
 			
 			//处理登陆ftp、转到指定目录的相关处理
 			if (!ready) {
 				
-				if (cmd==Client.LOGIN_SUCCESS) {
+				if ((worker is LoginWorker) && (resp.code == ResponseStatus.LOGIN.SUCCESS)) {
 					var mft : MakeFolderTask = new MakeFolderTask();
 					mft.ftpClient = client;
 					mft.listener  = this;
@@ -76,19 +84,16 @@ package com.orc.service.sync.ftp
 					mft.execute();
 				}
 				
-				if (cmd==TaskMessage.TASK_OK) {
+				if ((resp.code==ResponseStatus.CWD.SUCCESS) || (resp.code==ResponseStatus.MKD.SUCCESS)) {
 					ready = true;
 					synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
 					ServiceRegistry.fileService.ftpSync = this;
 					ServiceRegistry.fileService.ftpuploadToSync();
+					return;
 				}
-			}
-			
-			if (ready) {
+			} else {
 				running = false;
-				if (cmd==TaskMessage.TASK_OK && result==true) {
-					popRun();	
-				}
+				popRun();	
 			}
 		}
 		
@@ -119,6 +124,10 @@ package com.orc.service.sync.ftp
 			return 0;
 		}
 		
+		public function cwd(path:String) {
+						
+		}
+		
 		public function commit(o:Object):void {
 			if (!ready) return;
 			
@@ -144,7 +153,7 @@ package com.orc.service.sync.ftp
 					fct.file = file;
 					fct.relativePath = filePath;
 					fct.synchronizedb = synchronizedb;
-					tasks.source.push(mft);
+					tasks.source.push(fct);
 					
 					
 				} else if ((pf["modified"] as Date)==file.modificationDate) {
@@ -153,10 +162,7 @@ package com.orc.service.sync.ftp
 					return;
 				}
 			}
-			
 			popRun();
-			
-			
 		}
 		
 		
@@ -173,7 +179,7 @@ package com.orc.service.sync.ftp
 		
 		
 		public function popRun() {
-			if (!running && tasks.length>0) {0
+			if (!running && tasks.length>0) {
 				var nextTask:FtpTask = tasks.source.shift() as FtpTask;
 				if (nextTask!=null) {
 					running = true;

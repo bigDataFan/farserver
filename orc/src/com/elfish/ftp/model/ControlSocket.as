@@ -114,8 +114,9 @@ package com.elfish.ftp.model
 			if(event is IOErrorEvent) {
 				if(Console.target)
 					Console.console("连接失败!");
+				
 				if (client) {
-					client.result(Client.IO_ERROR,null);
+					client.listener.tell(null, null);
 				}
 			}else
 				socket.close();

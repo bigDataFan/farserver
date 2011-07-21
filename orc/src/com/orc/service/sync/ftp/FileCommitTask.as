@@ -1,6 +1,9 @@
 package com.orc.service.sync.ftp
 {
 	import com.elfish.ftp.core.Client;
+	import com.elfish.ftp.core.FtpListener;
+	import com.elfish.ftp.model.Response;
+	import com.elfish.ftp.worker.IWorker;
 	import com.orc.service.DataCollection;
 	
 	import flash.filesystem.File;
@@ -18,20 +21,18 @@ package com.orc.service.sync.ftp
 				
 		}
 		
-		public function tell(cmd:String ,result:Object):void {
-			
+		public function tell(worker:IWorker, resp:Response):void {
 			var o:Object = new Object();
 			o["path"] = file.nativePath;
 			o["modified"] = file.modificationDate;
 			synchronizedb.insert(o);
-			listener.tell(TaskMessage.TASK_OK, true);	
+			listener.tell(worker, resp);	
 		}
 		
 		
 		public function execute():void
 		{
-			ftpClient.listener = this;
-			ftpClient.upload(file.name, file);		
+			ftpClient.upload(file.name, file, listener);		
 		}
 	}
 }

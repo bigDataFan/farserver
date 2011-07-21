@@ -79,7 +79,7 @@ package com.elfish.ftp.status
 		 * 上传
 		 */
 		public static const STOR:Object = {
-			START:125,
+			START:150,
 			END:226
 		}
 		
