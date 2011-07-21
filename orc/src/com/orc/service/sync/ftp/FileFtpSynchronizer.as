@@ -69,7 +69,7 @@ package com.orc.service.sync.ftp
 				
 			}
 			
-			trace("ftp tell->" + resp.code + "  " + resp.text);
+			//trace("ftp tell->" + resp.code + "  " + resp.text);
 			output.text = resp.text;
 			
 			//处理登陆ftp、转到指定目录的相关处理
@@ -144,6 +144,8 @@ package com.orc.service.sync.ftp
 					var mft:MakeFolderTask = new MakeFolderTask();
 					mft.ftpClient = client;
 					mft.path = filePath;
+					mft.basePath = ftp_path;
+					mft.currentPath = ftp_path;
 					mft.listener = this;
 					tasks.source.push(mft);
 					
