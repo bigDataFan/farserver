@@ -94,11 +94,11 @@
 				nativeWindow.visible = true;
 				
 				if (fullmodel.visible) {
-					full_x = nativeApplication.activeWindow.x;
-					full_y = nativeApplication.activeWindow.y;
+					full_x = nativeWindow.x;
+					full_y = nativeWindow.y;
 					
-					nativeApplication.activeWindow.x = float_x;
-					nativeApplication.activeWindow.y = float_y;
+					nativeWindow.x = float_x;
+					nativeWindow.y = float_y;
 					
 					NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
 					NativeApplication.nativeApplication.activeWindow.width = 154;

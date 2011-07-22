@@ -55,12 +55,16 @@ package com.ever365.utils
 				} else {
 					iconMenu = sysTrayIcon.menu;
 				}
-				
 			}
 			
-			
-			var startCommand:NativeMenuItem = new NativeMenuItem(value);
-			iconMenu.addItem(startCommand);
+			if (value=="") {
+				var startCommand:NativeMenuItem = new NativeMenuItem("",true);
+				iconMenu.addItem(startCommand);
+				
+			} else {
+				var startCommand:NativeMenuItem = new NativeMenuItem(value);
+				iconMenu.addItem(startCommand);
+			}
 			if (cb!=null) {			
 				startCommand.addEventListener(Event.SELECT, cb);
 			}
