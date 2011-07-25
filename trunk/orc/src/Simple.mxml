@@ -68,8 +68,8 @@
 			var full_x:int = 0;
 			var full_y:int = 0;
 			
-			var float_x:int = Screen.mainScreen.bounds.width - 150;
-			var float_y:int = Screen.mainScreen.bounds.height - 80;
+			var float_x:int = Screen.mainScreen.bounds.width - 200;
+			var float_y:int = Screen.mainScreen.bounds.height - 120;
 			
 			
 			protected function switchFullModel(event:Event):void
