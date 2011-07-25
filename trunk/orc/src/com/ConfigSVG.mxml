@@ -39,15 +39,11 @@
 					ftp_user.text, ftp_pwd.text,ftp_path.text,  ServiceRegistry.dataService);
 				ftpsync.output = ftp_result;
 				ftpsync.check();
-				
-				
-				ServiceRegistry.fileService.ftpSync = ftpsync;
-				ServiceRegistry.fileService.ftpuploadToSync();
-				
 			}
 			
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -67,8 +63,9 @@
 		<s:Label x="522" y="16" text="路径"/>
 		<s:TextInput id="ftp_path" x="574" y="11" width="305" text="{ServiceRegistry.configService.ftp_path}"/>
 		<s:TextInput id="ftp_pwd" x="574" y="45" width="305" text="{ServiceRegistry.configService.ftp_pwd}"/>
-		<s:Button x="29" y="88" label="设置" click="checkDropBoxPwd(event)"/>
-		<s:Label x="522" y="97" width="425" text="标签" id="ftp_result"/>
+		<s:Button x="29" y="88" label="保存" click="checkDropBoxPwd(event)"/>
+		<s:Label x="522" y="93" width="425" text="标签" id="ftp_result"/>
+		<s:Button x="128" y="88" label="更新到本地"/>
 		
 	</s:Panel>
 </s:Group>

@@ -234,7 +234,15 @@
 		@namespace com "com.*";
 		@namespace easypaste "com.orc.service.easypaste.*";
 		@namespace timetrack "com.orc.service.timetrack.*";
-		
+		s|Label {
+			fontFamily:微软雅黑,黑体,仿宋;
+		}
+		s|RichEditableText {
+			fontFamily:微软雅黑,黑体,仿宋;
+		}
+		mx|TextInput {
+			fontFamily:微软雅黑,黑体,仿宋;
+		}
 	</fx:Style>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
