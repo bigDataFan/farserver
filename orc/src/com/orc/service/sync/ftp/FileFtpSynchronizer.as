@@ -43,6 +43,9 @@ package com.orc.service.sync.ftp
 
 		public var output:Label;
 		
+		public function destory():void {
+			client.disconnect();
+		}
 		
 		public function FileFtpSynchronizer(ip:String, port:String, user:String, pwd:String, path:String, ds:DataService) {
 			ftp_ip = ip;
@@ -69,14 +72,27 @@ package com.orc.service.sync.ftp
 		
 		public function tell(worker:IWorker, resp:Response):void {
 			
+			
+			
 			if (worker==null && resp==null) {
-				output.text = "无法连接到 " + ftp_ip + ":" + ftp_port;
+				if (output) {
+					output.text = "无法连接到 " + ftp_ip + ":" + ftp_port;
+				}
 				return;
 				
 			}
 			
+			if (resp.code==-1) {
+				currentPath = "";
+				running = false;
+				tasks = new ArrayList();
+				check();
+			}
+			
 			//trace("ftp tell->" + resp.code + "  " + resp.text);
-			output.text = resp.text;
+			if (output) {
+				output.text = resp.text;
+			}
 			
 			//处理登陆ftp、转到指定目录的相关处理
 			if (!ready) {
@@ -97,6 +113,10 @@ package com.orc.service.sync.ftp
 					return;
 				}
 			} else {
+				if (worker is CwdWorker && resp.code==ResponseStatus.CWD.SUCCESS) {
+					currentPath = (worker as CwdWorker).name;
+				}
+				
 				running = false;
 				popRun();	
 			}
@@ -230,6 +250,14 @@ package com.orc.service.sync.ftp
 				var nextTask:FtpTask = tasks.source.shift() as FtpTask;
 				if (nextTask!=null) {
 					running = true;
+					
+					if (nextTask is MakeFolderTask) {
+						if ((nextTask as MakeFolderTask).path==currentPath) {
+							running = false; 
+							popRun();
+							return;
+						}
+					} 
 					nextTask.execute();
 				}
 			}

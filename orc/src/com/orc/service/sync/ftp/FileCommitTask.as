@@ -32,7 +32,7 @@ package com.orc.service.sync.ftp
 		
 		public function execute():void
 		{
-			ftpClient.upload(file.name, file, listener);		
+			ftpClient.upload(file.name, file, this);		
 		}
 	}
 }

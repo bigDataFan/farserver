@@ -1,6 +1,7 @@
 package com.elfish.ftp.worker
 {
 	import com.elfish.ftp.core.Client;
+	import com.elfish.ftp.core.FtpListener;
 	import com.elfish.ftp.event.FTPEvent;
 	import com.elfish.ftp.model.Command;
 	import com.elfish.ftp.model.Config;
@@ -9,7 +10,6 @@ package com.elfish.ftp.worker
 	import com.elfish.ftp.model.Response;
 	import com.elfish.ftp.status.CommandsStatus;
 	import com.elfish.ftp.status.ResponseStatus;
-	import com.elfish.ftp.core.FtpListener;
 	
 	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
@@ -95,12 +95,16 @@ package com.elfish.ftp.worker
 				executeCommand();
 			}
 			else if(rsp.code == ResponseStatus.STOR.START) {
-				data.write(fileData);
-				data.close();
+				try {
+					data.write(fileData);
+					data.close();
+					listener.tell(this, rsp);
+				} catch (e:Error) {
+					listener.tell(this, null);
+				}
 			}
 			else if(rsp.code == ResponseStatus.STOR.END) {
 				rsp.code = 999;
-				listener.tell(this, rsp);
 				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
 				//dispatchEvent(event);
 			}

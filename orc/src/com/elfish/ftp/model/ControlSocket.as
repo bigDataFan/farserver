@@ -50,7 +50,7 @@ package com.elfish.ftp.model
 		/**
 		 * SOCKET连接
 		 */
-		private var socket:Socket = null;
+		public var socket:Socket = null;
 		
 		public function ControlSocket():void
 		{
@@ -84,6 +84,10 @@ package com.elfish.ftp.model
 		 */
 		public function connect():void
 		{
+			if (socket.connected) {
+				socket.close();
+			}
+			
 			socket.connect(config.ip, int(config.port));
 		}
 		
@@ -101,9 +105,12 @@ package com.elfish.ftp.model
 			socket.writeUTFBytes(comm.toExecuteString());
 			//socket.writeMultiByte(comm.toExecuteString(), "utf8");
 			socket.flush();
+			timer.start();
+			/*
 			if (timer.running) {
 				timer.stop();
 			}
+			*/
 		}
 		
 		/**
@@ -131,6 +138,7 @@ package com.elfish.ftp.model
 		 * 使用Parser进行数据解析,提取有用数据
 		 * @see com.elfish.ftp.util.Parser
 		 */
+		private var noop_ct = 0;
 		public function response(event:*):void
 		{
 			if (timer.running) timer.stop();
@@ -148,7 +156,7 @@ package com.elfish.ftp.model
 					var result:Response = Parser.standableParse(messageList[i]);
 					
 					if (result.code == ResponseStatus.NOOP.OK) {
-						timer.start();
+						timer.start()
 						return;
 					}
 					

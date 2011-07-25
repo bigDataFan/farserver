@@ -36,9 +36,14 @@
 				ConfigUtils.writeProp("ftp_path", ftp_path.text);
 				
 				var ftpsync:FileFtpSynchronizer = new FileFtpSynchronizer(ftp_ip.text, ftp_port.text,
-					ftp_user.text, ftp_pwd.text,ftp_path.text);
+					ftp_user.text, ftp_pwd.text,ftp_path.text,  ServiceRegistry.dataService);
 				ftpsync.output = ftp_result;
 				ftpsync.check();
+				
+				
+				ServiceRegistry.fileService.ftpSync = ftpsync;
+				ServiceRegistry.fileService.ftpuploadToSync();
+				
 			}
 			
 		]]>
