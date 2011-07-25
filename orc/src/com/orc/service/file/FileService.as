@@ -129,7 +129,7 @@ package com.orc.service.file
 				filelogs.insertCapped(log,1000);
 				*/
 				sendNotify(newFile);
-				tellSyncAdd(file1);
+				tellSyncAdd(newFile);
 			} catch (e:Error) {
 				
 			}
