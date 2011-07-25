@@ -25,7 +25,7 @@ package com.orc.service
 		
 		public static var trackingService:TimeTrackingService = new TimeTrackingService(dataService);
 		
-		public static var syncRegistry:SynchronizerRegistry = new SynchronizerRegistry(configService);
+		public static var syncRegistry:SynchronizerRegistry = new SynchronizerRegistry(configService, dataService);
 		
 		public static var config:DropboxConfig = new DropboxConfig('', '');
 		public static var dropAPI:DropboxClient = new DropboxClient(config);

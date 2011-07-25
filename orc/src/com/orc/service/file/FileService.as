@@ -5,6 +5,7 @@ package com.orc.service.file
 	import com.orc.service.DataService;
 	import com.orc.service.ServiceRegistry;
 	import com.orc.service.sync.Synchronizer;
+	import com.orc.service.sync.SynchronizerRegistry;
 	import com.orc.service.sync.ftp.FileFtpSynchronizer;
 	import com.orc.utils.TimeRelatedId;
 	
@@ -76,6 +77,8 @@ package com.orc.service.file
 			if (basePath!=null) {
 				init(new File(basePath));	
 			}
+			
+			ftpuploadToSync();
 		}
 		
 		public function ftpUpdate():void {
@@ -83,6 +86,12 @@ package com.orc.service.file
 		}
 		
 		public function ftpuploadToSync():void {
+			
+			ftpSync = ServiceRegistry.syncRegistry.ftpsync;
+			
+			if (ftpSync==null) {
+				return;
+			}
 			
 			for (var i:int = 0; i < this.dates.length; i++) 
 			{
@@ -124,8 +133,25 @@ package com.orc.service.file
 			}
 		}
 		
+		
+		public function tellSyncRemove(path:String) :void {
+			if (ftpSync) {
+				ftpSync.remove(path);
+			}
+		}
+		
+		
+		public function tellSyncAdd(file:File) :void {
+			if (ftpSync) {
+				var status:int = ftpSync.getStatus(file);
+				if (status==0 || status==1) {
+					ftpSync.commit(file);
+				}
+			}
+		}
+		
 		public function removeFile(file1:File):void {
-			ftpSync.remove(file1.nativePath);
+			tellSyncRemove(file1.nativePath);
 			file1.moveToTrash();
 		}
 		
