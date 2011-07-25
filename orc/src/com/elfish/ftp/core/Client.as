@@ -148,10 +148,11 @@ package com.elfish.ftp.core
 		 * @param isFile
 		 * Boolean Is File or Directory
 		 */
-		public function deleteDirectory(name:String, isFile:Boolean):void
+		public function deleteDirectory(name:String, isFile:Boolean, ftpListener:FtpListener):void
 		{
 			var worker:DeleWorker = new DeleWorker(control, name, isFile);
-			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
+			worker.listener = ftpListener;
+			//worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
 		

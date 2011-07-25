@@ -78,6 +78,10 @@ package com.orc.service.file
 			}
 		}
 		
+		public function ftpUpdate():void {
+			ftpSync.updateAll();
+		}
+		
 		public function ftpuploadToSync():void {
 			
 			for (var i:int = 0; i < this.dates.length; i++) 
@@ -92,9 +96,6 @@ package com.orc.service.file
 				}
 				
 			}
-			
-			
-			
 		}
 		
 		
@@ -123,6 +124,11 @@ package com.orc.service.file
 			}
 		}
 		
+		public function removeFile(file1:File):void {
+			ftpSync.remove(file1.nativePath);
+			file1.moveToTrash();
+		}
+		
 		public function sendNotify(file1:File):void {
 			var fe:FileEvent = new FileEvent(FileEvent.MODIFY);
 			fe.file = new GridFile(file1);
@@ -145,7 +151,6 @@ package com.orc.service.file
 					result.addItem(new GridFile(file));
 				}
 			}
-			
 			
 			return result;
 		}
