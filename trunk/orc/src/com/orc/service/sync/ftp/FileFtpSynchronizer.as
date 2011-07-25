@@ -15,10 +15,14 @@ package com.orc.service.sync.ftp
 	import com.orc.service.ServiceRegistry;
 	import com.orc.service.file.FileService;
 	import com.orc.service.sync.Synchronizer;
+	import com.orc.utils.StringUtils;
 	
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayList;
+	import mx.utils.StringUtil;
 	
 	import spark.components.Label;
 	
@@ -129,8 +133,6 @@ package com.orc.service.sync.ftp
 		}
 		
 		public function commit(o:Object):void {
-			if (!ready) return;
-			
 			if (o is File) {
 				var file:File = o as File;
 				var filePath:String = ftp_path + "/" + file.parent.nativePath.substr(ServiceRegistry.configService.rootFolder.length+1).replace(/\\/g,"/");
@@ -169,7 +171,38 @@ package com.orc.service.sync.ftp
 			
 		}
 		
-		public function remove(o:Object):void {
+		public function remove(s:Object):void {
+			if (s is String) {
+				var path:String =  s as String;
+				var o :Object = new Object();
+				o["path"] = path;
+				o["modified"] = new Date();
+				o["deleted"] = true;
+				synchronizedb.upsert({"path": o}, o);
+				
+				
+				var ftpFullPath:String = ftp_path + "/" + path.substr(ServiceRegistry.configService.rootFolder.length+1).replace(/\\/g,"/");
+				
+				var mft:MakeFolderTask = new MakeFolderTask();
+				mft.ftpClient = client;
+				mft.path = StringUtils.getParentPath(ftpFullPath);
+				mft.basePath = ftp_path;
+				mft.currentPath = ftp_path;
+				mft.listener = this;
+				tasks.source.push(mft);
+				
+				
+				
+				var dt:DeleteFileTask = new DeleteFileTask();
+				dt.ftpClient = client;
+				dt.listener = this;
+				dt.name = StringUtils.getFileName(ftpFullPath);
+				
+					
+				
+				
+			}
+			
 			
 		}
 		
@@ -177,7 +210,23 @@ package com.orc.service.sync.ftp
 		private var tasks:ArrayList = new ArrayList();
 		
 		
+		private var timer:Timer = new Timer(30*1000);
+		
+		
 		public function popRun() {
+			if (!ready) {
+				if (!timer.running) {
+					timer.start();
+					timer.addEventListener(TimerEvent.TIMER, function(){
+						popRun();
+					});
+				}
+			}
+			if (timer.running) {
+				timer.stop();
+				
+			}
+			
 			if (!running && tasks.length>0) {
 				var nextTask:FtpTask = tasks.source.shift() as FtpTask;
 				if (nextTask!=null) {

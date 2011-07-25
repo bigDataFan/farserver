@@ -71,9 +71,9 @@ package com.elfish.ftp.worker
 		public function response(rsp:Response):void
 		{
 			if(list.length == 0) {
-				
-				var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
-				dispatchEvent(event);
+				listener.tell(this, rsp);
+				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
+				//dispatchEvent(event);
 			}
 			else
 				executeCommand();
