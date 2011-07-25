@@ -78,7 +78,7 @@ package com.orc.service.file
 				init(new File(basePath));	
 			}
 			
-			ftpuploadToSync();
+			//ftpuploadToSync();
 		}
 		
 		public function ftpUpdate():void {
@@ -128,6 +128,7 @@ package com.orc.service.file
 				filelogs.insertCapped(log,1000);
 				*/
 				sendNotify(newFile);
+				tellSyncAdd(file1);
 			} catch (e:Error) {
 				
 			}

@@ -67,12 +67,31 @@ package com.elfish.ftp.core
 		 * Infomation of server and user
 		 * @see com.elfish.ftp.model.Config
 		 */
+		public function disconnect():void
+		{
+			control = ControlSocket.getInstance();
+			control.socket.close();
+			control.socket = null;
+		}
+		
+		
+		/**
+		 * 连接函数
+		 * @param config
+		 * Infomation of server and user
+		 * @see com.elfish.ftp.model.Config
+		 */
 		public function connect(config:Config):void
 		{
+			control = ControlSocket.getInstance();
+			control.client = this;
+			
 			ControlSocket.config = config;
 			control.responseCall = connected;
 			control.connect();
 		}
+		
+		
 		
 		/**
 		 * 登录流程
@@ -99,7 +118,7 @@ package com.elfish.ftp.core
 		{
 			var worker:UploadWorker = new UploadWorker(control, name, fileData);
 			worker.listener = ftpListener;
-			worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
+			//worker.addEventListener(FTPEvent.FTP_WORLFINISH, finished);
 			worker.executeCommand();
 		}
 		
