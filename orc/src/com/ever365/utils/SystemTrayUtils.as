@@ -82,7 +82,7 @@ package com.ever365.utils
 		
 		protected static function undock(event:ScreenMouseEvent):void
 		{
-			
+				
 		}
 	}
 }
