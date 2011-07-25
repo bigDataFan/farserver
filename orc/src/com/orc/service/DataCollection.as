@@ -85,7 +85,6 @@ package com.orc.service
 			return null;
 		}
 		
-		
 		public function findAll(filter:Object):Array {
 			var array:Array = [];
 			if (filter==null) {
