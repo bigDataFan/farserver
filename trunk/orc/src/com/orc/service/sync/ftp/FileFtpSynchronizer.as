@@ -44,12 +44,14 @@ package com.orc.service.sync.ftp
 		public var output:Label;
 		
 		
-		public function FileFtpSynchronizer(ip:String, port:String, user:String, pwd:String, path:String) {
+		public function FileFtpSynchronizer(ip:String, port:String, user:String, pwd:String, path:String, ds:DataService) {
 			ftp_ip = ip;
 			ftp_port = port;
 			ftp_user = user;
 			ftp_pwd = pwd;
 			ftp_path = path;
+			
+			synchronizedb = ds.getCollection("ftpsynchronize.db");
 		}
 		
 		public function check():void {
@@ -90,7 +92,6 @@ package com.orc.service.sync.ftp
 				
 				if ((resp.code==ResponseStatus.CWD.SUCCESS) || (resp.code==ResponseStatus.MKD.SUCCESS)) {
 					ready = true;
-					synchronizedb = ServiceRegistry.dataService.getCollection("ftpsynchronize.db");
 					ServiceRegistry.fileService.ftpSync = this;
 					ServiceRegistry.fileService.ftpuploadToSync();
 					return;
@@ -108,8 +109,6 @@ package com.orc.service.sync.ftp
 		
 		//0 local  1 modified   2   sync to server  3 conflict
 		public function getStatus(o:Object):int {
-			if (!ready) return -1;
-			
 			if (o is File) {
 				var file:File = o as File;
 				var pf:Object = synchronizedb.findOne({"path":file.nativePath});
