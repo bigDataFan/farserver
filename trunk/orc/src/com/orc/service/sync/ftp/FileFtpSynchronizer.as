@@ -135,10 +135,7 @@ package com.orc.service.sync.ftp
 				var file:File = o as File;
 				var filePath:String = ftp_path + "/" + file.parent.nativePath.substr(ServiceRegistry.configService.rootFolder.length+1).replace(/\\/g,"/");
 				
-				
 				var pf:Object = synchronizedb.findOne({"path":file.nativePath});
-				
-				
 				
 				if (pf==null) {
 					var mft:MakeFolderTask = new MakeFolderTask();

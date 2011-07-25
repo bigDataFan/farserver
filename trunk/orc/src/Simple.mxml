@@ -76,14 +76,14 @@
 			{
 				nativeWindow.visible = true;
 				if (dragModel.visible) {
-					float_x = nativeApplication.activeWindow.x;
-					float_y = nativeApplication.activeWindow.y;
-					NativeApplication.nativeApplication.activeWindow.alwaysInFront = false;
-					nativeApplication.activeWindow.x = full_x;
-					nativeApplication.activeWindow.y = full_y;
+					float_x = nativeWindow.x;
+					float_y = nativeWindow.y;
+					nativeWindow.alwaysInFront = false;
+					nativeWindow.x = full_x;
+					nativeWindow.y = full_y;
 					
-					NativeApplication.nativeApplication.activeWindow.width = 1024;
-					NativeApplication.nativeApplication.activeWindow.height = 768;
+					nativeWindow.width = 1024;
+					nativeWindow.height = 768;
 					fullmodel.visible = true;
 					dragModel.visible = false;		
 				}
@@ -100,9 +100,9 @@
 					nativeWindow.x = float_x;
 					nativeWindow.y = float_y;
 					
-					NativeApplication.nativeApplication.activeWindow.alwaysInFront = true;
-					NativeApplication.nativeApplication.activeWindow.width = 154;
-					NativeApplication.nativeApplication.activeWindow.height = 40;
+					nativeWindow.alwaysInFront = true;
+					nativeWindow.width = 154;
+					nativeWindow.height = 40;
 					
 					var runningItem:Object = ServiceRegistry.trackingService.getRunningItem();
 					if (runningItem==null) {
@@ -221,7 +221,8 @@
 			
 			protected function minApp(event:MouseEvent):void
 			{
-				nativeApplication.activeWindow.minimize();				
+				//nativeApplication.activeWindow.minimize();
+				nativeWindow.visible = false;
 			}
 			
 		]]>

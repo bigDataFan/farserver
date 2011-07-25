@@ -1,6 +1,7 @@
 package com.orc.service
 {
 	import com.orc.service.file.FileService;
+	import com.orc.service.sync.SynchronizerRegistry;
 	import com.orc.service.task.LocalTaskService;
 	import com.orc.service.task.TaskService;
 	import com.orc.service.timetrack.TimeTrackingService;
@@ -24,6 +25,7 @@ package com.orc.service
 		
 		public static var trackingService:TimeTrackingService = new TimeTrackingService(dataService);
 		
+		public static var syncRegistry:SynchronizerRegistry = new SynchronizerRegistry(configService);
 		
 		public static var config:DropboxConfig = new DropboxConfig('', '');
 		public static var dropAPI:DropboxClient = new DropboxClient(config);
