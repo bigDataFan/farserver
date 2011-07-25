@@ -98,13 +98,13 @@ package com.elfish.ftp.worker
 				try {
 					data.write(fileData);
 					data.close();
-					listener.tell(this, rsp);
 				} catch (e:Error) {
 					listener.tell(this, null);
 				}
 			}
 			else if(rsp.code == ResponseStatus.STOR.END) {
 				rsp.code = 999;
+				listener.tell(this, rsp);
 				//var event:FTPEvent = new FTPEvent(FTPEvent.FTP_WORLFINISH, rsp);
 				//dispatchEvent(event);
 			}

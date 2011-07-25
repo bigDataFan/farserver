@@ -113,6 +113,7 @@ package com.orc.service.file
 		}
 		
 		public function addFile(file1:File) :void {
+			if (file1.isDirectory) return;
 			var newFile:File = new File(todayPath + "/" + file1.name);
 			//todayFolder.createDirectory();
 			
@@ -313,6 +314,9 @@ package com.orc.service.file
 				if((children[i] as File).name.indexOf(STORAGE_END_FIX)>-1) {
 					continue;
 				}
+				
+				if ((children[i] as File).isDirectory) continue;
+				
 				result.addItem(new GridFile(children[i] as File));	
 			}
 			return result;
