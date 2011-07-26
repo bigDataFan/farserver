@@ -3,10 +3,10 @@ package net.gqu.logging;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.gqu.mongodb.MongoDBProvider;
 
 import org.mozilla.javascript.ScriptLogger;
 
+import com.ever365.collections.mongodb.MongoDBProvider;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 

@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.gqu.application.ApplicationService;
-import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 
+import com.ever365.collections.mongodb.MongoDBProvider;
 import com.ever365.vfile.VFileService;
 import com.google.gdata.client.http.AuthSubUtil;
 import com.mongodb.BasicDBObject;

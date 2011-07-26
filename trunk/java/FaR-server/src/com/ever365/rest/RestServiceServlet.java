@@ -1,4 +1,4 @@
-package net.gqu.rest;
+package com.ever365.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
