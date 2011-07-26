@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.utils.MimeTypeUtils;
 
 import org.bson.types.ObjectId;
 
+import com.ever365.collections.mongodb.MongoDBProvider;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;

@@ -26,7 +26,6 @@ import net.gqu.content.ContentService;
 import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
 import net.gqu.freemarker.RepositoryTemplateLoader;
 import net.gqu.logging.LoggingService;
-import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.LoadResult;
 import net.gqu.repository.RepositoryService;
 import net.gqu.servlet.DefaultServlet;
@@ -56,6 +55,7 @@ import org.mozilla.javascript.RhinoException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.ever365.collections.mongodb.MongoDBProvider;
 import com.ever365.security.AuthenticationUtil;
 import com.ever365.security.BasicUserService;
 import com.ever365.security.Role;

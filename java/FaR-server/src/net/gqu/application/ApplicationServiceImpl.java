@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.gqu.mongodb.MongoDBProvider;
 import net.gqu.repository.HttpLoader;
 import net.gqu.utils.JSONUtils;
 import net.gqu.utils.StringUtils;
@@ -18,6 +17,7 @@ import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ever365.collections.mongodb.MongoDBProvider;
 import com.ever365.security.BasicUserService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;

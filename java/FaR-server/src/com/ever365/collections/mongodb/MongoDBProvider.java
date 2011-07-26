@@ -1,4 +1,4 @@
-package net.gqu.mongodb;
+package com.ever365.collections.mongodb;
 
 
 import java.net.UnknownHostException;
@@ -13,6 +13,8 @@ import com.mongodb.MongoException;
  */
 public class MongoDBProvider {
 	
+	private static final String PUBLIC_DB = "public";
+
 	public static final String _ID = "_id";
 	
 	private String mainDb = null;
@@ -23,6 +25,10 @@ public class MongoDBProvider {
 	}
 	public DB getMainDB() {
 		return mongo.getDB(mainDb);
+	}
+	
+	public DB getPublicDB() {
+		return mongo.getDB(PUBLIC_DB);
 	}
 	
 	public DB getApplicationDB(String application) {
