@@ -1009,6 +1009,7 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 					// Output the file information record
 
 					dataWrt.write(str.toString());
+					dataWrt.flush();
 				}
 			}
 
