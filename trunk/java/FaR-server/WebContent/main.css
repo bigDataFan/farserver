@@ -111,8 +111,19 @@ input {
 }
 
 #terminal input {
+	font-size: 14px;
+	border: 1px solid #EBEBEB;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	cursor: text;
+	transition: opacity .4s;
+	-o-transition-property: opacity .4s;
+	-moz-transition: opacity .4s;
+	-webkit-transition: opacity .4s;
+	margin: 0;
     width: 450px;
-    border: none;
+    padding: 3px 2px 3px 5px;
     text-transform: none;
     -webkit-appearance: textfield;
     -webkit-rtl-ordering: logical;
