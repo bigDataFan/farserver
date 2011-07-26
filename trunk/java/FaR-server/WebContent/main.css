@@ -67,7 +67,6 @@ input {
 
 
 .awesome, .awesome:visited {
-    background: url("/smedia/minus/images/alert-overlay.png") repeat-x scroll 0 0 #222222;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     border-radius: 5px 5px 5px 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
@@ -111,10 +110,15 @@ input {
     width: 480px;
 }
 
-
-
-
-
+#terminal input {
+    width: 450px;
+    border: none;
+    text-transform: none;
+    -webkit-appearance: textfield;
+    -webkit-rtl-ordering: logical;
+	-webkit-user-select: text;
+	-webkit-appearance: outer-spin-button;
+}
 
 div#toolbar_container {
     -moz-transition: background-color 0.4s linear 0s;
