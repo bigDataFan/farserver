@@ -1,10 +1,11 @@
-package net.gqu.rest;
+package com.ever365.rest.registry;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class HttpServiceRegistry {
 	public static final String METHOD_POST = "post";
