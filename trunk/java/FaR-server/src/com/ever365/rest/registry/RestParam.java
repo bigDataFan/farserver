@@ -1,4 +1,4 @@
-package net.gqu.rest;
+package com.ever365.rest.registry;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
