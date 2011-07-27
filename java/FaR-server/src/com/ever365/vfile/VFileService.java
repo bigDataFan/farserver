@@ -81,6 +81,29 @@ public class VFileService {
 		
 		return new File(this, newId, dbo);
 	}
+	
+
+	public File updateFile(DBObject dbo, InputStream is) {
+		
+		dbo.put(File.MODIFIED, new Date());
+		if (is!=null) {
+			fileContentStore.remove((String)dbo.get(File.URL));
+			FileContentWriter writer = getContentWriter();
+			writer.putContent(is);
+			dbo.put(File.URL, writer.getUri());
+			dbo.put(File.SIZE, writer.getSize());
+		}
+		WriteResult result = getFileCollection().update(BasicDBObjectBuilder.start(File.PARENT_ID, dbo.get(File.PARENT_ID)).append(File.NAME, dbo.get(File.NAME)).get(), dbo, true, false);
+		
+		ObjectId newId = null;
+		if ((Boolean)result.getField("updatedExisting")) {
+			
+		} else {
+			newId = (ObjectId)result.getField("upserted");
+		}
+		
+		return new File(this, newId, dbo);
+	}
 
 	public List<File> getChildren(ObjectId parentId) {
 		
@@ -118,6 +141,16 @@ public class VFileService {
 		}
 	}
 
+	public void copyTo(DBObject targetParent, DBObject current, boolean b) {
+		if (current.get(File.PARENT_ID).equals(targetParent.get(File.ID))) return;
+		DBObject found = getFileCollection().findOne(BasicDBObjectBuilder.start().add(File.PARENT_ID, targetParent.get(File.ID))
+				.add(File.NAME, current.get(File.NAME)).get());
+		
+		if (found==null) {
+			makeFile((ObjectId)targetParent.get(File.ID), (String)current.get(File.NAME), false, getContentReader((String)current.get(File.URL), null).getContentInputStream());
+		}
+	}
+	
 	public void moveTo(DBObject targetParent, DBObject current, boolean b) {
 		
 		if (current.get(File.PARENT_ID).equals(targetParent.get(File.ID))) return;

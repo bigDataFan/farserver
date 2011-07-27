@@ -19,7 +19,7 @@
 
 package com.ever365.vfile.protocol.ftp;
 
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.ever365.security.User;
 
 /**
@@ -32,7 +32,7 @@ import com.ever365.security.User;
  */
 public class GFTPAuthenticator implements FTPAuthenticator {
 	
-	private BasicUserService userService;
+	private UserService userService;
   
   /**
    * Authenticate an FTP user
@@ -62,7 +62,7 @@ public class GFTPAuthenticator implements FTPAuthenticator {
   public void closeAuthenticator() {
   }
 
-	public void setUserService(BasicUserService userService) {
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 

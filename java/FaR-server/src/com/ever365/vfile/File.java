@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletInputStream;
+
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObjectBuilder;
@@ -34,6 +36,13 @@ public class File {
 	}
 	
 	
+	
+	public DBObject getDbObject() {
+		return dbObject;
+	}
+
+
+
 	private File findChild(ObjectId parentId, String name) {
 		DBObject found = fileService.getFileCollection().findOne(BasicDBObjectBuilder.start(PARENT_ID, parentId).append(NAME, name).get());
 		if (found!=null) {
@@ -114,5 +123,11 @@ public class File {
 	
 	public void createFolder(String folderName) {
 		fileService.makeFile(this.fileId, folderName, true, null);
+	}
+
+
+
+	public void update(InputStream inputStream) {
+		fileService.updateFile(dbObject, inputStream);
 	}
 }
