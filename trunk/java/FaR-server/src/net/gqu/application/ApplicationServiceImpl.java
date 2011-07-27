@@ -17,7 +17,7 @@ import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.security.BasicUserService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -27,7 +27,7 @@ import com.mongodb.DBObject;
 public class ApplicationServiceImpl implements ApplicationService {
 
 	private String mainServer = null; ;
-	private MongoDBProvider dbProvider;
+	private MongoDBDataSource dbProvider;
 	private BasicUserService userService;
 	private String registryLocation;
 	private boolean develop;
@@ -113,11 +113,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 		this.userService = userService;
 	}
 
-	public MongoDBProvider getDbProvider() {
+	public MongoDBDataSource getDbProvider() {
 		return dbProvider;
 	}
 
-	public void setDbProvider(MongoDBProvider dbProvider) {
+	public void setDbProvider(MongoDBDataSource dbProvider) {
 		this.dbProvider = dbProvider;
 	}
 	
@@ -182,7 +182,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		installedApplication.setApp((String) dbo.get(KEY_APPLICATION));
 		installedApplication.setMapping((String) dbo.get(KEY_MAPPING));
 		installedApplication.setUser((String) dbo.get(KEY_USER));
-		installedApplication.setId(((ObjectId) dbo.get(MongoDBProvider._ID)).toString());
+		installedApplication.setId(((ObjectId) dbo.get(MongoDBDataSource._ID)).toString());
 		return installedApplication;
 	}
 

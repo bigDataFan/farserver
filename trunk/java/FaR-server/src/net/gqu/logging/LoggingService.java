@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.mozilla.javascript.ScriptLogger;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
@@ -30,7 +30,7 @@ public class LoggingService {
 	
 	private DBCollection scriptLogColls;
 	private DBCollection systemLogColls;
-	private MongoDBProvider dbProvider;
+	private MongoDBDataSource dbProvider;
 	
 	
 	
@@ -73,7 +73,7 @@ public class LoggingService {
 	}
 	
 	
-	public void setDbProvider(MongoDBProvider dbProvider) {
+	public void setDbProvider(MongoDBDataSource dbProvider) {
 		this.dbProvider = dbProvider;
 		
 	}
