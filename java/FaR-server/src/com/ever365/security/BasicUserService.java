@@ -10,7 +10,7 @@ import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.vfile.VFileService;
 import com.google.gdata.client.http.AuthSubUtil;
 import com.mongodb.BasicDBObject;
@@ -63,9 +63,9 @@ public class BasicUserService {
 		this.fileService = fileService;
 	}
 
-	private MongoDBProvider dbProvider = null;
+	private MongoDBDataSource dbProvider = null;
 	
-	public MongoDBProvider getDbProvider() {
+	public MongoDBDataSource getDbProvider() {
 		return dbProvider;
 	}
 	
@@ -172,7 +172,7 @@ public class BasicUserService {
 	}
 
 	
-	public void setDbProvider(MongoDBProvider dbProvider) {
+	public void setDbProvider(MongoDBDataSource dbProvider) {
 		this.dbProvider = dbProvider;
 	}
 

@@ -55,7 +55,7 @@ import org.mozilla.javascript.RhinoException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.security.AuthenticationUtil;
 import com.ever365.security.BasicUserService;
 import com.ever365.security.Role;
@@ -93,7 +93,7 @@ public class GQServlet extends HttpServlet {
 	private RepositoryService repositoryService;
 	private ScriptExecService scriptExecService;
 	private EhCacheService cacheService;
-	private MongoDBProvider dbProvider;
+	private MongoDBDataSource dbProvider;
 	private BasicUserService userService;
 	private LoggingService loggingService;
 	private ScriptObjectGenerator scriptObjectGenerator;
@@ -134,7 +134,7 @@ public class GQServlet extends HttpServlet {
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
     	scriptExecService =  (ScriptExecService) ctx.getBean("scriptService");
     	applicationService = (ApplicationService)ctx.getBean("applicationService");
-    	dbProvider = (MongoDBProvider) ctx.getBean("dbProvider");
+    	dbProvider = (MongoDBDataSource) ctx.getBean("dbProvider");
     	userService = (BasicUserService) ctx.getBean("userService");
     	contentService = (ContentService) ctx.getBean("contentService");
     	scriptObjectGenerator = (ScriptObjectGenerator) ctx.getBean("script.object.generator");

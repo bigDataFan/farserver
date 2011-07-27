@@ -15,7 +15,7 @@ import net.gqu.webscript.object.ContentFile;
 
 import org.bson.types.ObjectId;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.security.AuthenticationUtil;
 import com.ever365.security.BasicUserService;
 import com.mongodb.DB;
@@ -30,7 +30,7 @@ public class GridFSContentService  implements ContentService {
 	public static final String THUMBNAILS = "thumbnails";
 	public static final String CONTENTS = "contents";
 
-	public void setDbProvider(MongoDBProvider dbProvider) {
+	public void setDbProvider(MongoDBDataSource dbProvider) {
 		this.dbProvider = dbProvider;
 	}
 	
@@ -47,7 +47,7 @@ public class GridFSContentService  implements ContentService {
 	}
 
 	private BasicUserService userService;
-	private MongoDBProvider dbProvider;
+	private MongoDBDataSource dbProvider;
 	private RuntimeExec runtimeExec;
 	
 	@Override

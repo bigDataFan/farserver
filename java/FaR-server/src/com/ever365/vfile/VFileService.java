@@ -9,7 +9,7 @@ import net.gqu.utils.MimeTypeUtils;
 
 import org.bson.types.ObjectId;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
@@ -24,12 +24,12 @@ public class VFileService {
 	private static final String FILES = "files";
 	
 
-	private MongoDBProvider provider;
+	private MongoDBDataSource provider;
 	private FileContentStore fileContentStore;
 	
 	
 	
-	public void setProvider(MongoDBProvider provider) {
+	public void setProvider(MongoDBDataSource provider) {
 		this.provider = provider;
 	}
 

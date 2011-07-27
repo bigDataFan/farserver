@@ -3,7 +3,7 @@ package com.ever365.rest;
 import java.util.Collection;
 import java.util.Map;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.rest.registry.RestParam;
 import com.ever365.rest.registry.RestService;
 import com.mongodb.BasicDBObject;
@@ -12,10 +12,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 public class PublicWebService {
-	private MongoDBProvider dbProvider = null;
+	private MongoDBDataSource dbProvider = null;
 	
 	
-	public void setDbProvider(MongoDBProvider dbProvider) {
+	public void setDbProvider(MongoDBDataSource dbProvider) {
 		this.dbProvider = dbProvider;
 	}
 

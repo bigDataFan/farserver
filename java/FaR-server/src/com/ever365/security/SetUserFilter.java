@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.ever365.collections.mongodb.MongoDBProvider;
+import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
@@ -31,7 +31,7 @@ public class SetUserFilter implements Filter {
 
 	
 	public static final String ARG_TICKET = "ticket";
-	private MongoDBProvider dbProvider;
+	private MongoDBDataSource dbProvider;
 	
     /**
      * Default constructor. 
@@ -92,7 +92,7 @@ public class SetUserFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(fConfig.getServletContext());
-		dbProvider = (MongoDBProvider) ctx.getBean("dbProvider");
+		dbProvider = (MongoDBDataSource) ctx.getBean("dbProvider");
 	}
 	
 	 public String getCookieTicket(HttpServletRequest httpReq) {
