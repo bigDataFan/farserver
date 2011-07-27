@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.gqu.application.ApplicationService;
-
 /**
  */
 public class User implements Serializable {

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>注册ever365</title>
+
+<link rel="stylesheet" type="text/css" href="main.css"/>
+
+</head>
+<body>
+
+	
+<div id="logo"><img alt="Ever365 个人信息服务 " src="images/logo1.gif"></div>
+
+
+<div id="terminal">
+<form action="/reg" method="POST">
+<p><label for="name" accesskey="9">用户名：</label></p>
+		 <input class="text" type="text" name="username"  value="" /> 
+		<p><label for="password">密码：</label></p>
+		<input class="text" type="password" name="pwd"  value="" />
+		<p><label for="password">请再输一次密码：</label></p>
+		<input class="text" type="password" name="pwdcfm"  value="" />
+		<p><label for="email">Email ：</label></p>
+		<input class="text" type="text"  name="email"  value="" />
+		<p><label for="remember">输入验证码：</label> <img src="rndimg" id="imgg"> </p> 
+		<p><input class="text" type="text"  name="randomimg"  value="" /> </p>
+		<p></p>
+		
+		<span id="custom_join_button" class="awesome blue medium register_button link" style="margin-left: 12px;" > <a href="#" onclick="document.forms[0].submit()">注册</a></span>
+		
+		
+</form>
+</div>
+
+
+
+
+<div style="z-index:10000;" id="toolbar_container">
+	<div id="minus_toolbar" style="z-index: 10000;">
+  
+		<div style="float: left;" class="content" id="toolbar_left">
+			<a href="http://www.ever365.com/">Ever365</a> &copy; 2009-2011
+			•  
+			<a href="http://blog.minus.com/category/updates/">v1.07</a>
+			<span id="toolbar_links">
+			• <a href="/pages/about">关于</a>
+			• <a href="/pages/api">API</a>
+			• <a href="/pages/tos">Terms</a>
+			</span>
+		</div>
+
+
+	</div>
+</div>
+
+</body>
+</html>

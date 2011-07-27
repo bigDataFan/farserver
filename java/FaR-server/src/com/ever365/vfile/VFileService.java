@@ -24,13 +24,12 @@ public class VFileService {
 	private static final String FILES = "files";
 	
 
-	private MongoDBDataSource provider;
+	private MongoDBDataSource dataSource;
 	private FileContentStore fileContentStore;
 	
 	
-	
-	public void setProvider(MongoDBDataSource provider) {
-		this.provider = provider;
+	public void setDataSource(MongoDBDataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	public void setFileContentStore(FileContentStore fileContentStore) {
@@ -119,7 +118,7 @@ public class VFileService {
 	}
 	
 	public DBCollection getFileCollection() {
-		DB db = provider.getMongo().getDB(V_FILE_DB);
+		DB db = dataSource.getMongo().getDB(V_FILE_DB);
 		return db.getCollection(FILES);
 	}
 

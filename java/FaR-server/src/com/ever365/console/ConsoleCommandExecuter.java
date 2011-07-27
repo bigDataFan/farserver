@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.gqu.freemarker.GQuFreemarkerExceptionHandler;
-
 import com.ever365.console.ftl.RenderLoader;
 
 import freemarker.template.Configuration;
@@ -43,7 +41,7 @@ public class ConsoleCommandExecuter extends HttpServlet {
 		freemarkerConfiguration.setLocale(Locale.ENGLISH);
 		freemarkerConfiguration.setDefaultEncoding("UTF-8");
 		freemarkerConfiguration.setTemplateLoader(new RenderLoader(rendererService));
-		freemarkerConfiguration.setTemplateExceptionHandler(new GQuFreemarkerExceptionHandler());
+		//freemarkerConfiguration.setTemplateExceptionHandler(new GQuFreemarkerExceptionHandler());
 		freemarkerConfiguration.setLocalizedLookup(false);
 	}
 

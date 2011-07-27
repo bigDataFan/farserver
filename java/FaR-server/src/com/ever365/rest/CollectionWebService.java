@@ -15,22 +15,21 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
 public class CollectionWebService {
-	private MongoDBDataSource dbProvider = null;
-	
-	public void setDbProvider(MongoDBDataSource dbProvider) {
-		this.dbProvider = dbProvider;
-	}
+	private MongoDBDataSource dataSource = null;
 
+	public void setDataSource(MongoDBDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
 	@RestService(method="GET", uri="/containers/list")
 	public Collection<String> listCollections() {
-		DB udb = dbProvider.getUserDB(AuthenticationUtil.getCurrentUserName());
+		DB udb = dataSource.getUserDB(AuthenticationUtil.getCurrentUserName());
 		return udb.getCollectionNames();
 	}
 	
 	@RestService(method="POST", uri="/containers/add")
 	public void addCollections(@RestParam(value="name")String name) {
-		DB udb = dbProvider.getUserDB(AuthenticationUtil.getCurrentUserName());
+		DB udb = dataSource.getUserDB(AuthenticationUtil.getCurrentUserName());
 		
 		DBCollection coll = udb.createCollection(name, null);
 		coll.ensureIndex("_user");
@@ -38,7 +37,7 @@ public class CollectionWebService {
 	
 	@RestService(method="POST", uri="/containers/doc/add")
 	public void addDocument(@RestParam(value="name")String name, @RestParam(value="node")Map<String, Object> doc) {
-		DB udb = dbProvider.getUserDB(AuthenticationUtil.getCurrentUserName());
+		DB udb = dataSource.getUserDB(AuthenticationUtil.getCurrentUserName());
 		DBCollection coll = udb.getCollection(name);
 		doc.put("_user", AuthenticationUtil.getCurrentUserName());
 		coll.insert(new BasicDBObject(doc));
@@ -48,7 +47,7 @@ public class CollectionWebService {
 	
 	@RestService(method="POST", uri="/containers/doc/madd")
 	public void addDocument(@RestParam(value="name")String name, @RestParam(value="list")List<Map<String, Object>> list) {
-		DB udb = dbProvider.getUserDB(AuthenticationUtil.getCurrentUserName());
+		DB udb = dataSource.getUserDB(AuthenticationUtil.getCurrentUserName());
 		DBCollection coll = udb.getCollection(name);
 		for (Map<String, Object> map : list) {
 			map.put("_user", AuthenticationUtil.getCurrentUserName());
@@ -59,7 +58,7 @@ public class CollectionWebService {
 	
 	@RestService(method="GET", uri="/containers/doc/find")
 	public List<Map<String, Object>> findDocument(@RestParam(value="name")String name, @RestParam(value="query")Map<String, Object> filter, @RestParam(value="skip")int skip, @RestParam(value="limit")int limit) {
-		DB pdb = dbProvider.getPublicDB();
+		DB pdb = dataSource.getPublicDB();
 		DBCollection coll = pdb.getCollection(name);
 		
 		BasicDBObject query = new BasicDBObject();

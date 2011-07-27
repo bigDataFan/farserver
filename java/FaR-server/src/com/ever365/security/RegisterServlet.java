@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import net.gqu.cache.EhCacheService;
 import net.gqu.servlet.RandomImgServlet;
-import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
 import org.apache.commons.logging.Log;
@@ -39,13 +38,11 @@ public class RegisterServlet extends HttpServlet {
     }
 
     private UserService userService;
-    private EhCacheService cacheService;
     
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		userService = (UserService) ctx.getBean("userService");
-		cacheService = (EhCacheService) ctx.getBean("cacheService");
 	}
 
 
@@ -58,60 +55,51 @@ public class RegisterServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("pwd");
 		String passwordc = request.getParameter("pwdcfm");
-		String role = request.getParameter("role");
 		Object rndimg = request.getSession().getAttribute(RandomImgServlet.VALIDATE_CODE);
 		removeAllAttr(request.getSession());
 		logger.debug("register: " + username + "  " +  email + " " + password + "  " );
 		if (username==null || username.length()<4 ) {
 			request.getSession().setAttribute("error", "invalid user name");
-			response.sendRedirect("/login.jsp");
+			response.sendRedirect("/");
 			return;
 		} 
 		
 		
 		if ( password==null || password.length()<6 ) {
 			request.getSession().setAttribute("error", "password strenth");
-			response.sendRedirect("/login.jsp");
+			response.sendRedirect("/");
 			return;
 		} 
 		
 		if (passwordc==null || !password.equals(passwordc)) {
 			request.getSession().setAttribute("error", "password confirm");
-			response.sendRedirect("/login.jsp");
-			return;
-		} 
-		
-		if (email==null) {
-			request.getSession().setAttribute("error", "invalid email");
-			response.sendRedirect("/login.jsp");
+			response.sendRedirect("/");
 			return;
 		} 
 		
 		if (request.getParameter("randomimg")==null || !request.getParameter("randomimg").equals(rndimg)) {
 			request.getSession().setAttribute("error", "invalid random picture");
-			response.sendRedirect("/login.jsp");
+			response.sendRedirect("/register.html");
 			return;
 		}
 		
 		try {
 			if (userService.getUser(username)!=null) {
 				request.getSession().setAttribute("error", "username conflict");
-				response.sendRedirect("/register.jsp");
+				response.sendRedirect("/");
 				return;
 			}
 			
-			boolean random = userService.createUser(username, password, role, email,false);
+			boolean random = userService.createUser(username, password, null, email,false);
 			
 			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, username);		
     		Cookie cookie = AuthenticationFilter.createNewCookie(response);
     		Element element = new Element(cookie.getValue(), username);
-    		Cache cookieCache = cacheService.getCookieCache();
-    		cookieCache.put(element);
     		AuthenticationUtil.setCurrentUser(username);
     		response.sendRedirect("/");
     		return;
 		} catch (Exception e) {
-			response.sendRedirect("register.jsp");
+			response.sendRedirect("/");
 			return;
 		}
 	}

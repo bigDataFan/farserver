@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.gqu.application.ApplicationService;
 import net.gqu.cache.EhCacheService;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -24,9 +23,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class LoginServlet extends HttpServlet {
 	public static final String HEADER_REFERER = "Referer";
 	private static final long serialVersionUID = 1L;
-	private EhCacheService cacheService;
 	private UserService userService;
-	private ApplicationService applicationService;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,8 +36,6 @@ public class LoginServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		userService = (UserService) ctx.getBean("userService");
-		cacheService = (EhCacheService) ctx.getBean("cacheService");
-		applicationService = (ApplicationService)ctx.getBean("applicationService");
 	}
 
 
@@ -61,15 +56,11 @@ public class LoginServlet extends HttpServlet {
     	
     	if (user!=null) {
     		if (!pwd.equals(user.getPassword())) {
-    			response.sendRedirect("/login.html");
+    			response.sendRedirect("/");
     			return;
     		} else {
     			userService.incLogCount(username);
     			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, username);		
-        		Cookie cookie = createNewCookie(response);
-        		Element element = new Element(cookie.getValue(),username);
-        		Cache cookieCache = cacheService.getCookieCache();
-        		cookieCache.put(element);
         		AuthenticationUtil.setCurrentUser(username);
         		
         		if (AuthenticationUtil.isCurrentUserAdmin()) {
@@ -84,7 +75,7 @@ public class LoginServlet extends HttpServlet {
         		return;
     		}
     	} else {
-    		response.sendRedirect("/login.html");
+    		response.sendRedirect("/");
     	}
 	}
 	  public Cookie createNewCookie(HttpServletResponse httpResp ) {
