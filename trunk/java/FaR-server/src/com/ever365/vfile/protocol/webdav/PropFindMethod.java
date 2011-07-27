@@ -290,7 +290,7 @@ public class PropFindMethod extends WebDAVMethod {
         xml.write(WebDAV.formatModifiedDate(file.getModified()));
         xml.endElement(WebDAV.DAV_NS, WebDAV.XML_GET_LAST_MODIFIED, WebDAV.XML_NS_GET_LAST_MODIFIED);
 
-        if (file.getSize()>-1) {
+        if (!file.isFolder()) {
             xml.startElement(WebDAV.DAV_NS, WebDAV.XML_GET_CONTENT_LENGTH, WebDAV.XML_NS_GET_CONTENT_LENGTH, nullAttr);
             xml.write("" + file.getSize());
             xml.endElement(WebDAV.DAV_NS, WebDAV.XML_GET_CONTENT_LENGTH, WebDAV.XML_NS_GET_CONTENT_LENGTH);
