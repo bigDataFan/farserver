@@ -17,7 +17,7 @@ import org.bson.types.ObjectId;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.security.AuthenticationUtil;
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.mongodb.DB;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -34,11 +34,11 @@ public class GridFSContentService  implements ContentService {
 		this.dbProvider = dbProvider;
 	}
 	
-	public BasicUserService getUserService() {
+	public UserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(BasicUserService userService) {
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 
@@ -46,7 +46,7 @@ public class GridFSContentService  implements ContentService {
 		this.runtimeExec = runtimeExec;
 	}
 
-	private BasicUserService userService;
+	private UserService userService;
 	private MongoDBDataSource dbProvider;
 	private RuntimeExec runtimeExec;
 	

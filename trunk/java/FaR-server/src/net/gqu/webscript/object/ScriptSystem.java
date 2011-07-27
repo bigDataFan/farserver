@@ -5,15 +5,15 @@ import java.util.Map;
 
 import net.gqu.application.ApplicationService;
 
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 
 public class ScriptSystem {
 	
 	private ApplicationService applicationService;
-	private BasicUserService userService;
+	private UserService userService;
 	
 	public ScriptSystem(ApplicationService applicationService,
-			BasicUserService userService) {
+			UserService userService) {
 		super();
 		this.applicationService = applicationService;
 		this.userService = userService;

@@ -1,16 +1,16 @@
 package net.gqu.webscript.object;
 
 import com.ever365.security.AuthenticationUtil;
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 
 
 public class ScriptUser {
 	
 	private String name;
-	private BasicUserService userService;
+	private UserService userService;
 	
 	
-	public ScriptUser(String name, BasicUserService userService) {
+	public ScriptUser(String name, UserService userService) {
 		super();
 		this.name = name;
 		this.userService = userService;

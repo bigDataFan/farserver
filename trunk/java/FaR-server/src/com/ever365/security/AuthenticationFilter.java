@@ -68,13 +68,13 @@ public class AuthenticationFilter implements Filter
     public static final String ARG_TICKET = "ticket";
     
     private EhCacheService cacheService; //ServiceRegistry.getInstance().getCacheService();
-    private BasicUserService userService; //ServiceRegistry.getInstance().getUserService();
+    private UserService userService; //ServiceRegistry.getInstance().getUserService();
     // Servlet context
 	
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		userService = (BasicUserService) ctx.getBean("userService");
+		userService = (UserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
 	}
 

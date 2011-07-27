@@ -7,13 +7,13 @@ import net.gqu.content.ContentService;
 
 import org.mozilla.javascript.NativeObject;
 
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 
 public class ScriptContent {
 	
 	private ContentService contentService;
 	public ScriptContent(ContentService contentService,
-			BasicUserService userService) {
+			UserService userService) {
 		super();
 		this.contentService = contentService;
 	}
