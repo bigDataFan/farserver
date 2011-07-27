@@ -2,6 +2,7 @@ package com.ever365.vfile.protocol.webdav;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public abstract class WebDAVMethod {
     	initContext(req);
         // Parse the HTTP headers
         parseRequestHeaders(req);
-
+ 
         // Parse the HTTP body
         parseRequestBody(req);
        
