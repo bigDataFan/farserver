@@ -73,9 +73,14 @@
 		<servlet-name>RestServiceServlet</servlet-name>
 		<servlet-class>com.ever365.rest.RestServiceServlet</servlet-class>
 	</servlet>
+	
 	<servlet>
-		<description>
-		</description>
+		<display-name>WebDAVServlet</display-name>
+		<servlet-name>WebDAVServlet</servlet-name>
+		<servlet-class>com.ever365.vfile.protocol.webdav.WebDAVServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<display-name>ConsoleCommandExecuter</display-name>
 		<servlet-name>ConsoleCommandExecuter</servlet-name>
 		<servlet-class>
@@ -92,7 +97,12 @@
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>WebDAVServlet</servlet-name>
+		<url-pattern>/webdav/*</url-pattern>
+	</servlet-mapping>
 	
+		
 	<servlet-mapping>
 		<servlet-name>RestServiceServlet</servlet-name>
 		<url-pattern>/service/*</url-pattern>
