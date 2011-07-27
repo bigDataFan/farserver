@@ -11,7 +11,6 @@ import org.bson.types.ObjectId;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.vfile.VFileService;
-import com.google.gdata.client.http.AuthSubUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
@@ -61,11 +60,12 @@ public class UserService {
 		this.fileService = fileService;
 	}
 
+	public void setDataSource(MongoDBDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
 	private MongoDBDataSource dataSource = null;
 	
-	public MongoDBDataSource getDbProvider() {
-		return dataSource;
-	}
 	
 	public UserService() {
 		super();
@@ -166,12 +166,7 @@ public class UserService {
 		}
 		return result;
 	}
-
 	
-	public void setDbProvider(MongoDBDataSource dbProvider) {
-		this.dataSource = dbProvider;
-	}
-
 	public User getUser(String name) {
 		if (usersMap.get(name)!=null) {
 			return usersMap.get(name);
@@ -302,12 +297,14 @@ public class UserService {
 	}
 	
 	public synchronized boolean createUser(String name, String pwd, String roleName, String email, boolean disabled) {
+		
+		/*
 		Role role = getRole(roleName);
 		
 		if (role==null || (!role.isOpen() && !AuthenticationUtil.isCurrentUserAdmin())) {
 			return false;
 		}
-		
+		*/
 		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(COLL_USERS);
 		
@@ -320,7 +317,6 @@ public class UserService {
 			user.setName(name);
 			user.setPassword(pwd);
 			user.setEmail(email);
-			user.setDb(userdb);
 			user.setRole(roleName);
 			user.setLogined(0);
 			user.setContentUsed(0);
@@ -365,15 +361,6 @@ public class UserService {
 		zz.put("logined", new Long(1));
 		inc.put("$inc", zz);
 		db.getCollection(COLL_USERS).update(new BasicDBObject("name", name), inc);
-	}
-	
-	public String getUserCalToken(String server) {
-		String requestUrl =
-			  AuthSubUtil.getRequestUrl(server + "/service/user/retrievetoken",
-			                            "https://www.google.com/calendar/feeds/",
-			                            false,
-			                            false);
-		return requestUrl;
 	}
 	
 	

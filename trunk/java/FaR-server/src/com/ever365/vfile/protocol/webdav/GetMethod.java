@@ -120,7 +120,7 @@ public class GetMethod extends WebDAVMethod
     private void generateDirectoryListing(String path, File file, HttpServletRequest m_request, HttpServletResponse m_response)
     {
         Writer writer = null;
-		String basePath = WEBDAV_MAPPING + rootPath + path + "/";
+		String basePath = WEBDAV_MAPPING  + path;
 		
 		
         try

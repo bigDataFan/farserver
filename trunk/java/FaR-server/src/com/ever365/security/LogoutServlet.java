@@ -28,15 +28,11 @@ public class LogoutServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    
-
-    private EhCacheService cacheService;
     private UserService userService;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		cacheService = (EhCacheService) ctx.getBean("cacheService");
 		userService = (UserService) ctx.getBean("userService");
 	}
 	
@@ -47,17 +43,6 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = request.getRequestURI();
     	
-    	Cookie[] cookies = request.getCookies();
-    	if (cookies!=null) { 
-	    	for (Cookie cookie : cookies) {
-				if (cookie.getName().equals(AuthenticationFilter.ARG_TICKET)) {
-		       		Cache cookieCache = cacheService.getCookieCache();
-	        		cookieCache.remove(cookie.getValue());
-	        		cookie.setMaxAge(0);
-	        		//response.addCookie(cookie)
-				}
-			}
-    	}
     	request.getSession().removeAttribute(AuthenticationFilter.AUTHENTICATION_USER);
     	response.sendRedirect("/");
 	}

@@ -8,7 +8,7 @@
 	</bean>
 	
 	<bean id="fileService" class="com.ever365.vfile.VFileService">
-		<property name="provider" ref="dbProvider"></property>
+		<property name="dataSource" ref="dataSource"></property>
 		<property name="fileContentStore" ref="local-file-store"></property>
 	</bean>
 	

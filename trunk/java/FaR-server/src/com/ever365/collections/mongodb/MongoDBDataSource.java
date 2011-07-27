@@ -18,6 +18,9 @@ import com.mongodb.ServerAddress;
  * @author Administrator
  */
 public class MongoDBDataSource {
+	
+	private static final String USER_DB = "userdb";
+	private static final String SYSTEM_DB = "systemdb";
 	private static final String PUBLIC_DB = "public";
 
 	public static final String ARCHIVES = "archives";
@@ -39,18 +42,13 @@ public class MongoDBDataSource {
 		return mongo;
 	}
 	public DB getMainDB() {
-		return mongo.getDB(mainDb);
+		return mongo.getDB(SYSTEM_DB);
 	}
 	
 	public DB getPublicDB() {
 		return mongo.getDB(PUBLIC_DB);
 	}
-	
-	public DB getApplicationDB(String application) {
-		return mongo.getDB(application);
-	}
-	
-	
+
 	private String ip;
 	private String port;
 	
@@ -84,7 +82,7 @@ public class MongoDBDataSource {
 	}
 	
 	public DB getUserDB(String user) {
-		return mongo.getDB("userdb");
+		return mongo.getDB(USER_DB);
 	}
 	
 	private DB getMongoDBByUrl(String mongodbUrl) {

@@ -42,7 +42,7 @@ a:hover
 
 
 input {
-    border: 0 solid #FFFFFF;
+    border: 1 solid #FFFFFF;
     color: #4E8F02;
     font-size: 14px;
     font-weight: bold;
@@ -80,12 +80,19 @@ input {
     text-decoration: none;
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
 }
+
+.awesome a {
+    color: #FFFFFF;
+}
+
 .blue.awesome:hover {
     background-color: #2266FF;
 }
+
 .awesome:active {
     top: 1px;
 }
+
 .awesome, .awesome:visited, .medium.awesome, .medium.awesome:visited {
     font-size: 13px;
     font-weight: 700;

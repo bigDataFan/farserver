@@ -31,7 +31,7 @@ public class SetUserFilter implements Filter {
 
 	
 	public static final String ARG_TICKET = "ticket";
-	private MongoDBDataSource dbProvider;
+	private MongoDBDataSource dataSource;
 	
     /**
      * Default constructor. 
@@ -66,7 +66,7 @@ public class SetUserFilter implements Filter {
 				ticket = newCookie.getValue();
         	}
 			
-        	DBCollection cookiesCol = dbProvider.getMainDB().getCollection("cookies");
+        	DBCollection cookiesCol = dataSource.getMainDB().getCollection("cookies");
         	DBObject ticDoc = cookiesCol.findOne(new BasicDBObject("ticket", ticket));
         	String userName;
         	if(ticDoc==null) {
@@ -92,7 +92,7 @@ public class SetUserFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(fConfig.getServletContext());
-		dbProvider = (MongoDBDataSource) ctx.getBean("dbProvider");
+		dataSource = (MongoDBDataSource) ctx.getBean("dataSource");
 	}
 	
 	 public String getCookieTicket(HttpServletRequest httpReq) {

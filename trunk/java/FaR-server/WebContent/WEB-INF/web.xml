@@ -35,7 +35,7 @@
 	
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
 	<filter-mapping>
@@ -83,8 +83,7 @@
 	<servlet>
 		<display-name>ConsoleCommandExecuter</display-name>
 		<servlet-name>ConsoleCommandExecuter</servlet-name>
-		<servlet-class>
-		com.ever365.console.ConsoleCommandExecuter</servlet-class>
+		<servlet-class>com.ever365.console.ConsoleCommandExecuter</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
