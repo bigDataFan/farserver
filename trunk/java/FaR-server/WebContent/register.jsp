@@ -1,3 +1,4 @@
+<%@page import="com.ever365.security.UserService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   
@@ -6,7 +7,6 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <%@page import="org.springframework.web.context.WebApplicationContext"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ever365.security.BasicUserService"%>
 <%@page import="com.ever365.security.Role"%><html>
 <head>
 <title></title>
@@ -73,7 +73,7 @@ p #submit {
 <%
 
 WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-BasicUserService userService = (BasicUserService) ctx.getBean("userService");
+UserService userService = (UserService) ctx.getBean("userService");
 
 List<Role> openRoles = userService.getOpenRoles();
 
