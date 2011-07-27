@@ -39,62 +39,7 @@
 		</property>
 	</bean>
 	
-	<bean id="applicationService" class="net.gqu.application.ApplicationServiceImpl" init-method="init">
-		<property name="mainServer">
-			<value>${main.server}</value>
-		</property>
-		<property name="dbProvider" ref="dbProvider"></property>
-		<property name="registryLocation">
-			<value>${application.registry}</value>
-		</property>
-		<property name="develop">
-			<value>${application.isdev}</value>
-		</property>
-		<property name="appDir">
-			<value>${tomcat.webapp.path}</value>
-		</property>
-		<property name="defaultApp">
-			<value>${application.app.default}</value>
-		</property>
-		<property name="mobileApp">
-			<value>${application.mobile.default}</value>
-		</property>
-	</bean>
-	
-	<bean id="contentService" class="net.gqu.content.GridFSContentService">
-		<property name="dbProvider" ref="dbProvider"></property>
-		<property name="userService" ref="userService"></property>
-		<property name="runtimeExec" ref="image.transformer.exe"></property>
-	</bean>
-	
-	<bean id="repositoryService" class="net.gqu.repository.WebAppRootRepositoryService">
-		<property name="webappPath">
-			<value>${tomcat.webapp.path}</value>
-		</property>
-	</bean>
-	
-	<!-- 
-	<bean id="repositoryService" class="net.gqu.repository.RepositoryServiceImpl">
-		<property name="loaders">
-			<list>
-				<ref bean="loader.github"/>
-				<ref bean="loader.googlecode"/>
-			</list>
-		</property>
-		<property name="develop"><value>${application.isdev}</value></property>
-	</bean>
-	 -->
-	 
-	 
-	<bean id="loader.github" class="net.gqu.repository.GitHubLoader">
-	</bean>
-
-	<bean id="loader.googlecode" class="net.gqu.repository.GoogleLoader">
-	</bean>
-	
-	<bean id="cacheService" class="net.gqu.cache.EhCacheService"></bean>
-
-	<bean id="userService" class="com.ever365.security.BasicUserService">
+	<bean id="userService" class="com.ever365.security.UserService">
 		<property name="dbProvider">
 			<ref bean="dbProvider"/>
 		</property>
@@ -107,36 +52,17 @@
 		</property>
 	</bean>
 	
-	<bean id="script.object.generator" class="net.gqu.webscript.object.ScriptObjectGenerator">
-		<property name="userService" ref="userService"></property>
-	</bean>
-	
-	<bean id="scriptService" class="net.gqu.webscript.ScriptExecService" init-method="init">
-	</bean>
-	
 	<bean id="rest.services" class="net.gqu.rest.WebRestService">
 		<property name="applicationService" ref="applicationService"></property>
 		<property name="cacheService" ref="cacheService"></property>
 		<property name="userService" ref="userService"></property>
 	</bean>
 
-	<bean id="registry" class="net.gqu.rest.HttpServiceRegistry">
+	<bean id="registry" class="com.ever365.rest.registry.HttpServiceRegistry">
 		<property name="injectedServices">
 			<list>
 				<ref bean="rest.services"/>
 			</list>
 		</property>
 	</bean>
-
-
-	
-	
-	<bean name="image.transformer.exe" class="net.gqu.utils.RuntimeExec">
-            <property name="defaultProperties">
-               <props>
-                  <prop key="options"></prop>
-               </props>
-            </property>
-         </bean>
-    
 </beans>
