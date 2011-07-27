@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.gqu.application.ApplicationService;
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
 import org.bson.types.ObjectId;
@@ -32,7 +31,6 @@ public class UserService {
 	
 	private String userdb;
 	private String adminPassword;
-	private ApplicationService applicationService; 
 	private VFileService fileService;
 	
 	/*
@@ -63,10 +61,10 @@ public class UserService {
 		this.fileService = fileService;
 	}
 
-	private MongoDBDataSource dbProvider = null;
+	private MongoDBDataSource dataSource = null;
 	
 	public MongoDBDataSource getDbProvider() {
-		return dbProvider;
+		return dataSource;
 	}
 	
 	public UserService() {
@@ -74,7 +72,7 @@ public class UserService {
 		// TODO Auto-generated constructor stub
 	}
 	public List<Role> getRoles() {
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(KEY_ROLES);
 		
 		DBCursor cur = coll.find();
@@ -89,7 +87,7 @@ public class UserService {
 	}
 	
 	public List<Role> getOpenRoles() {
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(KEY_ROLES);
 		
 		DBCursor cur = coll.find(new BasicDBObject(Role.KEY_OPEN,true));
@@ -103,10 +101,8 @@ public class UserService {
 		return result;
 	}
 	
-	
-	
 	public Map<String, Object> getUsersJsonMap(String sort, String order, int first, int max) {
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(COLL_USERS);
 		
 		DBCursor cursor = coll.find();
@@ -135,7 +131,7 @@ public class UserService {
 
 	
 	public List<User> getUsers(String sort, String order, int first, int max) {
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(COLL_USERS);
 		
 		DBCursor cursor = coll.find();
@@ -160,7 +156,7 @@ public class UserService {
 	
 	
 	public List<User> getUsers(String role, int first, int max) {
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(COLL_USERS);
 		DBCursor cursor = coll.find(new BasicDBObject("role", role)).skip(first).limit(max);
 		List<User> result = new ArrayList<User>(); 
@@ -173,14 +169,14 @@ public class UserService {
 
 	
 	public void setDbProvider(MongoDBDataSource dbProvider) {
-		this.dbProvider = dbProvider;
+		this.dataSource = dbProvider;
 	}
 
 	public User getUser(String name) {
 		if (usersMap.get(name)!=null) {
 			return usersMap.get(name);
 		} else {
-			DB db = dbProvider.getMainDB();
+			DB db = dataSource.getMainDB();
 			DBCollection coll = db.getCollection(COLL_USERS);
 			
 			DBObject query = new BasicDBObject();
@@ -204,7 +200,7 @@ public class UserService {
 	public DB getUserDB(String userName) {
 		
 		if (userdbs.get(userName)==null) {
-			DB maindb = dbProvider.getMainDB();
+			DB maindb = dataSource.getMainDB();
 			
 			DBCollection mapingColl = maindb.getCollection("dbmappings");
 			
@@ -216,7 +212,7 @@ public class UserService {
 			} else {
 				dbname = (String) mapdoc.get("db");
 			}
-			userdbs.put(userName, dbProvider.getMongo().getDB(dbname));
+			userdbs.put(userName, dataSource.getMongo().getDB(dbname));
 		}
 		return userdbs.get(userName);
 	}
@@ -246,7 +242,7 @@ public class UserService {
 
 	public boolean updateUser(User user) {
 		this.usersMap.remove(user.getName());
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(COLL_USERS);
 		WriteResult wr = coll.update(new BasicDBObject("name", user.getName()), new BasicDBObject(user.getMap()), true, false);
 		return true;
@@ -254,7 +250,7 @@ public class UserService {
 	
 	public boolean updateRole(Role role) {
 		
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(KEY_ROLES);
 		
 		if (role.getId()==null) {
@@ -271,7 +267,7 @@ public class UserService {
 		if (rolesMap.get(id)!=null) {
 			return rolesMap.get(id);
 		} else {
-			DB db = dbProvider.getMainDB();
+			DB db = dataSource.getMainDB();
 			DBCollection rolecoll = db.getCollection(KEY_ROLES);
 			DBObject roleDoc = rolecoll.findOne(new BasicDBObject("_id", new ObjectId(id)));
 			if (roleDoc==null) {
@@ -283,7 +279,7 @@ public class UserService {
 	}
 	
 	public void removeRole(String id) {
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		db.getCollection(KEY_ROLES).remove(new BasicDBObject("_id", new ObjectId(id)));
 	}
 	
@@ -299,7 +295,7 @@ public class UserService {
 		role.setTotalSize(maxSize);
 		role.setOpen(isOpen);
 
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection rolecoll = db.getCollection(KEY_ROLES);
 		rolecoll.save(new BasicDBObject(role.getMap()));
 		return true;
@@ -312,7 +308,7 @@ public class UserService {
 			return false;
 		}
 		
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		DBCollection coll = db.getCollection(COLL_USERS);
 		
 		DBObject query = new BasicDBObject();
@@ -353,7 +349,7 @@ public class UserService {
 			}
 		}
 		user.setContentUsed(user.getContentUsed()+size);
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		BasicDBObject inc = new BasicDBObject();
 		Map<String, Long> zz = new HashMap<String, Long>();
 		zz.put("contentused", size);
@@ -363,7 +359,7 @@ public class UserService {
 	
 	
 	public void incLogCount(String name) {
-		DB db = dbProvider.getMainDB();
+		DB db = dataSource.getMainDB();
 		BasicDBObject inc = new BasicDBObject();
 		Map<String, Long> zz = new HashMap<String, Long>();
 		zz.put("logined", new Long(1));
