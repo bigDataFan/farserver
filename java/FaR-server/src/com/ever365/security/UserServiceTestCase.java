@@ -6,7 +6,7 @@ public class UserServiceTestCase extends BasicTestCase {
 
 	
 	
-	private BasicUserService userService = (BasicUserService) ctx.getBean("userService");
+	private UserService userService = (UserService) ctx.getBean("userService");
 	private String roles = "testusers";
 	private String noneopenRoles = "testNoneopenRoles";
 

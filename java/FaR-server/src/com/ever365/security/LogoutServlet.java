@@ -31,13 +31,13 @@ public class LogoutServlet extends HttpServlet {
     
 
     private EhCacheService cacheService;
-    private BasicUserService userService;
+    private UserService userService;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
-		userService = (BasicUserService) ctx.getBean("userService");
+		userService = (UserService) ctx.getBean("userService");
 	}
 	
 

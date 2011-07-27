@@ -18,7 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -28,7 +28,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	private String mainServer = null; ;
 	private MongoDBDataSource dbProvider;
-	private BasicUserService userService;
+	private UserService userService;
 	private String registryLocation;
 	private boolean develop;
 	private String defaultApp;
@@ -109,7 +109,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		this.mainServer = mainServer;
 	}
 	
-	public void setUserService(BasicUserService userService) {
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 

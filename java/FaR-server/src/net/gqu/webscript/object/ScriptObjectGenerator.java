@@ -9,16 +9,16 @@ import net.gqu.webscript.object.google.ScriptCalendar;
 
 import org.mozilla.javascript.NativeObject;
 
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.ever365.security.User;
 
 public class ScriptObjectGenerator {
 
 	private static final String MULTIPARAM_ENDFIX = "[]";
-	private BasicUserService userService;
+	private UserService userService;
 	private ApplicationService applicationService;
 	
-	public BasicUserService getUserService() {
+	public UserService getUserService() {
 		return userService;
 	}
 	
@@ -28,7 +28,7 @@ public class ScriptObjectGenerator {
 	}
 
 
-	public void setUserService(BasicUserService userService) {
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 

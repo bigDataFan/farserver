@@ -20,7 +20,7 @@ import org.bson.types.ObjectId;
 import com.ever365.rest.registry.RestParam;
 import com.ever365.rest.registry.RestService;
 import com.ever365.security.AuthenticationUtil;
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.ever365.security.Role;
 import com.ever365.security.User;
 import com.google.gdata.client.GoogleService;
@@ -31,7 +31,7 @@ public class WebRestService {
 
 	private ApplicationService applicationService;
 	private EhCacheService cacheService;
-	private BasicUserService userService;
+	private UserService userService;
 	
 	public void setCacheService(EhCacheService cacheService) {
 		this.cacheService = cacheService;
@@ -41,11 +41,11 @@ public class WebRestService {
 		this.applicationService = applicationService;
 	}
 	
-	public BasicUserService getUserService() {
+	public UserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(BasicUserService userService) {
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 

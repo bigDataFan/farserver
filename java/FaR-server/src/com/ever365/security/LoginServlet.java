@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 	public static final String HEADER_REFERER = "Referer";
 	private static final long serialVersionUID = 1L;
 	private EhCacheService cacheService;
-	private BasicUserService userService;
+	private UserService userService;
 	private ApplicationService applicationService;
 	
     /**
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		userService = (BasicUserService) ctx.getBean("userService");
+		userService = (UserService) ctx.getBean("userService");
 		cacheService = (EhCacheService) ctx.getBean("cacheService");
 		applicationService = (ApplicationService)ctx.getBean("applicationService");
 	}

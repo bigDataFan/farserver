@@ -23,7 +23,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.rest.registry.HttpServiceRegistry;
 import com.ever365.rest.registry.MethodInvocation;
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.ever365.security.LoginServlet;
 
 /**
@@ -34,7 +34,7 @@ public class RestServiceServlet extends HttpServlet {
 
 	private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
 	private HttpServiceRegistry registry;
-	private BasicUserService userService;
+	private UserService userService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -47,7 +47,7 @@ public class RestServiceServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils
 		.getRequiredWebApplicationContext(config.getServletContext());
-		userService = (BasicUserService) ctx.getBean("userService");
+		userService = (UserService) ctx.getBean("userService");
 		registry = (HttpServiceRegistry) ctx.getBean("registry");
 	}
 	
@@ -90,6 +90,12 @@ public class RestServiceServlet extends HttpServlet {
 			e.printStackTrace();
 			response.setStatus(500);
 		}
+	}
+	
+
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		
 	}
 

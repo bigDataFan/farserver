@@ -57,7 +57,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.security.AuthenticationUtil;
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.ever365.security.Role;
 import com.ever365.security.User;
 
@@ -94,7 +94,7 @@ public class GQServlet extends HttpServlet {
 	private ScriptExecService scriptExecService;
 	private EhCacheService cacheService;
 	private MongoDBDataSource dbProvider;
-	private BasicUserService userService;
+	private UserService userService;
 	private LoggingService loggingService;
 	private ScriptObjectGenerator scriptObjectGenerator;
 	
@@ -135,7 +135,7 @@ public class GQServlet extends HttpServlet {
     	scriptExecService =  (ScriptExecService) ctx.getBean("scriptService");
     	applicationService = (ApplicationService)ctx.getBean("applicationService");
     	dbProvider = (MongoDBDataSource) ctx.getBean("dbProvider");
-    	userService = (BasicUserService) ctx.getBean("userService");
+    	userService = (UserService) ctx.getBean("userService");
     	contentService = (ContentService) ctx.getBean("contentService");
     	scriptObjectGenerator = (ScriptObjectGenerator) ctx.getBean("script.object.generator");
     	loggingService = (LoggingService) ctx.getBean("loggingService");

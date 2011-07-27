@@ -14,7 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.security.AuthenticationUtil;
-import com.ever365.security.BasicUserService;
+import com.ever365.security.UserService;
 import com.ever365.security.User;
 
 /**
@@ -25,7 +25,7 @@ public class DefaultServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
       
-	private BasicUserService userService;
+	private UserService userService;
 	private ApplicationService applicationService;
 	
     /**
@@ -39,7 +39,7 @@ public class DefaultServlet extends HttpServlet {
     @Override
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-		userService = (BasicUserService) ctx.getBean("userService");
+		userService = (UserService) ctx.getBean("userService");
 		applicationService = (ApplicationService)ctx.getBean("applicationService");
 	}
     

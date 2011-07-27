@@ -22,7 +22,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
-public class BasicUserService {
+public class UserService {
 	
 	private static final String KEY_ROLES = "roles";
 	private static final String COLL_USERS = "users";
@@ -69,7 +69,7 @@ public class BasicUserService {
 		return dbProvider;
 	}
 	
-	public BasicUserService() {
+	public UserService() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
