@@ -113,13 +113,6 @@
 						busy_img.visible = true;
 						busy_time.text = ServiceRegistry.trackingService.getDura(runningItem);
 						busy_label.text= runningItem["desc"];
-						
-						var timer:Timer = new Timer(60*1000);
-						timer.addEventListener(TimerEvent.TIMER,function onTimer() {
-							busy_time.text = ServiceRegistry.trackingService.getDura(runningItem);
-						});
-						timer.start();
-						
 					}
 					
 					fullmodel.visible = false;
@@ -163,7 +156,6 @@
 						} catch (e:Error) {
 							
 						}
-						
 					}
 					return;
 				}
@@ -183,13 +175,25 @@
 				timetrack_g.load(new Date());
 				onScreen = files_g;
 				
-				SystemTrayUtils.drawTrayIcon(this.defaultSysDockIconBitmaps);
+				SystemTrayUtils.drawTrayIcon(this.defaultSysDockIconBitmaps, function (event:Event) {
+					switchFullModel(event);
+				});
 				SystemTrayUtils.createDockIconMenu("主窗口", switchFullModel);
 				SystemTrayUtils.createDockIconMenu("悬浮窗", switchModel2);
 				SystemTrayUtils.createDockIconMenu("", null);
 				SystemTrayUtils.createDockIconMenu("退出程序", function(event:Event){
 					NativeApplication.nativeApplication.exit();
 				});
+				
+				var timer:Timer = new Timer(60*1000);
+				timer.addEventListener(TimerEvent.TIMER,function onTimer() {
+					var runningItem:Object = ServiceRegistry.trackingService.getRunningItem();
+					if (runningItem) {
+						busy_time.text = ServiceRegistry.trackingService.getDura(runningItem);
+					}
+				});
+				timer.start();
+				
 			}
 			
 			protected function openFiles(event:MouseEvent):void
