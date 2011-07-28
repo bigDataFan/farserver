@@ -115,28 +115,42 @@ input {
     height: 55px;
     margin: 0 auto;
     width: 480px;
+    
+}
+#terminal ul {
+	display: block;
+	list-style: none;
+}
+#terminal li {
+	position: relative;
+	float: left;
+	margin: 12px 0 5px 0;
+	display: list-item;
+	background: url(images/navi_seperator.png) 100% 1px no-repeat #494738;
 }
 
-#terminal input {
-	font-size: 14px;
-	border: 1px solid #EBEBEB;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	cursor: text;
-	transition: opacity .4s;
-	-o-transition-property: opacity .4s;
-	-moz-transition: opacity .4s;
-	-webkit-transition: opacity .4s;
-	margin: 0;
-    width: 450px;
-    padding: 3px 2px 3px 5px;
-    text-transform: none;
-    -webkit-appearance: textfield;
-    -webkit-rtl-ordering: logical;
-	-webkit-user-select: text;
-	-webkit-appearance: outer-spin-button;
+#terminal li a {
+	display: block;
+	position: relative;
+	height: 90px;
+	text-decoration: none;
+	color: white;
+	font-size: 13px;
+	line-height: 130px;
+	text-shadow: 0 1px 1px #9D9999;
+	padding: 0 18px;
 }
+
+#terminal li span {
+	display: block;
+	position: absolute;
+	left: 50%;
+	margin-left: -15px;
+	top: 12px;
+	width: 30px;
+	height: 30px;
+}
+
 
 div#toolbar_container {
     -moz-transition: background-color 0.4s linear 0s;
