@@ -17,7 +17,7 @@ package com.ever365.utils
 			
 		}
 		
-		public static function drawTrayIcon(bitmaps:Array):void {
+		public static function drawTrayIcon(bitmaps:Array, dbclick:Function):void {
 			
 			if(NativeApplication.supportsDockIcon){
 				var dockIcon:DockIcon = NativeApplication.nativeApplication.icon as DockIcon;
@@ -28,6 +28,8 @@ package com.ever365.utils
 					NativeApplication.nativeApplication.icon as SystemTrayIcon;
 				sysTrayIcon.tooltip = "Stopwatch";
 				sysTrayIcon.addEventListener(MouseEvent.CLICK,undock);
+				sysTrayIcon.addEventListener(ScreenMouseEvent.CLICK, dbclick);
+				sysTrayIcon.addEventListener(MouseEvent.DOUBLE_CLICK, dbclick);
 				//sysTrayIcon.menu = createIconMenu();
 			}
 			
