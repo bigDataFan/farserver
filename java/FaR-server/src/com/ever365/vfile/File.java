@@ -69,6 +69,22 @@ public class File {
 		return found;
 	}
 
+	public File makeDir(String path) {
+		DBCollection coll = fileService.getFileCollection();
+		
+		String[] paths = path.split("/");
+		File found = this;
+		for (int i = 0; i < paths.length; i++) {
+			if ("".equals(paths[i])) continue;
+			DBObject foundObj = coll.findOne(BasicDBObjectBuilder.start(PARENT_ID, found.fileId).append(NAME, paths[i]).get());
+			if (foundObj!=null) {
+				found = new File(fileService,(ObjectId)foundObj.get(ID), foundObj);
+			} else {
+				found = createFolder(paths[i]);
+			}
+		}
+		return found;
+	}
 	
 
 	public boolean isFolder() {
@@ -117,12 +133,12 @@ public class File {
 	}
 
 
-	public void createFile(String fileName, InputStream is) {
-		fileService.makeFile(this.fileId, fileName, false, is);
+	public File createFile(String fileName, InputStream is) {
+		return fileService.makeFile(this.fileId, fileName, false, is);
 	}
 	
-	public void createFolder(String folderName) {
-		fileService.makeFile(this.fileId, folderName, true, null);
+	public File createFolder(String folderName) {
+		return fileService.makeFile(this.fileId, folderName, true, null);
 	}
 
 

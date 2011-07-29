@@ -30,6 +30,10 @@ public class AuthenticationUtil
     	return admin.get();
     }
     
+    public static boolean isCurrentUserGuest() {
+    	return guest.get();
+    }
+    
     public static void setCurrrentUserAdmin(Boolean b) {
     	admin.set(b);
     }
