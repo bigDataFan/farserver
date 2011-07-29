@@ -34,7 +34,7 @@ public class UserServiceTestCase extends BasicTestCase {
 		boolean result = userService.createUser(userNameb, "123456", noneopenRoles, "abc@g-qu.net",false);
 		assertFalse(result);
 		
-		AuthenticationUtil.setCurrrentUserAdmin();
+		//AuthenticationUtil.setCurrrentUserAdmin();
 		result = userService.createUser(userNameb, "123456", noneopenRoles, "abc@g-qu.net", false);
 		assertTrue(result);
 		

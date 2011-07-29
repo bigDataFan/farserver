@@ -36,11 +36,12 @@ public class CommandSearcher {
 	    }
 		
 		DBCollection dbc = null;
-		if (AuthenticationUtil.isCurrentLogon()) {
+		/*
+		if (AuthenticationUtil.isCurrentUserAdmin()) {
 			DB db = dataSource.getUserDB(AuthenticationUtil.getCurrentUserName());
 			dbc = db.getCollection(coll);
 		} 
-		
+		*/
 		if (dbc==null) {
 			dbc = dataSource.getPublicDB().getCollection(coll);
 		}

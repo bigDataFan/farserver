@@ -8,4 +8,5 @@ public @interface RestService {
 	String method();
 	String uri();
 	boolean transactional() default true;
+	boolean multipart() default false;
 }

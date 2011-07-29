@@ -37,6 +37,7 @@ public class HttpServiceRegistry {
 					mi.setMethod(method);
 					mi.setService(object);
 					mi.setTransactional(rs.transactional());
+					mi.setMultipart(rs.multipart());
 					Annotation[][] paramAnno = method.getParameterAnnotations();
 					Class<?>[] paramTypes = method.getParameterTypes();
 					for (int i = 0; i < paramAnno.length; i++) {
