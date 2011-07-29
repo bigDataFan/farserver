@@ -3,6 +3,7 @@ package com.ever365.office;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,12 @@ public class OfficeService {
 			if (folder!=null) {
 				List<File> children = folder.getChildren();
 				for (File file : children) {
-					
+					Map<String, Object> m = new HashMap<String, Object>();
+					m.put("name", file.getName());
+					m.put("size", file.getSize());
+					m.put("modified", file.getModified());
+					m.put("id", file.getObjectId().toString());
+					result.add(m);
 				}
 			}
 		}
