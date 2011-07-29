@@ -226,13 +226,13 @@ public class UserService {
 	}
 
 	public void setAdminPassword(String adminPassword) {
-		
+		/*
 		this.adminPassword = adminPassword;
 		User adminUser = new User();
 		adminUser.setName(AuthenticationUtil.ADMIN_USER_NAME);
 		adminUser.setPassword(adminPassword);
 		usersMap.put(AuthenticationUtil.ADMIN_USER_NAME, adminUser);
-		
+		*/
 	}
 
 	public boolean updateUser(User user) {

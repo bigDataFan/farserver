@@ -1,6 +1,7 @@
 package com.ever365.rest;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.util.Collection;
@@ -16,6 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.context.WebApplicationContext;
@@ -113,22 +118,39 @@ public class RestServiceServlet extends HttpServlet {
 				strPath = strPath.substring( rootPos + servletPath.length());
 			
 			MethodInvocation handler = registry.getPost(strPath);
-			Enumeration paramNames = request.getParameterNames();
-			Map<String, Object> args = new HashMap<String, Object>();
-			while (paramNames.hasMoreElements()) {
-				String name = (String) paramNames.nextElement();
-				args.put(name, URLDecoder.decode(request.getParameter(name), "UTF-8"));
-				//args.put(name, request.getParameter(name));
-				//args.put(name, new String(request.getParameter(name).getBytes("ISO-8859-1"), "UTF-8"));
-			}
 			
-
 			if (handler==null) {
 				response.setStatus(404);
 				return;
 			}
 			
 			
+			Map<String, Object> args = new HashMap<String, Object>();
+			if (handler.isMultipart() && ServletFileUpload.isMultipartContent(request)) {
+				
+				ServletFileUpload upload = new ServletFileUpload();
+
+				// Parse the request
+				FileItemIterator iter = upload.getItemIterator(request);
+				while (iter.hasNext()) {
+				    FileItemStream item = iter.next();
+				    String name = item.getFieldName();
+				    InputStream stream = item.openStream();
+				    if (item.isFormField()) {
+				    	args.put(name, Streams.asString(stream, "UTF-8"));
+				    } else {
+				    	args.put(name, stream);
+				    }
+				}
+			} else {
+				Enumeration paramNames = request.getParameterNames();
+				while (paramNames.hasMoreElements()) {
+					String name = (String) paramNames.nextElement();
+					args.put(name, URLDecoder.decode(request.getParameter(name), "UTF-8"));
+					//args.put(name, request.getParameter(name));
+					//args.put(name, new String(request.getParameter(name).getBytes("ISO-8859-1"), "UTF-8"));
+				}
+			}
 			Object result = handler.execute(args);
 			if (result==null) {
 				response.sendRedirect("/");

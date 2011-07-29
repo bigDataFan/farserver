@@ -1,5 +1,6 @@
 package com.ever365.rest.registry;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
@@ -20,7 +21,16 @@ public class MethodInvocation {
 	private Method method;
 	private Object service;
 	private boolean transactional;
+	private boolean isMultipart;
 	
+	public boolean isMultipart() {
+		return isMultipart;
+	}
+
+	public void setMultipart(boolean isMultipart) {
+		this.isMultipart = isMultipart;
+	}
+
 	public boolean isTransactional() {
 		return transactional;
 	}
@@ -82,6 +92,10 @@ public class MethodInvocation {
 		
 		if (clazz==Double.class) {
 			return Double.parseDouble((String) obj);
+		}
+		
+		if (clazz==InputStream.class && (obj instanceof InputStream)) {
+			return  obj;
 		}
 		
 		if (clazz.isInstance(obj)) {
