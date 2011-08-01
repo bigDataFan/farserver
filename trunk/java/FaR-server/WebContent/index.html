@@ -3,9 +3,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ever365</title>
-
 <link rel="stylesheet" type="text/css" href="main.css"/>
-	<script type="text/javascript" src="swfobject.js"></script>
+<link href="uploadify.css" type="text/css" rel="stylesheet" />
+
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/js/swfobject.js"></script>
+<script type="text/javascript" src="/js/jquery.uploadify.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#file_upload').uploadify({
+    'uploader'  : '/js/uploadify.swf',
+    'script'    : '/uploadify/uploadify.php',
+    'cancelImg' : '/images/uploadify-cancel.png',
+    /*'folder'    : '/uploads',*/
+    'buttonText': '上传文件',
+    'auto'      : true
+  });
+});
+</script>
+
 
 </head>
 <body>
@@ -34,6 +51,9 @@
              </ul>
 </div>             
              <div id="files">
+             	<div class="itemcontainer" style="height: 20px;">
+             			<input id="file_upload" name="file_upload" type="file" />
+             	</div>
              	<div class="itemcontainer">
              		<div class="image">
              			<img alt="" src="images/Folder.png">
