@@ -134,7 +134,8 @@ input {
     display: block;
     font-size: 13px;
     line-height: 54px;
-    margin-left: 60px;
+    margin-left: 50px;
+    margin-right:10px;
     padding: 0 5px;
     position: relative;
     text-decoration: none;
@@ -151,6 +152,44 @@ input {
     width: 30px;
 }
 
+
+#terminal div.itemcontainer {
+	padding: 15px 13px 10px 10px;
+	border-bottom: 1px solid #D6D6D6;
+	border-top: 1px solid white;
+	margin: 0;
+	border-left: 1px solid #D8E1E2;
+	background: url(images/sidebar.jpg) repeat right;
+	display: block;
+	min-height: 40px;
+	color: #40494A;
+}
+
+#terminal div.itemcontainer div.image {
+	float: left;
+}
+
+
+#terminal div.itemcontainer div.title {
+	padding-left: 45px;
+	font-size: 14px;
+}
+
+#terminal div.itemcontainer div.desc {
+	padding-left: 45px;
+	color: #92999C;
+}
+
+#terminal div.itemcontainer div.oper a {
+	float: right;
+	display: block;
+	padding:3px;
+	margin:2px;
+	text-align: center;
+	background: white url(images/btn_black.jpg) repeat-x top left;
+	color: #CCC;
+
+}
 
 div#toolbar_container {
     -moz-transition: background-color 0.4s linear 0s;
