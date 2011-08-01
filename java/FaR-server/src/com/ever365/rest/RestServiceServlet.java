@@ -7,6 +7,8 @@ import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -17,8 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.gqu.webscript.HttpStatusExceptionImpl;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.json.JSONArray;
@@ -128,12 +133,26 @@ public class RestServiceServlet extends HttpServlet {
 			Map<String, Object> args = new HashMap<String, Object>();
 			if (handler.isMultipart() && ServletFileUpload.isMultipartContent(request)) {
 				
-				ServletFileUpload upload = new ServletFileUpload();
-
+				FileItemFactory factory = new DiskFileItemFactory();
+				// Create a new file upload handler
+				ServletFileUpload upload = new ServletFileUpload(factory);
+				//upload.setSizeMax(1024*1024);
+				
 				// Parse the request
-				FileItemIterator iter = upload.getItemIterator(request);
+				List items = upload.parseRequest(request);
+				// Parse the request
+				Iterator iter = items.iterator();
+				
 				while (iter.hasNext()) {
-				    FileItemStream item = iter.next();
+					FileItem item = (FileItem) iter.next();
+					
+					if (item.isFormField()) {
+				        args.put(item.getFieldName(), item.getString());
+				    } else {
+				    	args.put(item.getFieldName(), item.getInputStream());
+				    }
+					/*
+					
 				    String name = item.getFieldName();
 				    InputStream stream = item.openStream();
 				    if (item.isFormField()) {
@@ -141,6 +160,7 @@ public class RestServiceServlet extends HttpServlet {
 				    } else {
 				    	args.put(name, stream);
 				    }
+				    */
 				}
 			} else {
 				Enumeration paramNames = request.getParameterNames();
@@ -153,7 +173,7 @@ public class RestServiceServlet extends HttpServlet {
 			}
 			Object result = handler.execute(args);
 			if (result==null) {
-				response.sendRedirect("/");
+				response.setStatus(201);
 			} else {
 				render(response, result);
 			}
@@ -173,7 +193,7 @@ public class RestServiceServlet extends HttpServlet {
 	private void render(HttpServletResponse response, Object result)
 			throws IOException {
 		if (result==null) {
-			response.sendRedirect("/");
+			response.setStatus(201);
 			return;
 		}
 		response.setContentType(CONTENT_TYPE);
