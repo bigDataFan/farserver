@@ -17,7 +17,6 @@ public class OfficeService {
 	private MongoDBDataSource dataSource;
 	private VFileService fileService;
 	
-	
 	public void addFile(String name, InputStream inputStream) {
 		File userRoot = getUserRoot();
 
@@ -62,9 +61,9 @@ public class OfficeService {
 				}
 			}
 		}
-		
 		return result;
 	}
+	
 	
 	
 }
