@@ -4,22 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ever365</title>
 <link rel="stylesheet" type="text/css" href="main.css"/>
-<link href="uploadify.css" type="text/css" rel="stylesheet" />
-
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="/js/swfobject.js"></script>
-<script type="text/javascript" src="/js/jquery.uploadify.min.js"></script>
+
+<script type="text/javascript" src="uploadify/swfobject.js"></script>
+<script type="text/javascript" src="uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="uploadify/uploadify.css"/>
 
 <script type="text/javascript">
 $(document).ready(function() {
-  $('#file_upload').uploadify({
-    'uploader'  : '/js/uploadify.swf',
-    'script'    : '/uploadify/uploadify.php',
-    'cancelImg' : '/images/uploadify-cancel.png',
-    /*'folder'    : '/uploads',*/
-    'buttonText': '上传文件',
-    'auto'      : true
-  });
+	$('#file_upload').uploadify({
+	    'uploader'  : '/uploadify/uploadify.swf',
+	    'script'    : '/service/office/upload',
+	    'cancelImg' : '/uploadify/cancel.png',
+	    'folder'      : '/uploads',
+	    'width'     : 80,
+	    'removeCompleted' : true,
+	    'multi'     : true
+	  });
 });
 </script>
 
@@ -37,7 +38,7 @@ $(document).ready(function() {
 	</div>
 </div>
 	
-<div id="logo"><img alt="Ever365 个人信息服务 " src="images/logo1.gif"></div>
+<div id="logo"><img alt="Ever365 个人信息服务 " src="images/logo1ss.gif"></div>
 
 
 <div id="terminal">
@@ -51,9 +52,6 @@ $(document).ready(function() {
              </ul>
 </div>             
              <div id="files">
-             	<div class="itemcontainer" style="height: 20px;">
-             			<input id="file_upload" name="file_upload" type="file" />
-             	</div>
              	<div class="itemcontainer">
              		<div class="image">
              			<img alt="" src="images/Folder.png">
@@ -70,6 +68,11 @@ $(document).ready(function() {
              		<div class="title">我的心文件</div>
              		<div class="desc">创建于2011-2-3 12:32 大小  22K</div>
              		<div class="oper"><a href="#">下载</a><a href="#">删除</a></div>
+             	</div>
+             	
+             	<div class="itemcontainer" style="height: auto;">
+             			<input id="file_upload" name="file_upload" type="file" /> 
+             			<a href="javascript:$('#file_upload').uploadifyUpload()">Upload Files</a>
              	</div>
              </div>
              
