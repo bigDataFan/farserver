@@ -34,7 +34,7 @@ public class OfficeService {
 
 
 	@RestService(method="POST", uri="/office/upload", multipart=true)
-	public void addFile(@RestParam(value="Filename")String name, @RestParam(value="Filedata")InputStream inputStream) {
+	public String addFile(@RestParam(value="Filename")String name, @RestParam(value="Filedata")InputStream inputStream) {
 		File userRoot = getUserRoot();
 
 		Date date = new Date();
@@ -45,6 +45,7 @@ public class OfficeService {
 		File todayDir = userRoot.makeDir(year + "/" + month + "/" + day);
 		
 		todayDir.createFile(name, inputStream);
+		return "{success: true}";
 	}
 
 	private File getUserRoot() {
@@ -62,7 +63,7 @@ public class OfficeService {
 	}
 	
 	@RestService(method="GET", uri="/office/daylist")
-	public List<Map<String, Object>> getDayFiles(String date) {
+	public List<Map<String, Object>> getDayFiles(@RestParam(value="date")String date) {
 		String[] splits = date.split("-");
 		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 		if (splits.length==3) {

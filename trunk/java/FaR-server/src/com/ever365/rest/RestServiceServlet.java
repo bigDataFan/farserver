@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -131,6 +132,7 @@ public class RestServiceServlet extends HttpServlet {
 			
 			
 			Map<String, Object> args = new HashMap<String, Object>();
+			
 			if (handler.isMultipart() && ServletFileUpload.isMultipartContent(request)) {
 				
 				FileItemFactory factory = new DiskFileItemFactory();
@@ -162,6 +164,9 @@ public class RestServiceServlet extends HttpServlet {
 				    }
 				    */
 				}
+			} else if (request.getHeader("X-File-Name")!=null) {
+				args.put("Filename", request.getHeader("X-File-Name"));
+				args.put("Filedata", request.getInputStream());
 			} else {
 				Enumeration paramNames = request.getParameterNames();
 				while (paramNames.hasMoreElements()) {
@@ -173,7 +178,7 @@ public class RestServiceServlet extends HttpServlet {
 			}
 			Object result = handler.execute(args);
 			if (result==null) {
-				response.setStatus(201);
+				response.setStatus(200);
 			} else {
 				render(response, result);
 			}
