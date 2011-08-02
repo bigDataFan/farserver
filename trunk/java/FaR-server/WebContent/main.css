@@ -159,7 +159,9 @@ input {
 	border-top: 1px solid white;
 	margin: 0;
 	border-left: 1px solid #D8E1E2;
-	background: url(images/sidebar.jpg) repeat-y right;
+	border-right: 1px solid #D8E1E2;
+	background: #edf1f2  repeat-y right;
+	/*url(images/sidebar.jpg)*/
 	display: block;
 	min-height: 30px;
 	color: #40494A;
