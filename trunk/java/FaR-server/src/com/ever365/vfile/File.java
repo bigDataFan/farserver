@@ -80,7 +80,7 @@ public class File {
 			if (foundObj!=null) {
 				found = new File(fileService,(ObjectId)foundObj.get(ID), foundObj);
 			} else {
-				found = createFolder(paths[i]);
+				found = found.createFolder(paths[i]);
 			}
 		}
 		return found;
