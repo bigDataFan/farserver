@@ -34,10 +34,11 @@ public class OfficeService {
 
 
 	@RestService(method="POST", uri="/office/upload", multipart=true)
-	public String addFile(@RestParam(value="Filename")String name, @RestParam(value="Filedata")InputStream inputStream) {
+	public Map<String, Object> addFile(@RestParam(value="Filename")String name, @RestParam(value="Filedata")InputStream inputStream) {
 		File userRoot = getUserRoot();
+		Map<String, Object> result = new HashMap<String, Object>();
 		if (name==null) {
-			return "";
+			return result;
 		}
 		Date date = new Date();
 		int year = date.getYear() + 1900;
@@ -46,8 +47,14 @@ public class OfficeService {
 		
 		File todayDir = userRoot.makeDir(year + "/" + month + "/" + day);
 		
-		todayDir.createFile(name, inputStream);
-		return "{success: true}";
+		File file = todayDir.createFile(name, inputStream);
+		
+		result.put("success", true);
+		result.put("name", file.getName());
+		result.put("size", file.getSize());
+		result.put("modified", file.getModified().getTime());
+		result.put("id", file.getObjectId().toString());
+		return result;
 	}
 
 	private File getUserRoot() {
