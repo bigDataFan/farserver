@@ -10,6 +10,7 @@ import net.gqu.utils.MimeTypeUtils;
 import org.bson.types.ObjectId;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
+import com.ever365.security.AuthenticationUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
@@ -50,6 +51,16 @@ public class VFileService {
 		return rootFile;
 	}
 
+	public File getFileById(String id) {
+		DBObject dbo = getFileCollection().findOne(new BasicDBObject(File.ID, new ObjectId(id)));
+		if (dbo!=null) {
+			return new File(this, (ObjectId)dbo.get(File.ID), dbo);
+		} else {
+			return null;
+		}
+		
+	}
+	
 	public FileContentWriter getContentWriter() {
 		return fileContentStore.getContentWriter();
 	}
@@ -60,6 +71,7 @@ public class VFileService {
 		dbo.put(File.NAME, name);
 		dbo.put(File.FOLDER, isFolder);
 		dbo.put(File.MODIFIED, new Date());
+		dbo.put(File.CREATOR, AuthenticationUtil.getCurrentUser());
 		if (!isFolder && is!=null) {
 			FileContentWriter writer = getContentWriter();
 			writer.putContent(is);
@@ -162,6 +174,18 @@ public class VFileService {
 			getFileCollection().update(new BasicDBObject(File.ID, current.get(File.ID)), current);
 		}
 		
+	}
+	
+	public void delete(File file) {
+		
+		if (file.isFolder()) {
+			List<File> children = file.getChildren();
+			for (File child : children) {
+				delete(child);
+			}
+		}
+		
+		getFileCollection().remove(new BasicDBObject(File.ID, file.getObjectId()));
 	}
 
 	

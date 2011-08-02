@@ -121,7 +121,7 @@ input {
 	display: block;
 	list-style: none;
 }
-#terminal li {
+#terminal ul.nav li {
 	position: relative;
 	float: left;
 	margin: 12px 0 5px 0;
@@ -129,7 +129,7 @@ input {
 	background: url(images/navi_seperator.png) 100% 1px no-repeat #494738;
 }
 
-#terminal li a {
+#terminal ul.nav li a {
    color: white;
     display: block;
     font-size: 13px;
@@ -142,7 +142,7 @@ input {
     text-shadow: 0 1px 1px #9D9999;
 }
 
-#terminal li span {
+#terminal ul.nav li span {
     display: block;
     height: 30px;
     left: 50%;
@@ -154,14 +154,14 @@ input {
 
 
 #terminal div.itemcontainer {
-	padding: 15px 13px 10px 10px;
+	padding: 5px;
 	border-bottom: 1px solid #D6D6D6;
 	border-top: 1px solid white;
 	margin: 0;
 	border-left: 1px solid #D8E1E2;
-	background: url(images/sidebar.jpg) repeat right;
+	background: url(images/sidebar.jpg) repeat-y right;
 	display: block;
-	min-height: 40px;
+	min-height: 30px;
 	color: #40494A;
 }
 
@@ -171,20 +171,27 @@ input {
 
 
 #terminal div.itemcontainer div.title {
-	padding-left: 45px;
+	padding-left: 5px;
+	float:left;
 	font-size: 14px;
+	width: 200px;
 }
 
 #terminal div.itemcontainer div.desc {
-	padding-left: 45px;
+	padding-left: 5px;
+	float:left;
 	color: #92999C;
+	width: 150px;
+}
+#terminal div.itemcontainer div.oper {
+	float: right;
+	width: 70px;
 }
 
 #terminal div.itemcontainer div.oper a {
-	float: right;
-	display: block;
 	padding:3px;
 	margin:2px;
+	width:50px;
 	text-align: center;
 	background: white url(images/btn_black.jpg) repeat-x top left;
 	color: #CCC;

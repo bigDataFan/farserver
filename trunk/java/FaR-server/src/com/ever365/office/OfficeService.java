@@ -36,7 +36,9 @@ public class OfficeService {
 	@RestService(method="POST", uri="/office/upload", multipart=true)
 	public String addFile(@RestParam(value="Filename")String name, @RestParam(value="Filedata")InputStream inputStream) {
 		File userRoot = getUserRoot();
-
+		if (name==null) {
+			return "";
+		}
 		Date date = new Date();
 		int year = date.getYear() + 1900;
 		int month = date.getMonth() + 1;
@@ -62,6 +64,19 @@ public class OfficeService {
 		return userRoot;
 	}
 	
+	@RestService(method="POST", uri="/office/delete")
+	public void removeFile(@RestParam(value="id")String id) {
+		
+		File file = fileService.getFileById(id);
+		
+		if (file!=null) {
+			if (!file.isFolder()) {
+				file.remove();
+			}
+		}
+	}
+	
+	
 	@RestService(method="GET", uri="/office/daylist")
 	public List<Map<String, Object>> getDayFiles(@RestParam(value="date")String date) {
 		String[] splits = date.split("-");
@@ -74,7 +89,7 @@ public class OfficeService {
 					Map<String, Object> m = new HashMap<String, Object>();
 					m.put("name", file.getName());
 					m.put("size", file.getSize());
-					m.put("modified", file.getModified());
+					m.put("modified", file.getModified().getTime());
 					m.put("id", file.getObjectId().toString());
 					result.add(m);
 				}

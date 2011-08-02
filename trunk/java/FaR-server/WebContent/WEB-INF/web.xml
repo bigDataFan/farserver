@@ -42,7 +42,10 @@
 		<filter-name>SetUserFilter</filter-name>
 		<url-pattern>/service/*</url-pattern>
 	</filter-mapping>
-	
+	<filter-mapping>
+		<filter-name>SetUserFilter</filter-name>
+		<url-pattern>/d</url-pattern>
+	</filter-mapping>	
 	
 	<servlet>
 		<display-name>RandomImgServlet</display-name>
@@ -85,6 +88,13 @@
 		<servlet-name>ConsoleCommandExecuter</servlet-name>
 		<servlet-class>com.ever365.console.ConsoleCommandExecuter</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>DownloadServlet</display-name>
+		<servlet-name>DownloadServlet</servlet-name>
+		<servlet-class>com.ever365.rest.DownloadServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>RandomImgServlet</servlet-name>
@@ -119,6 +129,10 @@
 	<servlet-mapping>
 		<servlet-name>ConsoleCommandExecuter</servlet-name>
 		<url-pattern>/command</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DownloadServlet</servlet-name>
+		<url-pattern>/d</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

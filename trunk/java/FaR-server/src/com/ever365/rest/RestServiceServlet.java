@@ -24,6 +24,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
@@ -151,7 +152,8 @@ public class RestServiceServlet extends HttpServlet {
 					if (item.isFormField()) {
 				        args.put(item.getFieldName(), item.getString());
 				    } else {
-				    	args.put(item.getFieldName(), item.getInputStream());
+				    	args.put("Filename", item.getName());
+				    	args.put("Filedata", item.getInputStream());
 				    }
 					/*
 					
@@ -165,7 +167,7 @@ public class RestServiceServlet extends HttpServlet {
 				    */
 				}
 			} else if (request.getHeader("X-File-Name")!=null) {
-				args.put("Filename", request.getHeader("X-File-Name"));
+				args.put("Filename", URLDecoder.decode(request.getHeader("X-File-Name"), "UTF-8"));
 				args.put("Filedata", request.getInputStream());
 			} else {
 				Enumeration paramNames = request.getParameterNames();

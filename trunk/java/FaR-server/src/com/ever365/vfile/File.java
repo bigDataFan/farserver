@@ -21,6 +21,7 @@ public class File {
 	public static final String FOLDER = "folder";
 	public static final String NAME = "name";
 	public static final String PARENT_ID = "_parent_id";
+	public static final String CREATOR = "creator";
 	public static final String URL = "url";
 	
 	private VFileService fileService;
@@ -105,7 +106,7 @@ public class File {
 	}
 
 	public void remove() {
-		
+		fileService.delete(this);
 	}
 
 	public void rename(String tName) {
@@ -141,7 +142,9 @@ public class File {
 		return fileService.makeFile(this.fileId, folderName, true, null);
 	}
 
-
+	public String getCreator() {
+		return (String) dbObject.get(CREATOR);
+	}
 
 	public void update(InputStream inputStream) {
 		fileService.updateFile(dbObject, inputStream);
