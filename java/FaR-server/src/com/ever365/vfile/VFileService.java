@@ -55,7 +55,6 @@ public class VFileService {
 	}
 	
 	public File makeFile(ObjectId parentId, String name, boolean isFolder, InputStream is) {
-		
 		DBObject dbo = new BasicDBObject();
 		dbo.put(File.PARENT_ID, parentId);
 		dbo.put(File.NAME, name);
