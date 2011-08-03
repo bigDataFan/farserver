@@ -6,9 +6,9 @@
 <link rel="stylesheet" type="text/css" href="main.css"/>
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 
-<script type="text/javascript" src="js/office.js"></script>
-<link href="client/fileuploader.css" rel="stylesheet" type="text/css">	
-<script src="client/fileuploader.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="office/style.css">	
+<script type="text/javascript" src="office/office.js"></script>
+<script type="text/javascript" src="office/fileuploader.js" ></script>
 
 </head>
 <body>
@@ -36,7 +36,7 @@
                  <li><a href="/" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
              </ul>
 </div>             
-             <div id="files">
+             <div id="files" style="display: none">
              	<div class="itemcontainer fileItemTemplate" style="display:none">
              		<div class="image">
              			<img alt="" src="images/Folder.png">
@@ -51,6 +51,20 @@
 							<p>请启用浏览器的脚本(Javascript)</p>
 						</noscript>         
 					</div>
+             	</div>
+             </div>
+             
+             <div id="times">
+             	<div class="timeTemplate itemcontainer" >
+             		<div class="timeDesc">劳神费思浪费老师 </div>
+             		<div class="timeDura">12:00</div>
+             		<div class="timeOper">
+             			<a href="#"><img style="border:0" src="/office/image/btn_running.gif"/></a>
+             		</div>
+             	</div>
+             	
+             	<div class="itemcontainer" style="height: auto;">
+					<input name="newtime" id="newtime" size="50" style="width:350px"> <a href="javascript:void(0)">新建</a>             			      
              	</div>
              </div>
              
