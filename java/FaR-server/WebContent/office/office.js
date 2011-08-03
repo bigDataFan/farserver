@@ -11,10 +11,78 @@ office.file =  {
 				addFile(responseJSON);
         	}
 		});  
+		$('div.pages').hide();
 		$("#files").show();
 		listFiles(getDateFormat(new Date()));
-	}	
+	},
+	
+	remove:function(a) {
+		$.post("/service/office/delete", 
+				{"id": a.attr("bid")},
+				function(data) {
+					a.parent().parent().fadeOut(300);
+				}
+		);
+	}
 };
+
+office.time = {
+	load:function() {
+		$('div.pages').hide();
+		$("#times").show();
+		
+		$.getJSON("/service/office/time/list",
+				{'date':getDateFormat(new Date())},
+				function(json) {
+					for ( var i = 0; i < json.length; i++) {
+						addTime(json[i]);
+					}
+				}
+		);
+		
+	},
+	
+	add:function(desc) {
+		$.post("/service/office/time/add", 
+				{"desc":desc},
+				function(data) {
+					addTime(data);
+				});
+	},
+	
+	stop:function(start) {
+		$.post("/service/office/time/stop",
+				{},
+				function(data) {
+					
+				});
+	},
+	other:null
+}
+
+
+function addTime(o) {
+	var timed = $('div.timeTemplate').clone();
+	timed.removeClass('timeTemplate').addClass("timeItem");
+	
+	timed.find('div.timeOper a').attr("start", o.created);
+	if (o.laststart!=0) {
+		timed.find('div.timeOper a img').attr("src", "/office/image/btn_running.gif");
+		timed.find('div.timeOper a').click(function(data) {
+			office.time.stop($(this).attr('start'));
+		});
+	} else {
+		timed.find('div.timeOper a img').attr("src", "/office/image/btn_start.png");
+		timed.find('div.timeOper a').click(function(data) {
+			office.time.start($(this).attr('start'));
+		});
+	}
+	timed.find('div.timeDura').html(formatDate(o.dura + (new Date().getTime()-o.laststart)));
+	timed.find('div.timeDesc').html(o.desc);
+	
+	$('#times').prepend(timed);
+	timed.fadeIn(500);
+}
 
 
 function listFiles(date) {
@@ -45,12 +113,7 @@ function addFile(o) {
 	filed.find('a.delete').click(
 		function() {
 			var a = $(this);
-			$.post("/service/office/delete", 
-					{"id": $(this).attr("bid")},
-					function(data) {
-						a.parent().parent().fadeOut(300);
-					}
-			);
+			office.file.remove(a);
 		}
 	);
 	filed.find('a.download').attr("href", "/d?id=" + o.id);
@@ -95,3 +158,11 @@ function formatSize(bytes){
     
     return Math.max(bytes, 0.1).toFixed(1) + ['kB', 'MB', 'GB', 'TB', 'PB', 'EB'][i];          
 }
+
+
+function formatDate(mill) {
+	var d3 = new Date(parseInt(mill));
+	return ((d3.getDate()-1)*24 + (d3.getHours()-8)) + ":" 
+	+ ((d3.getMinutes()<10)?("0"+d3.getMinutes()):d3.getMinutes()); 
+}
+

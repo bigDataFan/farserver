@@ -142,7 +142,6 @@
 	color: #CCC;
 }
 
-
 #times div.timeDesc {
 	padding:5px;
 	float: left;
@@ -150,7 +149,7 @@
 }
 #times div.timeDura {
 	padding:5px;
-	color:fuchsia;
+	color: black;
 	float: left;
 	width: 50px;
 }
