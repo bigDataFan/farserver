@@ -84,7 +84,8 @@ public class VFileService {
 		
 		ObjectId newId = null;
 		if ((Boolean)result.getField("updatedExisting")) {
-			
+			DBObject ex = getFileCollection().findOne(BasicDBObjectBuilder.start(File.PARENT_ID, parentId).append(File.NAME, name).get());
+			newId = (ObjectId)ex.get("_id");
 		} else {
 			newId = (ObjectId)result.getField("upserted");
 		}
@@ -187,6 +188,5 @@ public class VFileService {
 		
 		getFileCollection().remove(new BasicDBObject(File.ID, file.getObjectId()));
 	}
-
 	
 }

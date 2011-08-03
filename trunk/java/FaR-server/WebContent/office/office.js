@@ -7,12 +7,11 @@ office.file =  {
 			action: '/service/office/upload',
 			debug: false,
 			onComplete: function(id, fileName, responseJSON){
-				//setTimeout("$('li.qq-upload-success').fadeOut(300)", 1000);
-				//listFiles(getDateFormat(new Date()));
+				setTimeout("$('li.qq-upload-success').fadeOut(300)", 1000);
 				addFile(responseJSON);
         	}
 		});  
-		
+		$("#files").show();
 		listFiles(getDateFormat(new Date()));
 	}	
 };
@@ -32,9 +31,12 @@ function listFiles(date) {
 	);
 }
 
+
+
 function addFile(o) {
 	var filed = $('div.fileItemTemplate').clone();
 	filed.removeClass("fileItemTemplate").addClass("fileItem");
+	filed.find('div.image img').attr("src", getFileImage(o.name));
 	filed.find('div.title').html(formatFileName(o.name));
 	filed.find('div.desc').html('创建于 ' + formatHours(new Date(o.modified)) + "<br>"
 			+ " 大小 " + formatSize(parseInt(o.size)));
@@ -52,7 +54,7 @@ function addFile(o) {
 		}
 	);
 	filed.find('a.download').attr("href", "/d?id=" + o.id);
-	$("#files").append(filed);
+	$("#files").prepend(filed);
 	filed.fadeIn(500);
 }
 
@@ -61,6 +63,20 @@ function formatFileName(name){
         name = name.slice(0, 29) + '...' + name.slice(-13);    
     }
     return name;
+}
+
+var endfixes = ["asf","avi","bmp","csv","cab","doc","docx","eml","exe","gif","htm","html","jp2","jpe","jpeg","jpg","jpx","js","lnk","mp3","mp4","mpeg","mpg","msg","odf","odg","odp","ods","odt","pdf","png","ppt","pptx","psd","rtf","shtml","swf","tif","tiff","txt","url","wmv","png","xls","xml","xsd","xsl","xlsx","gz","tar","zip"];
+function getFileImage(name) {
+	var pos = name.lastIndexOf(".");
+	var ending = "";
+	if (pos>-1) {
+		ending =  name.substring(pos+1);
+	}
+	if ($.inArray(ending, endfixes)>-1) {
+		return "/filetype/" + ending + ".gif";
+	} else {
+		return "/filetype/default.gif";
+	}
 }
 
 function formatHours(date) {

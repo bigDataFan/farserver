@@ -13,6 +13,10 @@ import com.ever365.rest.registry.RestService;
 import com.ever365.security.AuthenticationUtil;
 import com.ever365.vfile.File;
 import com.ever365.vfile.VFileService;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 public class OfficeService {
 
@@ -106,5 +110,96 @@ public class OfficeService {
 	}
 	
 	
+	public List<Map<String, Object>> getDayTimes(@RestParam(value="date")String date) {
+		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
+		String[] splits = date.split("-");
+		if (splits.length==3) { 
+			long start = new Date(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]), Integer.parseInt(splits[2]), 
+					0, 0).getTime();
+			
+			long end = new Date(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]), Integer.parseInt(splits[2]), 
+					23, 59).getTime();
+			
+			
+			
+			DBObject dbo = new BasicDBObject();
+			Map<String, Long> range = new HashMap<String, Long>();
+			range.put("$gte", start);
+			range.put("$lt", end);
+			
+			dbo.put("created", range);
+			dbo.put("creator", AuthenticationUtil.getCurrentUser());
+			
+			DBCursor cursor = getTimeCollection().find(dbo);
+			while (cursor.hasNext()) {
+				DBObject oneTime = cursor.next();
+				result.add(oneTime.toMap());
+			}
+		}
+		return result;
+	}
+	
+	
+	public void addTime(String desc) {
+		DBCollection coll = getTimeCollection();
+		
+		DBObject dbo = new BasicDBObject();
+		dbo.put("desc", desc);
+		dbo.put("creator", AuthenticationUtil.getCurrentUser());
+		dbo.put("created", new Date().getTime());
+		dbo.put("dura", 0);
+		dbo.put("laststart", 0);
+		
+		coll.insert(dbo);
+	}
+
+	private DBCollection getTimeCollection() {
+		DBCollection coll = dataSource.getDB("office").getCollection("times");
+		coll.ensureIndex("creator");
+		coll.ensureIndex("laststart");
+		coll.ensureIndex("laststart");
+		
+		return coll;
+	}
+	
+	public void stopAll() {
+		DBCollection coll = getTimeCollection();
+		
+		DBObject query = new BasicDBObject();
+		query.put("creator", AuthenticationUtil.getCurrentUser());
+		
+		Map<String, Integer> m = new HashMap<String, Integer>(1);
+		m.put("$ne", 0);
+		query.put("laststart", m);
+		
+		DBCursor cursor = coll.find(query);
+		while (cursor.hasNext()) {
+			DBObject tobeStop = cursor.next();
+			long total = (Long)tobeStop.get("dura")  + (new Date().getTime() - (Long)tobeStop.get("laststart"));
+			
+			if (total>24*60*60*1000) {
+				total = 24*60*60*1000;
+			}
+			tobeStop.put("dura", total);
+			tobeStop.put("laststart", 0);
+			coll.update(new BasicDBObject("_id", tobeStop.get("_id")), tobeStop);
+		}
+	}
+	
+	public void startTime(long created) {
+		DBCollection coll = getTimeCollection();
+		
+		stopAll();
+		
+		DBObject query = new BasicDBObject();
+		query.put("creator", AuthenticationUtil.getCurrentUser());
+		query.put("created", created);
+		DBObject dbo = coll.findOne(query);
+		
+		dbo.put("laststart", new Date().getTime());
+		
+		coll.update(new BasicDBObject("_id", dbo.get("_id")), dbo);
+	}
+
 	
 }

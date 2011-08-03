@@ -45,6 +45,10 @@ public class MongoDBDataSource {
 		return mongo.getDB(SYSTEM_DB);
 	}
 	
+	public DB getDB(String name) {
+		return mongo.getDB(name);
+	}
+	
 	public DB getPublicDB() {
 		return mongo.getDB(PUBLIC_DB);
 	}
