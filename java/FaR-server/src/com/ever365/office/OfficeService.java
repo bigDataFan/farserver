@@ -109,18 +109,16 @@ public class OfficeService {
 		return result;
 	}
 	
-	
+	@RestService(method="GET", uri="/office/time/list")
 	public List<Map<String, Object>> getDayTimes(@RestParam(value="date")String date) {
 		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 		String[] splits = date.split("-");
 		if (splits.length==3) { 
-			long start = new Date(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]), Integer.parseInt(splits[2]), 
+			long start = new Date(Integer.parseInt(splits[0])-1900, Integer.parseInt(splits[1])-1, Integer.parseInt(splits[2]), 
 					0, 0).getTime();
 			
-			long end = new Date(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]), Integer.parseInt(splits[2]), 
+			long end = new Date(Integer.parseInt(splits[0])-1900, Integer.parseInt(splits[1])-1, Integer.parseInt(splits[2]), 
 					23, 59).getTime();
-			
-			
 			
 			DBObject dbo = new BasicDBObject();
 			Map<String, Long> range = new HashMap<String, Long>();
@@ -139,8 +137,9 @@ public class OfficeService {
 		return result;
 	}
 	
-	
-	public void addTime(String desc) {
+	@RestService(method="POST", uri="/office/time/add")
+	public Map<String, Object> addTime(@RestParam(value="desc") String desc) {
+		stopAll();
 		DBCollection coll = getTimeCollection();
 		
 		DBObject dbo = new BasicDBObject();
@@ -148,9 +147,11 @@ public class OfficeService {
 		dbo.put("creator", AuthenticationUtil.getCurrentUser());
 		dbo.put("created", new Date().getTime());
 		dbo.put("dura", 0);
-		dbo.put("laststart", 0);
+		dbo.put("laststart", new Date().getTime());
 		
 		coll.insert(dbo);
+		
+		return dbo.toMap();
 	}
 
 	private DBCollection getTimeCollection() {
