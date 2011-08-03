@@ -8,7 +8,8 @@ office.file =  {
 			debug: false,
 			onComplete: function(id, fileName, responseJSON){
 				//setTimeout("$('li.qq-upload-success').fadeOut(300)", 1000);
-				listFiles(getDateFormat(new Date()));
+				//listFiles(getDateFormat(new Date()));
+				addFile(responseJSON);
         	}
 		});  
 		
@@ -24,31 +25,35 @@ function listFiles(date) {
 		"rnd":new Date().getTime()},
 		function(data) {
 			for(var i=0;i<data.length; i++) {
-				var filed = $('div.fileItemTemplate').clone();
-				filed.removeClass("fileItemTemplate").addClass("fileItem");
-				filed.find('div.title').html(formatFileName(data[i].name));
-				filed.find('div.desc').html('创建于 ' + formatHours(new Date(data[i].modified)) + "<br>"
-						+ " 大小 " + formatSize(parseInt(data[i].size)));
-				
-				filed.find('a.delete').attr("bid", data[i].id);
-				filed.find('a.delete').click(
-					function() {
-						var a = $(this);
-						$.post("/service/office/delete", 
-								{"id": $(this).attr("bid")},
-								function(data) {
-									a.parent().parent().fadeOut(300);
-								}
-						);
-					}
-				);
-				filed.find('a.download').attr("href", "/d?id=" + data[i].id);
-				$("#files").append(filed);
-				filed.fadeIn(500);
+				addFile(data[i]);
 			}
 			
 		}
 	);
+}
+
+function addFile(o) {
+	var filed = $('div.fileItemTemplate').clone();
+	filed.removeClass("fileItemTemplate").addClass("fileItem");
+	filed.find('div.title').html(formatFileName(o.name));
+	filed.find('div.desc').html('创建于 ' + formatHours(new Date(o.modified)) + "<br>"
+			+ " 大小 " + formatSize(parseInt(o.size)));
+	
+	filed.find('a.delete').attr("bid", o.id);
+	filed.find('a.delete').click(
+		function() {
+			var a = $(this);
+			$.post("/service/office/delete", 
+					{"id": $(this).attr("bid")},
+					function(data) {
+						a.parent().parent().fadeOut(300);
+					}
+			);
+		}
+	);
+	filed.find('a.download').attr("href", "/d?id=" + o.id);
+	$("#files").append(filed);
+	filed.fadeIn(500);
 }
 
 function formatFileName(name){
