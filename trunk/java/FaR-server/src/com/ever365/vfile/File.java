@@ -102,7 +102,7 @@ public class File {
 	}
 
 	public ObjectId getObjectId() {
-		return (ObjectId) dbObject.get(ID);
+		return fileId;
 	}
 
 	public void remove() {
