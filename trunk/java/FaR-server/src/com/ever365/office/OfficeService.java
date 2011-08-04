@@ -146,7 +146,7 @@ public class OfficeService {
 		dbo.put("desc", desc);
 		dbo.put("creator", AuthenticationUtil.getCurrentUser());
 		dbo.put("created", new Date().getTime());
-		dbo.put("dura", 0);
+		dbo.put("dura", 0L);
 		dbo.put("laststart", new Date().getTime());
 		
 		coll.insert(dbo);
@@ -176,10 +176,10 @@ public class OfficeService {
 		DBCursor cursor = coll.find(query);
 		while (cursor.hasNext()) {
 			DBObject tobeStop = cursor.next();
-			long total = (Long)tobeStop.get("dura")  + (new Date().getTime() - (Long)tobeStop.get("laststart"));
+			Long total = (Long)tobeStop.get("dura")  + (new Date().getTime() - (Long)tobeStop.get("laststart"));
 			
 			if (total>24*60*60*1000) {
-				total = 24*60*60*1000;
+				total = 24*60*60*1000L;
 			}
 			tobeStop.put("dura", total);
 			tobeStop.put("laststart", 0);

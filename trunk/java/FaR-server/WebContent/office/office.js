@@ -40,6 +40,15 @@ office.time = {
 				}
 		);
 		
+		
+		$("#times").find('div.running div.timeOper a').live('click', function(data) {
+			alert($(this).attr('created'));
+		});
+		
+		$("#times").find('div.pending div.timeOper a').live('click', function(data) {
+			alert($(this).attr('created'));
+		});
+		
 	},
 	
 	add:function(desc) {
@@ -65,19 +74,29 @@ function addTime(o) {
 	var timed = $('div.timeTemplate').clone();
 	timed.removeClass('timeTemplate').addClass("timeItem");
 	
-	timed.find('div.timeOper a').attr("start", o.created);
+	timed.find('div.timeOper a').attr("created", o.created);
 	if (o.laststart!=0) {
-		timed.find('div.timeOper a img').attr("src", "/office/image/btn_running.gif");
+		$('#times div.running').removeClass("running").addClass("pending");
+		//timed.find('div.timeOper a img').attr("src", "/office/image/btn_running.gif");
+		timed.addClass("running");
+		/*
 		timed.find('div.timeOper a').click(function(data) {
-			office.time.stop($(this).attr('start'));
+			office.time.stop($(this));
 		});
+		*/
+		timed.find('div.timeOper span').html(formatDate(o.dura + (new Date().getTime()-o.laststart)));
 	} else {
-		timed.find('div.timeOper a img').attr("src", "/office/image/btn_start.png");
+		timed.addClass("pending");
+		//timed.find('div.timeOper a img').attr("src", "/office/image/btn_start.png");
+		/*
 		timed.find('div.timeOper a').click(function(data) {
-			office.time.start($(this).attr('start'));
+			office.time.start($(this));
 		});
+		*/
+		timed.find('div.timeOper span').html(formatDate(o.dura));
 	}
-	timed.find('div.timeDura').html(formatDate(o.dura + (new Date().getTime()-o.laststart)));
+	
+	
 	timed.find('div.timeDesc').html(o.desc);
 	
 	$('#times').prepend(timed);

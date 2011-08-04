@@ -30,13 +30,13 @@
 <div style="display:block; height: 65px">
             <ul class="nav">
                 <li><a href="javascript:office.file.load()" class="current">文件</a><span style="background: url(images/Folder.png)"></span></li>
-                 <li><a href="/" class="current">时间</a><span style="background: url(images/Clock.png)"></span></li>
+                 <li><a href="javascript:office.time.load()" class="current">时间</a><span style="background: url(images/Clock.png)"></span></li>
                  <li><a href="/" class="current">便签</a><span style="background: url(images/Clipboard.png)"></span></li>
                  <li><a href="/" class="current">待办</a><span></span></li>
                  <li><a href="/" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
              </ul>
 </div>             
-             <div id="files" style="display: none">
+             <div id="files" class="pages" style="display: none">
              	<div class="itemcontainer fileItemTemplate" style="display:none">
              		<div class="image">
              			<img alt="" src="images/Folder.png">
@@ -54,17 +54,20 @@
              	</div>
              </div>
              
-             <div id="times">
-             	<div class="timeTemplate itemcontainer" >
+             <div id="times" class="pages" style="display: none">
+             	<div class="timeTemplate itemcontainer" style="display: none">
              		<div class="timeDesc">劳神费思浪费老师 </div>
-             		<div class="timeDura">12:00</div>
+             		<!--  <div class="timeDura">12:00</div>  -->
              		<div class="timeOper">
-             			<a href="#"><img style="border:0" src="/office/image/btn_running.gif"/></a>
+             			<a href="#"><span>12:00</span></a>
              		</div>
              	</div>
              	
              	<div class="itemcontainer" style="height: auto;">
-					<input name="newtime" id="newtime" size="50" style="width:350px"> <a href="javascript:void(0)">新建</a>             			      
+					<input name="newtime" id="newtime" size="50" style="width:250px">
+					<a href="javascript:office.time.add($('#newtime').val())">新建</a>
+					
+					<div id="timeTotal">00:00</div>             			      
              	</div>
              </div>
              
