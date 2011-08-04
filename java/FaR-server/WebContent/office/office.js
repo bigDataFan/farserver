@@ -70,6 +70,7 @@ office.time = {
 }
 
 
+
 function addTime(o) {
 	var timed = $('div.timeTemplate').clone();
 	timed.removeClass('timeTemplate').addClass("timeItem");
@@ -77,25 +78,12 @@ function addTime(o) {
 	timed.find('div.timeOper a').attr("created", o.created);
 	if (o.laststart!=0) {
 		$('#times div.running').removeClass("running").addClass("pending");
-		//timed.find('div.timeOper a img').attr("src", "/office/image/btn_running.gif");
 		timed.addClass("running");
-		/*
-		timed.find('div.timeOper a').click(function(data) {
-			office.time.stop($(this));
-		});
-		*/
 		timed.find('div.timeOper span').html(formatDate(o.dura + (new Date().getTime()-o.laststart)));
 	} else {
 		timed.addClass("pending");
-		//timed.find('div.timeOper a img').attr("src", "/office/image/btn_start.png");
-		/*
-		timed.find('div.timeOper a').click(function(data) {
-			office.time.start($(this));
-		});
-		*/
 		timed.find('div.timeOper span').html(formatDate(o.dura));
 	}
-	
 	
 	timed.find('div.timeDesc').html(o.desc);
 	

@@ -171,6 +171,20 @@ div.running div.timeOper a {
     text-decoration: none;
 	background: transparent url('/office/image/btn_running.gif') no-repeat scroll right top;
 }
+ 
+div.pending div.timeOper a {
+    border: 0 none;
+    color: #333333;
+    display: block;
+    height: 19px;
+    padding: 5px 60px 0 0;
+    text-decoration: none;
+	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right top;
+}
+
+div.pending div.timeOper a:HOVER {
+	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right -24px;
+} 
 
 div.running div.timeOper a span {
 	padding-right:50px;
@@ -179,8 +193,12 @@ div.running div.timeOper a span {
 
 
 #timeTotal{
+	padding-top:8px;
+	padding-right: 5px;
+	color: black;
 	float: right;
 	color: black;
+	
 }
 
 input[type="submit"] {
