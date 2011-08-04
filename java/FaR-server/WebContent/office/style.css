@@ -151,15 +151,37 @@
 	padding:5px;
 	color: black;
 	float: left;
-	width: 50px;
+	width: 1px;
 }
 #times div.timeOper {
+	color: black;
 	float: right;
-	width: 70px;
+	width: 120px;
+}
+div.running {
+	background-color: #d4f1ff; 
+}
+
+div.running div.timeOper a {
+    border: 0 none;
+    color: #333333;
+    display: block;
+    height: 19px;
+    padding: 5px 60px 0 0;
+    text-decoration: none;
+	background: transparent url('/office/image/btn_running.gif') no-repeat scroll right top;
+}
+
+div.running div.timeOper a span {
+	padding-right:50px;
+	padding-bottom: 10px;
 }
 
 
-
+#timeTotal{
+	float: right;
+	color: black;
+}
 
 input[type="submit"] {
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#F8F8F8),to(#F1F1F1));
