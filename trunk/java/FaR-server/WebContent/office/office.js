@@ -40,8 +40,6 @@ office.time = {
 						addTime(json[i]);
 					}
 					updateTime();
-					
-					setTimeout('updateTime()', 20*1000)
 				}
 		);
 		
@@ -56,7 +54,9 @@ office.time = {
 		
 	},
 	
-	add:function(desc) {
+	add:function() {
+		var desc = $('#newtime').val();
+		$('#newtime').val('');
 		$.post("/service/office/time/add", 
 				{"desc":desc},
 				function(data) {
@@ -112,6 +112,9 @@ function updateTime() {
 		}
 	 );
 	$('#timeTotal').html("总计:" + formatDate(total));
+	
+	
+	setTimeout('updateTime()', 20*1000);
 }
 
 
