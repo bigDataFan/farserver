@@ -41,8 +41,8 @@
              		<div class="image">
              			<img alt="" src="images/Folder.png">
              		</div>
-             		<div class="title">我的心文件</div>
-             		<div class="desc">创建于2011-2-3 12:32 大小  22K</div>
+             		<div class="title"></div>
+             		<div class="desc">创建于</div>
              		<div class="oper"><a href="#" class="download" target="_blank">下载</a><a href="#" class="delete">删除</a></div>
              	</div>
              	<div class="itemcontainer" style="height: auto;">
@@ -64,12 +64,28 @@
              	</div>
              	
              	<div class="itemcontainer" style="height: auto;">
-					<input name="newtime" id="newtime" size="50" style="width:250px">
-					<a href="javascript:office.time.add($('#newtime').val())">新建</a>
+					新增<input name="newtime" id="newtime" size="50" style="width:250px">
+					<a href="javascript:office.time.add()"><img border="0" src='/office/image/add_green.png'></a>
 					
 					<div id="timeTotal">00:00</div>             			      
              	</div>
              </div>
+             
+             
+              <div id="notes" class="pages" style="display: none">
+             	<div class="timeTemplate itemcontainer" style="display: none">
+             		<div class="content"> </div>
+             		<!--  <div class="timeDura">12:00</div>  -->
+             		<div class="timeOper">
+             			<a href="#"><span>12:00</span></a>
+             		</div>
+             	</div>
+             	
+             	<div class="itemcontainer" style="height: auto;">
+					             			      
+             	</div>
+             </div>
+             
              
 </div>
 
