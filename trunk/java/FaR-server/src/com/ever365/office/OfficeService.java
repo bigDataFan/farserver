@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.rest.registry.RestParam;
 import com.ever365.rest.registry.RestService;
@@ -131,7 +133,10 @@ public class OfficeService {
 			DBCursor cursor = getTimeCollection().find(dbo);
 			while (cursor.hasNext()) {
 				DBObject oneTime = cursor.next();
-				result.add(oneTime.toMap());
+				Map map = oneTime.toMap();
+				map.put("id", oneTime.get("_id").toString());
+				map.remove("_id");
+				result.add(map);
 			}
 		}
 		return result;
@@ -153,11 +158,32 @@ public class OfficeService {
 		
 		return dbo.toMap();
 	}
+	
+	@RestService(method="POST", uri="/office/time/start")
+	public Map<String, Object> startItem(@RestParam(value="id") String id) {
+		stopAll();
+		
+		DBCollection coll = getTimeCollection();
+		DBObject dbo = new BasicDBObject();
+		dbo.put("_id", new ObjectId(id));
+		DBObject timeItem = coll.findOne(dbo);
+		timeItem.put("laststart", new Date().getTime());
+		coll.update(dbo, timeItem);
+		return timeItem.toMap();
+	}
+
+	@RestService(method="POST", uri="/office/time/stop")
+	public void stopItem() {
+		stopAll();
+	}
+
+	
+	
+	
 
 	private DBCollection getTimeCollection() {
 		DBCollection coll = dataSource.getDB("office").getCollection("times");
 		coll.ensureIndex("creator");
-		coll.ensureIndex("laststart");
 		coll.ensureIndex("laststart");
 		
 		return coll;
