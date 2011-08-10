@@ -30,6 +30,8 @@ office.time = {
 	load:function() {
 		$('div.pages').hide();
 		$("#times").show();
+		$("#times div.timeItem").remove();
+		
 		
 		$.getJSON("/service/office/time/list",
 				{'date':getDateFormat(new Date())},
@@ -37,17 +39,20 @@ office.time = {
 					for ( var i = 0; i < json.length; i++) {
 						addTime(json[i]);
 					}
+					updateTime();
+					
+					setTimeout('updateTime()', 20*1000)
 				}
 		);
 		
-		
 		$("#times").find('div.running div.timeOper a').live('click', function(data) {
-			alert($(this).attr('created'));
+			office.time.stopItem();
 		});
 		
 		$("#times").find('div.pending div.timeOper a').live('click', function(data) {
-			alert($(this).attr('created'));
+			startItem($(this).attr('id'));
 		});
+		
 		
 	},
 	
@@ -55,27 +60,71 @@ office.time = {
 		$.post("/service/office/time/add", 
 				{"desc":desc},
 				function(data) {
-					addTime(data);
+					addTime(jQuery.parseJSON(data));
 				});
 	},
 	
-	stop:function(start) {
-		$.post("/service/office/time/stop",
-				{},
+	stopItem: function() {
+		$.post("/service/office/time/stop", 
+				null,
 				function(data) {
-					
-				});
+					$("#times div.running").removeClass("running").addClass("pending");
+				}
+		);
 	},
 	other:null
+};
+
+
+function startItem(id) {
+	$.post("/service/office/time/start", 
+			{"id":id},
+			function(data) {
+				$("#times div.running").removeClass("running").addClass("pending");
+				
+				jQuery.each($("#times div.timeItem"),
+						function() {
+							var timedata = $(this).data("timedata");
+							if (timedata==null) return;
+							
+							if (timedata.id==id) {
+								$(this).addClass("running").removeClass("pending");
+							}
+						}
+				);
+			}
+	);
+}
+
+function updateTime() {
+	var total = 0;
+	
+	jQuery.each($("#times div.timeItem"),
+		function() {
+			var timedata = $(this).data("timedata");
+			if (timedata==null) return;
+			
+			total += timedata.dura;
+			if ($(this).hasClass("running")) {
+				$(this).find('div.timeOper span').html(formatDate(timedata.dura + (new Date().getTime()-timedata.laststart)));
+				total += new Date().getTime() - timedata.laststart;
+			}
+		}
+	 );
+	$('#timeTotal').html("总计:" + formatDate(total));
 }
 
 
 
 function addTime(o) {
 	var timed = $('div.timeTemplate').clone();
-	timed.removeClass('timeTemplate').addClass("timeItem");
+	$('#times').prepend(timed);
 	
-	timed.find('div.timeOper a').attr("created", o.created);
+	timed.removeClass('timeTemplate');
+	timed.addClass("timeItem");
+	timed.data("timedata", o);
+	
+	timed.find('div.timeOper a').attr("id", o.id);
 	if (o.laststart!=0) {
 		$('#times div.running').removeClass("running").addClass("pending");
 		timed.addClass("running");
@@ -87,7 +136,6 @@ function addTime(o) {
 	
 	timed.find('div.timeDesc').html(o.desc);
 	
-	$('#times').prepend(timed);
 	timed.fadeIn(500);
 }
 
