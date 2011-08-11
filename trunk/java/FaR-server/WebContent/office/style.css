@@ -18,8 +18,8 @@
 	padding: 0;
 	list-style: disc;
 	position: absolute;
-	left: 0px;
-	top: 0px;
+	right:10px;
+	top: 5px;
 }
 .qq-upload-list li { margin:0; padding:0; line-height:15px; font-size:12px;}
 .qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
@@ -35,30 +35,36 @@
 
 
 .qq-upload-button {
-    display:block; /* or inline-block */
-    position:absolute;
-    right: 0px;
-	top: 0px;
-    width: 80px; padding: 7px 0; text-align:center;    
-    background:#880000; border-bottom:1px solid #ddd;color:#fff;
+	/*
+    box-shadow: 0 1px 1px white inset, 0 3px 3px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
     cursor: pointer;
+	padding: 7px 0;
+	margin: 10px;
+	text-align:center;
+    background-color: #B6D3F4;   
+    background:#880000; border-bottom:1px solid #ddd;color:#fff;
+    background-image: -moz-linear-gradient(center top , #B6D3F4, #5483B8) !important;
+        border: 1px solid #9AC9FF !important;
+    border-radius: 8px;
+	*/
+    display:block; 
+    position:absolute;
+	top: 0px;
+    width: 30px;  
 }
-
-
-
-
-
-
 
 
 #terminal {
 	padding-top: 30px;
 	clear: both;
-    height: 55px;
     margin: 0 auto;
     width: 480px;
     
 }
+
+/**此处定义功能列表*/
+
 #terminal ul {
 	display: block;
 	list-style: none;
@@ -66,7 +72,8 @@
 #terminal ul.nav li {
 	position: relative;
 	float: left;
-	margin: 12px 0 5px 0;
+	margin-top: 12px;
+	/*margin: 12px 0px 0px 0px;*/
 	display: list-item;
 	background: url(images/navi_seperator.png) 100% 1px no-repeat #494738;
 }
@@ -95,7 +102,7 @@
 }
 
 
-#terminal div.itemcontainer {
+#terminal div.pages div.itemcontainer {
 	padding: 5px;
 	border-bottom: 1px solid #D6D6D6;
 	border-top: 1px solid white;
@@ -103,10 +110,26 @@
 	border-left: 1px solid #D8E1E2;
 	border-right: 1px solid #D8E1E2;
 	background: #edf1f2  repeat-y right;
-	/*url(images/sidebar.jpg)*/
 	display: block;
 	min-height: 30px;
 	color: #40494A;
+}
+
+
+#terminal div.pages div.pagebar {
+    background: url("image/header_bg-x.png") repeat-x scroll 0 0 transparent;
+    color: #999999;
+    font-size: 14px;
+    height: 50px;
+    left: 0;
+    margin: 0;
+    top: 0;
+    width: 100%;
+    z-index: 11500;
+}
+
+#terminal div.pages div.pagebar {
+	display:block;
 }
 
 #terminal div.itemcontainer div.image {

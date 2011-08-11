@@ -485,8 +485,8 @@ qq.FileUploader = function(o){
         listElement: null,
                 
         template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span>拖拽文件至此增添文件</span></div>' +
-                '<div class="qq-upload-button">增加文件</div>' +
+                '<div class="qq-upload-drop-area"><span>拖拽本地文件上传</span></div>' +
+                '<div class="qq-upload-button"><img border="0" src="/office/image/add.png"/></div>' +
                 '<ul class="qq-upload-list"></ul>' + 
              '</div>',
 
@@ -495,7 +495,7 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-file"></span>' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
-                '<a class="qq-upload-cancel" href="#">Cancel</a>' +
+                '<a class="qq-upload-cancel" href="#">取消</a>' +
                 '<span class="qq-upload-failed-text">Failed</span>' +
             '</li>',        
         

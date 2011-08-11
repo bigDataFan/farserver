@@ -26,65 +26,89 @@
 <div id="logo"><img alt="Ever365 个人信息服务 " src="images/logo1ss.gif"></div>
 
 
-<div id="terminal">
-<div style="display:block; height: 65px">
-            <ul class="nav">
-                <li><a href="javascript:office.file.load()" class="current">文件</a><span style="background: url(images/Folder.png)"></span></li>
-                 <li><a href="javascript:office.time.load()" class="current">时间</a><span style="background: url(images/Clock.png)"></span></li>
-                 <li><a href="/" class="current">便签</a><span style="background: url(images/Clipboard.png)"></span></li>
-                 <li><a href="/" class="current">待办</a><span></span></li>
-                 <li><a href="/" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
-             </ul>
-</div>             
-             <div id="files" class="pages" style="display: none">
-             	<div class="itemcontainer fileItemTemplate" style="display:none">
-             		<div class="image">
-             			<img alt="" src="images/Folder.png">
-             		</div>
-             		<div class="title"></div>
-             		<div class="desc">创建于</div>
-             		<div class="oper"><a href="#" class="download" target="_blank">下载</a><a href="#" class="delete">删除</a></div>
-             	</div>
-             	<div class="itemcontainer" style="height: auto;">
-             			<div id="file-uploader-demo1">		
-						<noscript>			
-							<p>请启用浏览器的脚本(Javascript)</p>
-						</noscript>         
+	<div id="terminal">
+		<div style="height: 65px">
+		            <ul class="nav">
+		                <li><a href="javascript:office.file.load()" class="current">文件</a><span style="background: url(images/Folder.png)"></span></li>
+		                 <li><a href="javascript:office.time.load()" class="current">时间</a><span style="background: url(images/Clock.png)"></span></li>
+		                 <li><a href="javascript:office.notes.load()" class="current">便签</a><span style="background: url(images/Clipboard.png)"></span></li>
+		                 <li><a href="/" class="current">待办</a><span></span></li>
+		                 <li><a href="/" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
+		             </ul>
+		</div>
+		<div id="files" class="pages" style="display:none">
+			<div class="pagebar">
+				<div class="opers" style="float:left;padding: 7px">
+					<div id="file-uploader-demo1">
+						<noscript>
+						<p>请启用浏览器的脚本(Javascript)</p>
+						</noscript>
 					</div>
-             	</div>
+				</div>
+			</div>
+			<div class="panel">
+				<div class="panel-content">
+					<div class="itemcontainer fileItemTemplate" style="display: none">
+						<div class="image"><img alt="" src="images/Folder.png"></div>
+						<div class="title"></div>
+						<div class="desc">创建于</div>
+						<div class="oper"><a href="#" class="download" target="_blank">下载</a><a
+							href="#" class="delete">删除</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="times" class="pages" style="display: none">
+		 	<div class="pagebar">
+				<div class="opers" style="float:left;padding: 7px"><a href="javascript:office.time.showAddTime();"><img border="0" src='/office/image/add.png'></a></div>
+				<span id="addTimeDiv" style="display:none; float: left">
+					<input name="newtime" id="newtime" size="40" style="width:200px; height: 24px"> 
+					<a href="javascript:office.time.add()">增加</a></span>
+				<div id="timeTotal">00:00</div>             			      
              </div>
              
-             <div id="times" class="pages" style="display: none">
-             	<div class="timeTemplate itemcontainer" style="display: none">
-             		<div class="timeDesc"> </div>
-             		<!--  <div class="timeDura">12:00</div>  -->
-             		<div class="timeOper">
-             			<a href="#"><span>12:00</span></a>
-             		</div>
-             	</div>
+           	<div class="timeTemplate itemcontainer" style="display: none">
+           		<div class="timeDesc"> </div>
+           		<!--  <div class="timeDura">12:00</div>  -->
+           		<div class="timeOper">
+           			<a href="#"><span>12:00</span></a>
+           		</div>
+           	</div>
+           	<div class="panel">
+			</div>
+             
+         </div>
+             
+             
+         <div id="notes" class="pages" style="display: none">
+         	<div class="pagebar">
+					<div class="opers" style="float:left;padding: 7px"><a href="javascript:office.notes.showAddNote();"><img border="0" src='/office/image/add.png'></a></div>
+				<span id="addNoteDiv" style="display:none; float: left">
+					<textarea name="newNote" id="newNote" rows="2" cols="35" style="height:37px;width:391px;"></textarea> 
+				<a href="javascript:office.notes.add()">增加</a></span>             			      
+             </div>
+             
+           	<div class="notesTemplate itemcontainer" style="display: none">
+           		<div class="content"></div>
+           		<div class="noteOper">
+           			<a href="javascript:office.notes.edit()">编辑</a>|<a href="javascript:office.notes.remove()">删除</a>
+           		</div>
+           	</div>
              	
-             	<div class="itemcontainer" style="height: auto;">
-					新增<input name="newtime" id="newtime" size="50" style="width:250px">
-					<a href="javascript:office.time.add()"><img border="0" src='/office/image/add_green.png'></a>
-					
-					<div id="timeTotal">00:00</div>             			      
-             	</div>
-             </div>
-             
-             
-              <div id="notes" class="pages" style="display: none">
-             	<div class="timeTemplate itemcontainer" style="display: none">
-             		<div class="content"> </div>
-             		<!--  <div class="timeDura">12:00</div>  -->
-             		<div class="timeOper">
-             			<a href="#"><span>12:00</span></a>
-             		</div>
-             	</div>
+            <div class="panel">
+            	<div class="itemcontainer noteItem" >
+           		<div class="content">维尔康十分大方 
+           		维尔康十分大方 维尔康十分大方 维尔康十分大方 维尔康十分大方 维尔康十分大方 
+           		维尔康十分大方 维尔康十分大方 维尔康十分大方 维尔康十分大方 维尔康十分大方 </div>
+           		<!--  <div class="timeDura">12:00</div>  -->
+           		<div class="noteOper">
+           			<a href="#">编辑</a>|<a href="#">删除</a>
+           		</div>
+			</div>
              	
-             	<div class="itemcontainer" style="height: auto;">
-					             			      
-             	</div>
-             </div>
+             
+         </div>
              
              
 </div>

@@ -32,7 +32,6 @@ office.time = {
 		$("#times").show();
 		$("#times div.timeItem").remove();
 		
-		
 		$.getJSON("/service/office/time/list",
 				{'date':getDateFormat(new Date())},
 				function(json) {
@@ -40,6 +39,7 @@ office.time = {
 						addTime(json[i]);
 					}
 					updateTime();
+					$('#addTimeDiv').fadeOut(500);
 				}
 		);
 		
@@ -50,10 +50,13 @@ office.time = {
 		$("#times").find('div.pending div.timeOper a').live('click', function(data) {
 			startItem($(this).attr('id'));
 		});
-		
-		
 	},
-	
+	showAddTime:function() {
+		$('#addTimeDiv').fadeIn(500);
+	},
+	hideAddTime:function() {
+		$('#addTimeDiv').fadeOut(500);
+	},
 	add:function() {
 		var desc = $('#newtime').val();
 		$('#newtime').val('');
@@ -75,6 +78,33 @@ office.time = {
 	other:null
 };
 
+
+office.notes = {
+	load:function() {
+		$('div.pages').hide();
+		$("#notes div.noteItem").remove();
+		$('#notes').show();
+
+		$.getJSON("/service/office/notes/list", 
+				{
+					"start": 0,
+					"limit":10
+				},
+				function(data) {
+					
+				}
+		);
+	},
+	
+	add: function() {
+		
+	},
+	
+	showAddNote:function() {
+		$('#addNoteDiv').fadeIn(500);
+	},
+	other:null	
+}
 
 function startItem(id) {
 	$.post("/service/office/time/start", 
@@ -121,7 +151,7 @@ function updateTime() {
 
 function addTime(o) {
 	var timed = $('div.timeTemplate').clone();
-	$('#times').prepend(timed);
+	$('#times div.panel').prepend(timed);
 	
 	timed.removeClass('timeTemplate');
 	timed.addClass("timeItem");
@@ -175,7 +205,7 @@ function addFile(o) {
 		}
 	);
 	filed.find('a.download').attr("href", "/d?id=" + o.id);
-	$("#files").prepend(filed);
+	$("#files div.panel").prepend(filed);
 	filed.fadeIn(500);
 }
 
