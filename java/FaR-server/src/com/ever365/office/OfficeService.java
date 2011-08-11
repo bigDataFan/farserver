@@ -177,8 +177,43 @@ public class OfficeService {
 		stopAll();
 	}
 
+	@RestService(method="POST", uri="/office/note/add")
+	public Map<String, Object> addNote(@RestParam(value="content") String content) {
+		DBObject dbo = new BasicDBObject();
+		dbo.put("content", content);
+		dbo.put("creator", AuthenticationUtil.getCurrentUser());
+		dbo.put("created", new Date().getTime());
+		getNotesCollection().insert(dbo);
+		return dbo.toMap();
+	}
 	
+	@RestService(method="GET", uri="/office/note/list")
+	public List<Map<String, Object>> listNote(@RestParam(value="start") Integer start, @RestParam(value="limit") Integer limit) {
+		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
+		
+		DBObject query = new BasicDBObject();
+		query.put("creator", AuthenticationUtil.getCurrentUser());
+		DBCursor cursor = getNotesCollection().find(query).skip(start).limit(limit);
+		
+		
+		while (cursor.hasNext()) {
+			Map note = cursor.next().toMap();
+			note.put("id", note.get("_id").toString());
+			note.remove("_id");
+			result.add(note);
+		}
+		
+		return result;
+	}
+
 	
+
+
+	private DBCollection getNotesCollection() {
+		DBCollection coll = dataSource.getDB("office").getCollection("notes");
+		coll.ensureIndex("creator");
+		return coll;
+	}
 	
 
 	private DBCollection getTimeCollection() {
