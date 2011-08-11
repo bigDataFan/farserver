@@ -48,7 +48,7 @@ office.time = {
 		});
 		
 		$("#times").find('div.pending div.timeOper a').live('click', function(data) {
-			startItem($(this).attr('id'));
+			office.time.startItem($(this).attr('id'));
 		});
 	},
 	showAddTime:function() {
@@ -75,6 +75,29 @@ office.time = {
 				}
 		);
 	},
+
+
+
+	startItem:function(id) {
+		$.post("/service/office/time/start", 
+				{"id":id},
+				function(data) {
+					$("#times div.running").removeClass("running").addClass("pending");
+					
+					jQuery.each($("#times div.timeItem"),
+							function() {
+								var timedata = $(this).data("timedata");
+								if (timedata==null) return;
+								
+								if (timedata.id==id) {
+									$(this).addClass("running").removeClass("pending");
+								}
+							}
+					);
+				}
+		);
+	},
+	
 	other:null
 };
 
@@ -85,46 +108,68 @@ office.notes = {
 		$("#notes div.noteItem").remove();
 		$('#notes').show();
 
-		$.getJSON("/service/office/notes/list", 
+		$.getJSON("/service/office/note/list", 
 				{
 					"start": 0,
 					"limit":10
 				},
 				function(data) {
-					
+					for ( var i = 0; i < data.length; i++) {
+						office.notes.drawNote(data[i]);
+					}
 				}
 		);
 	},
 	
 	add: function() {
+		var content = $('#newNote').val();
 		
+		$.post("/service/office/note/add",
+				{"content":content},
+				function(data) {
+					office.notes.drawNote(jQuery.parseJSON(data));
+					$('#newNote').val('');
+					office.notes.hideAddNote();
+				});
 	},
-	
+
+	edit: function(o) {
+		var data = $(o).parent().parent().data('noteData');
+		alert(data.id);
+	},
+	remove: function(o) {
+		var data = $(o).parent().parent().data('noteData');
+		alert(data.id);
+		
+		$.post("/service/office/note/remove",
+				{"id": data.id},
+				function(data) {
+					$(o).parent().parent().fadeOut(500);
+				});
+	},	
 	showAddNote:function() {
 		$('#addNoteDiv').fadeIn(500);
 	},
+	
+	hideAddNote:function() {
+		$('#addNoteDiv').fadeOut(500);
+	},
+	
+	
+	
+	drawNote:function(o) {
+		var cloned = $('div.notesTemplate').clone();
+		cloned.removeClass('notesTemplate');
+		cloned.addClass("noteItem");
+		cloned.data('noteData', o);
+		$('#notes div.panel').append(cloned);
+		
+		cloned.find('div.content').html(o.content.replace(/\n/g, '<br>'));
+		cloned.fadeIn(500);
+	},
 	other:null	
-}
+};
 
-function startItem(id) {
-	$.post("/service/office/time/start", 
-			{"id":id},
-			function(data) {
-				$("#times div.running").removeClass("running").addClass("pending");
-				
-				jQuery.each($("#times div.timeItem"),
-						function() {
-							var timedata = $(this).data("timedata");
-							if (timedata==null) return;
-							
-							if (timedata.id==id) {
-								$(this).addClass("running").removeClass("pending");
-							}
-						}
-				);
-			}
-	);
-}
 
 function updateTime() {
 	var total = 0;

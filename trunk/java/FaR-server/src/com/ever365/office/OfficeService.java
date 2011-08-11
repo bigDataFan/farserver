@@ -187,6 +187,14 @@ public class OfficeService {
 		return dbo.toMap();
 	}
 	
+	@RestService(method="POST", uri="/office/note/remove")
+	public void removeNote(@RestParam(value="id") String id) {
+		DBObject dbo = new BasicDBObject();
+		dbo.put("_id", new ObjectId(id));
+		dbo.put("creator", AuthenticationUtil.getCurrentUser());
+		getNotesCollection().remove(dbo);
+	}
+	
 	@RestService(method="GET", uri="/office/note/list")
 	public List<Map<String, Object>> listNote(@RestParam(value="start") Integer start, @RestParam(value="limit") Integer limit) {
 		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
