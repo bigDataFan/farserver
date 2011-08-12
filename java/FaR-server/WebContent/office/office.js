@@ -8,12 +8,46 @@ office.file =  {
 			debug: false,
 			onComplete: function(id, fileName, responseJSON){
 				setTimeout("$('li.qq-upload-success').fadeOut(300)", 1000);
-				addFile(responseJSON);
+				office.file.addUIFile(responseJSON);
         	}
 		});  
 		$('div.pages').hide();
 		$("#files").show();
-		listFiles(getDateFormat(new Date()));
+		office.file.listFiles(getDateFormat(new Date()));
+	},
+
+	listFiles:function(date) {
+		$("#files div.fileItem").remove();
+		$.getJSON("/service/office/daylist",
+			{"date": date,
+			"rnd":new Date().getTime()},
+			function(data) {
+				for(var i=0;i<data.length; i++) {
+					office.file.addUIFile(data[i]);
+				}
+				
+			}
+		);
+	},
+
+	addUIFile:function(o) {
+		var filed = $('div.fileItemTemplate').clone();
+		filed.removeClass("fileItemTemplate").addClass("fileItem");
+		filed.find('div.image img').attr("src", getFileImage(o.name));
+		filed.find('div.title').html(office.file.formatFileName(o.name));
+		filed.find('div.desc').html('创建于 ' + formatHours(new Date(o.modified)) + "<br>"
+				+ " 大小 " + formatSize(parseInt(o.size)));
+		
+		filed.find('a.delete').attr("bid", o.id);
+		filed.find('a.delete').click(
+			function() {
+				var a = $(this);
+				office.file.remove(a);
+			}
+		);
+		filed.find('a.download').attr("href", "/d?id=" + o.id);
+		$("#files div.panel").prepend(filed);
+		filed.fadeIn(500);
 	},
 	
 	remove:function(a) {
@@ -23,7 +57,15 @@ office.file =  {
 					a.parent().parent().fadeOut(300);
 				}
 		);
+	},
+
+	formatFileName:function(name){
+	    if (name.length > 43){
+	        name = name.slice(0, 29) + '...' + name.slice(-13);    
+	    }
+	    return name;
 	}
+
 };
 
 office.time = {
@@ -218,48 +260,7 @@ function addTime(o) {
 }
 
 
-function listFiles(date) {
-	$("#files div.fileItem").remove();
-	$.getJSON("/service/office/daylist",
-		{"date": date,
-		"rnd":new Date().getTime()},
-		function(data) {
-			for(var i=0;i<data.length; i++) {
-				addFile(data[i]);
-			}
-			
-		}
-	);
-}
 
-
-
-function addFile(o) {
-	var filed = $('div.fileItemTemplate').clone();
-	filed.removeClass("fileItemTemplate").addClass("fileItem");
-	filed.find('div.image img').attr("src", getFileImage(o.name));
-	filed.find('div.title').html(formatFileName(o.name));
-	filed.find('div.desc').html('创建于 ' + formatHours(new Date(o.modified)) + "<br>"
-			+ " 大小 " + formatSize(parseInt(o.size)));
-	
-	filed.find('a.delete').attr("bid", o.id);
-	filed.find('a.delete').click(
-		function() {
-			var a = $(this);
-			office.file.remove(a);
-		}
-	);
-	filed.find('a.download').attr("href", "/d?id=" + o.id);
-	$("#files div.panel").prepend(filed);
-	filed.fadeIn(500);
-}
-
-function formatFileName(name){
-    if (name.length > 43){
-        name = name.slice(0, 29) + '...' + name.slice(-13);    
-    }
-    return name;
-}
 
 var endfixes = ["asf","avi","bmp","csv","cab","doc","docx","eml","exe","gif","htm","html","jp2","jpe","jpeg","jpg","jpx","js","lnk","mp3","mp4","mpeg","mpg","msg","odf","odg","odp","ods","odt","pdf","png","ppt","pptx","psd","rtf","shtml","swf","tif","tiff","txt","url","wmv","png","xls","xml","xsd","xsl","xlsx","gz","tar","zip"];
 function getFileImage(name) {

@@ -63,8 +63,7 @@
     
 }
 
-/**此处定义功能列表*/
-
+/**功能列表头样式*/
 #terminal ul {
 	display: block;
 	list-style: none;
@@ -76,6 +75,7 @@
 	/*margin: 12px 0px 0px 0px;*/
 	display: list-item;
 	background: url(images/navi_seperator.png) 100% 1px no-repeat #494738;
+	width: 96px;
 }
 
 #terminal ul.nav li a {
@@ -132,31 +132,31 @@
 	display:block;
 }
 
-#terminal div.itemcontainer div.image {
+div.fileItem div.image {
 	float: left;
 }
 
 
-#terminal div.itemcontainer div.title {
+div.fileItem div.title {
 	padding-left: 5px;
 	float:left;
 	font-size: 12px;
 	width: 260px;
 }
 
-#terminal div.itemcontainer div.desc {
+div.fileItem div.desc {
 	padding-left: 5px;
 	float:left;
 	color: #92999C;
 	width: 80px;
 }
-#terminal div.itemcontainer div.oper {
+div.fileItem div.oper {
 	float: right;
 	padding-top:10px;
 	width: 70px;
 }
 
-#terminal div.itemcontainer div.oper a {
+div.fileItem div.oper a {
 	padding:3px;
 	margin:2px;
 	width:50px;
@@ -165,18 +165,26 @@
 	color: #CCC;
 }
 
-#times div.timeDesc {
+div.noteItem div.oper {
+	float: right;
+	display: block;
+}
+
+
+/**time styles*/
+
+div.timeItem div.timeDesc {
 	padding:5px;
 	float: left;
 	width: 300px;
 }
-#times div.timeDura {
+div.timeItem div.timeDura {
 	padding:5px;
 	color: black;
 	float: left;
 	width: 1px;
 }
-#times div.timeOper {
+div.timeItem div.timeOper {
 	color: black;
 	float: right;
 	width: 120px;
@@ -223,6 +231,8 @@ div.running div.timeOper a span {
 	color: black;
 	
 }
+/*--------------------------------end time style*/
+
 
 input[type="submit"] {
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#F8F8F8),to(#F1F1F1));
