@@ -1,5 +1,20 @@
 var office = new Object();
 
+office.date = new Date();
+
+office.preDay = function() {
+	office.date = new Date(office.date.getTime() + 24*60*60*1000); 
+};
+
+office.nextDay = function() {
+	office.date = new Date(office.date.getTime() + 24*60*60*1000);
+};
+
+office.today = function() {
+	office.date = new Date();	
+};
+
+
 office.file =  {
 	load:function() {
 		var uploader = new qq.FileUploader({
@@ -13,7 +28,7 @@ office.file =  {
 		});  
 		$('div.pages').hide();
 		$("#files").show();
-		office.file.listFiles(getDateFormat(new Date()));
+		office.file.listFiles(getDateFormat(office.date));
 	},
 
 	listFiles:function(date) {
@@ -47,7 +62,7 @@ office.file =  {
 		);
 		filed.find('a.download').attr("href", "/d?id=" + o.id);
 		$("#files div.panel").prepend(filed);
-		filed.fadeIn(500);
+		filed.fadeIn(300);
 	},
 	
 	remove:function(a) {
@@ -75,13 +90,13 @@ office.time = {
 		$("#times div.timeItem").remove();
 		
 		$.getJSON("/service/office/time/list",
-				{'date':getDateFormat(new Date())},
+				{'date':getDateFormat(office.date)},
 				function(json) {
 					for ( var i = 0; i < json.length; i++) {
 						addTime(json[i]);
 					}
 					updateTime();
-					$('#addTimeDiv').fadeOut(500);
+					$('#addTimeDiv').fadeOut(300);
 				}
 		);
 		
@@ -94,10 +109,10 @@ office.time = {
 		});
 	},
 	showAddTime:function() {
-		$('#addTimeDiv').fadeIn(500);
+		$('#addTimeDiv').fadeIn(300);
 	},
 	hideAddTime:function() {
-		$('#addTimeDiv').fadeOut(500);
+		$('#addTimeDiv').fadeOut(300);
 	},
 	add:function() {
 		var desc = $('#newtime').val();
@@ -186,15 +201,15 @@ office.notes = {
 		$.post("/service/office/note/remove",
 				{"id": data.id},
 				function(data) {
-					$(o).parent().parent().fadeOut(500);
+					$(o).parent().parent().fadeOut(300);
 				});
 	},	
 	showAddNote:function() {
-		$('#addNoteDiv').fadeIn(500);
+		$('#addNoteDiv').fadeIn(300);
 	},
 	
 	hideAddNote:function() {
-		$('#addNoteDiv').fadeOut(500);
+		$('#addNoteDiv').fadeOut(300);
 	},
 	
 	
@@ -207,7 +222,7 @@ office.notes = {
 		$('#notes div.panel').append(cloned);
 		
 		cloned.find('div.content').html(o.content.replace(/\n/g, '<br>'));
-		cloned.fadeIn(500);
+		cloned.fadeIn(300);
 	},
 	other:null	
 };
@@ -256,7 +271,7 @@ function addTime(o) {
 	
 	timed.find('div.timeDesc').html(o.desc);
 	
-	timed.fadeIn(500);
+	timed.fadeIn(300);
 }
 
 
