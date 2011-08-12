@@ -100,6 +100,7 @@
     top: 12px;
     width: 30px;
 }
+/**结束功能头定义*/
 
 
 #terminal div.pages div.itemcontainer {
@@ -116,20 +117,22 @@
 }
 
 
-#terminal div.pages div.pagebar {
+div.pages div.pagebar {
     background: url("image/header_bg-x.png") repeat-x scroll 0 0 transparent;
     color: #999999;
     font-size: 14px;
-    height: 50px;
+    height: 35px;
     left: 0;
     margin: 0;
     top: 0;
     width: 100%;
-    z-index: 11500;
+	display:block;
 }
 
-#terminal div.pages div.pagebar {
-	display:block;
+
+div.pages div.pagebar span.flipPageBar {
+	float: right;
+	padding:7px;
 }
 
 div.fileItem div.image {
