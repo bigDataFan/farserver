@@ -3,27 +3,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>注册ever365</title>
-
 <link rel="stylesheet" type="text/css" href="main.css"/>
-
+<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 </head>
 <body>
-
 	
 <div id="logo"><img alt="Ever365 个人信息服务 " src="images/logo1.gif"></div>
-
 
 <div id="terminal">
 <form action="/reg" method="POST">
 <p><label for="name" accesskey="9">用户名：</label></p>
-		 <input class="text" type="text" name="username"  value="" /> 
+		 <input class="text" type="text" name="username"  style="width:200px" value="" /> 
 		<p><label for="password">密码：</label></p>
-		<input class="text" type="password" name="pwd"  value="" />
+		<input class="text" type="password" name="pwd" style="width:200px"  value="" />
 		<p><label for="password">请再输一次密码：</label></p>
-		<input class="text" type="password" name="pwdcfm"  value="" />
+		<input class="text" type="password" name="pwdcfm"  style="width:200px"  value="" />
 		<p><label for="email">Email ：</label></p>
-		<input class="text" type="text"  name="email"  value="" />
-		<p><label for="remember">输入验证码：</label> <img src="rndimg" id="imgg"> </p> 
+		<input class="text" type="text"  name="email" style="width:200px"   value="" />
+		<p><label for="remember">输入验证码：</label> <img src="rndimg" id="imgg"> <a href="javascript:$('#imgg').attr('src', 'rndimg');">更换</a></p> 
 		<p><input class="text" type="text"  name="randomimg"  value="" /> </p>
 		<p></p>
 		

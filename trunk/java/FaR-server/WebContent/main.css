@@ -118,3 +118,10 @@ div#toolbar_container {
     width: 100%;
 }
 
+#terminal {
+	padding-top: 30px;
+	clear: both;
+    margin: 0 auto;
+    width: 480px;
+    
+}
