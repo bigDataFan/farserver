@@ -32,7 +32,7 @@
 		                <li><a href="javascript:office.file.load()" class="current">文件</a><span style="background: url(images/Folder.png)"></span></li>
 		                 <li><a href="javascript:office.time.load()" class="current">时间</a><span style="background: url(images/Clock.png)"></span></li>
 		                 <li><a href="javascript:office.notes.load()" class="current">便签</a><span style="background: url(images/Clipboard.png)"></span></li>
-		                 <li><a href="/" class="current">待办</a><span></span></li>
+		                 <li><a href="javascript:void(0)" class="current">&nbsp;</a><span></span></li>
 		                 <li><a href="/" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
 		             </ul>
 		</div>
@@ -85,14 +85,14 @@
          	<div class="pagebar">
 					<div class="opers" style="float:left;padding: 7px"><a href="javascript:office.notes.showAddNote();"><img border="0" src='/office/image/add.png'></a></div>
 				<span id="addNoteDiv" style="display:none; float: left">
-					<textarea name="newNote" id="newNote" rows="2" cols="35" style="height:37px;width:391px;"></textarea> 
+					<textarea name="newNote" id="newNote" rows="2" cols="35" style="top:2px; height:37px;width:391px;"></textarea> 
 				<a href="javascript:office.notes.add()">增加</a></span>             			      
              </div>
              
            	<div class="notesTemplate itemcontainer" style="display: none">
            		<div class="content"></div>
-           		<div class="noteOper">
-           			<a href="javascript:void(0)" onclick="office.notes.edit(this)">编辑</a>|<a href="javascript:void(0)" onclick="office.notes.remove(this)">删除</a>
+           		<div class="oper">
+           			<a href="javascript:void(0)" onclick="office.notes.remove(this)">删除</a>
            		</div>
            	</div>
              	
