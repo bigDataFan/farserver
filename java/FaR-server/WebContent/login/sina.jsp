@@ -10,12 +10,8 @@
 
 <%
 	Token requesToken = null;
-if (request.getSession().getAttribute("_sina_req_token")==null) {
 	requesToken = OAuthUtils.getSinaOAuthService().getRequestToken();
 	request.getSession().setAttribute("_sina_req_token", requesToken);
-} else {
-	requesToken = (Token)request.getSession().getAttribute("_sina_req_token");
-}
 
 String requestUrl = OAuthUtils.getSinaOAuthService().getAuthorizationUrl(requesToken);
 %>
