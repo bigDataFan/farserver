@@ -95,6 +95,14 @@
 		<servlet-name>DownloadServlet</servlet-name>
 		<servlet-class>com.ever365.rest.DownloadServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>SinaAuthUrlServlet</display-name>
+		<servlet-name>SinaAuthUrlServlet</servlet-name>
+		<servlet-class>
+		com.ever365.oauth.sina.SinaAuthUrlServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>RandomImgServlet</servlet-name>
@@ -133,6 +141,10 @@
 	<servlet-mapping>
 		<servlet-name>DownloadServlet</servlet-name>
 		<url-pattern>/d</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SinaAuthUrlServlet</servlet-name>
+		<url-pattern>/oauth/sina</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>
