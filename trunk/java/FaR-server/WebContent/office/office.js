@@ -2,11 +2,11 @@ var office = new Object();
 
 office.date = new Date();
 
-office.preDay = function() {
+office.preday = function() {
 	office.date = new Date(office.date.getTime() + 24*60*60*1000); 
 };
 
-office.nextDay = function() {
+office.nextday = function() {
 	office.date = new Date(office.date.getTime() + 24*60*60*1000);
 };
 
@@ -22,7 +22,7 @@ office.file =  {
 			action: '/service/office/upload',
 			debug: false,
 			onComplete: function(id, fileName, responseJSON){
-				setTimeout("$('li.qq-upload-success').fadeOut(300)", 1000);
+				//setTimeout("$('li.qq-upload-success').fadeOut(300)", 1000);
 				office.file.addUIFile(responseJSON);
         	}
 		});  
