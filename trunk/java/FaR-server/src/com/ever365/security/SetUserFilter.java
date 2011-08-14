@@ -75,9 +75,9 @@ public class SetUserFilter implements Filter {
         	} else {
         		sessionedUser = (String)ticDoc.get("user");
         	}
+        	httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, sessionedUser);
 		}
 		
-		httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, sessionedUser);
 		if (sessionedUser.startsWith(GUEST)) {
 			AuthenticationUtil.setCurrentAsGuest(true);
 		} else {

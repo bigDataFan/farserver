@@ -1,11 +1,14 @@
 package com.ever365.oauth.sina;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.SinaWeiboApi;
 import org.scribe.model.OAuthRequest;
@@ -15,13 +18,13 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import com.ever365.security.AuthenticationFilter;
+
 /**
  * Servlet implementation class SinaAuthUrlServlet
  */
 public class SinaAuthUrlServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,20 +46,34 @@ public class SinaAuthUrlServlet extends HttpServlet {
 		.build();
 		
 		if (request.getParameter("code")!=null) {
-			Verifier v = new Verifier(request.getParameter("code"));
-			Token accessToken = service.getAccessToken((Token) request.getSession().getAttribute("sina_req_token"), v);
-			System.out.println(accessToken.getRawResponse());
 			
-			OAuthRequest oreq = new OAuthRequest(Verb.GET, "http://api.t.sina.com.cn/users/show.json");
-			service.signRequest(accessToken, oreq); // the access token from step 4
-			Response ores = oreq.send();
-			System.out.println(ores.getBody());
-			//System.out.println(response.getBody());
+			try {
+				Verifier v = new Verifier(request.getParameter("code"));
+				Token accessToken = service.getAccessToken((Token) request.getSession().getAttribute("_sina_req_token"), v);
+				
+				OAuthRequest oreq = new OAuthRequest(Verb.GET, "http://api.t.sina.com.cn/account/verify_credentials.json");
+				service.signRequest(accessToken, oreq); // the access token from step 4
+				Response ores = oreq.send();
+				try {
+					JSONObject jso = new JSONObject(ores.getBody());
+					String userName = jso.getString("name") + "@weibo.com";
+					request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, userName);
+					response.sendRedirect("/");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				System.out.println(ores.getBody());
+				//System.out.println(response.getBody());
+				
+			} catch (Exception e) {
+				response.sendRedirect("/login/sina.jsp?msg=error");
+			}
 			
 		} else {
 			Token token = service.getRequestToken();
 			
-			request.getSession().setAttribute("sina_req_token", token);
+			request.getSession().setAttribute("_sina_req_token", token);
 			String sinaUrl = service.getAuthorizationUrl(token);
 			
 			response.sendRedirect(sinaUrl);
