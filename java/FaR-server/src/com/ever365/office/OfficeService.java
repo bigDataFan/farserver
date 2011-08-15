@@ -156,7 +156,15 @@ public class OfficeService {
 		
 		coll.insert(dbo);
 		
-		return dbo.toMap();
+		Map map = formatResult(dbo);
+		return map;
+	}
+
+	private Map formatResult(DBObject dbo) {
+		Map map = dbo.toMap();
+		map.put("id", map.get("_id").toString());
+		map.remove("_id");
+		return map;
 	}
 	
 	@RestService(method="POST", uri="/office/time/start")
@@ -184,7 +192,8 @@ public class OfficeService {
 		dbo.put("creator", AuthenticationUtil.getCurrentUser());
 		dbo.put("created", new Date().getTime());
 		getNotesCollection().insert(dbo);
-		return dbo.toMap();
+		Map map = formatResult(dbo);
+		return map;
 	}
 	
 	@RestService(method="POST", uri="/office/note/remove")
