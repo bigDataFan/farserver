@@ -122,10 +122,24 @@ div.pages div.pagebar {
 	display:block;
 }
 
+div.pages div.pageFootbar {
+    background: url("image/header_bg-x.png") repeat-x scroll bottom left transparent;
+    color: #999999;
+    font-size: 14px;
+    height: 30px;
+    left: 0;
+    margin: 0;
+    top: 0;
+    width: 100%;
+	display:block;
+}
 
-div.pages div.pagebar span.flipPageBar {
+
+
+div.pages div.pageFootbar span.flipPageBar {
 	float: right;
 	padding:7px;
+	color: #BB3E26;
 }
 
 div.fileItem div.image {
@@ -148,10 +162,12 @@ div.fileItem div.desc {
 }
 div.fileItem div.oper {
 	float: right;
-	padding-top:10px;
-	width: 70px;
+	padding-top:8px;
+	padding-right:3px;
+	width: 30px;
 }
 
+/*
 div.fileItem div.oper a {
 	padding:3px;
 	margin:2px;
@@ -160,6 +176,20 @@ div.fileItem div.oper a {
 	background: #494738 repeat-x top left;
 	color: #CCC;
 }
+*/
+
+div.fileItem div.oper a{
+	text-decoration: none;
+	display: block;
+	height: 26px;
+	width: 30px;
+	line-height: 26px;
+	text-align: center;
+	background: white url(image/bg_masthead.jpg) repeat-x top left;
+	color: #CCC;
+}
+
+
 
 div.noteItem div.oper {
 	float: right;
