@@ -63,12 +63,6 @@ $(document).ready(function(){
 						</noscript>
 					</div>
 				</div>
-				
-				<span class="flipPageBar">
-					<a href="javascript:office.today()"><img src="/office/image/house.png" border="0"></a>
-					<a href="javascript:office.nextday()"><img src="/office/image/left_arrow.png" border="0"></a>
-					<a href="javascript:office.preday()"><img src="/office/image/right_arrow.png" border="0"></a>
-				</span>
 			</div>
 			<div class="panel">
 				<div class="panel-content">
@@ -76,11 +70,21 @@ $(document).ready(function(){
 						<div class="image"><img alt="" src="images/Folder.png"></div>
 						<div class="title"></div>
 						<div class="desc">创建于</div>
-						<div class="oper"><a href="#" class="download" target="_blank">下载</a><a
+						<div class="oper"><a href="#" class="download" target="_blank">下载</a></div><div class="oper"><a
 							href="#" class="delete">删除</a></div>
 					</div>
 				</div>
 			</div>
+			
+			<div class="pageFootbar">
+				<span class="flipPageBar">
+					<span class="currentDaySpan"></span>
+					<a href="javascript:office.today()" title="今天"><img src="/office/image/house.png" border="0"></a>
+					<a href="javascript:office.preday()" title="前一天"><img src="/office/image/left_arrow.png" border="0"></a>
+					<a href="javascript:office.nextday()" title="后一天"><img src="/office/image/right_arrow.png" border="0"></a>
+				</span>
+			</div>
+			
 		</div>
 
 		<div id="times" class="pages" style="display: none">
@@ -89,12 +93,6 @@ $(document).ready(function(){
 				<span id="addTimeDiv" style="display:none; float: left">
 					<input name="newtime" id="newtime" size="40" style="width:200px;"> 
 					<a href="javascript:office.time.add()">增加</a></span>
-					
-				<span class="flipPageBar">
-					<a href="javascript:office.today()"><img src="/office/image/house.png" border="0"></a>
-					<a href="javascript:office.nextday()"><img src="/office/image/left_arrow.png" border="0"></a>
-					<a href="javascript:office.preday()"><img src="/office/image/right_arrow.png" border="0"></a>
-				</span>
 				<div id="timeTotal">00:00</div>             			      
              </div>
              
@@ -107,17 +105,22 @@ $(document).ready(function(){
            	</div>
            	<div class="panel">
 			</div>
+			
+			<div class="pageFootbar">
+				<span class="flipPageBar">
+					<span class="currentDaySpan"></span>
+					<a href="javascript:office.today()" title="今天"><img src="/office/image/house.png" border="0"></a>
+					<a href="javascript:office.preday()" title="前一天"><img src="/office/image/left_arrow.png" border="0"></a>
+					<a href="javascript:office.nextday()" title="后一天"><img src="/office/image/right_arrow.png" border="0"></a>
+				</span>
+			</div>
          </div>
              
              
          <div id="notes" class="pages" style="display: none">
          	<div class="pagebar">
-			  <div class="opers" style="float:left;padding: 7px"><a href="javascript:office.notes.showAddNote();"><img border="0" src='/office/image/add.png'></a></div>
-				<span class="flipPageBar">
-					<a href="javascript:office.today()"><img src="/office/image/house.png" border="0"></a>
-					<a href="javascript:office.nextday()"><img src="/office/image/left_arrow.png" border="0"></a>
-					<a href="javascript:office.preday()"><img src="/office/image/right_arrow.png" border="0"></a>
-				</span>
+			  <div class="opers" style="float:left;padding: 7px"><a href="javascript:office.notes.showAddNote();">
+			  <img border="0" src='/office/image/add.png'></a></div>
              </div>
              
             <div class="itemcontainer" id="addNoteDiv" style="display: none;">
