@@ -3,17 +3,27 @@ var office = new Object();
 office.date = new Date();
 
 office.preday = function() {
-	office.date = new Date(office.date.getTime() + 24*60*60*1000); 
+	office.date = new Date(office.date.getTime() - 24*60*60*1000); 
+	if (office.currentTab!=null) {
+		office.currentTab.load();
+	}
 };
 
 office.nextday = function() {
 	office.date = new Date(office.date.getTime() + 24*60*60*1000);
+	if (office.currentTab!=null) {
+		office.currentTab.load();
+	}
 };
 
 office.today = function() {
-	office.date = new Date();	
+	office.date = new Date();
+	if (office.currentTab!=null) {
+		office.currentTab.load();
+	}
 };
 
+office.currentTab = null;
 
 office.file =  {
 	load:function() {
@@ -26,6 +36,7 @@ office.file =  {
 				office.file.addUIFile(responseJSON);
         	}
 		});  
+		office.currentTab = office.file;
 		$('div.pages').hide();
 		$("#files").show();
 		office.file.listFiles(getDateFormat(office.date));
@@ -33,6 +44,7 @@ office.file =  {
 
 	listFiles:function(date) {
 		$("#files div.fileItem").remove();
+		$('span.flipPageBar span.currentDaySpan').html(date);
 		$.getJSON("/service/office/daylist",
 			{"date": date,
 			"rnd":new Date().getTime()},
@@ -40,7 +52,6 @@ office.file =  {
 				for(var i=0;i<data.length; i++) {
 					office.file.addUIFile(data[i]);
 				}
-				
 			}
 		);
 	},
@@ -87,27 +98,58 @@ office.time = {
 	load:function() {
 		$('div.pages').hide();
 		$("#times").show();
-		$("#times div.timeItem").remove();
-		
-		$.getJSON("/service/office/time/list",
-				{'date':getDateFormat(office.date)},
-				function(json) {
-					for ( var i = 0; i < json.length; i++) {
-						addTime(json[i]);
-					}
-					updateTime();
-					$('#addTimeDiv').fadeOut(300);
-				}
-		);
-		
 		$("#times").find('div.running div.timeOper a').live('click', function(data) {
 			office.time.stopItem();
 		});
-		
 		$("#times").find('div.pending div.timeOper a').live('click', function(data) {
 			office.time.startItem($(this).attr('id'));
 		});
+		office.currentTab = office.time;
+		office.time.listDay(getDateFormat(office.date));
 	},
+	
+	listDay:function(date) {
+		$("#times div.timeItem").remove();
+		$.getJSON("/service/office/time/list",
+				{
+				'date':date,
+				'refresh':new Date().getTime()
+				},
+				function(json) {
+					for ( var i = 0; i < json.length; i++) {
+						office.time.addUITime(json[i]);
+					}
+					$('#addTimeDiv').fadeOut(300);
+					office.time.updateTime();
+				}
+		);
+		$('span.flipPageBar span.currentDaySpan').html(getDateFormat(office.date));
+	},
+	
+	
+	addUITime: function(o) {
+		var timed = $('div.timeTemplate').clone();
+		$('#times div.panel').prepend(timed);
+		
+		timed.removeClass('timeTemplate');
+		timed.addClass("timeItem");
+		timed.data("timedata", o);
+		
+		timed.find('div.timeOper a').attr("id", o.id);
+		if (o.laststart!=0) {
+			$('#times div.running').removeClass("running").addClass("pending");
+			timed.addClass("running");
+			timed.find('div.timeOper span').html(formatDate(o.dura + (new Date().getTime()-o.laststart)));
+		} else {
+			timed.addClass("pending");
+			timed.find('div.timeOper span').html(formatDate(o.dura));
+		}
+		
+		timed.find('div.timeDesc').html(o.desc);
+		
+		timed.fadeIn(300);
+	},
+	
 	showAddTime:function() {
 		$('#addTimeDiv').fadeIn(300);
 	},
@@ -120,7 +162,7 @@ office.time = {
 		$.post("/service/office/time/add", 
 				{"desc":desc},
 				function(data) {
-					addTime(jQuery.parseJSON(data));
+					office.time.addUITime(jQuery.parseJSON(data));
 				});
 	},
 	
@@ -154,7 +196,24 @@ office.time = {
 				}
 		);
 	},
-	
+	updateTime:function() {
+		var total = 0;
+		
+		jQuery.each($("#times div.timeItem"),
+			function() {
+				var timedata = $(this).data("timedata");
+				if (timedata==null) return;
+				
+				total += timedata.dura;
+				if ($(this).hasClass("running")) {
+					$(this).find('div.timeOper span').html(formatDate(timedata.dura + (new Date().getTime()-timedata.laststart)));
+					total += (new Date().getTime()-timedata.laststart);
+				}
+			}
+		 );
+		$('#timeTotal').html("总计:" + formatDate(total));
+		setTimeout('office.time.updateTime()', 60*1000);
+	},
 	other:null
 };
 
@@ -164,11 +223,12 @@ office.notes = {
 		$('div.pages').hide();
 		$("#notes div.noteItem").remove();
 		$('#notes').show();
-
+		office.currentTab = office.notes;
 		$.getJSON("/service/office/note/list", 
 				{
 					"start": 0,
-					"limit":10
+					"limit":10,
+					"refresh":new Date().getTime()
 				},
 				function(data) {
 					for ( var i = 0; i < data.length; i++) {
@@ -196,7 +256,6 @@ office.notes = {
 	},
 	remove: function(o) {
 		var data = $(o).parent().parent().data('noteData');
-		alert(data.id);
 		
 		$.post("/service/office/note/remove",
 				{"id": data.id},
@@ -226,55 +285,6 @@ office.notes = {
 	},
 	other:null	
 };
-
-
-function updateTime() {
-	var total = 0;
-	
-	jQuery.each($("#times div.timeItem"),
-		function() {
-			var timedata = $(this).data("timedata");
-			if (timedata==null) return;
-			
-			total += timedata.dura;
-			if ($(this).hasClass("running")) {
-				$(this).find('div.timeOper span').html(formatDate(timedata.dura + (new Date().getTime()-timedata.laststart)));
-				total += new Date().getTime() - timedata.laststart;
-			}
-		}
-	 );
-	$('#timeTotal').html("总计:" + formatDate(total));
-	
-	
-	setTimeout('updateTime()', 20*1000);
-}
-
-
-
-function addTime(o) {
-	var timed = $('div.timeTemplate').clone();
-	$('#times div.panel').prepend(timed);
-	
-	timed.removeClass('timeTemplate');
-	timed.addClass("timeItem");
-	timed.data("timedata", o);
-	
-	timed.find('div.timeOper a').attr("id", o.id);
-	if (o.laststart!=0) {
-		$('#times div.running').removeClass("running").addClass("pending");
-		timed.addClass("running");
-		timed.find('div.timeOper span').html(formatDate(o.dura + (new Date().getTime()-o.laststart)));
-	} else {
-		timed.addClass("pending");
-		timed.find('div.timeOper span').html(formatDate(o.dura));
-	}
-	
-	timed.find('div.timeDesc').html(o.desc);
-	
-	timed.fadeIn(300);
-}
-
-
 
 
 var endfixes = ["asf","avi","bmp","csv","cab","doc","docx","eml","exe","gif","htm","html","jp2","jpe","jpeg","jpg","jpx","js","lnk","mp3","mp4","mpeg","mpg","msg","odf","odg","odp","ods","odt","pdf","png","ppt","pptx","psd","rtf","shtml","swf","tif","tiff","txt","url","wmv","png","xls","xml","xsd","xsl","xlsx","gz","tar","zip"];
@@ -314,4 +324,5 @@ function formatDate(mill) {
 	return ((d3.getDate()-1)*24 + (d3.getHours()-8)) + ":" 
 	+ ((d3.getMinutes()<10)?("0"+d3.getMinutes()):d3.getMinutes()); 
 }
+
 
