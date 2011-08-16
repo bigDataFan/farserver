@@ -286,6 +286,14 @@ office.notes = {
 	other:null	
 };
 
+office.more = {
+	load:function() {
+		$('div.pages').hide();
+		$("#notes div.noteItem").remove();
+		$('#officemore').show();
+	}
+};
+
 
 var endfixes = ["asf","avi","bmp","csv","cab","doc","docx","eml","exe","gif","htm","html","jp2","jpe","jpeg","jpg","jpx","js","lnk","mp3","mp4","mpeg","mpg","msg","odf","odg","odp","ods","odt","pdf","png","ppt","pptx","psd","rtf","shtml","swf","tif","tiff","txt","url","wmv","png","xls","xml","xsd","xsl","xlsx","gz","tar","zip"];
 function getFileImage(name) {
