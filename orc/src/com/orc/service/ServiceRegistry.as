@@ -5,9 +5,6 @@ package com.orc.service
 	import com.orc.service.task.LocalTaskService;
 	import com.orc.service.task.TaskService;
 	import com.orc.service.timetrack.TimeTrackingService;
-	
-	import org.hamster.dropbox.DropboxClient;
-	import org.hamster.dropbox.DropboxConfig;
 
 	public class ServiceRegistry
 	{
@@ -27,8 +24,6 @@ package com.orc.service
 		
 		public static var syncRegistry:SynchronizerRegistry = new SynchronizerRegistry(configService, dataService);
 		
-		public static var config:DropboxConfig = new DropboxConfig('', '');
-		public static var dropAPI:DropboxClient = new DropboxClient(config);
 		
 		public function ServiceRegistry() {
 			
