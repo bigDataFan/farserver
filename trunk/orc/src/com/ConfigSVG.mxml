@@ -10,7 +10,6 @@
 			
 			import mx.controls.Alert;
 			
-			import org.hamster.dropbox.DropboxEvent;
 			
 			protected function selectRootFolder(event:MouseEvent):void
 			{
