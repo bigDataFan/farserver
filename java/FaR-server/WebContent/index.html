@@ -51,7 +51,7 @@ $(document).ready(function(){
 		                 <li><a href="javascript:office.time.load()" class="current">时间</a><span style="background: url(images/Clock.png)"></span></li>
 		                 <li><a href="javascript:office.notes.load()" class="current">记事</a><span style="background: url(images/Clipboard.png)"></span></li>
 		                 <li><a href="javascript:void(0)" class="current">&nbsp;</a><span></span></li>
-		                 <li><a href="/" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
+		                 <li><a href="javascript:office.more.load()" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
 		             </ul>
 		</div>
 		<div id="files" class="pages" style="display:none">
@@ -141,7 +141,22 @@ $(document).ready(function(){
              
          </div>
              
+          
+          <div id="officemore" class="pages" style="display: none">
+         	<div class="pagebar">
+			  <div class="opers" style="float:left;padding: 7px">支持以下设备的客户端</div>
+             </div>
              
+            <div class="itemcontainer" >
+           		 
+				<a href="javascript:office.notes.add()">增加</a>
+           	</div>
+           	
+           	<div class="itemcontainer" >
+           		<div class="content"></div>
+           	</div>
+             
+         </div> 
 </div>
 
 <div style="z-index:10000;" id="toolbar_container">
