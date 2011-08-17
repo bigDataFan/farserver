@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>365Time(天天时间管理)</title>
+
+<link rel="stylesheet" type="text/css" href="../common.css"/>
+<link rel="stylesheet" type="text/css" href="time.css"/>
+<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="time.js"> </script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	office.time.load();
+});
+
+</script>
+</head>
+<body>
+
+
+<div id="times" class="pages">
+		 	<div class="pagebar">
+				<div class="opers" style="float:left;padding: 7px"><a href="javascript:office.time.showAddTime();"><img border="0" src='/office/image/add.png'></a></div>
+				<div id="addTimeDiv" style="display:none;">
+					<input name="newtime" id="newtime" size="40" style="width:200px;"> 
+					<a href="javascript:office.time.add()">增加</a></div>
+				<div class="summary">00:00</div>             			      
+             </div>
+             
+           	<div class="timeTemplate itemcontainer" style="display: none">
+           		<div class="timeDesc"> </div>
+           		<div class="timeStatics">启动于 <span class="timeStart"></span> &nbsp;&nbsp;   <a class="details" href="#">更多详情</a></div>
+           		<!--  <div class="timeDura">12:00</div>  -->
+           		<div class="timeOper">
+           			<a href="#"><span>12:00</span></a>
+           		</div>
+           	</div>
+           	<div class="list">
+			</div>
+			
+			<div class="pageFootbar">
+				<span class="flipPageBar">
+					<span class="currentDaySpan"></span>
+					<a href="javascript:office.today()" title="今天"><img src="/office/image/house.png" border="0"></a>
+					<a href="javascript:office.preday()" title="前一天"><img src="/office/image/left_arrow.png" border="0"></a>
+					<a href="javascript:office.nextday()" title="后一天"><img src="/office/image/right_arrow.png" border="0"></a>
+				</span>
+			</div>
+</div>
+         
+</body>
+</html>
