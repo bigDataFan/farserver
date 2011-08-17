@@ -2,6 +2,7 @@ package com.ever365.office;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -191,6 +192,9 @@ public class OfficeService {
 		dbo.put("content", content);
 		dbo.put("creator", AuthenticationUtil.getCurrentUser());
 		dbo.put("created", new Date().getTime());
+		
+		dbo.put("checks", Collections.emptyList());
+		
 		getNotesCollection().insert(dbo);
 		Map map = formatResult(dbo);
 		return map;
@@ -259,6 +263,17 @@ public class OfficeService {
 			if (total>24*60*60*1000) {
 				total = 24*60*60*1000L;
 			}
+			
+			List<String> checkList = null;
+			Object checks = tobeStop.get("checks");
+			if (checks==null) {
+				checkList = new ArrayList<String>(0);
+			} else {
+				checkList = (List)checks;
+			}
+			
+			checkList.add(tobeStop.get("laststart") + "-" + new Date().getTime() );
+			tobeStop.put("checks", checkList);
 			tobeStop.put("dura", total);
 			tobeStop.put("laststart", 0);
 			coll.update(new BasicDBObject("_id", tobeStop.get("_id")), tobeStop);
