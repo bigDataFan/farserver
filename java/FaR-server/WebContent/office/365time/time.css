@@ -1,0 +1,98 @@
+@CHARSET "UTF-8";
+
+
+#addTimeDiv {
+	padding: 4px;	
+	float:  left;
+}
+
+#addTimeDiv input {
+	color: #4E8F02;
+    font-size: 14px;
+    font-weight: bold;
+    height: 18px;
+    width: 200px;
+    padding: 4px;	
+}
+
+#addTimeDiv a {
+    color: #666666;
+    text-decoration: none;
+}
+
+div.timeItem {
+    display: block;
+    height: 50px;
+    width: 100%;
+}
+
+div.timeItem div.timeDesc {
+	padding:5px;
+	float: left;
+	min-width:400px;
+	position: fixed;
+}
+
+
+div.timeItem div.timeStatics {
+	padding:26px 0px 0px 5px;
+	float: left;
+	min-width:400px;
+	color: #7D7D7D;
+	font-size: 12px;
+	position: fixed;
+}
+
+div.timeItem div.timeStatics a.details {
+	color: #7D7D7D;
+	text-decoration: none;
+}
+
+
+
+div.timeItem div.timeDura {
+	padding:5px;
+	color: black;
+	float: right;
+	width: 1px;
+}
+div.timeItem div.timeOper {
+	color: black;
+	float: right;
+	width: 120px;
+	font-weight: bold;
+    padding-top: 12px;
+}
+div.running {
+	background-color: #d4f1ff; 
+}
+
+div.running div.timeOper a {
+    border: 0 none;
+    color: #333333;
+    display: block;
+    height: 19px;
+    padding: 5px 60px 0 0;
+    text-decoration: none;
+	background: transparent url('/office/image/btn_running.gif') no-repeat scroll right top;
+}
+ 
+div.pending div.timeOper a {
+    border: 0 none;
+    color: #333333;
+    display: block;
+    height: 19px;
+    padding: 5px 60px 0 0;
+    text-decoration: none;
+	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right top;
+}
+
+div.pending div.timeOper a:HOVER {
+	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right -24px;
+} 
+
+div.running div.timeOper a span {
+	padding-right:50px;
+	padding-bottom: 10px;
+}
+
