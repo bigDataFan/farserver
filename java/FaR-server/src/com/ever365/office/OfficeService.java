@@ -135,14 +135,15 @@ public class OfficeService {
 			DBCursor cursor = getTimeCollection().find(dbo);
 			while (cursor.hasNext()) {
 				DBObject oneTime = cursor.next();
-				Map map = oneTime.toMap();
-				map.put("id", oneTime.get("_id").toString());
-				map.remove("_id");
-				map.put("now", now);
-				result.add(map);
+				result.add(formatResult(oneTime));
 			}
 		}
 		return result;
+	}
+	
+	public Long getDura(DBObject time) {
+		Long ls = (Long)time.get("laststart");
+		return (Long)time.get("dura") + ((ls==0)?0:(new Date().getTime()-ls)); 
 	}
 	
 	@RestService(method="POST", uri="/office/time/add")
@@ -162,6 +163,39 @@ public class OfficeService {
 		Map map = formatResult(dbo);
 		return map;
 	}
+	
+	@RestService(method="POST", uri="/office/time/update")
+	public Map<String, Object> updateTime(
+			@RestParam(value="id") String id,
+			@RestParam(value="desc") String desc,
+			@RestParam(value="autostop") Integer autostop
+			) {
+		DBCollection coll = getTimeCollection();
+		
+		DBObject dbo = new BasicDBObject();
+		dbo.put("_id", new ObjectId(id));
+		DBObject timeItem = coll.findOne(dbo);
+		timeItem.put("desc", desc);
+		timeItem.put("autostop", autostop);
+		
+		coll.update(dbo, timeItem, false, false);
+		
+		Map map = formatResult(timeItem);
+		return map;
+	}
+	
+	@RestService(method="POST", uri="/office/time/delete")
+	public void deleteTime(
+			@RestParam(value="id") String id
+			) {
+		DBCollection coll = getTimeCollection();
+		
+		DBObject dbo = new BasicDBObject();
+		dbo.put("_id", new ObjectId(id));
+		coll.remove(dbo);
+	}
+	
+	
 
 	private Map formatResult(DBObject dbo) {
 		Map map = dbo.toMap();
@@ -218,7 +252,6 @@ public class OfficeService {
 		DBObject query = new BasicDBObject();
 		query.put("creator", AuthenticationUtil.getCurrentUser());
 		DBCursor cursor = getNotesCollection().find(query).skip(start).limit(limit);
-		
 		
 		while (cursor.hasNext()) {
 			Map note = cursor.next().toMap();
