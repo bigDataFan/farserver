@@ -43,6 +43,11 @@ div.timeItem div.timeStatics {
 	position: fixed;
 }
 
+div.timeItem div.timeStatics span.warning {
+	color: red;
+}
+
+
 div.timeItem div.timeStatics a.details {
 	color: #7D7D7D;
 	text-decoration: none;
@@ -73,6 +78,10 @@ div.timeItem div.timeOper {
 }
 div.running {
 	background-color: #d4f1ff; 
+}
+
+div.overtime {
+	background-color: #FA8282; 
 }
 
 div.running div.timeOper a {
