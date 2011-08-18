@@ -131,12 +131,14 @@ public class OfficeService {
 			dbo.put("created", range);
 			dbo.put("creator", AuthenticationUtil.getCurrentUser());
 			
+			Long now = new Date().getTime();
 			DBCursor cursor = getTimeCollection().find(dbo);
 			while (cursor.hasNext()) {
 				DBObject oneTime = cursor.next();
 				Map map = oneTime.toMap();
 				map.put("id", oneTime.get("_id").toString());
 				map.remove("_id");
+				map.put("now", now);
 				result.add(map);
 			}
 		}
@@ -165,6 +167,7 @@ public class OfficeService {
 		Map map = dbo.toMap();
 		map.put("id", map.get("_id").toString());
 		map.remove("_id");
+		map.put("now", new Date().getTime());
 		return map;
 	}
 	
