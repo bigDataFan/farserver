@@ -218,7 +218,6 @@ office.time = {
 				var timedata = $(this).data("timedata");
 				if (timedata==null) return;
 				
-				total += timedata.dura;
 				if ($(this).hasClass("running")) {
 					var duraString = $(this).find('div.timeOper span').html();
 					var duraTime = office.time.formatedToMill(duraString) + 60*1000;
@@ -229,6 +228,8 @@ office.time = {
 					
 					$(this).find('div.timeOper span').html(office.time.formatDura(duraTime));
 					total += duraTime;
+				} else {
+					total += timedata.dura;
 				}
 			}
 		 );
