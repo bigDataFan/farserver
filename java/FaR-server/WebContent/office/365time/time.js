@@ -75,10 +75,15 @@ office.time = {
 						office.time.addUITime(json[i]);
 					}
 					$('#addTimeDiv').fadeOut(300);
+					if (!office.time.schedued) {
+						office.time.updateTime();
+						office.time.schedued = true;
+					}
 				}
 		);
 		$('span.flipPageBar span.currentDaySpan').html(office.getDateFormat(office.date));
 	},
+	schedued:false,
 	
 	
 	addUITime: function(o) {
