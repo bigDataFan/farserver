@@ -75,7 +75,6 @@ office.time = {
 						office.time.addUITime(json[i]);
 					}
 					$('#addTimeDiv').fadeOut(300);
-					office.time.updateTime();
 				}
 		);
 		$('span.flipPageBar span.currentDaySpan').html(office.getDateFormat(office.date));
@@ -90,23 +89,69 @@ office.time = {
 		timed.data("timedata", o);
 		
 		timed.find('div.timeOper a').attr("id", o.id);
+		var dura = 0;
+		
+		
 		if (o.laststart!=0) {
 			$('#times div.running').removeClass("running").addClass("pending");
 			timed.addClass("running");
-			timed.find('div.timeOper span').html(office.time.formatDura(o.dura + (o.now-o.laststart)));
+			dura = o.dura + (o.now-o.laststart);
 		} else {
 			timed.addClass("pending");
-			timed.find('div.timeOper span').html(office.time.formatDura(o.dura));
+			dura = o.dura;
+		}
+		timed.find('div.timeOper span').html(office.time.formatDura(dura));
+		timed.find('div.timeStatics span.warning').hide();
+		if (o.autostop!=null && o.autostop!=0 && dura>o.autostop*60*1000) {
+			timed.find('div.timeStatics span.warning').show();
 		}
 		
 		timed.find('div.timeStatics span.timeStart').html(office.time.formatHour(o.created));
+		timed.find('div.timeStatics span.timePending').html((o.checks==null)?0:o.checks.length);
 		timed.find('div.timeDesc').html(o.desc);
 		
 		timed.fadeIn(300);
 	},
 	
 	itemDetailView:function(data) {
+		office.time.currentEdit = data;
+		$('#editTime').val(data.desc);
+		$('#autoStop').val((data.autostop==null)?"0":data.autostop);
 		office.switchView('div.details');
+	},
+	
+	currentEdit:null,
+	
+	updateItem: function () {
+		if (office.time.currentEdit!=null) {
+			$.post("/service/office/time/update", 
+					{
+						"id":office.time.currentEdit.id,
+						"desc": $('#editTime').val(),
+						"autostop": $('#autoStop').val()
+					},
+					function(data) {
+						office.switchBack();
+						office.time.load();
+					}
+			);
+			
+		}
+	},
+	
+	removeItem:function() {
+		if (office.time.currentEdit!=null) {
+			$.post("/service/office/time/delete", 
+					{
+						"id":office.time.currentEdit.id
+					},
+					function(data) {
+						office.switchBack();
+						office.time.load();
+					}
+			);
+			
+		}
 	},
 	
 	showAddTime:function() {
@@ -122,6 +167,7 @@ office.time = {
 				{"desc":desc},
 				function(data) {
 					office.time.addUITime(jQuery.parseJSON(data));
+					$('#addTimeDiv').hide();
 				});
 	},
 	
@@ -129,6 +175,11 @@ office.time = {
 		$.post("/service/office/time/stop", 
 				null,
 				function(data) {
+					//将  中断x次部分的数字更新
+			   		$("#times div.running div.timeStatics span.timePending").each(function() {
+			   			$(this).html(parseInt($(this).html()) + 1);
+			   		});
+			   		
 					$("#times div.running").removeClass("running").addClass("pending");
 				}
 		);
@@ -138,8 +189,14 @@ office.time = {
 		$.post("/service/office/time/start", 
 				{"id":id},
 				function(data) {
-					$("#times div.running").removeClass("running").addClass("pending");
+					//将  中断x次部分的数字更新
+					$("#times div.running div.timeStatics span.timePending").each(function() {
+			   			$(this).html(parseInt($(this).html()) + 1);
+			   		});
 					
+					$("#times div.running").removeClass("running").addClass("pending");
+			   		
+
 					jQuery.each($("#times div.timeItem"),
 							function() {
 								var timedata = $(this).data("timedata");
@@ -166,7 +223,11 @@ office.time = {
 					var duraString = $(this).find('div.timeOper span').html();
 					var duraTime = office.time.formatedToMill(duraString) + 60*1000;
 					
-					$(this).find('div.timeOper span').html(office.time.formatDura(timedata.dura + duraTime));
+					if (timedata.autostop!=null && timedata.autostop!=0 && duraTime>timedata.autostop*60*1000) {
+						$(this).find('div.timeStatics span.warning').show();
+					}
+					
+					$(this).find('div.timeOper span').html(office.time.formatDura(duraTime));
 					total += duraTime;
 				}
 			}

@@ -13,6 +13,7 @@
 
 $(document).ready(function() {
 	office.time.load();
+	office.time.updateTime();
 });
 
 </script>
@@ -23,7 +24,7 @@ $(document).ready(function() {
 <div id="times" class="pages">
 		 	<div class="pagebar">
 				<div class="opers addItem" style="float:left;padding: 7px"><a href="javascript:office.time.showAddTime();"><img border="0" src='/office/image/add.png'></a></div>
-				<div class="opers back" style="float:left;padding: 7px;display: none"><a href="javascript:office.switchBack();"><img border="0" src='/office/image/add.png'></a></div>
+				<div class="opers back" style="float:left;padding: 7px;display: none"><a href="javascript:office.switchBack();"><img border="0" src='/office/image/left_arrow.png'></a></div>
 				<div id="addTimeDiv" style="display:none;">
 					<input name="newtime" id="newtime" size="40" style="width:200px;"> 
 					<a href="javascript:office.time.add()">增加</a></div>
@@ -32,7 +33,7 @@ $(document).ready(function() {
              
            	<div class="timeTemplate itemcontainer" style="display: none">
            		<div class="timeDesc"> </div>
-           		<div class="timeStatics">启动于 <span class="timeStart"></span> &nbsp;&nbsp;   <a class="details" href="#">详情</a></div>
+           		<div class="timeStatics">启动于 <span class="timeStart"></span> &nbsp;&nbsp; 中断 <span class="timePending"></span>次 &nbsp;&nbsp;  <a class="details" href="#">设置</a> <span class="warning" style="display:none">警告,超过了预计时间</span></div>
            		<!--  <div class="timeDura">12:00</div>  -->
            		<div class="timeOper">
            			<a href="#"><span>12:00</span></a>
@@ -42,7 +43,16 @@ $(document).ready(function() {
 			</div>
 			
 			<div class="details views" style="display:none">
-				heiheisss
+				<div class="label">
+					时间项名称  <input type="text" id="editTime"> 
+				</div>
+				<div class="label">
+					超过   <input type="text" id="autoStop" size="4"> 分钟给予提示
+				</div>
+				<div class="label">
+					<a class="details" href="javascript:office.time.updateItem()">保存</a> <a class="details" href="javascript:office.time.removeItem()">删除任务</a>    
+				</div>
+				
 			</div>
 			
 			<div class="daysummary views" style="display:none"></div>
