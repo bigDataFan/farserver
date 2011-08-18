@@ -16,6 +16,21 @@ office.nextday = function() {
 	}
 };
 
+office.switchView = function(v) {
+	$('div.pages div.views').hide();
+	$(v).show();
+	$('div.pagebar div.back').show();
+	$('div.pagebar div.addItem').hide();
+};
+
+office.switchBack = function() {
+	$('div.pages div.views').hide();
+	$('div.pages div.list').show();
+	$('div.pagebar div.back').hide();
+	$('div.pagebar div.addItem').show();
+},
+
+
 office.today = function() {
 	office.date = new Date();
 	if (office.currentTab!=null) {
@@ -25,17 +40,25 @@ office.today = function() {
 
 office.getDateFormat = function(dd) {
 	return dd.getFullYear() + "-" + (dd.getMonth()+1) + "-" + dd.getDate();
-}
+},
 
+
+office.currentTab = null;
 
 office.time = {
 	load:function() {
+		office.currentTab = office.time;
+		
 		$("#times").find('div.running div.timeOper a').live('click', function(data) {
 			office.time.stopItem();
 		});
 		$("#times").find('div.pending div.timeOper a').live('click', function(data) {
 			office.time.startItem($(this).attr('id'));
 		});
+		$("#times").find('div.timeStatics a.details').live('click', function(data) {
+			office.time.itemDetailView($(this).parent().parent().data("timedata"));
+		});
+		
 		office.time.listDay(office.getDateFormat(office.date));
 	},
 	
@@ -48,6 +71,7 @@ office.time = {
 				},
 				function(json) {
 					for ( var i = 0; i < json.length; i++) {
+						office.date = new Date(json[i].now);
 						office.time.addUITime(json[i]);
 					}
 					$('#addTimeDiv').fadeOut(300);
@@ -69,7 +93,7 @@ office.time = {
 		if (o.laststart!=0) {
 			$('#times div.running').removeClass("running").addClass("pending");
 			timed.addClass("running");
-			timed.find('div.timeOper span').html(office.time.formatDura(o.dura + (new Date().getTime()-o.laststart)));
+			timed.find('div.timeOper span').html(office.time.formatDura(o.dura + (o.now-o.laststart)));
 		} else {
 			timed.addClass("pending");
 			timed.find('div.timeOper span').html(office.time.formatDura(o.dura));
@@ -79,6 +103,10 @@ office.time = {
 		timed.find('div.timeDesc').html(o.desc);
 		
 		timed.fadeIn(300);
+	},
+	
+	itemDetailView:function(data) {
+		office.switchView('div.details');
 	},
 	
 	showAddTime:function() {
@@ -105,8 +133,6 @@ office.time = {
 				}
 		);
 	},
-
-
 
 	startItem:function(id) {
 		$.post("/service/office/time/start", 
@@ -137,8 +163,11 @@ office.time = {
 				
 				total += timedata.dura;
 				if ($(this).hasClass("running")) {
-					$(this).find('div.timeOper span').html(office.time.formatDura(timedata.dura + (new Date().getTime()-timedata.laststart)));
-					total += (new Date().getTime()-timedata.laststart);
+					var duraString = $(this).find('div.timeOper span').html();
+					var duraTime = office.time.formatedToMill(duraString) + 60*1000;
+					
+					$(this).find('div.timeOper span').html(office.time.formatDura(timedata.dura + duraTime));
+					total += duraTime;
 				}
 			}
 		 );
@@ -155,6 +184,11 @@ office.time = {
 	formatHour:function (mill) {
 		var t = new Date(mill);
 		return t.getHours() + ":" +  ((t.getMinutes()<10)?("0"+t.getMinutes()):t.getMinutes());
+	},
+	
+	formatedToMill: function(formated) {
+		var sr = formated.split(":");
+		return parseInt(sr[0])*60*60*1000 + parseInt(sr[1].charAt(0)=='0'?sr[1].charAt(1):sr[1])*60*1000;
 	},
 
 	
