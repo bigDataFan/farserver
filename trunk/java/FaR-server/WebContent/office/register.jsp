@@ -33,7 +33,7 @@
 					邮件： <input class="text" type="text"  name="email"  value="" /> (可选，用于找回密码)
 				</div>
 				<div class="label">
-					请输入验证码：  <img src="rndimg" id="imgg">  <input class="text" type="text"  name="randomimg"  value="" />
+					请输入验证码：  <img src="/rndimg" id="imgg">  <input class="text" type="text"  name="randomimg"  value="" />
 				</div>
 				
 				<input type="hidden"  name="from" value="/office/register.jsp">
