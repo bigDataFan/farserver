@@ -18,7 +18,7 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import com.ever365.security.AuthenticationFilter;
+import com.ever365.security.SetUserFilter;
 
 /**
  * Servlet implementation class SinaAuthUrlServlet
@@ -42,7 +42,7 @@ public class SinaAuthUrlServlet extends HttpServlet {
 		OAuthService service = new ServiceBuilder().provider(SinaWeiboApi.class)
 		.apiKey("1385206646")
 		.apiSecret("b0d8992e2c271bd514aadefdc53445cb")
-		.callback("http://www.ever365.com/oauth/sina?service_provider_id=0")
+		.callback("http://www.ever365.com/oauth/sina?code=0")
 		.build();
 		
 		if (request.getParameter("code")!=null) {
@@ -57,7 +57,8 @@ public class SinaAuthUrlServlet extends HttpServlet {
 				try {
 					JSONObject jso = new JSONObject(ores.getBody());
 					String userName = jso.getString("name") + "@weibo.com";
-					request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, userName);
+					request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, userName);
+					
 					response.sendRedirect("/");
 				} catch (JSONException e) {
 					e.printStackTrace();

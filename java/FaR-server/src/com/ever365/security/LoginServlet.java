@@ -1,12 +1,9 @@
 package com.ever365.security;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.UUID;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,18 +12,12 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
-import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 
 /**
  * Servlet implementation class LoginServlet
  */
 public class LoginServlet extends HttpServlet {
-	public static final String HEADER_REFERER = "Referer";
 	private static final long serialVersionUID = 1L;
-	private static final String AUTHENTICATION_USER = null;
 	private UserService userService;
 	private MongoDBDataSource dataSource;
 	private CookieService cookieService;
@@ -72,7 +63,7 @@ public class LoginServlet extends HttpServlet {
     			return;
     		} else {
     			userService.incLogCount(username);
-    			request.getSession().setAttribute(AUTHENTICATION_USER, username);
+    			request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, username);
     			AuthenticationUtil.setCurrentAsGuest(false);
         		AuthenticationUtil.setCurrentUser(username);
         		

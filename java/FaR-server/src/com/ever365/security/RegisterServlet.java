@@ -28,7 +28,7 @@ public class RegisterServlet extends HttpServlet {
 	private Log logger = LogFactory.getLog(RegisterServlet.class);
 	
 	private static final long serialVersionUID = 1L;
-       
+	private CookieService cookieService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -43,6 +43,7 @@ public class RegisterServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		userService = (UserService) ctx.getBean("userService");
+		cookieService = (CookieService)ctx.getBean("cookieService");
 	}
 
 
@@ -94,11 +95,15 @@ public class RegisterServlet extends HttpServlet {
 			
 			boolean random = userService.createUser(username, password, null, email,false);
 			
-			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, username);		
-    		Cookie cookie = AuthenticationFilter.createNewCookie(response);
-    		Element element = new Element(cookie.getValue(), username);
+			userService.incLogCount(username);
+			request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, username);
+			AuthenticationUtil.setCurrentAsGuest(false);
     		AuthenticationUtil.setCurrentUser(username);
-    		if (request.getSession().getAttribute("rediretTo")!=null) {
+    		
+    		cookieService.saveUserCookie(request, response, username);
+			request.getSession().removeAttribute("loginError");
+			
+			if (request.getSession().getAttribute("rediretTo")!=null) {
     			response.sendRedirect((String)request.getSession().getAttribute("rediretTo"));
     			return;
     		} else {
