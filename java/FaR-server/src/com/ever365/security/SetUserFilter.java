@@ -33,7 +33,7 @@ public class SetUserFilter implements Filter {
 	private static final String GUEST = "guest.";
 	public static final String ARG_TICKET = "ticket";
 	private MongoDBDataSource dataSource;
-	
+	private CookieService cookieService;
     /**
      * Default constructor. 
      */
@@ -57,24 +57,7 @@ public class SetUserFilter implements Filter {
 		String sessionedUser = (String) httpReq.getSession().getAttribute(AuthenticationFilter.AUTHENTICATION_USER);
 		
 		if (sessionedUser == null) {
-			
-			String ticket = getCookieTicket(httpReq);
-			if (ticket==null) {
-				Cookie newCookie = createNewCookie(httpResp);
-				ticket = newCookie.getValue();
-        	}
-        	DBCollection cookiesCol = dataSource.getMainDB().getCollection("cookies");
-        	DBObject ticDoc = cookiesCol.findOne(new BasicDBObject("ticket", ticket));
-        	if(ticDoc==null) {
-        		//give guest a cookie and let him use it
-        		sessionedUser = ticket;
-        			
-        		cookiesCol.insert(BasicDBObjectBuilder.start().add("user", sessionedUser).add("ticket", ticket)
-        					.add("remote", request.getRemoteAddr()).add("agent", httpReq.getHeader("User-Agent"))
-        					.add("created", new Date()).get());
-        	} else {
-        		sessionedUser = (String)ticDoc.get("user");
-        	}
+			sessionedUser = cookieService.provideUser(httpReq, httpResp);
         	httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, sessionedUser);
 		}
 		
@@ -90,34 +73,19 @@ public class SetUserFilter implements Filter {
 		chain.doFilter(request, response);
 	}
 
+
+	
+
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(fConfig.getServletContext());
 		dataSource = (MongoDBDataSource) ctx.getBean("dataSource");
+		cookieService = (CookieService)ctx.getBean("cookieService");
 	}
 	
-	 public String getCookieTicket(HttpServletRequest httpReq) {
-	    	Cookie[] cookies = httpReq.getCookies();
-	    	if (cookies!=null) { 
-		    	for (Cookie cookie : cookies) {
-					if (cookie.getName().equals(ARG_TICKET)) {
-						return cookie.getValue();
-					}
-				}
-	    	}
-	    	return httpReq.getParameter(ARG_TICKET);
-	    }
 
-	 
-	  public Cookie createNewCookie(HttpServletResponse httpResp ) {
-	    	Cookie cookie = new Cookie(AuthenticationFilter.ARG_TICKET, GUEST + UUID.randomUUID().toString());
-	    	cookie.setMaxAge(60*24*60*60);
-	    	cookie.setPath("/");
-	    	httpResp.addCookie(cookie);
-	    	return cookie;
-	   }
 
 	  
 }

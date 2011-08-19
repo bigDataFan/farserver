@@ -1,6 +1,7 @@
 package com.ever365.security;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.ServletConfig;
@@ -15,6 +16,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
@@ -26,6 +28,7 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userService;
 	private MongoDBDataSource dataSource;
+	private CookieService cookieService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -38,6 +41,7 @@ public class LoginServlet extends HttpServlet {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		userService = (UserService) ctx.getBean("userService");
 		dataSource = (MongoDBDataSource) ctx.getBean("dataSource");
+		cookieService = (CookieService)ctx.getBean("cookieService");
 	}
 
 
@@ -71,49 +75,18 @@ public class LoginServlet extends HttpServlet {
     			AuthenticationUtil.setCurrentAsGuest(false);
         		AuthenticationUtil.setCurrentUser(username);
         		
-        		String ticket = getCookieTicket(request);
-    			if (ticket!=null) {
-    				DBCollection cookiesCol = dataSource.getMainDB().getCollection("cookies");
-    				DBObject ticDoc = cookiesCol.findOne(new BasicDBObject("ticket", ticket));
-    				if (ticDoc!=null && ticket.equals(ticDoc.get("user")))  {
-    					ticDoc.put("user", username);
-    					cookiesCol.update(new BasicDBObject("ticket", ticket), ticDoc);
-    				}
-            	}
-            	
-        		if (AuthenticationUtil.isCurrentUserAdmin()) {
-        			response.sendRedirect("/manage/admin.html");
-        			return;
-        		} else {
-        			request.getSession().removeAttribute("loginError");
-        			response.sendRedirect(redirectTo);
-        			return;
-        		} 
+        		cookieService.saveUserCookie(request, response, username);
+        		
+    			request.getSession().removeAttribute("loginError");
+    			response.sendRedirect(redirectTo);
+    			return;
+    	
     		}
     	} else {
     		response.sendRedirect(loginFrom);
     	}
 	}
-	  public Cookie createNewCookie(HttpServletResponse httpResp ) {
-	    	Cookie cookie = new Cookie(AuthenticationFilter.ARG_TICKET, UUID.randomUUID().toString());
-	    	cookie.setMaxAge(24*60*60);
-	    	cookie.setPath("/");
-	    	httpResp.addCookie(cookie);
-	    	return cookie;
-	    }
 
-	  public String getCookieTicket(HttpServletRequest httpReq) {
-	    	String url = httpReq.getRequestURI();
-	    	
-	    	Cookie[] cookies = httpReq.getCookies();
-	    	if (cookies!=null) { 
-		    	for (Cookie cookie : cookies) {
-					if (cookie.getName().equals(SetUserFilter.ARG_TICKET)) {
-						return cookie.getValue();
-					}
-				}
-	    	}
-	    	return httpReq.getParameter(SetUserFilter.ARG_TICKET);
-	    }
+	
 	  
 }

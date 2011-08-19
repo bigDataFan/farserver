@@ -55,38 +55,40 @@ public class RegisterServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("pwd");
 		String passwordc = request.getParameter("pwdcfm");
+		String from = request.getParameter("from");
 		Object rndimg = request.getSession().getAttribute(RandomImgServlet.VALIDATE_CODE);
-		removeAllAttr(request.getSession());
+		//removeAllAttr(request.getSession());
 		logger.debug("register: " + username + "  " +  email + " " + password + "  " );
 		if (username==null || username.length()<4 ) {
-			request.getSession().setAttribute("error", "invalid user name");
-			response.sendRedirect("/");
+			request.getSession().setAttribute("registerError", "用户名长度要大于4个字符");
+			response.sendRedirect(from);
 			return;
 		} 
 		
 		
 		if ( password==null || password.length()<6 ) {
-			request.getSession().setAttribute("error", "password strenth");
-			response.sendRedirect("/");
+			request.getSession().setAttribute("registerError", "密码长度要大于6个字符");
+			response.sendRedirect(from);
 			return;
 		} 
 		
+		/*
 		if (passwordc==null || !password.equals(passwordc)) {
-			request.getSession().setAttribute("error", "password confirm");
+			request.getSession().setAttribute("registerError", "password confirm");
 			response.sendRedirect("/");
 			return;
 		} 
-		
+		*/
 		if (request.getParameter("randomimg")==null || !request.getParameter("randomimg").equals(rndimg)) {
-			request.getSession().setAttribute("error", "invalid random picture");
-			response.sendRedirect("/register.html");
+			request.getSession().setAttribute("registerError", "验证码错误");
+			response.sendRedirect(from);
 			return;
 		}
 		
 		try {
 			if (userService.getUser(username)!=null) {
-				request.getSession().setAttribute("error", "username conflict");
-				response.sendRedirect("/");
+				request.getSession().setAttribute("registerError", "同名用户已经存在，请更换其他账号");
+				response.sendRedirect(from);
 				return;
 			}
 			
@@ -96,7 +98,12 @@ public class RegisterServlet extends HttpServlet {
     		Cookie cookie = AuthenticationFilter.createNewCookie(response);
     		Element element = new Element(cookie.getValue(), username);
     		AuthenticationUtil.setCurrentUser(username);
-    		response.sendRedirect("/");
+    		if (request.getSession().getAttribute("rediretTo")!=null) {
+    			response.sendRedirect((String)request.getSession().getAttribute("rediretTo"));
+    			return;
+    		} else {
+    			response.sendRedirect("/");
+    		}
     		return;
 		} catch (Exception e) {
 			response.sendRedirect("/");
