@@ -36,6 +36,9 @@
 		</property>
 	</bean>
 	
+	<bean id="cookieService" class="com.ever365.security.CookieService">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
 	
 	<bean id="officeService" class="com.ever365.office.OfficeService">
 		<property name="dataSource" ref="dataSource"></property>
