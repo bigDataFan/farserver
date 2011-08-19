@@ -1,7 +1,6 @@
 package com.ever365.security;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.ServletConfig;
@@ -11,16 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.gqu.cache.EhCacheService;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
-
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
@@ -54,17 +48,22 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
     	String pwd = request.getParameter("password");
     	
+    	String redirectTo = (request.getSession().getAttribute("redirectTo")==null)?"/":(String)request.getSession().getAttribute("redirectTo");
+    	String loginFrom = request.getParameter("from");
+    	
     	if (username==null || pwd==null ) {
-    		response.sendError(401);
+    		request.getSession().setAttribute("loginError", "请输入用户名和密码");
+    		response.sendRedirect(loginFrom);
     		return;
     	}
     	
     	  // Get the authorization header
     	User user = userService.getUser(username);
+    	request.getSession().setAttribute("loginError", "用户名或密码错误");
     	
     	if (user!=null) {
     		if (!pwd.equals(user.getPassword())) {
-    			response.sendRedirect("/");
+    			response.sendRedirect(loginFrom);
     			return;
     		} else {
     			userService.incLogCount(username);
@@ -84,17 +83,16 @@ public class LoginServlet extends HttpServlet {
             	
         		if (AuthenticationUtil.isCurrentUserAdmin()) {
         			response.sendRedirect("/manage/admin.html");
-        		} else if (request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER)!=null) {
-        			String url = (String)request.getSession().getAttribute(AuthenticationFilter.LOGIN_REFERER);
-        			request.getSession().removeAttribute(AuthenticationFilter.LOGIN_REFERER);
-        			response.sendRedirect(url);
-        		} else { 
-        			response.sendRedirect("/");
-        		}
-        		return;
+        			return;
+        		} else {
+        			request.getSession().removeAttribute("loginError");
+        			response.sendRedirect(redirectTo);
+        			return;
+        		} 
     		}
-    	} 
-    	response.sendRedirect("/");
+    	} else {
+    		response.sendRedirect(loginFrom);
+    	}
 	}
 	  public Cookie createNewCookie(HttpServletResponse httpResp ) {
 	    	Cookie cookie = new Cookie(AuthenticationFilter.ARG_TICKET, UUID.randomUUID().toString());

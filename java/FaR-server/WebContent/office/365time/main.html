@@ -49,7 +49,7 @@ $(document).ready(function() {
 					超过   <input type="text" id="autoStop" size="4"> 分钟给予提示
 				</div>
 				<div class="label">
-					<a class="details" href="javascript:office.time.updateItem()">保存</a> <a class="details" href="javascript:office.time.removeItem()">删除任务</a>    
+					<a class="operations" href="javascript:office.time.updateItem()">保存</a> <a class="operations" href="javascript:office.time.removeItem()">删除任务</a>    
 				</div>
 				
 			</div>
@@ -57,12 +57,14 @@ $(document).ready(function() {
 			<div class="daysummary views" style="display:none"></div>
 			
 			<div class="pageFootbar">
-				<span class="flipPageBar">
+				<div class="pleaseLogin">请<a href="/office/login.jsp?redirectTo=/office/365time/main.html">登陆</a>以更方便的使用</div>
+				<div class="helloUser">您好</div>
+				<div class="flipPageBar">
 					<span class="currentDaySpan"></span>
 					<a href="javascript:office.today()" title="今天"><img src="/office/image/house.png" border="0"></a>
 					<a href="javascript:office.preday()" title="前一天"><img src="/office/image/left_arrow.png" border="0"></a>
 					<a href="javascript:office.nextday()" title="后一天"><img src="/office/image/right_arrow.png" border="0"></a>
-				</span>
+				</div>
 			</div>
 </div>
 
