@@ -26,6 +26,7 @@ import com.mongodb.DBObject;
 public class LoginServlet extends HttpServlet {
 	public static final String HEADER_REFERER = "Referer";
 	private static final long serialVersionUID = 1L;
+	private static final String AUTHENTICATION_USER = null;
 	private UserService userService;
 	private MongoDBDataSource dataSource;
 	private CookieService cookieService;
@@ -52,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
     	String pwd = request.getParameter("password");
     	
-    	String redirectTo = (request.getSession().getAttribute("redirectTo")==null)?"/":(String)request.getSession().getAttribute("redirectTo");
+    	String redirectTo = (request.getSession().getAttribute("rediretTo")==null)?"/":(String)request.getSession().getAttribute("rediretTo");
     	String loginFrom = request.getParameter("from");
     	
     	if (username==null || pwd==null ) {
@@ -71,7 +72,7 @@ public class LoginServlet extends HttpServlet {
     			return;
     		} else {
     			userService.incLogCount(username);
-    			request.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, username);
+    			request.getSession().setAttribute(AUTHENTICATION_USER, username);
     			AuthenticationUtil.setCurrentAsGuest(false);
         		AuthenticationUtil.setCurrentUser(username);
         		
