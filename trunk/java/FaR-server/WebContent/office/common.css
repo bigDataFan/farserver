@@ -6,11 +6,22 @@
 	margin: 0px;
 	font-family: arial,sans-serif;
 }
-
-body {
+body
+{
+	padding: 0px;
+	margin: 0px;
+	background-image: url('images/body_bg.gif');
+	background-repeat: repeat-x;
 	height: 100%;
 }
 
+
+html,body,div,p,table,td,form,img,h1,h2,h3,h4,h5,h6,input
+{
+	font-size: 12px;
+	color: #494738;
+	font-family:Verdana,Tahoma,Segoe,sans-serif;
+}
 
 div.pages {
 	width: 100%;
@@ -72,6 +83,21 @@ div.pages div.details div.label input {
     padding: 5px;
 }
 
+
+div.pages div.details a.operations {
+	color: #7D7D7D;
+	text-decoration: none;
+	background: none repeat scroll 0 0 #EB5847;
+    border: 1px solid #9E281B;
+    border-radius: 3px;
+    box-shadow: 0 2px 1px #831E12;
+    color: #FFFFFF;
+    margin-right: 10px;
+    padding: 5px;
+    text-shadow: 0 -1px 0 #9E281B;
+}
+
+
 div.pages div.pageFootbar {
     background: url("image/header_bg-x.png") repeat-x scroll top left transparent;
     color: #999999;
@@ -84,9 +110,25 @@ div.pages div.pageFootbar {
 	display:block;
 }
 
+div.pages div.pageFootbar div.pleaseLogin {
+	float: left;
+	padding:7px;
+}
+
+div.pages div.pageFootbar div.pleaseLogin a {
+	color: #BB3E26;
+	text-decoration: none;
+}
 
 
-div.pages div.pageFootbar span.flipPageBar {
+div.pages div.pageFootbar div.helloUser {
+	float: left;
+	padding:7px;
+	color: #BB3E26;
+}
+
+
+div.pages div.pageFootbar div.flipPageBar {
 	float: right;
 	padding:7px;
 	color: #BB3E26;

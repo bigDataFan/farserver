@@ -112,7 +112,7 @@ List<Role> openRoles = userService.getOpenRoles();
 		
 		<p><label for="email">Email ：</label></p>
 		<input class="text" type="text"  name="email"  value="" /><font color="red"><%=session.getAttribute("email")==null?"":session.getAttribute("email")%></font>
-		<p><label for="remember">输入验证码：</label><img src="rndimg" id="imgg"> <input class="text" type="text"  name="randomimg"  value="" /><font color="red"><%=session.getAttribute("randomimg")==null?"":session.getAttribute("randomimg")%></font></p>
+		<p><label for="remember">输入验证码：</label><img src="/rndimg" id="imgg"> <input class="text" type="text"  name="randomimg"  value="" /><font color="red"><%=session.getAttribute("randomimg")==null?"":session.getAttribute("randomimg")%></font></p>
 
 		<p><input id="submit" type="submit" value="立即注册" tabindex="5" /></p>
 	</form>
