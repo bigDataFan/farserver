@@ -30,8 +30,7 @@ import com.mongodb.DBObject;
 public class SetUserFilter implements Filter {
 
 	
-	private static final String GUEST = "guest.";
-	public static final String ARG_TICKET = "ticket";
+	public static final String GUEST = "guest.";
 	private MongoDBDataSource dataSource;
 	private CookieService cookieService;
     /**

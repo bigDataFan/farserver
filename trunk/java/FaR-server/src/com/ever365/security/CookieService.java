@@ -16,20 +16,20 @@ import com.mongodb.DBObject;
 public class CookieService {
 	private MongoDBDataSource dataSource;
 	
-	
+    public static final String ARG_TICKET = "365ticket";
 	
 	public void setDataSource(MongoDBDataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 
-	public Cookie createNewCookie(HttpServletResponse httpResp) {
-		Cookie cookie = new Cookie(AuthenticationFilter.ARG_TICKET, UUID
-				.randomUUID().toString());
-		cookie.setMaxAge(24 * 60 * 60);
-		cookie.setPath("/");
-		httpResp.addCookie(cookie);
-		return cookie;
-	}
+	  public Cookie createNewCookie(HttpServletResponse httpResp ) {
+	    	Cookie cookie = new Cookie(ARG_TICKET, SetUserFilter.GUEST + UUID.randomUUID().toString());
+	    	cookie.setMaxAge(60*24*60*60);
+	    	cookie.setPath("/");
+	    	httpResp.addCookie(cookie);
+	    	return cookie;
+	   }
+
 
 	public String getCookieTicket(HttpServletRequest httpReq) {
 		String url = httpReq.getRequestURI();
@@ -37,12 +37,12 @@ public class CookieService {
 		Cookie[] cookies = httpReq.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals(SetUserFilter.ARG_TICKET)) {
+				if (cookie.getName().equals(ARG_TICKET)) {
 					return cookie.getValue();
 				}
 			}
 		}
-		return httpReq.getParameter(SetUserFilter.ARG_TICKET);
+		return httpReq.getParameter(ARG_TICKET);
 	}
 
 	/**
