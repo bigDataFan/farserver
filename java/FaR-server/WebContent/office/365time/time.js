@@ -59,6 +59,19 @@ office.time = {
 			office.time.itemDetailView($(this).parent().parent().data("timedata"));
 		});
 		
+		$.getJSON("/service/authority/current", null, 
+				function(data) {
+					if (data.userName.indexOf('guest.')>-1) {
+						//匿名用户
+						$('div.pleaseLogin').show();
+						$('div.helloUser').hide();
+					} else {
+						$('div.pleaseLogin').hide();
+						$('div.helloUser').html('您好 ' + data.userName);
+						$('div.helloUser').show();
+					}
+				}
+		);
 		office.time.listDay(office.getDateFormat(office.date));
 	},
 	
