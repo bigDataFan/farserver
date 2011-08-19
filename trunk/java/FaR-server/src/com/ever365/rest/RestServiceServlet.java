@@ -86,7 +86,6 @@ public class RestServiceServlet extends HttpServlet {
 			render(response, result);
 		} catch (HttpStatusExceptionImpl e) {
 			if (e.getCode()==401) {
-				request.getSession().setAttribute(LoginServlet.HEADER_REFERER, request.getRequestURI());
 				response.sendRedirect("/login.html");
 				return;
 			} else {

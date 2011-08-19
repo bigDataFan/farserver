@@ -31,7 +31,7 @@ public class SetUserFilter implements Filter {
 
 	
 	public static final String GUEST = "guest.";
-	private MongoDBDataSource dataSource;
+	public final static String AUTHENTICATION_USER = "_authTicket";
 	private CookieService cookieService;
     /**
      * Default constructor. 
@@ -53,11 +53,11 @@ public class SetUserFilter implements Filter {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
 		
-		String sessionedUser = (String) httpReq.getSession().getAttribute(AuthenticationFilter.AUTHENTICATION_USER);
+		String sessionedUser = (String) httpReq.getSession().getAttribute(AUTHENTICATION_USER);
 		
 		if (sessionedUser == null) {
 			sessionedUser = cookieService.provideUser(httpReq, httpResp);
-        	httpReq.getSession().setAttribute(AuthenticationFilter.AUTHENTICATION_USER, sessionedUser);
+        	httpReq.getSession().setAttribute(AUTHENTICATION_USER, sessionedUser);
 		}
 		
 		if (sessionedUser.startsWith(GUEST)) {
@@ -80,7 +80,6 @@ public class SetUserFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(fConfig.getServletContext());
-		dataSource = (MongoDBDataSource) ctx.getBean("dataSource");
 		cookieService = (CookieService)ctx.getBean("cookieService");
 	}
 	
