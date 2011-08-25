@@ -24,6 +24,7 @@ import com.ever365.security.SetUserFilter;
  * Servlet implementation class SinaAuthUrlServlet
  */
 public class SinaAuthUrlServlet extends HttpServlet {
+	public static final String _SINA_ACCESS_TOKEN = "_sina_access_token";
 	private static final long serialVersionUID = 1L;
 	
     /**
@@ -50,7 +51,7 @@ public class SinaAuthUrlServlet extends HttpServlet {
 			try {
 				Verifier v = new Verifier(request.getParameter("code"));
 				Token accessToken = service.getAccessToken((Token) request.getSession().getAttribute("_sina_req_token"), v);
-				
+				request.getSession().setAttribute(_SINA_ACCESS_TOKEN, accessToken);
 				OAuthRequest oreq = new OAuthRequest(Verb.GET, "http://api.t.sina.com.cn/account/verify_credentials.json");
 				service.signRequest(accessToken, oreq); // the access token from step 4
 				Response ores = oreq.send();
