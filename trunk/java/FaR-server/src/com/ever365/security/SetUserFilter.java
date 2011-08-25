@@ -13,6 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 import org.springframework.web.context.WebApplicationContext;
@@ -33,6 +34,9 @@ public class SetUserFilter implements Filter {
 	public static final String GUEST = "guest.";
 	public final static String AUTHENTICATION_USER = "_authTicket";
 	private CookieService cookieService;
+	
+	public static ThreadLocal<HttpSession> currentSession = new ThreadLocal<HttpSession>();
+	
     /**
      * Default constructor. 
      */
@@ -67,6 +71,7 @@ public class SetUserFilter implements Filter {
 		}
 		AuthenticationUtil.setCurrentUser(sessionedUser);
 		
+		currentSession.set(httpReq.getSession());
 		
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
