@@ -25,7 +25,7 @@
 					账号：  <input type="text" name="username" size="16" width="200"> 
 				</div>
 				<div class="label">
-					密码：  <input type="text" name="password" size="16" width="200">
+					密码：  <input type="password"" name="password" size="16" width="200">
 				</div>
 				<input type="hidden"  name="from" value="/office/login.jsp">
 				
@@ -41,7 +41,8 @@
 				</div>
 				
 				<div class="label">
-					  没有账号？请 <a class="operations" href="/office/register.jsp">注册</a>  或使用其他网站账号登陆
+					  没有账号？请 <a href="/office/register.jsp">注册</a>  或使用其他网站账号登陆
+					  <img src="http://static.youku.com/v1.0.0687/partner/img/ico_sina_16x16.png" alt="新浪微博"> <a href="/login/sina.jsp">新浪微博</a>
 				</div>
 				</form>
 			</div>

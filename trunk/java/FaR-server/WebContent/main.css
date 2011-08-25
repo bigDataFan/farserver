@@ -136,6 +136,7 @@ ul.promos  {
 
 ul.promos li {
 	width: 215px;
+	border: 1px solid thin;
 	border-color: #E5E5E5 #DBDBDB #D2D2;
 	margin-left: 6px;
 	display: inline-block;
