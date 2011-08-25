@@ -4,27 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ever365</title>
 <link rel="stylesheet" type="text/css" href="main.css"/>
-<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="office/style.css">	
-<script type="text/javascript" src="office/office.js"></script>
-<script type="text/javascript" src="office/fileuploader.js" ></script>
-
-<script type="text/javascript">
-
-$(document).ready(function(){
-	$.getJSON("/service/authority/current",null,
-			function(data) {
-				if (data.userName.indexOf('guest.')==0)  {
-					//$('#currentUserInfo').html('匿名用户'); 				
-				} else {
-					$('#currentUserInfo').html(data.userName);
-					$('#loginNav').hide();
-				}
-			});
-	
-});
-</script>
 
 </head>
 <body>
@@ -45,119 +24,34 @@ $(document).ready(function(){
 
 
 	<div id="terminal">
-		<div style="height: 65px">
-		            <ul class="nav">
-		                <li><a href="javascript:office.file.load()" class="current">文件</a><span style="background: url(images/Folder.png)"></span></li>
-		                 <li><a href="javascript:office.time.load()" class="current">时间</a><span style="background: url(images/Clock.png)"></span></li>
-		                 <li><a href="javascript:office.notes.load()" class="current">记事</a><span style="background: url(images/Clipboard.png)"></span></li>
-		                 <li><a href="javascript:void(0)" class="current">&nbsp;</a><span></span></li>
-		                 <li><a href="javascript:office.more.load()" class="current">更多</a><span style="background: url(images/Tools.png)"></span></li>
-		             </ul>
+		<div>
+		
+				<ul class="promos">
+					<li  class="time">
+					<h3>天天时间管理</h3>
+					<p>一个帮助您掌握和管理每天时间安排的应用。通过它，您会更清楚每天是时间都花在了哪儿
+					并且您也可以把您的即时动态共享给朋友们 </p><!--  <img  src="images/clock72.png" width="72" height="72">  -->
+					</li>
+					<li  class="xytodos">
+					<h3>XY待办事项</h3>
+					<p> 把您的待办事宜按重要性和紧急性放到坐标轴中，帮助您更直观的分类和查看您的事务 </p>
+					</li>
+					<li  class="calculator">
+					<h3>天天时间管理</h3>
+					<p>一个帮助您掌握和管理每天时间安排的应用。通过它，您会更清楚每天是时间都花在了哪儿
+					并且您也可以把您的即时动态共享给朋友们 <p><!--  <img  src="images/clock72.png" width="72" height="72">  -->
+					
+					</li>
+					<li  class="">
+					<h3>天天时间管理</h3>
+					<p>一个帮助您掌握和管理每天时间安排的应用。通过它，您会更清楚每天是时间都花在了哪儿
+					并且您也可以把您的即时动态共享给朋友们 <p><!--  <img  src="images/clock72.png" width="72" height="72">  -->
+					
+					</li>
+				</ul>
 		</div>
-		<div id="files" class="pages" style="display:none">
-			<div class="pagebar">
-				<div class="opers" style="float:left;padding: 7px">
-					<div id="file-uploader-demo1">
-						<noscript>
-						<p>请启用浏览器的脚本(Javascript)</p>
-						</noscript>
-					</div>
-				</div>
-			</div>
-			<div class="panel">
-				<div class="panel-content">
-					<div class="itemcontainer fileItemTemplate" style="display: none">
-						<div class="image"><img alt="" src="images/Folder.png"></div>
-						<div class="title"></div>
-						<div class="desc">创建于</div>
-						<div class="oper"><a href="#" class="download" target="_blank">下载</a></div><div class="oper"><a
-							href="#" class="delete">删除</a></div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="pageFootbar">
-				<span class="flipPageBar">
-					<span class="currentDaySpan"></span>
-					<a href="javascript:office.today()" title="今天"><img src="/office/image/house.png" border="0"></a>
-					<a href="javascript:office.preday()" title="前一天"><img src="/office/image/left_arrow.png" border="0"></a>
-					<a href="javascript:office.nextday()" title="后一天"><img src="/office/image/right_arrow.png" border="0"></a>
-				</span>
-			</div>
-			
-		</div>
-
-		<div id="times" class="pages" style="display: none">
-		 	<div class="pagebar">
-				<div class="opers" style="float:left;padding: 7px"><a href="javascript:office.time.showAddTime();"><img border="0" src='/office/image/add.png'></a></div>
-				<span id="addTimeDiv" style="display:none; float: left">
-					<input name="newtime" id="newtime" size="40" style="width:200px;"> 
-					<a href="javascript:office.time.add()">增加</a></span>
-				<div id="timeTotal">00:00</div>             			      
-             </div>
-             
-           	<div class="timeTemplate itemcontainer" style="display: none">
-           		<div class="timeDesc"> </div>
-           		<!--  <div class="timeDura">12:00</div>  -->
-           		<div class="timeOper">
-           			<a href="#"><span>12:00</span></a>
-           		</div>
-           	</div>
-           	<div class="panel">
-			</div>
-			
-			<div class="pageFootbar">
-				<span class="flipPageBar">
-					<span class="currentDaySpan"></span>
-					<a href="javascript:office.today()" title="今天"><img src="/office/image/house.png" border="0"></a>
-					<a href="javascript:office.preday()" title="前一天"><img src="/office/image/left_arrow.png" border="0"></a>
-					<a href="javascript:office.nextday()" title="后一天"><img src="/office/image/right_arrow.png" border="0"></a>
-				</span>
-			</div>
-         </div>
-             
-             
-         <div id="notes" class="pages" style="display: none">
-         	<div class="pagebar">
-			  <div class="opers" style="float:left;padding: 7px"><a href="javascript:office.notes.showAddNote();">
-			  <img border="0" src='/office/image/add.png'></a></div>
-             </div>
-             
-            <div class="itemcontainer" id="addNoteDiv" style="display: none;">
-           		<textarea name="newNote" id="newNote" rows="3" cols="35" style="height:40px;width:430px;"></textarea> 
-				<a href="javascript:office.notes.add()">增加</a>
-           	</div>
-           	
-           	<div class="notesTemplate itemcontainer" style="display: none">
-           		<div class="content"></div>
-           		<div class="oper">
-           			<a href="javascript:void(0)" onclick="office.notes.remove(this)">删除</a>
-           		</div>
-           	</div>
-             	
-            <div class="panel">
-			</div>
-             	
-             
-         </div>
-             
-          
-          <div id="officemore" class="pages" style="display: none">
-         	<div class="pagebar">
-			  <div class="opers" style="float:left;padding: 7px">支持以下设备的客户端</div>
-             </div>
-             
-            <div class="itemcontainer" >
-           		 
-				<a href="javascript:office.notes.add()">增加</a>
-           	</div>
-           	
-           	<div class="itemcontainer" >
-           		<div class="content"></div>
-           	</div>
-             
-         </div> 
-</div>
+		
+	</div>
 
 <div style="z-index:10000;" id="toolbar_container">
 	<div id="minus_toolbar" style="z-index: 10000;">

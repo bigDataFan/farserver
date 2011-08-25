@@ -122,6 +122,47 @@ div#toolbar_container {
 	padding-top: 30px;
 	clear: both;
     margin: 0 auto;
-    width: 480px;
-    
+    width: 990px;
+}
+
+
+ul.promos  {
+	width: 990px;
+	height: 155px;
+	margin: 0 -5px;
+	_position: relative;
+	list-style: none outside;
+}
+
+ul.promos li {
+	width: 215px;
+	border-color: #E5E5E5 #DBDBDB #D2D2;
+	margin-left: 6px;
+	display: inline-block;
+	padding: 10px;
+	_padding-bottom: 0;
+	background: white;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-box-shadow: rgba(0,0,0,0.398438) 0 1px 3px;
+	-moz-box-shadow: rgba(0,0,0,0.398438) 0 1px 3px;
+	box-shadow: rgba(0,0,0,0.398438) 0 1px 3px;
+}
+ul.promos li h3 {
+	font-size: 14px;
+	line-height: 18px;
+	color: black;
+	margin-bottom: 5px;
+}
+
+ul.promos li.time {
+	background-image: url(images/clock72.png);
+	background-repeat: no-repeat;
+	background-position: 160px center;
+}
+ul.promos li p {
+	width: 150px;
 }
