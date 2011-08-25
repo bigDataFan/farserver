@@ -45,6 +45,8 @@ office.getDateFormat = function(dd) {
 
 office.currentTab = null;
 
+office.currentUser = null;
+
 office.time = {
 	load:function() {
 		office.currentTab = office.time;
@@ -61,6 +63,7 @@ office.time = {
 		
 		$.getJSON("/service/authority/current", null, 
 				function(data) {
+					office.currentUser = data.userName;
 					if (data.userName.indexOf('guest.')>-1) {
 						//匿名用户
 						$('div.pleaseLogin').show();
@@ -135,7 +138,25 @@ office.time = {
 		office.time.currentEdit = data;
 		$('#editTime').val(data.desc);
 		$('#autoStop').val((data.autostop==null)?"0":data.autostop);
+		
+		if (office.currentUser.indexOf("@weibo.com>0")) {
+			$('div.sharetosina').show();
+		}
 		office.switchView('div.details');
+	},
+	
+	sinaShareMessage:function() {
+		$.post("/service/sina/update", 
+				{'msg':office.time.currentEdit.desc},
+				function(data) {
+					if (data==200) {
+						alert("共享到微博成果");
+					} else if (data==400) {
+						alert("您以发表了这个消息");
+					} else {
+						alert("请检查您的用户名是否是  @weibo.com");
+					}
+				});
 	},
 	
 	currentEdit:null,
