@@ -1,20 +1,16 @@
 package com.ever365.oauth.baidu;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.util.FileCopyUtils;
-
-import sun.net.www.http.HttpClient;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Servlet implementation class BaiduCallBackServlet
@@ -34,13 +30,10 @@ public class BaiduCallBackServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpGet httpget = new HttpGet("http://www.google.com/search?hl=en&q=httpclient&btnG=Google+Search&aq=f&oq=");
 		
-		HttpClient client = HttpClient.New(new URL("https://openapi.baidu.com/oauth/2.0/token?grant_type=authorization_code&code=a8ff6b3d78a7fb408580a7632da59829&client_id=waxDdavqGbR1K3qx19pyorqg&client_secret=cOmGYEZUvFIc1YMqm1Aoz8zik7vFDvZo&redirect_uri=http%3A%2F%2Fwww.ever365.com"));
-		
-		InputStream is = client.getInputStream();
-		
-		FileCopyUtils.copy(is, new FileOutputStream("d:/aa.txt"));
-		
+		HttpResponse hr  = httpclient.execute(httpget);
 	}
 
 	/**
@@ -50,14 +43,4 @@ public class BaiduCallBackServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 	
-	public static void main(String[] args) throws MalformedURLException, IOException {
-		System.out.println(URLEncoder.encode("http://www.ever365.com/oauth/baidu"));
-		HttpClient client = HttpClient.New(new URL("https://openapi.baidu.com/oauth/2.0/token?grant_type=authorization_code&code=a8ff6b3d78a7fb408580a7632da59829&client_id=waxDdavqGbR1K3qx19pyorqg&client_secret=cOmGYEZUvFIc1YMqm1Aoz8zik7vFDvZo&redirect_uri=http%3A%2F%2Fwww.ever365.com"));
-		
-		
-		InputStream is = client.getInputStream();
-		
-		FileCopyUtils.copy(is, new FileOutputStream("d:/aa.txt"));
-	}
-
 }
