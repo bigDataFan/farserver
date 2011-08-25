@@ -52,6 +52,9 @@
 	<bean id="collection.services" class="com.ever365.rest.CollectionWebService">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	
+	<bean id="sina.api.service" class="com.ever365.oauth.sina.SinaApiService">
+	</bean>
 
 	<bean id="registry" class="com.ever365.rest.registry.HttpServiceRegistry">
 		<property name="injectedServices">
@@ -59,6 +62,7 @@
 				<ref bean="collection.services"/>
 				<ref bean="officeService"/>
 				<ref bean="authorityRestService"/>
+				<ref bean="sina.api.service"/>
 			</list>
 		</property>
 	</bean>
