@@ -2,6 +2,7 @@ package com.ever365.oauth.baidu;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -63,27 +64,32 @@ public class BaiduCallBackServlet extends HttpServlet {
 				
 				HashMap<String, String> params = new HashMap<String, String>();
 				
-				params.put("access_token", jso.getString("access_token"));
-				params.put("format", "json");
+				//params.put("access_token", jso.getString("access_token"));
+				//params.put("format", "json");
 				params.put("session_key", jso.getString("session_key"));
-				params.put("timestamp", dateformat.format(new Date()));
+				params.put("timestamp", URLEncoder.encode(dateformat.format(new Date())));
 				
 				String sign = getSignature(params, jso.getString("session_secret"));
 				
 				
 				HttpGet userInfoGet = new HttpGet("https://openapi.baidu.com/rest/2.0/passport/users/getLoggedInUser?"
 				   + "access_token=" + jso.getString("access_token")
-				   + "&format=json");
+				   + "&format=json"
+				   //+ "session_key=" + params.get("session_key")
+				   //+ "&timestamp=" + params.get("timestamp")
+				   //+ "&sign=" + sign
+						);
 				
-				HttpResponse userinfohr = httpclient.execute(httpget);
+				HttpResponse userinfohr = httpclient.execute(userInfoGet);
 				
 				JSONObject userinfo = new JSONObject(FileCopyUtils.copyToString(new InputStreamReader(userinfohr.getEntity().getContent())));
 				
 				if (!userinfo.isNull("uname")) {
 					request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, userinfo.getString("uname") + "@baidu");
 					
-					if (request.getSession().getAttribute("redirectTo")!=null) {
-						response.sendRedirect((String)request.getSession().getAttribute("redirectTo"));
+					if (request.getSession().getAttribute("rediretTo")!=null) {
+						response.sendRedirect((String)request.getSession().getAttribute("rediretTo"));
+						return;
 					} else {
 						response.sendRedirect("/");
 					}
@@ -94,6 +100,7 @@ public class BaiduCallBackServlet extends HttpServlet {
 			}
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			// TODO: handle exception
 		} finally {
 			 httpclient.getConnectionManager().shutdown();
