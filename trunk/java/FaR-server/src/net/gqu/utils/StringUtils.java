@@ -68,7 +68,7 @@ public abstract class StringUtils {
 	private static Pattern dnsPattern;
 	private static Pattern userIdPattern;
 	
-	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	//---------------------------------------------------------------------
 	// General convenience methods for working with Strings
