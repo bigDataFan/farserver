@@ -60,7 +60,12 @@ public class SinaAuthUrlServlet extends HttpServlet {
 					String userName = jso.getString("name") + "@weibo.com";
 					request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, userName);
 					
-					response.sendRedirect("/");
+					if (request.getSession().getAttribute("redirectTo")!=null) {
+						response.sendRedirect((String)request.getSession().getAttribute("redirectTo"));
+					} else {
+						response.sendRedirect("/");
+					}
+					
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
