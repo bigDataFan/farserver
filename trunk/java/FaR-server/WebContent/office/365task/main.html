@@ -4,48 +4,96 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>天天任务管理(365task)</title>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.15/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../common.css"/>
+
+
 
 <style type="text/css">
-
-div.plot {
-	-moz-box-shadow: 0 0 3px #888;
-	-webkit-box-shadow: 0 0 3px #888;
-	box-shadow: 0 0 3px #888;
-}
-
 
 div.colored {
 	background: url("fontColor.gif");
 	background-position: 0px 0px;
 	width: 15px;
 	height: 15px;
+	-moz-box-shadow: 0 0 3px #888;
+	-webkit-box-shadow: 0 0 3px #888;
+	box-shadow: 0 0 3px #888;
+	left: 40px;
+    position: relative;
 }
+
+div.center800 {
+	margin: 0 auto;
+	width: 800px;
+	background: url("graphpaper3.gif") repeat scroll 0 0 transparent;
+}
+
+div.pixcontainer {
+	color: #15658D;
+	text-align: center;
+	font-size: 12px;
+	letter-spacing: -0.5px;
+	text-shadow: 0 1px 0 #9FD5F1;
+	position: fixed;
+	width: 85px;
+	border:1px dashed white;
+}
+
 </style>
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$('div.plot').draggable();
-	
-	$('div.plot').hover(
-			 function () {
-				    //$(this).css("width" , '12px');
-				    $(this).find('div').css("border-width" , '6px');
-				  }, 
-				  function () {
-					 // $(this).css('width', '8px');
-					  $(this).find('div').css("border-width" , '4px');
-				  }
+	$('div.pixcontainer').draggable({ containment: 'parent' });
 
+
+	$('div.pixcontainer').hover(
+			function(){
+				$(this).css("border", "1px dashed #ccc");
+				$(this).find('div.content').show('drop');
+			},
+			function(){
+				$(this).css("border", "1px dashed white");
+				$(this).find('div.content').delay(2000).hide('drop');
+			}
 	);
+	
 });
 
+function view() {
+	//alert($('div.center800').position().left);
+}
 </script>
 </head>
 <body>
 
-<div class="plot" style="border:1px solid #ccc; width: 15px;"><div class="colored"></div></div>
+<div id="xytodos" class="pages">
+		 	<div class="pagebar">
+             </div>
+          
+           	<div class="list views center800">
+				<!-- <div class="plot" style="border:1px solid #ccc; width: 15px;"><div class="colored"></div></div>  -->
+				<div class="pixcontainer"><div class="colored"></div><div class="content">发出项目周报邮件</div></div>
+				
+				<div class="pixcontainer"><div class="colored"></div><div class="content">发出项目周报邮件</div></div>
+				<div class="pixcontainer"><div class="colored"></div></div>
+				
+				<div class="pixcontainer"><div class="colored"></div><div class="content">这个字比较多 这个字比较多哦,这个字比较多 这个字比较多哦</div> </div>
+				
+			</div>
+			
+			<div class="editview"></div>
+			
+			<div class="daysummary views" style="display:none"></div>
+			
+			<div class="pageFootbar">
+				<div class="pleaseLogin">请<a href="/office/login.jsp?redirectTo=/office/365time/main.html">登陆</a>以更方便的使用</div>
+				<div class="helloUser">您好</div> 
+				<button onclick="view()">jaa</button>
+			</div>
+</div>
+
 
 </body>
 </html>
