@@ -10,7 +10,7 @@ body
 {
 	padding: 0px;
 	margin: 0px;
-	background-image: url('images/body_bg.gif');
+	background-image: url('/images/body_bg.gif');
 	background-repeat: repeat-x;
 	height: 100%;
 }
