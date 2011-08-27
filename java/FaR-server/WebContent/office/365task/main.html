@@ -7,14 +7,17 @@
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.15/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../common.css"/>
+<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.15/themes/cupertino/jquery-ui.css"/>
 
 
 
 <style type="text/css">
-
-div.colored {
+label { display:block; }
+input.text { margin-bottom:12px; width:95%; padding: .4em; }
+fieldset { padding:0; border:0; margin-top:25px; }
+		
+.colored {
 	background: url("fontColor.gif");
-	background-position: 0px 0px;
 	width: 15px;
 	height: 15px;
 	-moz-box-shadow: 0 0 3px #888;
@@ -23,6 +26,41 @@ div.colored {
 	left: 40px;
     position: relative;
 }
+
+.setBG {
+	border:none;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	background: url("fontColor.gif");
+}
+
+.blue {
+	background-position: 0px 0px;
+}
+.cc {
+	background-position: 15px 0px;
+}
+.lightgreen {
+	background-position: 33px 0px;
+}
+.red {
+	background-position: 51px 0px;
+}
+.purple {
+	background-position: 69px 0px;
+}
+.grey {
+	background-position: 87px 0px;
+}
+.green {
+	background-position: 105px 0px;
+}
+
+div.lightblue {
+	background-position: 123px 0px;
+}
+
 
 div.center800 {
 	margin: 0 auto;
@@ -36,10 +74,11 @@ div.pixcontainer {
 	font-size: 12px;
 	letter-spacing: -0.5px;
 	text-shadow: 0 1px 0 #9FD5F1;
-	position: fixed;
+	position: relative;
 	width: 85px;
 	border:1px dashed white;
 }
+
 
 </style>
 <script type="text/javascript">
@@ -51,18 +90,75 @@ $(document).ready(function(){
 	$('div.pixcontainer').hover(
 			function(){
 				$(this).css("border", "1px dashed #ccc");
-				$(this).find('div.content').show('drop');
+				//$(this).find('div.content').show();
 			},
 			function(){
 				$(this).css("border", "1px dashed white");
-				$(this).find('div.content').delay(2000).hide('drop');
+				//$(this).find('div.content').delay(2000).hide('drop');
 			}
 	);
-	
+
+
+	$('div.pixcontainer a').live('dblclick',
+		function() {
+			tasks.showEditBox($(this));
+		}
+	);
+
+
+	$( "#editview" ).dialog({
+		autoOpen: false,
+		height: 300,
+		width: 350,
+		modal: true,
+		buttons: {
+			"确定": function() {
+				tasks.editobj.title = $('#editview input').val();
+
+				tasks.updateEdit();
+			},
+			"取消": function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		close: function() {
+			
+		}
+	});
 });
 
+var tasks = {
+	showEditBox:function(o) {
+		if (o==null) {
+			tasks.editdiv = null;
+			tasks.editobj = {};
+			$('#editview input').val('');
+		} else {
+			tasks.editdiv = o;
+			tasks.editobj = {};
+		}
+		$( "#editview" ).dialog( "open" );
+	},
+	editdiv: null,
+	editobj: null,
+
+	updateEdit: function() {
+		if (tasks.editdiv!=null) {
+			tasks.editdiv.find('div.colored').removeClass('blue cc lightgreen red purple grey green lightblue').addClass(tasks.editobj.css);
+			tasks.editdiv.find('div.title').html(tasks.editobj.title);
+		}
+	},
+	setBg:function(css) {
+		tasks.editobj.style = css;
+		//tasks.edit.find('div.colored').removeClass('blue cc lightgreen red purple grey green lightblue').addClass(css);
+	}
+};
+
+
+
+
 function view() {
-	//alert($('div.center800').position().left);
+	
 }
 </script>
 </head>
@@ -70,20 +166,34 @@ function view() {
 
 <div id="xytodos" class="pages">
 		 	<div class="pagebar">
+		 		<div style="margin: 0 auto;width: 800px;"> 
+		 			<div class="opers addItem" style="float:left;padding: 7px"><a href="javascript:tasks.showEditBox()"><img border="0" src='/office/image/add.png'></a></div>
+		 		</div>
              </div>
           
            	<div class="list views center800">
 				<!-- <div class="plot" style="border:1px solid #ccc; width: 15px;"><div class="colored"></div></div>  -->
-				<div class="pixcontainer"><div class="colored"></div><div class="content">发出项目周报邮件</div></div>
+				<div class="pixcontainer"><a href="javascript:void(0);"><div class="colored"></div><div class="title">发出项目周报邮件</div></a></div>
 				
-				<div class="pixcontainer"><div class="colored"></div><div class="content">发出项目周报邮件</div></div>
-				<div class="pixcontainer"><div class="colored"></div></div>
+				<div class="pixcontainer"><a href="javascript:void(0)"><div class="colored grey"></div><div class="title">发出项目周报邮件</div></a></div>
 				
-				<div class="pixcontainer"><div class="colored"></div><div class="content">这个字比较多 这个字比较多哦,这个字比较多 这个字比较多哦</div> </div>
 				
 			</div>
 			
-			<div class="editview"></div>
+			<div id="editview">
+				<label >待办事项名称</label>
+				<input type="text" name="name" class="text ui-widget-content ui-corner-all" />
+				<label >颜色</label>
+				<input type="button" onclick="tasks.setBg('blue')" class="setBG blue">
+				<input type="button" onclick="tasks.setBg('cc')" class="setBG cc">
+				<input type="button" onclick="tasks.setBg('lightgreen')" class="setBG lightgreen">
+				<input type="button" onclick="tasks.setBg('red')" class="setBG red">
+				<input type="button" onclick="tasks.setBg('purple')" class="setBG purple">
+				<input type="button" onclick="tasks.setBg('grey')" class="setBG grey">
+				<input type="button" onclick="tasks.setBg('green')" class="setBG green">
+				<input type="button" onclick="tasks.setBg('lightblue')" class="setBG lightblue">
+				<!-- <div style="background-image: url('fontColor.gif'); width: 141px;height: 15px" ></div> -->
+			</div>
 			
 			<div class="daysummary views" style="display:none"></div>
 			
