@@ -57,6 +57,6 @@
 				
 			</div>
 	</div>
-
+<script src="http://app.baidu.com/static/appstore/monitor.st"></script>
 </body>
 </html>

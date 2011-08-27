@@ -62,11 +62,12 @@ div.pages div.pagebar div.summary {
 
 
 div.pages div.list {
-	min-height: 360px;
+	min-height: 480px;
 }
 
 div.pages div.details {
-	min-height: 360px;
+	
+	min-height: 480px;
 }
 
 div.pages div.details div.label {
