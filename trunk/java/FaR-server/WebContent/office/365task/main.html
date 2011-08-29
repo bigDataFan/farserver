@@ -56,6 +56,14 @@ fieldset { padding:0; border:0; margin-top:25px; }
 .green {
 	background-position: 105px 0px;
 }
+.finished {
+	background: url("ok.png");
+	width: 15px;
+	height: 15px;
+	-moz-box-shadow: 0;
+	-webkit-box-shadow: 0;
+	box-shadow: 0;
+}
 
 div.lightblue {
 	background-position: 123px 0px;
@@ -79,32 +87,15 @@ div.pixcontainer {
 	border:1px dashed white;
 }
 
+div.tasktemplate {
+	display: none;
+}
+
 
 </style>
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$('div.pixcontainer').draggable({ containment: 'parent' });
-
-
-	$('div.pixcontainer').hover(
-			function(){
-				$(this).css("border", "1px dashed #ccc");
-				//$(this).find('div.content').show();
-			},
-			function(){
-				$(this).css("border", "1px dashed white");
-				//$(this).find('div.content').delay(2000).hide('drop');
-			}
-	);
-
-
-	$('div.pixcontainer a').live('dblclick',
-		function() {
-			tasks.showEditBox($(this));
-		}
-	);
-
 
 	$( "#editview" ).dialog({
 		autoOpen: false,
@@ -113,11 +104,28 @@ $(document).ready(function(){
 		modal: true,
 		buttons: {
 			"确定": function() {
-				tasks.editobj.title = $('#editview input').val();
-
+				tasks.editobj.title = $('#task_title').val();
+				
+				if (tasks.editdiv!=null) {
+					//更新div
+					tasks.editdiv.find('div.colored').removeClass('blue cc lightgreen red purple grey green lightblue').addClass(tasks.editobj.style);
+					tasks.editdiv.find('div.title').html(tasks.editobj.title);
+				} 
+				
 				tasks.updateEdit();
+				$( this ).dialog( "close" );
 			},
 			"取消": function() {
+				$( this ).dialog( "close" );
+			},
+			
+			"永久删除": function() {
+				
+				if (tasks.editdiv!=null) {
+					tasks.editdiv.remove();
+				}
+				
+				tasks.removeEdit();
 				$( this ).dialog( "close" );
 			}
 		},
@@ -125,29 +133,105 @@ $(document).ready(function(){
 			
 		}
 	});
+	
+	tasks.load();
 });
 
 var tasks = {
-	showEditBox:function(o) {
-		if (o==null) {
+	load: function() {
+		$.getJSON("/service/office/task/list",
+				null,
+				function(data) {
+					for ( var i = 0; i < data.length; i++) {
+						tasks.drawTodoPix(data[i]);
+					}
+				}
+		);
+	},
+	
+	drawTodoPix:function(o) {
+		var ndiv = $('div.tasktemplate').clone();
+		$('div.list').append(ndiv);
+		ndiv.removeClass("tasktemplate");
+		
+		ndiv.find('div.title').html(o.title);
+		ndiv.find('div.colored').removeClass('blue cc lightgreen red purple grey green lightblue finished').addClass(o.style);
+		
+		ndiv.css("left", parseInt(o.x));
+		ndiv.css("top",  parseInt(o.y));
+		ndiv.data('task', o);
+		
+		ndiv.draggable({ 
+			containment: 'parent',
+			stop: function(event, ui) {
+					tasks.editobj.x = ui.position.left; 
+					tasks.editobj.y = ui.position.top;
+					tasks.updateEdit();
+			}
+		});
+		
+		ndiv.hover(
+				function(){
+					tasks.editobj = $(this).data("task");
+					tasks.editdiv = $(this);
+					$(this).css("border", "1px dashed #ccc");
+				},
+				function(){
+					$(this).css("border", "1px dashed white");
+					
+				}
+		);
+		
+		//鼠标双击TODO点 进行编辑
+		ndiv.find('a').dblclick(
+				function() {
+					tasks.showEditBox($(this).parent());
+				}
+		);
+	},
+	
+	//展示编辑框  o:被编辑的TODO点的div
+	showEditBox:function(o) {  
+		if (o==null) { //没有div 表示是新创建的TODO
 			tasks.editdiv = null;
-			tasks.editobj = {};
+			tasks.editobj = {
+					style:"blue",
+					x: 100,
+					y: 100,
+					comment: "",
+					finished: false
+			};
 			$('#editview input').val('');
 		} else {
 			tasks.editdiv = o;
-			tasks.editobj = {};
+			tasks.editobj = o.data("task");
+			$('#task_title').val(tasks.editobj.title);
 		}
-		$( "#editview" ).dialog( "open" );
+		$( "#editview").dialog( "open" );
 	},
 	editdiv: null,
 	editobj: null,
 
 	updateEdit: function() {
-		if (tasks.editdiv!=null) {
-			tasks.editdiv.find('div.colored').removeClass('blue cc lightgreen red purple grey green lightblue').addClass(tasks.editobj.css);
-			tasks.editdiv.find('div.title').html(tasks.editobj.title);
+		if (tasks.editobj) {
+			$.post("/service/office/task/update", 
+					tasks.editobj,
+					function(data) {
+					}
+			);
 		}
 	},
+	
+	removeEdit:function() {
+		if (tasks.editobj) {
+			$.post("/service/office/task/remove", 
+					{id: tasks.editobj.id},
+					function(data) {
+					}
+			);
+		}	
+	},
+	
 	setBg:function(css) {
 		tasks.editobj.style = css;
 		//tasks.edit.find('div.colored').removeClass('blue cc lightgreen red purple grey green lightblue').addClass(css);
@@ -164,6 +248,8 @@ function view() {
 </head>
 <body>
 
+<div class="pixcontainer tasktemplate"><a href="javascript:void(0);"><div class="colored"></div><div class="title"></div></a></div>
+
 <div id="xytodos" class="pages">
 		 	<div class="pagebar">
 		 		<div style="margin: 0 auto;width: 800px;"> 
@@ -171,36 +257,36 @@ function view() {
 		 		</div>
              </div>
           
+          
            	<div class="list views center800">
 				<!-- <div class="plot" style="border:1px solid #ccc; width: 15px;"><div class="colored"></div></div>  -->
-				<div class="pixcontainer"><a href="javascript:void(0);"><div class="colored"></div><div class="title">发出项目周报邮件</div></a></div>
-				
-				<div class="pixcontainer"><a href="javascript:void(0)"><div class="colored grey"></div><div class="title">发出项目周报邮件</div></a></div>
-				
 				
 			</div>
 			
 			<div id="editview">
 				<label >待办事项名称</label>
-				<input type="text" name="name" class="text ui-widget-content ui-corner-all" />
-				<label >颜色</label>
+				<input type="text" id="task_title" class="text ui-widget-content ui-corner-all" />
+				<label >色彩</label>
 				<input type="button" onclick="tasks.setBg('blue')" class="setBG blue">
-				<input type="button" onclick="tasks.setBg('cc')" class="setBG cc">
 				<input type="button" onclick="tasks.setBg('lightgreen')" class="setBG lightgreen">
 				<input type="button" onclick="tasks.setBg('red')" class="setBG red">
 				<input type="button" onclick="tasks.setBg('purple')" class="setBG purple">
 				<input type="button" onclick="tasks.setBg('grey')" class="setBG grey">
 				<input type="button" onclick="tasks.setBg('green')" class="setBG green">
-				<input type="button" onclick="tasks.setBg('lightblue')" class="setBG lightblue">
+				
+				<label >状态</label>
+				<input type="button" onclick="tasks.setBg('finished')" class="setBG finished"> 完成
+				<input type="button" onclick="tasks.setBg('cc')" class="setBG cc"> 暂停
 				<!-- <div style="background-image: url('fontColor.gif'); width: 141px;height: 15px" ></div> -->
 			</div>
 			
 			<div class="daysummary views" style="display:none"></div>
 			
 			<div class="pageFootbar">
+			<div style="margin: 0 auto;width: 800px;"> 
 				<div class="pleaseLogin">请<a href="/office/login.jsp?redirectTo=/office/365time/main.html">登陆</a>以更方便的使用</div>
 				<div class="helloUser">您好</div> 
-				<button onclick="view()">jaa</button>
+		 		</div>
 			</div>
 </div>
 
