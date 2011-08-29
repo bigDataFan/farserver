@@ -13,7 +13,7 @@
 	requesToken = OAuthUtils.getSinaOAuthService().getRequestToken();
 	request.getSession().setAttribute("_sina_req_token", requesToken);
 
-String requestUrl = OAuthUtils.getSinaOAuthervice().getAuthorizationUrl(requesToken);
+String requestUrl = OAuthUtils.getSinaOAuthService().getAuthorizationUrl(requesToken);
 %>
 <link rel="stylesheet" type="text/css" href="/main.css"/>
 <title>使用微博账号登陆</title>
