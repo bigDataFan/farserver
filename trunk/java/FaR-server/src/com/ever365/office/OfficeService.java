@@ -2,6 +2,7 @@ package com.ever365.office;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -197,7 +198,7 @@ public class OfficeService {
 	
 	
 
-	private Map formatResult(DBObject dbo) {
+	private Map<String,Object> formatResult(DBObject dbo) {
 		Map map = dbo.toMap();
 		map.put("id", map.get("_id").toString());
 		map.remove("_id");
@@ -281,6 +282,13 @@ public class OfficeService {
 		return coll;
 	}
 	
+	private DBCollection getTaskCollection() {
+		DBCollection coll = dataSource.getDB("office").getCollection("tasks");
+		coll.ensureIndex("creator");
+		return coll;
+	}
+	
+	
 	public void stopAll() {
 		DBCollection coll = getTimeCollection();
 		
@@ -331,5 +339,54 @@ public class OfficeService {
 		coll.update(new BasicDBObject("_id", dbo.get("_id")), dbo);
 	}
 
+	
+	
+	@RestService(method="POST", uri="/office/task/update")
+	public void updateTask(@RestParam(value="id") String id,
+			@RestParam(value="title") String title,
+			@RestParam(value="comment") String comment,
+			@RestParam(value="style") String style,
+			@RestParam(value="finished") Boolean finished,
+			@RestParam(value="x") Integer x,
+			@RestParam(value="y") Integer y
+			) {
+		
+		DBObject dbo = null;
+		if (id!=null) {
+			dbo = getTaskCollection().findOne(new BasicDBObject("_id", new ObjectId(id)));
+		} else {
+			dbo = new BasicDBObject();
+		}
+		
+		dbo.put("title", title);
+		dbo.put("comment", comment);
+		dbo.put("style", style);
+		dbo.put("x", x);
+		dbo.put("finished", finished);
+		dbo.put("y", y);
+		dbo.put("creator", AuthenticationUtil.getCurrentUser());
+		if (id==null) {
+			getTaskCollection().insert(dbo);
+		} else {
+			getTaskCollection().update(new BasicDBObject("_id", new ObjectId(id)), dbo);
+		}
+	}
+	
+	@RestService(method="GET", uri="/office/task/list")
+	public Collection<Map<String, Object>> listTasks() {
+		
+		DBCursor cursor = getTaskCollection().find(new BasicDBObject("creator", AuthenticationUtil.getCurrentUser()));
+		
+		Collection<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
+		while(cursor.hasNext()) {
+			result.add(formatResult(cursor.next()));
+		}
+		return result;
+	}
+
+	@RestService(method="POST", uri="/office/task/remove")
+	public void removeTasks(@RestParam(value="id") String id) {
+		getTaskCollection().remove(new BasicDBObject("_id", new ObjectId(id)));
+	}
 	
 }
