@@ -87,7 +87,7 @@ office.time = {
 				},
 				function(json) {
 					for ( var i = 0; i < json.length; i++) {
-						office.date = new Date(json[i].now);
+						//office.date = new Date(json[i].now);
 						office.time.addUITime(json[i]);
 					}
 					$('#addTimeDiv').fadeOut(300);
@@ -97,7 +97,7 @@ office.time = {
 					}
 				}
 		);
-		$('span.flipPageBar span.currentDaySpan').html(office.getDateFormat(office.date));
+		$('div.flipPageBar span.currentDaySpan').html(office.getDateFormat(office.date));
 	},
 	schedued:false,
 	
