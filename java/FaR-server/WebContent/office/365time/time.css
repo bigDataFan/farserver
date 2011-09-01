@@ -1,9 +1,22 @@
 @CHARSET "UTF-8";
 
 
+
+div.quoto div.pagebar {
+	overflow: hidden;
+	height: 46px;
+	width: 800px;
+	background: url(mainnav_bg.png) repeat-x top left;
+}
+
 #addTimeDiv {
 	padding: 4px;	
 	float:  left;
+}
+
+#times{
+	width: 800px;
+	margin: 0 auto;
 }
 
 #addTimeDiv input {
@@ -18,6 +31,11 @@
 #addTimeDiv a {
     color: #666666;
     text-decoration: none;
+}
+
+
+div.list {
+	background: #C7DEEB url(bg.png) no-repeat bottom left;
 }
 
 div.timeItem {
@@ -80,6 +98,10 @@ div.running {
 	background-color: #d4f1ff; 
 }
 
+div.pending {
+	background-color: white;
+}
+
 div.overtime {
 	background-color: #FA8282; 
 }
@@ -114,3 +136,30 @@ div.running div.timeOper a span {
 }
 
 
+
+.quoto-btn {
+	color: white !important;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	background-image: url(sign-up-btns.png);
+	background-repeat: no-repeat;
+	background-position: 0 1px;
+	height: 24px;
+	line-height: 24px;
+	padding-left: 12px;
+	margin-right: 12px;
+	float: left;
+}
+
+.quoto-btn span {
+	float: left;
+	height: 24px;
+	line-height: 24px;
+	margin-right: -12px;
+	position: relative;
+	background-image: url(sign-up-btns.png);
+	background-repeat: no-repeat;
+	background-position: right 1px;
+	padding: 0 25px 0 0;
+}
