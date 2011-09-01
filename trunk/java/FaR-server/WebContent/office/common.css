@@ -10,7 +10,7 @@ body
 {
 	padding: 0px;
 	margin: 0px;
-	background-image: url('/images/body_bg.gif');
+	--background-image: url('/images/body_bg.gif');
 	background-repeat: repeat-x;
 	height: 100%;
 }
@@ -28,7 +28,8 @@ html,body,div,p,table,td,form,img,h1,h2,h3,h4,h5,h6,input
 }
 
 div.pages {
-	width: 100%;
+	width: 800px;
+	border: solid 1px #D2D2D2;
 }
 
 
@@ -138,4 +139,26 @@ div.pages div.pageFootbar div.flipPageBar {
 	padding:7px;
 	color: #BB3E26;
 }
+
+
+.capsule  {
+	background-color:#DAEAF5;
+	background-image:url(image/_capsule_40.png), -moz-linear-gradient(#E8F1F7, #CAE2F3); 
+	background-image:url(image/_capsule_40.png), -webkit-gradient(linear, 0 top, 0 bottom, from(#E8F1F7), to(#CAE2F3)); 
+	background-image:url(image/_capsule_40.png), -webkit-linear-gradient(#E8F1F7, #CAE2F3); 
+	background-image:url(image/_capsule_40.png), linear-gradient(top, #E8F1F7, #CAE2F3); 
+	color:#598FB4; 
+	display:inline-block; 
+	font-size:12px; 
+	font-weight:bold; 
+	margin:10px 0; 
+	position:relative; 
+	text-align:center; 
+	text-decoration:none; 
+	padding:3px 10px; 
+	-moz-border-radius:5px; border-radius:5px; -moz-box-shadow:0 5px 0px #84B0D0, 0 5px 10px rgba(0,0,0,0.5); -webkit-box-shadow:0 5px 0px #84B0D0, 0 5px 10px rgba(0,0,0,0.5); box-shadow:0 5px 0px #84B0D0, 0 5px 10px rgba(0,0,0,0.5);}
+.capsule:hover {color:#26516E; top:2px; -moz-box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5); -webkit-box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5); box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5);}
+
+
+
 
