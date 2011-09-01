@@ -59,17 +59,33 @@ div.pages div.pagebar div.summary {
 	color: #069;
 }
 
-
-
-
-div.pages div.list {
-	min-height: 480px;
+div.pages div.main {
+	min-height: 800px;
 }
+
+div.pages div.main div.list {
+	float: left;
+	display:block;
+	width: 595px;
+}
+
+div.pages div.main div.nav {
+	background: #F2F2F2;
+	border: 1px solid #DDD;
+	float: right;
+	display:block;
+	width: 200px;
+}
+
 
 div.pages div.details {
-	
 	min-height: 480px;
 }
+
+
+
+
+
 
 div.pages div.details div.label {
     border-bottom: 1px solid #EEEEEE;
@@ -160,5 +176,20 @@ div.pages div.pageFootbar div.flipPageBar {
 .capsule:hover {color:#26516E; top:2px; -moz-box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5); -webkit-box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5); box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5);}
 
 
+
+.btn-1 {
+	padding: 4px 10px;
+	font-weight:bold;
+	letter-spacing: -0.03em;
+	text-align: center;
+	background: #3A8FCE url(image/bkg-btn-blue.gif) repeat-x 0 top;
+	color: white;
+	text-shadow: 0 -1px 2px #2063AB;
+	border: 1px solid #2F6EA7;
+	border-color: #508FCD #4483BF #2F6EA7 #3F7EB9;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
 
 
