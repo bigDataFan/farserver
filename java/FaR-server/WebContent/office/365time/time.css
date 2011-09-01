@@ -33,11 +33,6 @@ div.quoto div.pagebar {
     text-decoration: none;
 }
 
-
-div.list {
-	background: #C7DEEB url(bg.png) no-repeat bottom left;
-}
-
 div.timeItem {
     display: block;
     height: 50px;
