@@ -48,7 +48,7 @@ div.pages div.pagebar {
 
 div.pages div.pagebar div.oper {
 	float:left;
-	padding: 7px;
+	padding: 9px;
 }
 
 div.pages div.pagebar div.summary {
@@ -66,7 +66,7 @@ div.pages div.main {
 div.pages div.main div.list {
 	float: left;
 	display:block;
-	width: 595px;
+	width: 580px;
 }
 
 div.pages div.main div.nav {
@@ -75,6 +75,7 @@ div.pages div.main div.nav {
 	float: right;
 	display:block;
 	width: 200px;
+	padding: 8px;
 }
 
 
