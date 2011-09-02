@@ -5,14 +5,21 @@
 <title>365Time(天天时间管理)</title>
 
 <link rel="stylesheet" type="text/css" href="../common.css"/>
-<link rel="stylesheet" type="text/css" href="time.css"/>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/ui-lightness/jquery-ui.css"/>
+
 <script type="text/javascript" src="time.js"> </script>
+<link rel="stylesheet" type="text/css" href="time.css"/>
 
 <script type="text/javascript">
 
 $(document).ready(function() {
 	office.time.load();
+	$( "#datepicker" ).datepicker({
+		autoSize: true
+	});
 });
 
 </script>
@@ -22,14 +29,13 @@ $(document).ready(function() {
 
 <div id="times" class="pages">
 		 	<div class="pagebar">
-				<div class="opers addItem" style="float:left;padding: 7px"><a href="javascript:office.time.showAddTime();"><img border="0" src='/office/image/add.png'>增加事务</a>
-					<a class="btn-1" href="javascript:void(0)">增加事项</a>
+				<div class="opers addItem" style="float:left;padding: 7px">
+					<a class="btn-1" href="javascript:office.time.showAddTime();">增加事项</a>
 				</div>
 				<div class="opers back" style="float:left;padding: 7px;display: none"><a href="javascript:office.switchBack();"><img border="0" src='/office/image/left_arrow.png'>返回主视图</a></div>
 				<div id="addTimeDiv" style="display:none;">
 					<input name="newtime" id="newtime" size="40" style="width:200px;"> 
 					<a href="javascript:office.time.add()">增加</a></div>
-				<div class="summary">00:00</div>             			      
              </div>
              
            	<div class="timeTemplate itemcontainer" style="display: none">
@@ -41,8 +47,58 @@ $(document).ready(function() {
            		</div>
            	</div>
            	<div class="main views">
-           		<div class="list">c</div>
-           		<div class="nav">a</div>
+           		<div class="list"></div>
+           		<div class="nav">
+           			<ul>
+           				<li>
+           					<span class="title">总计用时</span>
+           					<div class="total">
+           						00:00
+           					</div>
+           				</li>
+           				<li>
+           					<span class="title">统计信息</span>
+           					<table cellspacing="0" cellpadding="0" class="tbl tbl-timesummary" id="tbl-timesummary">
+				    			<tbody>
+				     
+				    			<tr>
+				      <td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
+				        <a href="#" onclick="genTodayGraph()">
+				          <span class="type-smallgrey">昨日统计</span>
+				          <span id="todayTime" class="type-largehours">0:00</span>
+				        </a>
+				      </td>
+				      <td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
+				        <a href="#" onclick="genYesterdayGraph()">
+				          <span class="type-smallgrey">本周统计</span>
+				          <span id="yesterdayTime" class="type-largehours">0:00</span>
+				        </a>
+				      </td>
+				    </tr>
+				    <tr>
+				      <td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
+				        <a href="#" onclick="genWeekyGraph()">
+				          <span class="type-smallgrey">累计</span>
+				          <span id="weekTime" class="type-largehours">0:00</span>
+				        </a>
+				      </td>
+				      <td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
+				        <a href="#">
+				          <span class="type-smallgrey">时间达人</span>
+				          <span id="fullTime" class="type-largehours">123日</span>
+				        </a>
+				      </td>
+				    </tr>
+				   
+				  </tbody></table>
+           				</li>
+						<li>
+           					<span class="title">时间日历</span>
+           					<div id="datepicker" style="width: 250px;"></div>
+           				</li>
+           				
+           			</ul>
+           		</div>
 			</div>
 			
 			<div class="details views" style="display:none">
