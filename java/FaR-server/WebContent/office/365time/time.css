@@ -35,13 +35,20 @@ div.quoto div.pagebar {
 
 div.timeItem {
     display: block;
-    height: 50px;
+    height: 60px;
     width: 100%;
-    border-bottom: 	1px dashed #DDD;
+    --border-bottom: 	1px dashed #DDD;
+    background: url("networks.png") left repeat-x transparent;
+}
+
+div.timeItem:HOVER {
+
+	background-color:#FAF0C8;
+	text-shadow: #ddd 0 1px 0;
 }
 
 div.timeItem div.timeDesc {
-	padding:5px;
+	padding:10px;
 	float: left;
 	min-width:400px;
 	position: fixed;
@@ -49,7 +56,7 @@ div.timeItem div.timeDesc {
 
 
 div.timeItem div.timeStatics {
-	padding:26px 0px 0px 5px;
+	padding: 36px 0px 0px 10px;
 	float: left;
 	min-width:400px;
 	color: #7D7D7D;
@@ -88,7 +95,7 @@ div.timeItem div.timeOper {
 	float: right;
 	width: 120px;
 	font-weight: bold;
-    padding-top: 12px;
+	padding-top: 20px;
 }
 div.running {
 	background-color: #d4f1ff; 
@@ -145,7 +152,6 @@ div.nav ul li {
 	
 }
 
-
 div.nav ul li span.title {
 	background: url(icon-arrow-grey-8x8.gif) no-repeat 1px;
 	padding-left: 15px;
@@ -154,7 +160,7 @@ div.nav ul li span.title {
 
 
 div.nav ul li div.total {
-	color: #EF6C15;
+	color: #EB5847;
 	font-size:x-large;
 	text-align:center;
 	width: 182px;
