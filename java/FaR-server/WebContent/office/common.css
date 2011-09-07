@@ -77,10 +77,6 @@ div.pagebar {
 }
 
 
-div.pagebar div.oper {
-	float:left;
-	padding: 9px;
-}
 
 div.pagebar div.summary {
 	float:right;
@@ -99,16 +95,21 @@ div.pagebar div.summary {
 	float: left;
 	display:block;
 	width: 570px;
-	height:700px;
+	height:500px;
 	border: 1px solid #DDD;
 }
 
 #content div.list div.title {
 	height:35px;
-	background: #F2F2F2;
+	background: url("image/navigation.png");
 	border-bottom: 1px solid #DDD;
-	
 }
+
+div.list div.title  div.opers {
+	float:left;
+	padding: 10px;
+}
+
 
 #content div.nav {
 	/* background: #F2F2F2; */
