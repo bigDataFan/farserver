@@ -17,7 +17,9 @@ import com.ever365.rest.registry.RestService;
 import com.ever365.security.AuthenticationUtil;
 import com.ever365.vfile.File;
 import com.ever365.vfile.VFileService;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -125,14 +127,19 @@ public class OfficeService {
 		today.setMinutes(0);
 		today.setSeconds(1);
 		
-		
 		DBObject yesterdayQuery = new BasicDBObject();
 		yesterdayRange.put("$gte", today.getTime()-24*60*60*1000);
 		yesterdayRange.put("$lt", today.getTime());
 		yesterdayQuery.put("created", yesterdayRange);
+		yesterdayQuery.put("creator", AuthenticationUtil.getCurrentUser());
 		
 		
+		String reduce = "function(obj,prev) { prev.csum += obj.dura; }";
+		BasicDBList mr1 = (BasicDBList)getTimeCollection().group(new BasicDBObject(), yesterdayQuery, new BasicDBObject("csum", 0),
+				reduce);
+		result.put("yesterday", ((CommandResult)mr1.get(0)).get("csum"));
 		
+		//DBCursor cursor = getTimeCollection().find(yesterdayQuery);
 		return result;
 	}
 	
