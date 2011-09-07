@@ -113,6 +113,29 @@ public class OfficeService {
 		return result;
 	}
 	
+	@RestService(method="GET", uri="/office/time/info")
+	public Map<String, Object> getUseInfo() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		
+		Date today = new Date();
+		Map<String, Long> yesterdayRange = new HashMap<String, Long>();
+		
+		today.setHours(0);
+		today.setMinutes(0);
+		today.setSeconds(1);
+		
+		
+		DBObject yesterdayQuery = new BasicDBObject();
+		yesterdayRange.put("$gte", today.getTime()-24*60*60*1000);
+		yesterdayRange.put("$lt", today.getTime());
+		yesterdayQuery.put("created", yesterdayRange);
+		
+		
+		
+		return result;
+	}
+	
 	@RestService(method="GET", uri="/office/time/list")
 	public List<Map<String, Object>> getDayTimes(@RestParam(value="date")String date) {
 		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
@@ -148,7 +171,7 @@ public class OfficeService {
 	}
 	
 	@RestService(method="POST", uri="/office/time/add")
-	public Map<String, Object> addTime(@RestParam(value="desc") String desc) {
+	public Map<String, Object> addTime(@RestParam(value="desc") String desc, @RestParam(value="autostop") Integer autostop) {
 		stopAll();
 		DBCollection coll = getTimeCollection();
 		
@@ -158,7 +181,7 @@ public class OfficeService {
 		dbo.put("created", new Date().getTime());
 		dbo.put("dura", 0L);
 		dbo.put("laststart", new Date().getTime());
-		
+		dbo.put("autostop", autostop);
 		coll.insert(dbo);
 		
 		Map map = formatResult(dbo);
