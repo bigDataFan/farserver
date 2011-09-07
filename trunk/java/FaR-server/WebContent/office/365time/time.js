@@ -51,13 +51,13 @@ office.time = {
 	load:function() {
 		office.currentTab = office.time;
 		
-		$("#times").find('div.running div.timeOper a').live('click', function(data) {
+		$('div.running div.timeOper a').live('click', function(data) {
 			office.time.stopItem();
 		});
-		$("#times").find('div.pending div.timeOper a').live('click', function(data) {
+		$('div.pending div.timeOper a').live('click', function(data) {
 			office.time.startItem($(this).attr('id'));
 		});
-		$("#times").find('div.timeStatics a.details').live('click', function(data) {
+		$('div.timeStatics a.details').live('click', function(data) {
 			office.time.itemDetailView($(this).parent().parent().data("timedata"));
 		});
 		
@@ -79,17 +79,23 @@ office.time = {
 	},
 	
 	listDay:function(date) {
-		$("div.list div.timeItem").remove();
+		$("div.timeItem").remove();
 		$.getJSON("/service/office/time/list",
 				{
 				'date':date,
 				'refresh':new Date().getTime()
 				},
 				function(json) {
+					var hasItem = false;
 					for ( var i = 0; i < json.length; i++) {
 						//office.date = new Date(json[i].now);
+						hasItem = true;
 						office.time.addUITime(json[i]);
 					}
+					if (!hasItem) {
+						$('#emptyinfo').show();
+					}
+					
 					$('#addTimeDiv').fadeOut(300);
 					if (!office.time.schedued) {
 						office.time.updateTime();
@@ -104,7 +110,7 @@ office.time = {
 	
 	addUITime: function(o) {
 		var timed = $('div.timeTemplate').clone();
-		$('#times div.list').prepend(timed);
+		$('#content div.list').append(timed);
 		
 		timed.removeClass('timeTemplate').addClass("timeItem");
 		timed.data("timedata", o);
@@ -174,7 +180,8 @@ office.time = {
 						office.time.load();
 					}
 			);
-			
+		} else {
+			office.time.add($('#editTime').val(), $('#autoStop').val());
 		}
 	},
 	
@@ -189,24 +196,26 @@ office.time = {
 						office.time.load();
 					}
 			);
-			
 		}
 	},
 	
 	showAddTime:function() {
-		$('#addTimeDiv').fadeIn(300);
+		$('#emptyinfo').hide();
+		$('#itemedit').slideDown('fast');
+		//$('#addTimeDiv').fadeIn(300);
 	},
 	hideAddTime:function() {
 		$('#addTimeDiv').fadeOut(300);
 	},
-	add:function() {
-		var desc = $('#newtime').val();
-		$('#newtime').val('');
+	add:function(desc, autostop) {
 		$.post("/service/office/time/add", 
-				{"desc":desc},
+				{
+					"desc":desc,
+					"autostop": autostop
+				},
 				function(data) {
 					office.time.addUITime(jQuery.parseJSON(data));
-					$('#addTimeDiv').hide();
+					$('#itemedit').hide();
 				});
 	},
 	
@@ -215,11 +224,11 @@ office.time = {
 				null,
 				function(data) {
 					//将  中断x次部分的数字更新
-			   		$("#times div.running div.timeStatics span.timePending").each(function() {
+			   		$("div.running div.timeStatics span.timePending").each(function() {
 			   			$(this).html(parseInt($(this).html()) + 1);
 			   		});
 			   		
-					$("#times div.running").removeClass("running").addClass("pending");
+					$("div.running").removeClass("running").addClass("pending");
 				}
 		);
 	},
@@ -229,14 +238,14 @@ office.time = {
 				{"id":id},
 				function(data) {
 					//将  中断x次部分的数字更新
-					$("#times div.running div.timeStatics span.timePending").each(function() {
+					$("div.running div.timeStatics span.timePending").each(function() {
 			   			$(this).html(parseInt($(this).html()) + 1);
 			   		});
 					
-					$("#times div.running").removeClass("running").addClass("pending");
+					$("div.running").removeClass("running").addClass("pending");
 			   		
 
-					jQuery.each($("#times div.timeItem"),
+					jQuery.each($("div.timeItem"),
 							function() {
 								var timedata = $(this).data("timedata");
 								if (timedata==null) return;

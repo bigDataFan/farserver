@@ -27,7 +27,26 @@ $(document).ready(function() {
 <body>
 
 
-<div id="times" class="pages">
+<div id="main" >
+
+<div class="header-back-l"><div class="header-back-r"><div class="header-back-c">
+
+	<div class="logo section">
+		天天时间小助手
+	</div>
+	<!-- 
+	<div class="section user_name">
+		<a href="/settings?AS=4c87af73328c90fe4a9391cd6b79d433#personal">
+			<span id="session_full_name">liu han</span>
+		</a>
+	</div>
+
+	<div class="buttons section">
+		<a class="fixed hidden" id="queueLink" href="#" onclick="markTooltipButton(this, 'queue'); var res = Tooltip.open('queue', &quot;&quot;, this, (typeof event != &quot;undefined&quot; ? event : null), &quot;bottom&quot;);Click.setClickFunction(function() {}, this, &quot;queue&quot;); return false;" title=""><span><i></i></span></a>
+	</div>
+	 -->
+</div></div></div>
+			<!-- 
 		 	<div class="pagebar">
 				<div class="opers addItem" style="float:left;padding: 7px">
 					<a class="btn-1" href="javascript:office.time.showAddTime();">增加事项</a>
@@ -37,7 +56,7 @@ $(document).ready(function() {
 					<input name="newtime" id="newtime" size="40" style="width:200px;"> 
 					<a href="javascript:office.time.add()">增加</a></div>
              </div>
-             
+              -->
            	<div class="timeTemplate itemcontainer" style="display: none">
            		<div class="timeDesc"> </div>
            		<div class="timeStatics">启动于 <span class="timeStart"></span> &nbsp;&nbsp; 中断 <span class="timePending"></span>次 &nbsp;&nbsp;  <a class="details" href="#">操作</a> <span class="warning" style="display:none">警告,超过了预计时间</span></div>
@@ -46,8 +65,35 @@ $(document).ready(function() {
            			<a href="#"><span>12:00</span></a>
            		</div>
            	</div>
-           	<div class="main views">
-           		<div class="list"></div>
+           	<div id="content" class="views">
+           		<div class="list">
+           			<div class="title">
+           				<div class="opers addItem" style="float:left;padding: 7px">
+							<a class="btn-1" href="javascript:office.time.showAddTime();">增加事项</a>
+						</div>
+           			</div>
+	           		<div id="emptyinfo" class="page-info" style="display:none;border-bottom:1px dashed #DDD;">
+	           			<h3><i class="i-hint ico-inf"></i>今天没有进行时间管理</h3><p>点击增加事项增添您的事宜</p><p>创建后点start或stop来表示您是否花时间在这个事项中</p>
+	           			<p>日积月累，您会更合理的分配时间，成为时间达人！</p>
+	           		</div>
+	           		
+	           		<div id="itemedit" class="details" style="display: none">
+						<div class="label">
+							时间项名称  <input type="text" id="editTime"> 
+						</div>
+						<div class="label">
+							超过<input type="text" id="autoStop" size="4"> 分钟给予提示
+						</div>
+						<div class="label sharetosina"  style="display: none;">
+							<a  href="javascript:office.time.sinaShareMessage()">共享到新浪微博</a>
+						</div>
+						<div class="label">
+							<a class="operations" href="javascript:office.time.updateItem()">保存</a> <a class="operations" href="javascript:office.time.removeItem()">删除任务</a>    
+						</div>
+					</div>
+			
+           		</div>
+           		
            		<div class="nav">
            			<ul>
            				<li>
@@ -101,24 +147,11 @@ $(document).ready(function() {
            		</div>
 			</div>
 			
-			<div class="details views" style="display:none">
-				<div class="label">
-					时间项名称  <input type="text" id="editTime"> 
-				</div>
-				<div class="label">
-					超过<input type="text" id="autoStop" size="4"> 分钟给予提示
-				</div>
-				<div class="label sharetosina"  style="display: none;">
-					<a  href="javascript:office.time.sinaShareMessage()">共享到新浪微博</a>
-				</div>
-				<div class="label">
-					<a class="operations" href="javascript:office.time.updateItem()">保存</a> <a class="operations" href="javascript:office.time.removeItem()">删除任务</a>    
-				</div>
-				
-			</div>
+			
 			
 			<div class="daysummary views" style="display:none"></div>
 			
+			<!-- 
 			<div class="pageFootbar">
 				<div class="pleaseLogin">请<a href="/office/login.jsp?redirectTo=/office/365time/main.html">登陆</a>以更方便的使用</div>
 				<div class="helloUser">您好</div>
@@ -130,6 +163,7 @@ $(document).ready(function() {
 					<a href="javascript:office.time.swichCalendar()" title="日历视图"><img src="table.png" border="0"></a>
 				</div>
 			</div>
+			 -->
 </div>
 
 
