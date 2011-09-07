@@ -120,7 +120,7 @@ office.time = {
 		
 		
 		if (o.laststart!=0) {
-			$('#times div.running').removeClass("running").addClass("pending");
+			$('div.running').removeClass("running").addClass("pending");
 			timed.addClass("running");
 			dura = o.dura + (o.now-o.laststart);
 		} else {
@@ -176,7 +176,8 @@ office.time = {
 						"autostop": $('#autoStop').val()
 					},
 					function(data) {
-						office.switchBack();
+						//office.switchBack();
+						$('#itemedit').hide();
 						office.time.load();
 					}
 			);
@@ -192,7 +193,8 @@ office.time = {
 						"id":office.time.currentEdit.id
 					},
 					function(data) {
-						office.switchBack();
+						//office.switchBack();
+						$('#itemedit').hide();
 						office.time.load();
 					}
 			);
@@ -283,6 +285,10 @@ office.time = {
 		 );
 		$('div.pagebar div.summary').html("总计:" + office.time.formatDura(total));
 		setTimeout('office.time.updateTime()', 60*1000);
+	},
+	
+	hideEdit: function() {
+		$('#itemedit').hide();
 	},
 
 	formatDura:function(mill) {
