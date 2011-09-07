@@ -10,9 +10,8 @@ body
 {
 	padding: 0px;
 	margin: 0px;
-	--background-image: url('/images/body_bg.gif');
-	background-repeat: repeat-x;
 	height: 100%;
+	color: #333;
 }
 
 a {
@@ -23,18 +22,50 @@ a {
 html,body,div,p,table,td,form,img,h1,h2,h3,h4,h5,h6,input
 {
 	font-size: 12px;
-	color: #494738;
 	font-family:Verdana,Tahoma,Segoe,sans-serif;
 }
 
-div.pages {
+
+#main {
 	width: 800px;
-	border: solid 1px #D2D2D2;
+	/*border: solid 1px #D2D2D2;*/
+	margin:0 auto;
+	background: white repeat-y top center; /*url(image/bg_body.jpg) */
 }
 
 
-div.pages div.pagebar {
-    background: url("image/header_bg-x.png") repeat-x scroll bottom left transparent;
+div.header-back-l {
+	height:40px;
+	background: url(image/header-sprite.png) 0 0 no-repeat;
+	margin: 0 -9px;
+}
+
+
+div.header-back-r {
+	background: url(image/header-sprite.png) 100% -94px no-repeat;
+	height:40px;
+	padding: 0 25px;
+}
+
+div.header-back-c{
+	background: url(image/header-sprite.png) 0 -47px repeat-x;
+	height:40px;
+}
+
+
+div.logo {
+	font-size:14px;
+	display: block;
+	float: left;
+	color: #36C;
+	font-weight:bold;
+	background :url("365time/clock24.png") no-repeat 5px;
+	height:25px;
+	padding: 8px 12px 5px 32px;
+	border-right: 1px solid #CDDEEF;
+}
+div.pagebar {
+    background: url("image/header_bg-x.png") repeat-x scroll bottom left;
     color: #999999;
     font-size: 14px;
     height: 35px;
@@ -46,12 +77,12 @@ div.pages div.pagebar {
 }
 
 
-div.pages div.pagebar div.oper {
+div.pagebar div.oper {
 	float:left;
 	padding: 9px;
 }
 
-div.pages div.pagebar div.summary {
+div.pagebar div.summary {
 	float:right;
 	right: 50px;
 	padding: 7px;
@@ -59,18 +90,28 @@ div.pages div.pagebar div.summary {
 	color: #069;
 }
 
-div.pages div.main {
-	min-height: 800px;
+
+#content {
+	padding-top: 10px;
 }
 
-div.pages div.main div.list {
+#content div.list {
 	float: left;
 	display:block;
-	width: 580px;
+	width: 570px;
+	height:700px;
+	border: 1px solid #DDD;
 }
 
-div.pages div.main div.nav {
+#content div.list div.title {
+	height:35px;
 	background: #F2F2F2;
+	border-bottom: 1px solid #DDD;
+	
+}
+
+#content div.nav {
+	/* background: #F2F2F2; */
 	border: 1px solid #DDD;
 	float: right;
 	display:block;
@@ -78,23 +119,18 @@ div.pages div.main div.nav {
 	padding: 8px;
 }
 
-
-div.pages div.details {
-	min-height: 480px;
+#content div.details {
+	min-height: 180px;
 }
 
 
-
-
-
-
-div.pages div.details div.label {
+div.details div.label {
     border-bottom: 1px solid #EEEEEE;
     padding: 14px 20px;
     position: relative;
 }
 
-div.pages div.details div.label input {
+div.details div.label input {
     background: none repeat scroll 0 0 #F7F7F7;
     border-color: #CCCCCC #E7E6E6 #E7E6E6 #CCCCCC;
     border-radius: 2px;
@@ -107,7 +143,7 @@ div.pages div.details div.label input {
 }
 
 
-div.pages div.details a.operations {
+div.details a.operations {
 	color: #7D7D7D;
 	text-decoration: none;
 	background: none repeat scroll 0 0 #EB5847;
@@ -121,7 +157,7 @@ div.pages div.details a.operations {
 }
 
 
-div.pages div.pageFootbar {
+div.pageFootbar {
     background: url("image/header_bg-x.png") repeat-x scroll top left transparent;
     color: #999999;
     font-size: 14px;
@@ -133,48 +169,29 @@ div.pages div.pageFootbar {
 	display:block;
 }
 
-div.pages div.pageFootbar div.pleaseLogin {
+div.pageFootbar div.pleaseLogin {
 	float: left;
 	padding:7px;
 }
 
-div.pages div.pageFootbar div.pleaseLogin a {
+div.pageFootbar div.pleaseLogin a {
 	color: #BB3E26;
 	text-decoration: none;
 }
 
 
-div.pages div.pageFootbar div.helloUser {
+div.pageFootbar div.helloUser {
 	float: left;
 	padding:7px;
 	color: #BB3E26;
 }
 
 
-div.pages div.pageFootbar div.flipPageBar {
+div.pageFootbar div.flipPageBar {
 	float: right;
 	padding:7px;
 	color: #BB3E26;
 }
-
-
-.capsule  {
-	background-color:#DAEAF5;
-	background-image:url(image/_capsule_40.png), -moz-linear-gradient(#E8F1F7, #CAE2F3); 
-	background-image:url(image/_capsule_40.png), -webkit-gradient(linear, 0 top, 0 bottom, from(#E8F1F7), to(#CAE2F3)); 
-	background-image:url(image/_capsule_40.png), -webkit-linear-gradient(#E8F1F7, #CAE2F3); 
-	background-image:url(image/_capsule_40.png), linear-gradient(top, #E8F1F7, #CAE2F3); 
-	color:#598FB4; 
-	display:inline-block; 
-	font-size:12px; 
-	font-weight:bold; 
-	margin:10px 0; 
-	position:relative; 
-	text-align:center; 
-	text-decoration:none; 
-	padding:3px 10px; 
-	-moz-border-radius:5px; border-radius:5px; -moz-box-shadow:0 5px 0px #84B0D0, 0 5px 10px rgba(0,0,0,0.5); -webkit-box-shadow:0 5px 0px #84B0D0, 0 5px 10px rgba(0,0,0,0.5); box-shadow:0 5px 0px #84B0D0, 0 5px 10px rgba(0,0,0,0.5);}
-.capsule:hover {color:#26516E; top:2px; -moz-box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5); -webkit-box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5); box-shadow:0 3px 0px #79A6C7, 0 5px 10px rgba(0,0,0,0.5);}
 
 
 
@@ -191,6 +208,44 @@ div.pages div.pageFootbar div.flipPageBar {
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
+}
+
+
+
+
+.page-info {
+    line-height: 2;
+    padding: 15px 15px 0 45px;
+}
+
+
+.page-info h3 {
+    font-size: 12px;
+    line-height: 24px;
+    margin-bottom: 10px;
+    min-height: 24px;
+    position: relative;
+}
+
+.i-hint {
+    background-image: url("image/icon_hint.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+    left: -27px;
+    position: absolute;
+    top: 3px;
+}
+
+.ico-inf {
+    background-position: -60px -35px;
+}
+
+
+.ico-war, .ico-suc, .ico-err, .ico-inf {
+    height: 20px;
+    width: 20px;
 }
 
 
