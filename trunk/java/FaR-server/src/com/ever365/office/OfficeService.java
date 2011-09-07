@@ -1,13 +1,18 @@
 package com.ever365.office;
 
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import junit.runner.SimpleTestCollector;
 
 import org.bson.types.ObjectId;
 
@@ -119,28 +124,46 @@ public class OfficeService {
 	public Map<String, Object> getUseInfo() {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		
 		Date today = new Date();
-		Map<String, Long> yesterdayRange = new HashMap<String, Long>();
-		
 		today.setHours(0);
 		today.setMinutes(0);
 		today.setSeconds(1);
 		
-		DBObject yesterdayQuery = new BasicDBObject();
-		yesterdayRange.put("$gte", today.getTime()-24*60*60*1000);
-		yesterdayRange.put("$lt", today.getTime());
-		yesterdayQuery.put("created", yesterdayRange);
-		yesterdayQuery.put("creator", AuthenticationUtil.getCurrentUser());
+		result.put("yesterday", getRangeSum(today.getTime()-24*60*60*1000, today.getTime()));
 		
+		Date monday = getMondayOfThisWeek();
+		monday.setHours(0);
+		monday.setMinutes(0);
+		monday.setSeconds(1);
 		
-		String reduce = "function(obj,prev) { prev.csum += obj.dura; }";
-		BasicDBList mr1 = (BasicDBList)getTimeCollection().group(new BasicDBObject(), yesterdayQuery, new BasicDBObject("csum", 0),
-				reduce);
-		result.put("yesterday", ((CommandResult)mr1.get(0)).get("csum"));
+		result.put("week", getRangeSum(monday.getTime(), new Date().getTime()));
 		
 		//DBCursor cursor = getTimeCollection().find(yesterdayQuery);
 		return result;
+	}
+
+	private Double getRangeSum(Long start, Long end) {
+		
+		//today.setHours(0);
+		//today.setMinutes(0);
+		//today.setSeconds(1);
+		// today.getTime()-24*60*60*1000
+		Map<String, Long> gl = new HashMap<String, Long>();
+		gl.put("$gte", start);
+		gl.put("$lt", end);
+		
+		DBObject query = new BasicDBObject();
+		query.put("created", gl);
+		query.put("creator", AuthenticationUtil.getCurrentUser());
+		
+		String reduce = "function(obj,prev) { prev.csum += obj.dura; }";
+		BasicDBList mr1 = (BasicDBList)getTimeCollection().group(new BasicDBObject(), query, new BasicDBObject("csum", 0),
+				reduce);
+		
+		if (mr1.size()==1) {
+			return (Double)((CommandResult)mr1.get(0)).get("csum");
+		}
+		return 0D;
 	}
 	
 	@RestService(method="GET", uri="/office/time/list")
@@ -418,5 +441,30 @@ public class OfficeService {
 	public void removeTasks(@RestParam(value="id") String id) {
 		getTaskCollection().remove(new BasicDBObject("_id", new ObjectId(id)));
 	}
+	
+	
+	public static Date getMondayOfThisWeek() {
+		  Calendar c = Calendar.getInstance();
+		  int day_of_week = c.get(Calendar.DAY_OF_WEEK) - 1;
+		  if (day_of_week == 0)
+		   day_of_week = 7;
+		  c.add(Calendar.DATE, -day_of_week + 1);
+		  
+		  Date t = c.getTime();
+		  t.setHours(0);
+		  t.setMinutes(0);
+		  t.setSeconds(1);
+		  return t;
+	}
+	
+	public static void main(String[] args) {
+		
+		DateFormat df= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
+		System.out.println(df.format(OfficeService.getMondayOfThisWeek()));
+		
+		
+	}
+	
+	
 	
 }

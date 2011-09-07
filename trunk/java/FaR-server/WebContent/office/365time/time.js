@@ -75,6 +75,14 @@ office.time = {
 					}
 				}
 		);
+		
+		$.getJSON("/service/office/time/info", 
+				null,
+				function(data){
+					$('#yesterdayTime').html(office.time.formatDura(data.yesterday));
+					$('#weekTime').html(office.time.formatDura(data.week));
+				}
+		);
 		office.time.listDay(office.getDateFormat(office.date));
 	},
 	
@@ -94,6 +102,8 @@ office.time = {
 					}
 					if (!hasItem) {
 						$('#emptyinfo').show();
+					} else {
+						$('#emptyinfo').hide();
 					}
 					
 					$('#addTimeDiv').fadeOut(300);
@@ -103,7 +113,7 @@ office.time = {
 					}
 				}
 		);
-		$('div.flipPageBar span.currentDaySpan').html(office.getDateFormat(office.date));
+		//$('div.flipPageBar span.currentDaySpan').html(office.getDateFormat(office.date));
 	},
 	schedued:false,
 	
@@ -283,7 +293,7 @@ office.time = {
 				}
 			}
 		 );
-		$('div.pagebar div.summary').html("总计:" + office.time.formatDura(total));
+		$('div.nav div.total').html(office.time.formatDura(total));
 		setTimeout('office.time.updateTime()', 60*1000);
 	},
 	
