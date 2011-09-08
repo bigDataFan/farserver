@@ -81,6 +81,7 @@ office.time = {
 				function(data){
 					$('#yesterdayTime').html(office.time.formatDura(data.yesterday));
 					$('#weekTime').html(office.time.formatDura(data.week));
+					$('#totalTime').html(office.time.formatDura(data.total));
 				}
 		);
 		office.time.listDay(office.getDateFormat(office.date));
