@@ -138,6 +138,8 @@ public class OfficeService {
 		
 		result.put("week", getRangeSum(monday.getTime(), new Date().getTime()));
 		
+		result.put("total", getRangeSum(0L, new Date().getTime()));
+		
 		//DBCursor cursor = getTimeCollection().find(yesterdayQuery);
 		return result;
 	}
