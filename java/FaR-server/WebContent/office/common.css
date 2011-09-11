@@ -64,6 +64,15 @@ div.logo {
 	padding: 8px 12px 5px 32px;
 	border-right: 1px solid #CDDEEF;
 }
+
+div.headeroper {
+	float: right;
+	height:25px;
+	border-left: 1px solid #CDDEEF;
+	padding: 8px;
+}
+
+
 div.pagebar {
     background: url("image/header_bg-x.png") repeat-x scroll bottom left;
     color: #999999;
