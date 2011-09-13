@@ -258,4 +258,6 @@ div.pageFootbar div.flipPageBar {
     width: 20px;
 }
 
-
+div.page-info a {
+	float: right;
+}

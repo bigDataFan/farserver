@@ -107,6 +107,11 @@ div.pending {
 	background-color: white;
 }
 
+div.ended {
+	background-color: white;
+}
+
+
 div.overtime {
 	background-color: #FA8282; 
 }
