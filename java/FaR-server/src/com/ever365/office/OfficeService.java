@@ -139,6 +139,7 @@ public class OfficeService {
 		result.put("week", getRangeSum(monday.getTime(), new Date().getTime()));
 		
 		result.put("total", getRangeSum(0L, new Date().getTime()));
+		result.put("count",getTimeCollection().count(new BasicDBObject("creator", AuthenticationUtil.getCurrentUser())));
 		
 		//DBCursor cursor = getTimeCollection().find(yesterdayQuery);
 		return result;
@@ -191,6 +192,14 @@ public class OfficeService {
 			DBCursor cursor = getTimeCollection().find(dbo);
 			while (cursor.hasNext()) {
 				DBObject oneTime = cursor.next();
+				
+				if ((Long)oneTime.get("laststart")!=0L) {
+					Long total = (Long)oneTime.get("dura")  + (new Date().getTime() - (Long)oneTime.get("laststart"));
+					if (total>(Long)oneTime.get("autostop")) {
+						stopOneItem(oneTime);
+					}
+				}
+				
 				result.add(formatResult(oneTime));
 			}
 		}
@@ -203,7 +212,7 @@ public class OfficeService {
 	}
 	
 	@RestService(method="POST", uri="/office/time/add")
-	public Map<String, Object> addTime(@RestParam(value="desc") String desc, @RestParam(value="autostop") Integer autostop) {
+	public Map<String, Object> addTime(@RestParam(value="desc") String desc, @RestParam(value="autostop") String autostop) {
 		stopAll();
 		DBCollection coll = getTimeCollection();
 		
@@ -213,7 +222,12 @@ public class OfficeService {
 		dbo.put("created", new Date().getTime());
 		dbo.put("dura", 0L);
 		dbo.put("laststart", new Date().getTime());
-		dbo.put("autostop", autostop);
+		
+		try {
+			dbo.put("autostop", Double.valueOf(Float.parseFloat(autostop)*60*60*1000).longValue());
+		} catch (Exception e) {
+			dbo.put("autostop", 8*60*60*1000L);
+		}
 		coll.insert(dbo);
 		
 		Map map = formatResult(dbo);
@@ -224,7 +238,7 @@ public class OfficeService {
 	public Map<String, Object> updateTime(
 			@RestParam(value="id") String id,
 			@RestParam(value="desc") String desc,
-			@RestParam(value="autostop") Integer autostop
+			@RestParam(value="autostop") String autostop
 			) {
 		DBCollection coll = getTimeCollection();
 		
@@ -232,7 +246,13 @@ public class OfficeService {
 		dbo.put("_id", new ObjectId(id));
 		DBObject timeItem = coll.findOne(dbo);
 		timeItem.put("desc", desc);
-		timeItem.put("autostop", autostop);
+		
+		try {
+			timeItem.put("autostop", Double.valueOf(Float.parseFloat(autostop)*60*60*1000L).longValue());
+		} catch (Exception e) {
+			timeItem.put("autostop", 8*60*60*1000L);
+		}
+		
 		
 		coll.update(dbo, timeItem, false, false);
 		
@@ -256,6 +276,10 @@ public class OfficeService {
 	private Map<String,Object> formatResult(DBObject dbo) {
 		Map map = dbo.toMap();
 		map.put("id", map.get("_id").toString());
+		
+		if (map.get("autostop")!=null) {
+			map.put("autostop", new Float(Double.valueOf((Long)map.get("autostop"))/(60*60*1000D)));
+		}
 		map.remove("_id");
 		map.put("now", new Date().getTime());
 		return map;
@@ -269,6 +293,13 @@ public class OfficeService {
 		DBObject dbo = new BasicDBObject();
 		dbo.put("_id", new ObjectId(id));
 		DBObject timeItem = coll.findOne(dbo);
+		
+		if (dbo.get("autostop")!=null) {
+			if ((Long)dbo.get("dura")>=(Long)dbo.get("autosop")) {
+				return null;
+			}
+		}
+		
 		timeItem.put("laststart", new Date().getTime());
 		coll.update(dbo, timeItem);
 		return timeItem.toMap();
@@ -357,26 +388,30 @@ public class OfficeService {
 		DBCursor cursor = coll.find(query);
 		while (cursor.hasNext()) {
 			DBObject tobeStop = cursor.next();
-			Long total = (Long)tobeStop.get("dura")  + (new Date().getTime() - (Long)tobeStop.get("laststart"));
-			
-			if (total>24*60*60*1000) {
-				total = 24*60*60*1000L;
-			}
-			
-			List<String> checkList = null;
-			Object checks = tobeStop.get("checks");
-			if (checks==null) {
-				checkList = new ArrayList<String>(0);
-			} else {
-				checkList = (List)checks;
-			}
-			
-			checkList.add(tobeStop.get("laststart") + "-" + new Date().getTime() );
-			tobeStop.put("checks", checkList);
-			tobeStop.put("dura", total);
-			tobeStop.put("laststart", 0);
-			coll.update(new BasicDBObject("_id", tobeStop.get("_id")), tobeStop);
+			stopOneItem(tobeStop);
 		}
+	}
+
+	private void stopOneItem(DBObject tobeStop) {
+		Long total = (Long)tobeStop.get("dura")  + (new Date().getTime() - (Long)tobeStop.get("laststart"));
+		
+		if (total>(Long)tobeStop.get("autostop")) {
+			total = (Long)tobeStop.get("autostop");
+		}
+		
+		List<String> checkList = null;
+		Object checks = tobeStop.get("checks");
+		if (checks==null) {
+			checkList = new ArrayList<String>(0);
+		} else {
+			checkList = (List)checks;
+		}
+		
+		checkList.add(tobeStop.get("laststart") + "-" + new Date().getTime() );
+		tobeStop.put("checks", checkList);
+		tobeStop.put("dura", total);
+		tobeStop.put("laststart", 0L);
+		getTimeCollection().update(new BasicDBObject("_id", tobeStop.get("_id")), tobeStop);
 	}
 	
 	public void startTime(long created) {
@@ -463,7 +498,7 @@ public class OfficeService {
 		
 		DateFormat df= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
 		System.out.println(df.format(OfficeService.getMondayOfThisWeek()));
-		
+		System.out.println(new Float(Double.valueOf(90000L)/(60*60*1000D)));
 		
 	}
 	

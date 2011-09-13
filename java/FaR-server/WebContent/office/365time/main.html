@@ -70,7 +70,7 @@ $(document).ready(function() {
               -->
            	<div class="timeTemplate itemcontainer" style="display: none">
            		<div class="timeDesc"> </div>
-           		<div class="timeStatics">启动于 <span class="timeStart"></span> &nbsp;&nbsp; 中断 <span class="timePending"></span>次 &nbsp;&nbsp;  <a class="details" href="#">操作</a> <span class="warning" style="display:none">警告,超过了预计时间</span></div>
+           		<div class="timeStatics">启动于 <span class="timeStart"></span> &nbsp;&nbsp; 中断 <span class="timePending"></span>次 &nbsp;&nbsp;  <a class="details" href="#">操作</a> <span class="warning" style="display:none">已记录了指定时长</span></div>
            		<!--  <div class="timeDura">12:00</div>  -->
            		<div class="timeOper">
            			<a href="#"><span>12:00</span></a>
@@ -83,21 +83,31 @@ $(document).ready(function() {
 							<a class="btn-1" href="javascript:office.time.showAddTime();">增加事项</a>
 						</div>
            			</div>
+           			<!-- 
 	           		<div id="emptyinfo" class="page-info" style="display:none;border-bottom:1px dashed #DDD;">
-	           			<h3><i class="i-hint ico-inf"></i>今天没有进行时间管理</h3><p>点击增加事项增添您的事宜</p><p>创建后点start或stop来表示您是否花时间在这个事项中</p>
+	           			<h3><i class="i-hint ico-inf"></i>本日还没有对事务进行时间记录！</h3><p>点击增加事项增添您的事宜</p><p>创建后点start或stop来表示您是否花时间在这个事项中</p>
 	           			<p>日积月累，您会更合理的分配时间，成为时间达人！</p>
 	           		</div>
+	           		 -->
+	           		<div id="hintinfo" class="page-info" style="border-bottom:1px dashed #DDD;">
+	           			<h3><i class="i-hint ico-inf"></i>本日还没有对事务进行时间记录！ <a href="javascript:office.time.hideInfo()">关闭</a></h3>
+	           			<p>时间小贴士一：设立明确的目标<br>时间管理的目的是让你在最短时间内实现更多你想要实现的目标。把计划的4到10个目标写出来，找出一个核心目标，并依次排列重要性，然后依照你的目标设定详细的计划，并依照计划进行。</p>
+	           		</div>
+	           		
+	           		
 	           		
 	           		<div id="itemedit" class="details" style="display: none">
 						<div class="label">
 							时间项名称  <input type="text" id="editTime"> 
 						</div>
 						<div class="label">
-							超过<input type="text" id="autoStop" size="4"> 分钟给予提示
+							超过<input type="text" id="autoStop" size="4" value="8"> 小时此事项自动结束
 						</div>
+						<!--
 						<div class="label sharetosina"  style="display: none;">
 							<a  href="javascript:office.time.sinaShareMessage()">共享到新浪微博</a>
 						</div>
+						-->
 						<div class="label">
 							<a class="operations" href="javascript:office.time.updateItem();">保存</a> <a class="operations" href="javascript:office.time.removeItem();">删除任务</a>    
 							<a class="operations" href="javascript:office.time.hideEdit();">取消</a> 
@@ -136,14 +146,14 @@ $(document).ready(function() {
 				    <tr>
 				      <td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
 				        <a href="#" onclick="genWeekyGraph()">
-				          <span class="type-smallgrey">累计天数</span>
-				          <span id="totalTime" class="type-largehours">10000:00</span>
+				          <span class="type-smallgrey">条目总计</span>
+				          <span id="itemCount" class="type-largehours"></span>
 				        </a>
 				      </td>
 				      <td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
 				        <a href="#">
-				          <span class="type-smallgrey">记录小时</span>
-				          <span id="fullTime" class="type-largehours">123日</span>
+				          <span class="type-smallgrey">时间累计</span>
+				          <span id="totalTime" class="type-largehours"></span>
 				        </a>
 				      </td>
 				    </tr>
