@@ -10,6 +10,14 @@
 	if (request.getParameter("redirectTo")!=null) {
 		session.setAttribute("rediretTo", request.getParameter("redirectTo"));
 	}
+	
+	if (request.getParameter("oauth")!=null) {
+		if ("baidu".equals(request.getParameter("oauth"))) {
+			response.sendRedirect("http://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=waxDdavqGbR1K3qx19pyorqg&redirect_uri=http%3A%2F%2Fwww.ever365.com%2Foauth%2Fbaidu");
+			return;
+		}
+	}
+
 %>
 <title>请登陆ever365</title>
 
