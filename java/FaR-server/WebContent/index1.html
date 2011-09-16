@@ -2,8 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 <title>ever365 - 网络应用实验室 </title>
-
 <style type="text/css">
 
 * {
@@ -30,6 +30,10 @@ clear: both;
 	font-size: 2.5em;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
 	text-transform: uppercase;
+}
+
+img {
+	border:  0px;
 }
 
 #main {
@@ -79,12 +83,21 @@ header, section, footer, aside, nav, article, figure {
 }
 
 
-#splash section {
+#splash div.section {
     font-size: 1.4em;
-    height: 180px;
-    padding: 216px 0 0;
-    text-align: center;
+    height: 260px;
+    padding: 20px;
+    --text-align: center;
+    width: 300px;
 }
+
+
+#applist  li{
+    float: left;
+    margin: 12px 0 5px;
+    padding: 10px;
+}
+
 
 #splash section h1 {
     font-size: 2.5em;
@@ -109,33 +122,42 @@ header, section, footer, aside, nav, article, figure {
 	margin-left: 10px;
 }
 
-
-
 </style>
 
 </head>
 <body>
 	
 	<div id="main">
-		<header role="banner">
-			<a id="logo" href="/"><img alt="" src="h-logo.png"></a>
-			<nav role="navigation" id="nav">
+		<div role="banner">
+			<a id="logo" href="/" ><img alt="" src="h-logo.png"></a>
+			<div role="navigation" id="nav">
 	            <ul>
 	                <li><a class="current" href="/"><span>首页</span></a></li><li><a href="/who-we-are.html"><span>应用列表</span></a></li><li><a href="/what-we-do.html"><span>交流社区</span></a></li><li><a href="/our-work.html"><span>关于</span></a></li>   </ul>
-	        </nav>
-		</header>
+	        </div>
+		</div>
 		
 		<div id="splash">
 		
-			<section id="welcome">
+			<div id="welcome" class="section">
 	    		<h1>欢迎使用ever365</h1>
-		        <p>ever365网络实验室是一个基于网络面向个人服务的平台。 <a class="capsule capsule-40" href="/get-in-touch.html">Get in Touch</a></p>
+		        <p>ever365网络实验室是一个基于网络面向个人服务的平台。 </p>
 		        <p>我们始终认为，网络不仅仅是一个消磨时间的工具，它还能为人们做更多，甚至会成为实际的生产力。</p>
-		        <p>在ever365网络实验室中，您可以找到一些</p>
-		        
-		        
-	  		</section>
-  	
+		        <p>在ever365网络实验室中，您可以找到一些好用、好玩的网络应用。</p>
+	  		</div>
+
+			<div id="365time" style="display:none" class="section">
+	    		<h1>时间记录小助手</h1>
+		   		<p>时间管理的一个重要途径就是记录你的时间：你花了多少时间在哪些事情，把它详细地，记录下来，每天从刷牙开始，洗澡，早上穿衣花了多少时间，早上搭车的时间，平上出去拜访客户的时间，把每天花的时间一一记录下来，做了哪些事，你会发现浪费了哪些时间。当你找到浪费时间的根源，你才有办法改变。</p>
+		   		<p> 时间记录小助手就是这样一款软件，每天创建1个或多个任务，并设置执行的时限， 当然执行过程中可以点击停止或启动来记录某个时间项。 软件还提供了统计和浏览功能， 您可以查看您一共记录了多少时间，多少个工作项目，浏览每天的时间占用。</p>
+		   		<p><a href="/office/365time/main.html">使用</a></p>
+	  		</div>
+
+  			<div id="applist">
+  				<ul>
+	                <li><a class="current" href="/"><span><img src="images/Clock64.png"></span></a></li>
+	            </ul>
+  			
+  			</div>
 		
 		</div>
 		
