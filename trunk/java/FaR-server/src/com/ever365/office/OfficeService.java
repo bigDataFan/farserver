@@ -188,7 +188,6 @@ public class OfficeService {
 			dbo.put("created", range);
 			dbo.put("creator", AuthenticationUtil.getCurrentUser());
 			
-			Long now = new Date().getTime();
 			DBCursor cursor = getTimeCollection().find(dbo);
 			while (cursor.hasNext()) {
 				DBObject oneTime = cursor.next();
