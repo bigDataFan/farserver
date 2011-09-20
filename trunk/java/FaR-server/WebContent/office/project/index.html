@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>任务管理助手</title>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+
+<style type="text/css">
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+
+.fr {
+	float: right;
+}
+
+.fl {
+	float:left;
+}
+
+/*最上面的导航栏*/
+.nav {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAsCAIAAAArRUU2AAAAOElEQVQIW2O6+egX0///DEwMDAxM/xkYEOz/ED7DfwQbhUZWB1fzH87+hyGHykfRi2Y2AzIb1V0AEFlAz5gMk7cAAAAASUVORK5CYII=) repeat-x;
+	color: #182647;
+	font: bold 16px Arial;
+	padding: 4px 3px;
+	position: relative;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+/*靠底的状态栏*/
+.bottom {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+
+/*按钮*/
+button {
+	-webkit-box-sizing: content-box;
+	min-height: 25px;
+	line-height: 24px;
+	margin: 0 3px;
+	color: #2E4987;
+	font: bold normal 13px;
+	text-align: center;
+	-webkit-user-select: none;
+	background-color:#DAE2FA;
+	border:1px solid #95AEEC; 
+	cursor:pointer;
+	padding:3px;
+	text-shadow: white 0 1px 0;
+}
+
+button:HOVER {
+	background: #4E7AD0;
+	color:white;
+}
+
+
+/*左部分*/
+.left {
+	width: 50%;
+	position: fixed;
+	float: left;
+}
+
+/*右部分*/
+.right {
+	width: 50%;
+	position: relative;
+	float: right;
+	background: #EBEFF9 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAIAAACqZzA+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAC5JREFUeNpivHbvMzMzIwsYARnMTIxMjAyMIMCACZgYSAGjqkdVj6oeWaoBAgwAkuADAzOWjPUAAAAASUVORK5CYII=") repeat-y;
+	height: 100%;
+}
+
+
+/*分类头样式*/
+.qi {
+	height: 14px;
+	border-bottom: 1px solid #CCC;
+	font-size: 13px;
+	font-weight: bold;
+	padding: 6px 6px 6px 27px;
+	background-color: #EEE;
+	color: #666;
+}
+
+
+/*列表项样式*/
+.si, .ti {
+	height: 17px;
+	border-bottom: 1px solid #CCC;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: white;
+	padding: 11px 11px 13px 6px;
+	cursor: pointer;
+}
+
+.si:HOVER {
+	background-color: #DAE2FA;
+}
+
+
+/*右向的小箭头*/
+.Uc {
+	margin-top: 3px;
+	float: right;
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANCAYAAACUwi84AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH2AwLFgQURlWQWQAAAJ9JREFUGNN9kT0KwlAQhL8kEGztbSTHeAoB7+EF7Ae1iY0Ir/cQXsJCs8ews7cWG5sXWGN0u5lvdng/AEhqJDUMTJHADqhDCC8zu/pADpRO7yVtPxrM7BxCKIF58ha+qQBIoREwc6GnmbWZr5N0ANbO2uS9Qx+Bh9Or3G1PgAswTtYdqLMenHoYY7xl/2D3DqdfsAssE/iC/nqVpGroL97i6EA1SD/1YwAAAABJRU5ErkJggg==);
+	-webkit-background-size: 8px 13px;
+	width: 8px;
+	height: 13px;
+}
+
+/*详细信息列表项**/
+.item {
+	background: #F3F4F7;
+	padding: 4px 6px;
+	border-bottom: 1px solid #CCC;
+}
+
+.item  .status {
+	color: #666;
+	float: right;
+}
+
+
+.star {
+	background: url('star.png');
+	width: 16px;
+	height: 16px;
+}
+
+.unstar {
+	background: url('star_grey.png');
+	width: 16px;
+	height: 16px;
+}
+
+
+</style>
+
+<script type="text/javascript">
+
+var project = {
+		
+	open:function() {
+		$('#toplist').fadeOut();
+		
+	}
+}
+
+</script>
+</head>
+<body>
+
+<div id="nav" class="nav">
+<table style="border: 0px;">
+	<tr>
+		<td width="50%">
+			<button>创建项目</button>
+			<button>增加人员</button>
+		
+		</td>
+		<td width="50%">
+		</td>
+	</tr>
+</table>
+
+<!-- 
+	 <span class="button" >创建项目</span>
+	 
+	 <span class="button" >增加人员</span>
+	 -->	
+</div>
+
+<div id="main">
+	<div class="left" >
+		<div id="toplist">
+			<div class="panda">
+				<div class="qi">项目列表</div>
+			</div>
+			<div onclick="project.open()" class="si Lm" ><div class="xi"><div class="cc Rc"></div></div><div class="cc Uc"></div>重要而且未读</div>
+			<div class="si Lm" ><div class="xi"><div class="cc Rc"></div></div><div class="cc Uc"></div>重要而且未读</div>
+			
+			<div class="panda">
+				<div class="qi">人员与资源</div>
+			</div>
+		</div>
+		
+		<div id="tasklist" style="display:none1">
+				<div class="item">
+					<div>
+						<div class="status">
+							执行中
+						</div>
+						<div class="title">
+							<span dir="ltr">分析思考地所得的发电量</span>
+						</div>
+					</div>
+					<div class="Tj">
+						<div class="B i  oj" onclick="_e(event, 'ga')">
+							<div class="J i Q pj"></div>
+						</div>
+						<div class="fr" onclick="project.mark()">
+							<div class="star"></div>
+						</div>
+						<div class="Nd ij">
+							<span class="Nj"><span class="cc Qc Pj"></span><span
+								class="cc ec"></span>
+							</span><span dir="ltr">预计启动  实际启动</span>
+						</div>
+					</div>
+					<div class="Vj">
+						<div class="tj"></div>
+						<div class="Nd jj">刘晗   完成状态 </div>
+					</div>
+				</div>
+
+
+				<div class="item">
+					<div>
+						<div class="status">
+							执行中
+						</div>
+						<div class="title">
+							<span dir="ltr">分析思考地所得的发电量</span>
+						</div>
+					</div>
+					<div class="Tj">
+						<div class="B i  oj" onclick="_e(event, 'ga')">
+							<div class="J i Q pj"></div>
+						</div>
+						<div class="fr" onclick="project.mark()">
+							<div class="unstar"></div>
+						</div>
+						<div class="Nd ij">
+							<span class="Nj"><span class="cc Qc Pj"></span><span
+								class="cc ec"></span>
+							</span><span dir="ltr">预计启动  实际启动</span>
+						</div>
+					</div>
+					<div class="Vj">
+						<div class="tj"></div>
+						<div class="Nd jj">刘晗   完成状态 </div>
+					</div>
+				</div>
+				
+				
+			</div>
+	</div>
+	<div class="right"> <h1>ss</h1> </div>
+</div>
+
+<div class="bottom nav"><button>退出</button></div>
+
+</body>
+</html>
