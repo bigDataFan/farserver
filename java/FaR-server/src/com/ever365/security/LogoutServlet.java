@@ -39,7 +39,14 @@ public class LogoutServlet extends HttpServlet {
 		String url = request.getRequestURI();
     	request.getSession().removeAttribute(SetUserFilter.AUTHENTICATION_USER);
     	cookieService.removeCookie(request);
-    	response.sendRedirect("/");
+    	
+    	String red = request.getParameter("redirect");
+    	
+    	if (red==null) {
+    		response.sendRedirect("/");
+    	} else {
+    		response.sendRedirect(red);
+    	}
 	}
 
 
