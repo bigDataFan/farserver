@@ -45,14 +45,12 @@
 							out.print("<font color='red'>" + session.getAttribute("loginError") + "</font>");
 						}	
 				    %>    
-					
 				</div>
 				
 				<div class="label">
 					  没有账号？请 <a href="/office/register.jsp">注册</a> 
 				</div>
 				<div class="label other">
-					 <img src="image/baidu.gif"></img> <a class="baidu" href="http://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id=waxDdavqGbR1K3qx19pyorqg&redirect_uri=http%3A%2F%2Fwww.ever365.com%2Foauth%2Fbaidu">用百度账号登陆 </a>
 					 &nbsp;<img src="http://static.youku.com/v1.0.0687/partner/img/ico_sina_16x16.png" alt="新浪微博"> <a href="/login/sina.jsp">用新浪微博账号登陆</a>
 				</div>
 				     	  

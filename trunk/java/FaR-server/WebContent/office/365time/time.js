@@ -70,7 +70,7 @@ office.time = {
 						$('#helloLink').hide();
 					} else {
 						$('#loginLink').hide();
-						$('#helloLink').html('您好 ' + data.userName);
+						$('#helloLink span').html('您好 ' + data.userName);
 						$('#helloLink').show();
 					}
 				}
