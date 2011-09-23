@@ -61,7 +61,7 @@ office.time = {
 			office.time.itemDetailView($(this).parent().parent().data("timedata"));
 		});
 		
-		$.getJSON("/service/authority/current", null, 
+		$.getJSON("/service/authority/current", {"r":new Date().getTime()}, 
 				function(data) {
 					office.currentUser = data.userName;
 					if (data.userName.indexOf('guest.')>-1) {
@@ -77,7 +77,7 @@ office.time = {
 		);
 		
 		$.getJSON("/service/office/time/info", 
-				null,
+				{"r":new Date().getTime()},
 				function(data){
 					$('#yesterdayTime').html(office.time.formatDura(data.yesterday));
 					$('#weekTime').html(office.time.formatDura(data.week));
