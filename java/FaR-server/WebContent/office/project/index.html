@@ -127,6 +127,22 @@ button:HOVER {
 	border-bottom: 1px solid #CCC;
 }
 
+.item .checkbox {
+	background: url('checkbox.png');
+	-webkit-background-size: 18px 19px;
+	width: 18px;
+	height: 19px;
+}
+
+.item .dotc {
+	float: left;
+	left: -7px;
+	margin: 2px -9px 0 2px;
+	padding: 7px;
+	position: relative;
+	top: -7px;
+}
+
 .item  .status {
 	color: #666;
 	float: right;
@@ -135,11 +151,9 @@ button:HOVER {
 
 .item .resource {
 	font-size: medium;
-	background: #EEE;
-	border: 1px solid #CCC;
-	border-radius: 3px;
 	font-size: 14px;
 	height: 21px;
+	margin-left: 28px;
 }
 
 .item .title {
@@ -157,10 +171,51 @@ button:HOVER {
 	height: 16px;
 }
 
-.unstar {
+.stargrey {
 	background: url('star_grey.png');
 	width: 16px;
 	height: 16px;
+}
+
+
+
+.right .title {
+	padding: 10px;
+}
+
+.right .title h2 {
+	font:16px;
+	font-weight:bold;
+	color: #ccc;
+	text-shadow: white 0 1px 0;
+}
+
+.right .content {
+	margin-top: 10px;
+	padding: 10px;
+	height: 500px;
+	
+	
+}
+.right .box {
+	padding:3px;
+	margin-top:5px;
+	-webkit-border-radius: 10px;
+	-webkit-box-shadow: 0 0 2px #afb1b8;
+	background: white;
+	border: 1px solid #AFB1B8;
+}
+
+.opers {
+	background: -webkit-gradient(linear,left top,left bottom,from(#F6F6F6),to(#EEE));
+	max-height: 50px;
+	border-top: 1px solid #CCC;
+	color: #00C;
+	white-space: nowrap;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px 10px;
+	border-bottom-right-radius: 10px 10px;
 }
 
 
@@ -221,24 +276,24 @@ var project = {
 							执行中
 						</div>
 						<div class="resource">
-							<span dir="ltr">刘晗 百灵</span>
+							<span >刘晗 百灵</span>
 						</div>
 					</div>
-					<div class="Tj">
-						<div class="B i  oj" onclick="_e(event, 'ga')">
-							<div class="J i Q pj"></div>
+					<div>
+						<div class="dotc" >
+							<div class="checkbox"></div>
 						</div>
 						<div class="fr" onclick="project.mark()">
 							<div class="star"></div>
 						</div>
-						<div class="Nd ij">
+						<div>
 							<span class="Nj"><span class="cc Qc Pj"></span><span
 								class="cc ec"></span>
 							</span>
 							<span class="title" dir="ltr">分析思考地所得的发电量</span>
 						</div>
 					</div>
-					<div class="Vj">
+					<div>
 						<div class="tj"></div>
 						<div class="info">刘晗   完成状态 </div>
 					</div>
@@ -250,33 +305,82 @@ var project = {
 						<div class="status">
 							执行中
 						</div>
-						<div class="title">
-							<span dir="ltr">分析思考地所得的发电量</span>
+						<div class="resource">
+							<span >刘晗 百灵</span>
 						</div>
 					</div>
-					<div class="Tj">
-						<div class="B i  oj" onclick="_e(event, 'ga')">
-							<div class="J i Q pj"></div>
+					<div>
+						<div class="dotc" >
+							<div class="checkbox"></div>
 						</div>
 						<div class="fr" onclick="project.mark()">
-							<div class="unstar"></div>
+							<div class="stargrey"></div>
 						</div>
-						<div class="Nd ij">
+						<div>
 							<span class="Nj"><span class="cc Qc Pj"></span><span
 								class="cc ec"></span>
-							</span><span dir="ltr">预计启动  实际启动</span>
+							</span>
+							<span class="title" dir="ltr">分析思考地所得的发电量</span>
 						</div>
 					</div>
-					<div class="Vj">
+					<div>
 						<div class="tj"></div>
-						<div class="Nd jj">刘晗   完成状态 </div>
+						<div class="info">刘晗   完成状态 </div>
 					</div>
 				</div>
 				
-				
 			</div>
 	</div>
-	<div class="right"> <h1>ss</h1> </div>
+	<div class="right">
+		<div class="title"><h2>开始进行没事的计划</h2> </div>
+		
+		<div class="content">
+			<div class="box">
+				<div class="user">
+					alisce
+				</div>
+				<div class="info">
+					<div class="time">2011-12-11 22:12</div>
+					<div class="oper">对项目的完成进度设置为了50%</div>
+					<div class="resource"></div>
+				</div>
+				
+				
+				
+			</div>
+			
+			<div class="box">
+				<div class="user">
+					alisce
+				</div>
+				<div class="info">
+					<div class="time">2011-12-11 22:12</div>
+					<div class="oper">对项目的完成进度设置为了50%</div>
+					<div class="resource"></div>
+				</div>
+				
+				
+				
+			</div>
+			
+			<div class="box">
+				<div class="user">
+					alisce
+				</div>
+				<div class="info">
+					<div class="time">2011-12-11 22:12</div>
+					<div class="oper">对项目的完成进度设置为了50%</div>
+					<div class="resource"></div>
+				</div>
+				
+				
+				<div class="opers">删除    </div>
+			</div>
+			
+			
+		</div>
+		
+	</div>
 </div>
 
 <div class="bottom nav"><button>退出</button></div>
