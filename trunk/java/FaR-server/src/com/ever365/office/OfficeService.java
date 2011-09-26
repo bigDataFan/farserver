@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.runner.SimpleTestCollector;
-
 import org.bson.types.ObjectId;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
