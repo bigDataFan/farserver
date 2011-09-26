@@ -49,13 +49,28 @@ var project = {
 		);
 	},
 	
+	listTask: function(id, cb) {
+		$.getJSON("/service/office/project/task/list",
+				{
+					"id":id,
+					"n": new Date().getTime() 
+				}, cb
+				);
+	},
+	
 	ui : {
 		
 		openProject : function (t) {
-			project.ui.drawProjectEdit(t);
+			//project.ui.drawProjectEdit(t);
 			project.ui.drawTasks(t.id);
 		},
 		
+		
+		drasTasks: function(id) {
+			listTask(function(data) {
+				
+			});
+		},
 		
 		
 		drawProjectEdit: function (projectData) {
