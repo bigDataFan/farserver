@@ -4,6 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>任务管理助手</title>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="project.js"></script>
+
 
 <style type="text/css">
 
@@ -101,7 +103,7 @@ button:HOVER {
 	font-size: 16px;
 	font-weight: bold;
 	background-color: white;
-	padding: 11px 11px 13px 6px;
+	padding: 11px 11px 13px 16px;
 	cursor: pointer;
 }
 
@@ -177,7 +179,7 @@ button:HOVER {
 	height: 16px;
 }
 
-
+/*右部内容样式*/
 
 .right .title {
 	padding: 10px;
@@ -190,13 +192,25 @@ button:HOVER {
 	text-shadow: white 0 1px 0;
 }
 
+
+
+
 .right .content {
-	margin-top: 10px;
+	border: 1px solid #DAE0E5;
+	border-radius: 10px;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-khtml-border-radius: 10px;
+
+-webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+-moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+	margin:10px;
 	padding: 10px;
 	height: 500px;
-	
-	
+	background: white;
+	--border: 1 solid #ccc;
 }
+
 .right .box {
 	padding:3px;
 	margin-top:5px;
@@ -219,19 +233,31 @@ button:HOVER {
 }
 
 
-</style>
-
-<script type="text/javascript">
-
-var project = {
-		
-	open:function() {
-		$('#toplist').fadeOut();
-		
-	}
+#createProjectForm div.label {
+	border-bottom: 1px solid #ccc;
+	padding: 14px 20px;
+	position: relative;
+	font-size: small;
 }
 
-</script>
+div.label input,  div.label select, div.label textarea{
+	
+	background: none repeat scroll 0 0 #F7F7F7;
+	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
+	border-radius: 2px;
+	min-width:200px;
+	border-style: solid;
+	border-width: 1px;
+	color: #222;
+	font-size: small;
+	outline: medium none;
+	padding: 5px;
+}
+
+
+
+</style>
+
 </head>
 <body>
 
@@ -239,7 +265,7 @@ var project = {
 <table style="border: 0px;">
 	<tr>
 		<td width="50%">
-			<button>创建项目</button>
+			<button onclick="project.ui.createProject();">创建项目</button>
 			<button>增加人员</button>
 		
 		</td>
@@ -258,11 +284,11 @@ var project = {
 <div id="main">
 	<div class="left" >
 		<div id="toplist">
-			<div class="panda">
+			<div class="projectlist">
 				<div class="qi">项目列表</div>
 			</div>
-			<div onclick="project.open()" class="si Lm" ><div class="xi"><div class="cc Rc"></div></div><div class="cc Uc"></div>重要而且未读</div>
-			<div class="si Lm" ><div class="xi"><div class="cc Rc"></div></div><div class="cc Uc"></div>重要而且未读</div>
+			
+			<div style="display:none" class="projectTemplate si"><div class="cc Uc"></div><span>重要而且未读11</span></div>
 			
 			<div class="panda">
 				<div class="qi">人员与资源</div>
@@ -332,9 +358,15 @@ var project = {
 			</div>
 	</div>
 	<div class="right">
-		<div class="title"><h2>开始进行没事的计划</h2> </div>
 		
-		<div class="content">
+		
+		<div class="content" id="mainwelcome">
+			<div class="title"><h2>欢迎使用ever项目与计划管理</h2> </div>
+			
+		</div>
+		
+		<div class="content" id="taskdetails" style="display: none">
+			<div class="title"><h2>开始进行没事的计划</h2> </div>
 			<div class="box">
 				<div class="user">
 					alisce
@@ -375,6 +407,48 @@ var project = {
 				
 				
 				<div class="opers">删除    </div>
+			</div>
+		</div>
+		
+		<div class="content" id="createProjectForm" style="display: none;">
+			<div class="title"><h2>创建一个新的项目</h2> </div>
+			<div class="label">
+				项目名称：  <input type="text" class="name" size="16" width="200"> 
+				</div>
+			<div class="label">
+				使用模板 ： 
+				<input type="password"" name="password" size="16" width="200">
+			</div>
+			
+			<div class="label">
+				描述 ： 
+				<textarea rows="4" cols="40"  class="desc" ></textarea>
+			</div>
+			<div class="label">
+				Status * ： 
+				<select class="status">
+						<option>未开始</option>
+						<option>进行中</option>
+						<option>暂停</option>
+						<option>已完成</option>
+						<option>中止</option>
+				</select> 
+			</div>
+			
+			<div class="label">
+				启动时间 ： 
+				<input type=text" class="start" size="16" width="200">
+			</div>
+			<div class="label">
+				完成时间 ： 
+				<input type=text" class="end"  size="16" width="200">
+			</div>
+			
+			
+			<div class="label">
+				<button onclick="project.ui.saveClose()">保存并关闭</button>
+				<button >保存</button>
+				<button onclick="project.ui.popCurrent()">取消</button>
 			</div>
 			
 			
