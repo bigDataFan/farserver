@@ -272,9 +272,10 @@ div.label input,  div.label select, div.label textarea{
 <table style="border: 0px; " width="100%">
 	<tr>
 		<td width="50%">
-			<button onclick="project.ui.createProject();">创建项目</button>
-			<button>增加人员</button>
-		
+			<button onclick="project.ui.createProject();" class="mainbtn">创建项目</button>
+			<button class="mainbtn">增加人员</button>
+			
+			<button style="display:none" class="return" onclick="project.ui.returnHome()">返回</button>
 		</td>
 		<td width="50%">
 			<button>编辑项目</button>
@@ -422,6 +423,25 @@ div.label input,  div.label select, div.label textarea{
 			</div>
 		</div>
 		
+		
+		
+		
+		<div class="content" id="projectView" style="display:none">
+				<div class="title"><h2>项目名称</h2> </div>
+				<div class="label">
+				   <div class="desc"></div> 
+				</div>
+				
+				<div class="label">
+				   <div class="status"></div> 
+				</div>
+				
+				<div class="label">
+				   预计时间<div class="start"></div>-<div class="end"></div> 
+				</div>
+		</div>
+		
+		
 		<div class="content" id="createProjectForm" style="display: none;">
 			<div class="title"><h2>创建一个新的项目</h2> </div>
 			<div class="label">
@@ -446,7 +466,6 @@ div.label input,  div.label select, div.label textarea{
 						<option>中止</option>
 				</select> 
 			</div>
-			
 			<div class="label">
 				启动时间 ： 
 				<input type=text" class="start" size="16" width="200">
@@ -455,15 +474,11 @@ div.label input,  div.label select, div.label textarea{
 				完成时间 ： 
 				<input type=text" class="end"  size="16" width="200">
 			</div>
-			
-			
 			<div class="label">
 				<button onclick="project.ui.saveClose()">保存并关闭</button>
 				<button >保存</button>
 				<button onclick="project.ui.popCurrent()">取消</button>
 			</div>
-			
-			
 		</div>
 		
 	</div>
