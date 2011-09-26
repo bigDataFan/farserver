@@ -61,9 +61,17 @@ button {
 	text-shadow: white 0 1px 0;
 }
 
+
+button.l {
+	background: url("rsz_down.png") 50px 5px no-repeat;
+	padding-right: 16px;
+}
+
+
 button:HOVER {
 	background: #4E7AD0;
 	color:white;
+	text-shadow: #4E7AD0 0 1px 0;
 }
 
 
@@ -241,7 +249,6 @@ button:HOVER {
 }
 
 div.label input,  div.label select, div.label textarea{
-	
 	background: none repeat scroll 0 0 #F7F7F7;
 	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
 	border-radius: 2px;
@@ -255,11 +262,6 @@ div.label input,  div.label select, div.label textarea{
 }
 
 
-
-button.l {
-	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAABCCAYAAABaQIagAAACmUlEQVRYhc2Yy2sTURSHB+myuC/ixq3dd9l9QBe6k+J/Ie5qWhBEKV2IKIJNbdOiKApdVBeKj1WIBaUYo7Y1SfOaJjN5NOQxNybX86szMs1tbefAhQ58MPd3zvlymVmEuYaU0vBz41FhhJggbhJRYtkl6maojQzODUpCxLxv+DDQE1JEFA4R173GN2u7MavWtXp92ZfuhXtkqPmEmBnyi66icP9leSVjOll5xIUe9LqyiT0R3Zz1noVd79p92kO325OO05Ptzu99IEMNPdid79md+beb958bcTQ1W91jgV7MeLsypiKFWSzy5Y7daAoZhFyps7crcswY4bnCIhbVuujVG0IGwa45DmanI4WI4b2B6q6QHLz5Eyyq1IXkoE9kU8hBFdXwOoOjiCwKOegTlatCctAnKlHIQRVVqMBAEe1QyEEV2VRgoIhMCjnoExUtITnoExXKQnLQJ8pTyEER5Ur4nwqOPlF2R0gO+kTbppAc9IkyFHJQROmikBz0iVIFITnoE/2ikIMqylOBgSLaopCDPtFmTkgO+kQbWSE56BP9pJCDKtqmAgNF9INCDvpE3zNCcjjBoqm5v9+zibToJakQhK8pR2B2OlJcMG5FzYdYrCXblWSaGgLwKdm2MXt7yXxgRFatMBbP3tXi36gYBMxgdn7VmjTWt1qX6bt2CQH9QuW4kri7G8yub7Yu4QBhlIxTCGefllY+fmlmj5KgB72YefzKDpPjPESnO6J/8e7z0oz3Bp68rcViibaVSAnpBxlqXh9mMAuHd0gySlx48aF6jT69F73Gw0APejGD3fhPa04RYyhs5DpXFl7bk3eWzXuDAmSooceVjLmz+499iHNEyG36HyG39+DzI5dhd7vjBwjG3drw4NwfqB39XklcId0AAAAASUVORK5CYII=) 8 8 10 8;
-	border-width: 4px 4px 5px;
-}
 
 </style>
 
@@ -277,7 +279,7 @@ button.l {
 		<td width="50%">
 			<button>编辑项目</button>
 			<button>增加任务</button>
-			<button class="l"></button>
+			<button class="l">更多操作</button>
 			
 			
 		</td>
