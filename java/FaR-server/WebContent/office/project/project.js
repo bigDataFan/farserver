@@ -60,14 +60,24 @@ var project = {
 	
 	ui : {
 		
+		returnHome : function () {
+			project.ui.popCurrent();
+			$('button.mainbtn').show();
+			$('button.return').hide();
+		},
+		
 		openProject : function (t) {
 			//project.ui.drawProjectEdit(t);
+			$('button.mainbtn').hide();
+			$('button.return').show();
 			project.ui.drawTasks(t.id);
 		},
 		
 		
+		
+		
 		drasTasks: function(id) {
-			listTask(function(data) {
+			listTask(id, function(data) {
 				
 			});
 		},
