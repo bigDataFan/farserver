@@ -58,6 +58,41 @@ public class ProjectService {
 		return formatResult(dbo);
 	}
 	
+	@RestService(method="POST", uri="/office/project/task/update")
+	public Map<String,Object> updateTask(
+			@RestParam(value="id")String id,
+			@RestParam(value="project")String project,
+			@RestParam(value="name")String name,
+			@RestParam(value="desc")String desc,
+			@RestParam(value="priority")String priority,
+			@RestParam(value="start")String start,
+			@RestParam(value="end")String end,
+			@RestParam(value="resource")String resource,
+			@RestParam(value="progress")String progress
+			) {
+		
+		DBObject dbo = new BasicDBObject();
+		dbo.put("project", project);
+		dbo.put("name", name);
+		dbo.put("desc", desc);
+		dbo.put("priority", priority);
+		dbo.put("start", start);
+		dbo.put("end", end);
+		dbo.put("resource", resource);
+		dbo.put("progress", progress);
+		
+		
+		dbo.put("creator", AuthenticationUtil.getCurrentUser());
+		if (id==null) {
+			getTaskCollection().insert(dbo);
+		} else {
+			getTaskCollection().update(new BasicDBObject("_id", new ObjectId(id)), dbo);
+			dbo.put("id", id);
+		}
+		
+		return formatResult(dbo);
+	}
+	
 	@RestService(method="GET", uri="/office/project/list")
 	public List<Map<String,Object>> getProjectList() {
 		DBCursor cursor = getProjectCollection().find(new BasicDBObject("creator", AuthenticationUtil.getCurrentUser()));
@@ -66,7 +101,47 @@ public class ProjectService {
 		while (cursor.hasNext()) {
 			result.add(formatResult(cursor.next()));
 		}
+		return result;
+	}
+	
+
+	@RestService(method="POST", uri="/office/project/updateres")
+	public Map<String,Object> updateResource(@RestParam(value="name")String name, 
+			@RestParam(value="type")String type) {
 		
+		DBObject res = new BasicDBObject().append("name", name).append("type", type).append("owner", AuthenticationUtil.getCurrentUser());
+		
+		getResourceCollection().update(new BasicDBObject().append("name", name),
+				res, true, false);
+		
+		return formatResult(res);
+	}
+	
+	@RestService(method="GET", uri="/office/project/resources")
+	public List<Map<String,Object>> getResources() {
+		DBCursor cursor = getResourceCollection().find(new BasicDBObject("creator", AuthenticationUtil.getCurrentUser()));
+		
+		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
+		while (cursor.hasNext()) {
+			result.add(formatResult(cursor.next()));
+		}
+		
+		if (result.size()==0) {
+			Map<String, Object> added = updateResource(AuthenticationUtil.getCurrentUser(), "owner");
+			result.add(added);
+		}
+		return result;
+	}
+	
+	
+	@RestService(method="GET", uri="/office/project/task/list")
+	public List<Map<String,Object>> getTaskList(@RestParam(value="project")String project) {
+		DBCursor cursor = getTaskCollection().find(new BasicDBObject("creator", AuthenticationUtil.getCurrentUser()).append("project", project));
+		
+		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
+		while (cursor.hasNext()) {
+			result.add(formatResult(cursor.next()));
+		}
 		return result;
 	}
 	
@@ -83,6 +158,22 @@ public class ProjectService {
 	private DBCollection getProjectCollection() {
 		DBCollection coll = dataSource.getDB("office").getCollection("projects");
 		coll.ensureIndex("creator");
+		
+		return coll;
+	}
+	
+	private DBCollection getResourceCollection() {
+		DBCollection coll = dataSource.getDB("office").getCollection("resources");
+		coll.ensureIndex("creator");
+		
+		return coll;
+	}
+	
+	
+	private DBCollection getTaskCollection() {
+		DBCollection coll = dataSource.getDB("office").getCollection("tasks");
+		coll.ensureIndex("creator");
+		coll.ensureIndex("project");
 		
 		return coll;
 	}
