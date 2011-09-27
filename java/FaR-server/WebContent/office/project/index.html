@@ -272,15 +272,15 @@ div.label input,  div.label select, div.label textarea{
 <table style="border: 0px; " width="100%">
 	<tr>
 		<td width="50%">
-			<button onclick="project.ui.drawCreateProject();" class="mainbtn">创建项目</button>
-			<button class="mainbtn">增加人员</button>
-			
-			<button style="display:none" class="return" onclick="project.ui.returnHome()">返回</button>
+			<button onclick="project.ui.dialogEdit(null);" class="lbtn" id="btn-add-proj"> 创建项目</button>
+			<button class="lbtn" id="btn-add-res">增加人员</button>
+			<button style="display:none"  onclick="project.ui.returnHome()" class="lbtn" id="btn-return-main">返回</button>
 		</td>
 		<td width="50%">
-			<button>编辑项目</button>
-			<button onclick="project.ui.drawAddTask()">增加任务</button>
-			<button class="l">更多操作</button>
+			<button class="rbtn" id="btn-close">关闭</button>
+			<button class="rbtn" id="btn-edit-proj">编辑项目</button>
+			<button class="rbtn" id="btn-add-task" onclick="project.ui.drawAddTask()">增加任务</button>
+			<button class="l rbtn" id="btn-add-more">增加</button>
 			
 			
 		</td>
@@ -373,7 +373,7 @@ div.label input,  div.label select, div.label textarea{
 	<div class="right">
 		
 		
-		<div class="content" id="mainwelcome">
+		<div class="content" id="mainwelcome" style="display:none">
 			<div class="title"><h2>欢迎使用ever项目与计划管理</h2> </div>
 			
 		</div>
@@ -548,7 +548,7 @@ div.label input,  div.label select, div.label textarea{
 					<option value="100">100%</option>
     			</select>
 			</div>
-			<div class="label">
+			<div class="label opers">
 				<button onclick="project.ui.saveTask()">保存</button>
 				<a href="javascript:project.ui.removeTask()" >删除</a>
 			</div>
