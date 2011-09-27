@@ -5,34 +5,48 @@
 $(document).ready(function(){
 	
 	project.ui.setCurrent($('#mainwelcome'));
-	project.ui.drawProjectList();
 	
-	//project.ui.slideback();
-	
+	project.load();
 });
 
 var project = {
+	
+	load: function() {
 		
+		$.getJSON('/service/office/project/list', 
+				{d:new Date().getTime()}, 
+					function(data) {
+						project.storage.projects = data;
+						$.getJSON("/service/office/project/resources",
+							{d:new Date().getTime()},
+							function (data) {
+								project.storage.resources = data;
+								project.ui.drawProjectList();
+								project.ui.drawResourceList();
+						})
+				}
+		);
+		
+	},
 	
 	open:function() {
 		$('#toplist').fadeOut();
 	},
 	
 	
-	save:function(proj, cb) {
+	save:function(proj) {
 		if (proj.id==null) {
 			$.post("/service/office/project/update",
 					proj,
 					function(data) {
-						project.ui.popCurrent();
-						project.ui.addProject(data);
+						project.storage.projects.push(data);
+						project.ui.drawAddProject(data);
 					}
 			);
 		} else {
 			$.post("/service/office/project/update",
 					proj,
 					function(data) {
-						project.ui.popCurrent();
 						project.ui.addProject(data);
 					}
 			);
@@ -40,32 +54,66 @@ var project = {
 	},
 
 	
+	saveTask:function(task) {
+		if (task.id==null) {
+			$.post("/service/office/project/updateTask",
+					task,
+					function(data) {
+						project.ui.drawUpdateTask(data);
+					}
+			);
+		} else {
+			$.post("/service/office/project/updateTask",
+					task,
+					function(data) {
+						project.ui.drawAddTask(data);
+					}
+			);
+		}
+	},
+	
+	updateTask: function(taskData,cb) {
+		$.post("/service/office/project/task/update",
+				taskData, 
+				cb);
+	},
+	
+	listTask: function(id) {
+		$.getJSON("/service/office/project/task/list",
+				{
+					"project":id,
+					"n": new Date().getTime() 
+				}, function (data) {
+					project.ui.drawTaskList(data);
+				});
+	},
 	
 	
-	list: function(cb) {
-
-		$.getJSON('/service/office/project/list', 
-				{d:new Date().getTime()}, cb
+	
+	getTaskEvents: function(id) {
+		$.getJSON("/service/office/project/task/events",
+				{	"id":id, "n": new Date().getTime() },
+				function(data) {
+					project.ui.drawTaskEvents(data);
+				}
 		);
 	},
 	
-	listTask: function(id, cb) {
-		$.getJSON("/service/office/project/task/list",
-				{
-					"id":id,
-					"n": new Date().getTime() 
-				}, cb
-				);
+	storage: {
+		projects : null,
+		resources: null
 	},
 	
 	ui : {
-		
+		//点击返回到主页面
 		returnHome : function () {
 			project.ui.popCurrent();
 			$('button.mainbtn').show();
 			$('button.return').hide();
 		},
 		
+		
+		//点击项目， 进入展示的第二层
 		openProject : function (t) {
 			//project.ui.drawProjectEdit(t);
 			$('button.mainbtn').hide();
@@ -73,16 +121,11 @@ var project = {
 			project.ui.drawTasks(t.id);
 		},
 		
-		
-		
-		
-		drasTasks: function(id) {
-			listTask(id, function(data) {
-				
-			});
+		drawTasks: function(id) {
+			
 		},
 		
-		
+		//显示编辑项目窗口
 		drawProjectEdit: function (projectData) {
 			$('#createProjectForm .name').val(projectData.name);
 			$('#createProjectForm .desc').val(projectData.desc);
@@ -94,16 +137,20 @@ var project = {
 			project.ui.setCurrent($('#createProjectForm'));
 		},
 		
-		drawProjectList: function () {
-			project.list(function(data) {
-				for ( var i = 0; i < data.length; i++) {
-					project.ui.addProject(data[i]);
-				}
-			});
+		//绘制资源列表
+		drawResourceList : function() {
+			
 		},
 		
+		//绘制项目列表 
+		drawProjectList: function () {
+			for ( var i = 0; i < project.storage.projects.length; i++) {
+				project.ui.drawAddProject(project.storage.projects[i]);
+			}
+		},
 		
-		addProject: function(proj) {
+		//绘制单个项目UI
+		drawAddProject: function(proj) {
 			var projdiv = $('div.projectTemplate').clone();
 			projdiv.removeClass('projectTemplate');
 			projdiv.data('projectData', proj);
@@ -116,25 +163,50 @@ var project = {
 			});
 		},
 		
+		//绘制Task列表
+		drawTaskList: function(tasks) {
+			for ( var i = 0; i < tasks.length; i++) {
+				
+			}
+		},
 		
+		//绘制单个增加Task
+		drawAddOneTask:function(task) {
+			var cloned = $('div.taskItemTemplate').clone();
+			
+			cloned.find('priority').html(task.priority);
+			cloned.find('name').html(task.name);
+			cloned.find('resource').html(task.resource);
+			
+			$('#tasklist').append(cloned);
+			cloned.fadeIn('fast');
+		},
+		
+		
+		//显示创建项目框
+		drawCreateProject: function() {
+			$('#createProjectForm input, #createProjectForm textarea').val('');
+			$('#createProjectForm').data("projectData", null);
+			project.ui.setCurrent($('#createProjectForm'));
+		},
+		
+		
+		
+		//显示创建任务框
+		drawAddTask : function(projname) {
+			$('#editTaskForm input #editTaskForm textarea').val('');
+			$('##editTaskForm').data("taskData", null);
+			project.ui.setCurrent($('#editTaskForm'));
+		},
+		
+		//设置右边当前呈现的层
 		setCurrent : function (data) {
 			project.ui.currentContent = data;
 			project.ui.contentStacks.push(data);
 			$('div.right .content').slideUp("fast");
 			data.slideDown('fast');
 		},
-		
-
-		createProject: function() {
-			$('#createProjectForm input, #createProjectForm textarea').val('');
-			$('#createProjectForm').data("projectData", null);
-			project.ui.setCurrent($('#createProjectForm'));
-		},
-		
-		editProject: function(proj) {
-			
-		},
-		
+		//Pop当前在右边显示的层 
 		popCurrent: function () {
 			if (project.ui.contentStacks.length>1) {
 				project.ui.contentStacks.pop();
@@ -146,7 +218,40 @@ var project = {
 		
 		contentStacks: [],
 		
-		saveClose: function() {
+		
+		saveProgressNotes: function() {
+			
+		} ,
+		
+		saveMessage: function() {
+			
+		},
+		
+		saveFile:function() {
+			
+		},
+
+		//保存任务编辑信息
+		saveTask: function() {
+			var taskData = new Object();
+			if ($('#editTaskForm').data('taskData')!=null) {
+					//表示更新
+				taskData  = $('#editTaskForm').data('taskData');
+			}
+			
+			taskData.project = $('#editTaskForm .project').val();
+			taskData.name = $('#editTaskForm .name').val();
+			taskData.desc = $('#editTaskForm .desc').val();
+			taskData.priority = $('#editTaskForm .priority').val();
+			taskData.start = $('#editTaskForm .start').val();
+			taskData.end = $('#editTaskForm .end').val();
+			taskData.resource = $('#editTaskForm .resource').val();
+			taskData.progress = $('#editTaskForm .progress').val();
+			project.saveTask(taskData);
+		},
+		
+		//保存项目编辑信息
+		saveProject: function() {
 			
 			if ($('#createProjectForm').data('projectData')==null) {
 				var new_proj = {
@@ -156,7 +261,7 @@ var project = {
 						start: $('#createProjectForm .start').val(),
 						end: $('#createProjectForm .end').val()				
 				};
-				project.save(new_proj, project.ui.popCurrent());
+				project.save(new_proj);
 			} else {
 				var proj = $('#createProjectForm').data('projectData');
 				proj.name = $('#createProjectForm .name').val();
@@ -171,3 +276,8 @@ var project = {
 	}
 
 };
+
+
+$('#ajaxInfos').ajaxSend(function() {
+	$(this).text('正在发送请求');
+});
