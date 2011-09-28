@@ -5,72 +5,79 @@
 $(document).ready(function(){
 	project.load();
 	resource.load();
-	layout.home();
+	layout.go('main', $('#mainwelcome'), ['btn-add-proj','btn-add-res']);
 });
 
 var project = {
 	
+	loaded: [],
 	load: function() {
 		
 		$.getJSON('/service/office/project/list', 
 				{d:new Date().getTime()}, 
 					function(data) {
-						project.storage.projects = data;
+						project.loaded = data;
 						project.ui.drawProjectList();
 				}
 		);
 	},
 	
-	open:function() {
-		$('#toplist').fadeOut();
-	},
-	
-	
-	save:function(proj) {
-		if (proj.id==null) {
-			$.post("/service/office/project/update",
-					proj,
-					function(data) {
-						project.storage.projects.push(data);
-						project.ui.drawAddProject(data);
+	save:function(projectData) {
+		$.post("/service/office/project/update",
+				projectData,
+				function(data) {
+					var result = jQuery.parseJSON(data); 
+					if (projectData.id==null) {
+						project.loaded.push(data);
 					}
-			);
-		} else {
-			$.post("/service/office/project/update",
-					proj,
-					function(data) {
-					}
-			);
-		}
+					layout.close();
+					project.ui.drawAddProject(result);
+					project.ui.refreshView(result);
+				}
+		);
 	},
-	
 	
 	storage: {
 		projects : null,
 		resources: null
 	},
 	
+	
+	
 	ui : {
+		
+		refreshView: function(projectData) {
+			$('#projectView div.title h2').html(projectData.name);
+			$('#projectView div.desc').html(projectData.desc.replace(/\n/g,"<br>"));
+			$('#projectView div.status').html(projectData.status);
+			
+			$('#projectView .start').html(projectData.start);
+			$('#projectView .end').html(projectData.end);
+		},
+		
+		currentProject: null,
 		
 		//点击项目， 进入展示的第二层
 		openProject : function (t) {
-			//project.ui.drawProjectEdit(t);
-			$('button.mainbtn').hide();
-			$('button.return').show();
-			project.ui.drawTasks(t.id);
-		},
-		
-		drawTasks: function(id) {
+			project.ui.currentProject = t;
+			layout.go('task', $('#projectView'), ["btn-return-main", 'btn-edit-proj', 'btn-add-task']);
 			
+			task.list(t.id);
+			project.ui.refreshView(t);
 		},
 
+		edit:function() {
+			if (project.ui.currentProject!=null) {
+				project.ui.dialogEdit(project.ui.currentProject);
+			}
+		},
 		//显示编辑项目窗口
 		dialogEdit: function (projectData) {
 			if (projectData==null) {
 				$('#createProjectForm input, #createProjectForm textarea').val('');
 				$('#createProjectForm').data("projectData", null);
 				$('#createProjectForm div.opers a').hide();
-				
+				layout.go(null, $('#createProjectForm'), ["btn-close",'btn-project-save']);
 			} else {
 				$('#createProjectForm .name').val(projectData.name);
 				$('#createProjectForm .desc').val(projectData.desc);
@@ -79,52 +86,44 @@ var project = {
 				$('#createProjectForm .end').val(projectData.end);
 				$('#createProjectForm .id').val(projectData.id);
 				$('#createProjectForm').data('projectData', projectData);
+				layout.go(null, $('#createProjectForm'), ["btn-close",'btn-project-save','btn-project-remove']);
 			}
-			
-			layout.right.setCurrent($('#createProjectForm'));
+			//layout.setButton(["btn-close"]);
 		},
 		
 		//保存项目编辑信息
 		saveProject: function() {
-			
-			if ($('#createProjectForm').data('projectData')==null) {
-				var new_proj = {
-						name: $('#createProjectForm .name').val(),
-						desc: $('#createProjectForm .desc').val(),
-						status: $('#createProjectForm .status').val(),
-						start: $('#createProjectForm .start').val(),
-						end: $('#createProjectForm .end').val()				
-				};
-				project.save(new_proj);
-				$('#createProjectForm').data('projectData', new_proj);
-			} else {
-				var proj = $('#createProjectForm').data('projectData');
-				proj.name = $('#createProjectForm .name').val();
-				proj.desc = $('#createProjectForm .desc').val();
-				proj.status = $('#createProjectForm .status').val();
-				proj.start = $('#createProjectForm .start').val();
-				proj.end = $('#createProjectForm .end').val();
-				
-				project.save(proj, project.ui.popCurrent());
+			var projectData = $('#createProjectForm').data('projectData');
+			if (projectData==null) {
+				projectData = {};
 			}
+			projectData.name = $('#createProjectForm .name').val();
+			projectData.desc = $('#createProjectForm .desc').val();
+			projectData.status = $('#createProjectForm .status').val();
+			projectData.start = $('#createProjectForm .start').val();
+			projectData.end = $('#createProjectForm .end').val();
+			project.save(projectData);
 		},
-		
-		
 		
 		//绘制项目列表 
 		drawProjectList: function () {
-			for ( var i = 0; i < project.storage.projects.length; i++) {
-				project.ui.drawAddProject(project.storage.projects[i]);
+			for ( var i = 0; i < project.loaded.length; i++) {
+				project.ui.drawAddProject(project.loaded[i]);
 			}
 		},
 		
 		//绘制单个项目UI
 		drawAddProject: function(proj) {
-			var projdiv = $('div.projectTemplate').clone();
-			projdiv.removeClass('projectTemplate');
+			var projdiv = $('#project_'+proj.id);
+			if (projdiv.length==0) {
+				projdiv = $('div.projectTemplate').clone();
+				$('div.projectlist').after(projdiv);
+				projdiv.removeClass('projectTemplate');
+			}
+			projdiv.attr("id", 'project_'+proj.id);
 			projdiv.data('projectData', proj);
 			projdiv.find('span').html(proj.name);
-			$('div.projectlist').after(projdiv);
+		
 			projdiv.show();
 			
 			projdiv.click(function(data) {
@@ -152,13 +151,12 @@ var project = {
 
 
 var task = {
-	
-
 	save: function(taskData) {
 		$.post("/service/office/project/task/update",
 				taskData, 
-				function(){
-					task.ui.addOrUpdate();
+				function(data){
+					var result = jQuery.parseJSON(data);
+					task.ui.addOrUpdate(result);
 				});
 	},
 	
@@ -172,7 +170,9 @@ var task = {
 				});
 	},
 	
-	
+	mark: function(taskData) {
+		
+	},
 	
 	getTaskEvents: function(id) {
 		$.getJSON("/service/office/project/task/events",
@@ -184,6 +184,16 @@ var task = {
 	},
 	
 	ui : {
+		
+		current : null,
+		
+		//点击任务， 打开任务的活动，进入任务视图
+		open: function(t) {
+			var taskData = $(t).data('taskData');
+			task.ui.current = taskData;
+			layout.go(null, $('#taskdetails'), ['btn-return-main', 'btn-add-task', 'btn-task-edit','btn-add-more']);
+		},
+		
 		//保存任务编辑信息
 		save: function() {
 			var taskData = new Object();
@@ -191,7 +201,6 @@ var task = {
 				//表示更新
 				taskData  = $('#editTaskForm').data('taskData');
 			}
-			
 			taskData.project = $('#editTaskForm .project').val();
 			taskData.name = $('#editTaskForm .name').val();
 			taskData.desc = $('#editTaskForm .desc').val();
@@ -205,8 +214,9 @@ var task = {
 	
 		//绘制Task列表
 		list: function(tasks) {
+			//$('#tasklist').html('');
 			for ( var i = 0; i < tasks.length; i++) {
-				
+				task.ui.addOrUpdate(tasks[i]);
 			}
 		},
 		
@@ -219,21 +229,56 @@ var task = {
 			} else {
 				taskDiv = $('#task' + taskData.id);
 			}
-			
-			
-			taskDiv.find('priority').html(taskData.priority);
-			taskDiv.find('name').html(taskData.name);
-			taskDiv.find('resource').html(taskData.resource);
-			
-			cloned.fadeIn('fast');
+			taskDiv.removeClass('taskItemTemplate').addClass('item');
+			taskDiv.attr('id', 'task' + taskData.id);
+			taskDiv.find('.priority').html(taskData.priority);
+			taskDiv.find('.title').html(taskData.name);
+			taskDiv.find('.resource').html(taskData.resource);
+			taskDiv.data('taskData', taskData);
+			taskDiv.fadeIn('fast');
 		},
 		
 		//显示创建任务框
-		editDialog : function(projname, taskData) {
-			if (taskData==null)  {
+		dialogEdit : function(t) {
+			
+			var projectSelect = $('#editTaskForm select.project');
+			projectSelect.html('');
+			for ( var i = 0; i < project.loaded.length; i++) {
+				projectSelect.append('<option value="' + project.loaded[i].id + '">' + project.loaded[i].name + '</option>');
+			}
+			
+			projectSelect.val(project.ui.currentProject.id);
+			
+			if (t==null)  {
 				$('#editTaskForm input #editTaskForm textarea').val('');
-				$('##editTaskForm').data("taskData", null);
-				project.ui.setCurrent($('#editTaskForm'));
+				$('#editTaskForm').data("taskData", null);
+				layout.go(null, $('#editTaskForm'), ['btn-close','btn-task-save']);
+			} else {
+				taskData = task.ui.current;
+				if (taskData!=null) {
+					$('#editTaskForm').data('taskData', taskData);
+					$('#editTaskForm .name').val(taskData.name);
+					$('#editTaskForm .desc').val(taskData.desc);
+					$('#editTaskForm .priority').val(taskData.priority);
+					$('#editTaskForm .start').val(taskData.start);
+					$('#editTaskForm .end').val(taskData.end);
+					$('#editTaskForm .progress').val(taskData.progress);
+					layout.go(null, $('#editTaskForm'), ['btn-close','btn-task-save','btn-task-remove']);
+				}
+			}
+		},
+		
+		mark: function(t) {
+			var p = $(t).parent().parent().parent();
+			if (p.hasClass('item')) {
+				task.mark(p.data("taskData"));
+				
+				
+				if ($(t).hasClass('mark')) {
+					$(t).removeClass('mark').addClass('unmark');
+				} else{
+					$(t).removeClass('unmark').addClass('mark');
+				}
 			}
 		}
 	}
@@ -282,7 +327,29 @@ var resource = {
 
 
 var layout = {
+	go: function(left, right, btn) {
+		if (left=="main") {
+			$('#toplist').show();
+			$('#tasklist').hide();
+		} 
+		if (left=="task") {
+			$('#toplist').hide();
+			$('#tasklist').show();
+		}
 		
+		layout.right.setCurrent(right);
+		layout.setButton(btn);
+	},
+	
+	btns:[],
+	
+	close: function() {
+		layout.right.popCurrent();
+		layout.btns.pop();
+		var btn = layout.btns.pop();
+		layout.setButton(btn);
+	} ,
+	
 	right : {
 		//设置右边当前呈现的层
 		setCurrent : function (data) {
@@ -306,20 +373,19 @@ var layout = {
 		contentStacks: []
 	},
 	
-	setButton:function(btns) {
+	setButton:function(btn) {
 		$('button.lbtn, button.rbtn').hide();
-		for ( var i = 0; i < btns.length; i++) {
-			$('#' + btns[i]).show();
+		layout.btns.push(btn);
+		for ( var i = 0; i < btn.length; i++) {
+			$('#' + btn[i]).show();
 		}
 	},
 	
 	//点击返回到主页面
 	home : function () {
-		$('#tasklist').fadeOut();
-		$('#toplist').fadeIn();
-		layout.right.setCurrent($('#mainwelcome'));
-		layout.setButton(['btn-add-proj','btn-add-res']);
+		layout.go('main', $('#mainwelcome'), ['btn-add-proj','btn-add-res']);
 	}
+	
 	
 	
 }
