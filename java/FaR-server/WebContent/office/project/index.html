@@ -16,7 +16,7 @@
 
 
 .fr {
-	float: right;
+	float: right;	
 }
 
 .fl {
@@ -63,7 +63,7 @@ button {
 
 
 button.l {
-	background: url("rsz_down.png") 50px 5px no-repeat;
+	background: url("rsz_down.png") 30px 5px no-repeat;
 	padding-right: 16px;
 }
 
@@ -137,6 +137,11 @@ button:HOVER {
 	border-bottom: 1px solid #CCC;
 }
 
+.item:HOVER {
+	background: #D6E0FA;
+	cursor: pointer;
+}
+
 .item .checkbox {
 	background: url('checkbox.png');
 	-webkit-background-size: 18px 19px;
@@ -153,7 +158,7 @@ button:HOVER {
 	top: -7px;
 }
 
-.item  .status {
+.item  .priority {
 	color: #666;
 	float: right;
 	font-size: small;
@@ -175,17 +180,18 @@ button:HOVER {
 	color: #666;
 }
 
-.star {
+div.star .unmark {
+	background: url('star_grey.png');
+	width: 16px;
+	height: 16px;
+}
+
+div.star .mark {
 	background: url('star.png');
 	width: 16px;
 	height: 16px;
 }
 
-.stargrey {
-	background: url('star_grey.png');
-	width: 16px;
-	height: 16px;
-}
 
 /*右部内容样式*/
 
@@ -206,17 +212,24 @@ button:HOVER {
 .right .content {
 	border: 1px solid #DAE0E5;
 	border-radius: 10px;
--moz-border-radius: 10px;
--webkit-border-radius: 10px;
--khtml-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	-webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+	 margin:10px;
+	 padding: 10px;
+	 height: 500px;
+	 background: white;
+	 overflow-y: scroll;
+	 
+}
 
--webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
--moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
-	margin:10px;
-	padding: 10px;
-	height: 500px;
-	background: white;
-	--border: 1 solid #ccc;
+.right .list {
+	position:relative;
+	top: 0px;
+	left: 0px;
+
 }
 
 .right .box {
@@ -241,7 +254,7 @@ button:HOVER {
 }
 
 
-#createProjectForm div.label {
+div.content div.label {
 	border-bottom: 1px solid #ccc;
 	padding: 14px 20px;
 	position: relative;
@@ -274,15 +287,18 @@ div.label input,  div.label select, div.label textarea{
 		<td width="50%">
 			<button onclick="project.ui.dialogEdit(null);" class="lbtn" id="btn-add-proj"> 创建项目</button>
 			<button class="lbtn" id="btn-add-res">增加人员</button>
-			<button style="display:none"  onclick="project.ui.returnHome()" class="lbtn" id="btn-return-main">返回</button>
+			<button style="display:none"  onclick="layout.home()" class="lbtn" id="btn-return-main">返回项目列表</button>
+			<button class="rbtn" id="btn-edit-proj" onclick="project.ui.edit()">编辑项目</button>
 		</td>
 		<td width="50%">
-			<button class="rbtn" id="btn-close">关闭</button>
-			<button class="rbtn" id="btn-edit-proj">编辑项目</button>
-			<button class="rbtn" id="btn-add-task" onclick="project.ui.drawAddTask()">增加任务</button>
+			<button class="rbtn" id="btn-close" onclick="layout.close()">关闭</button>
+			<button class="rbtn" id="btn-add-task" onclick="task.ui.dialogEdit(null)">增加任务</button>
+			<button class="rbtn" id="btn-task-edit" onclick="task.ui.dialogEdit(this)">编辑任务</button>
+			<button class="rbtn" id="btn-project-save" onclick="project.ui.saveProject()">保存项目</button>
+			<button class="rbtn" id="btn-project-remove" onclick="project.ui.removeProject()">删除项目</button>
+			<button class="rbtn" id="btn-task-save" onclick="task.ui.save()">保存任务</button>
+			<button class="rbtn" id="btn-task-remove" onclick="task.ui.remove()">删除任务</button>
 			<button class="l rbtn" id="btn-add-more">增加</button>
-			
-			
 		</td>
 	</tr>
 </table>
@@ -309,9 +325,9 @@ div.label input,  div.label select, div.label textarea{
 		</div>
 		
 		<div id="tasklist" style="display:none1">
-				<div class="taskItemTemplate" style="display:none">
+				<div class="taskItemTemplate" style="display:none" onclick="task.ui.open(this)">
 					<div>
-						<div class="status">
+						<div class="priority">
 							执行中
 						</div>
 						<div class="resource">
@@ -322,8 +338,8 @@ div.label input,  div.label select, div.label textarea{
 						<div class="dotc" >
 							<div class="checkbox"></div>
 						</div>
-						<div class="fr" onclick="project.mark()">
-							<div class="star"></div>
+						<div class="star fr">
+							<div class="mark" onclick="task.ui.mark(this)"></div>
 						</div>
 						<div>
 							<span class="Nj"><span class="cc Qc Pj"></span><span
@@ -337,48 +353,17 @@ div.label input,  div.label select, div.label textarea{
 						<div class="info">刘晗   完成状态 </div>
 					</div>
 				</div>
-
-
-				<div class="item">
-					<div>
-						<div class="status">
-							执行中
-						</div>
-						<div class="resource">
-							<span >刘晗 百灵</span>
-						</div>
-					</div>
-					<div>
-						<div class="dotc" >
-							<div class="checkbox"></div>
-						</div>
-						<div class="fr" onclick="project.mark()">
-							<div class="stargrey"></div>
-						</div>
-						<div>
-							<span class="Nj"><span class="cc Qc Pj"></span><span
-								class="cc ec"></span>
-							</span>
-							<span class="title" dir="ltr">分析思考地所得的发电量</span>
-						</div>
-					</div>
-					<div>
-						<div class="tj"></div>
-						<div class="info">刘晗   完成状态 </div>
-					</div>
-				</div>
-				
 			</div>
 	</div>
 	<div class="right">
 		
 		
-		<div class="content" id="mainwelcome" style="display:none">
+		<div class="content list" id="mainwelcome" style="display:none">
 			<div class="title"><h2>欢迎使用ever项目与计划管理</h2> </div>
 			
 		</div>
 		
-		<div class="content" id="taskdetails" style="display: none">
+		<div class="content list" id="taskdetails" style="display: none">
 			<div class="title"><h2>开始进行没事的计划</h2> </div>
 			<div class="box">
 				<div class="user">
@@ -389,9 +374,6 @@ div.label input,  div.label select, div.label textarea{
 					<div class="oper">对项目的完成进度设置为了50%</div>
 					<div class="resource"></div>
 				</div>
-				
-				
-				
 			</div>
 			
 			<div class="box">
@@ -423,20 +405,22 @@ div.label input,  div.label select, div.label textarea{
 		</div>
 		
 		
-		
-		
 		<div class="content" id="projectView" style="display:none">
 				<div class="title"><h2>项目名称</h2> </div>
 				<div class="label">
+					描述信息：<br>
 				   <div class="desc"></div> 
 				</div>
 				
+				
 				<div class="label">
+				 	状态：
 				   <div class="status"></div> 
 				</div>
 				
 				<div class="label">
-				   预计时间<div class="start"></div>-<div class="end"></div> 
+				   预计时间：<br> 
+				   <span class="start"></span>-<span class="end"></span> 
 				</div>
 		</div>
 		
@@ -469,10 +453,6 @@ div.label input,  div.label select, div.label textarea{
 				完成时间 ： 
 				<input type=text" class="end"  size="16" width="200">
 			</div>
-			<div class="label">
-				<button onclick="project.ui.saveProject()">保存</button>
-				<a style="margin-left: 30px" href="javascript:project.ui.removeProject()" >删除</a>
-			</div>
 		</div>
 		
 		
@@ -481,11 +461,6 @@ div.label input,  div.label select, div.label textarea{
 			<div class="label">
 				所属项目：
 				<select class="project">
-						<option>未开始</option>
-						<option>进行中</option>
-						<option>暂停</option>
-						<option>已完成</option>
-						<option>中止</option>
 				</select> 
 				
 			</div>
@@ -547,10 +522,6 @@ div.label input,  div.label select, div.label textarea{
 					<option value="95">95%</option>
 					<option value="100">100%</option>
     			</select>
-			</div>
-			<div class="label opers">
-				<button onclick="project.ui.saveTask()">保存</button>
-				<a href="javascript:project.ui.removeTask()" >删除</a>
 			</div>
 		</div>
 		
