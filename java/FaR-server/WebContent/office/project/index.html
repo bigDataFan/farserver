@@ -4,6 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>任务管理助手</title>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
+
+
 <script type="text/javascript" src="project.js"></script>
 
 
@@ -175,9 +179,31 @@ button:HOVER {
 	font-size: medium;
 }
 
-.item .info {
+.item .snapshot {
+	padding-top:5px;
+	height: 20px;
+}
+
+
+
+.item .snapshot div {
+	float: left;
+}
+
+.item div.tj {
 	font-size: small;
 	color: #666;
+}
+.selected div.tj{
+	color: white;
+}
+
+
+
+
+.item .progress {
+	width:100px;
+	height: 15px;
 }
 
 #tasklist div.selected {
@@ -281,7 +307,6 @@ div.label input,  div.label select, div.label textarea{
 }
 
 
-
 </style>
 
 </head>
@@ -304,9 +329,12 @@ div.label input,  div.label select, div.label textarea{
 			<button class="rbtn" id="btn-project-remove" onclick="project.ui.removeProject()">删除项目</button>
 			<button class="rbtn" id="btn-task-save" onclick="task.ui.save()">保存任务</button>
 			<button class="rbtn" id="btn-task-remove" onclick="task.ui.remove()">删除任务</button>
-			<button class="rbtn" id="btn-add-more">增加信息</button>
-			<button class="rbtn" id="btn-add-more">设置进度</button>
-			<button class="rbtn" id="btn-add-more">附加文件</button>
+			<button class="rbtn" id="btn-add-message" onclick="task.ui.dialogAddMessage()">增加信息</button>
+			<button class="rbtn" id="btn-set-progress">设置进度</button>
+			<button class="rbtn" id="btn-attach-file">附加文件</button>
+			
+			
+			<button class="rbtn" id="btn-save-message" onclick="task.ui.saveMessage()">保存</button>
 		</td>
 	</tr>
 </table>
@@ -333,7 +361,7 @@ div.label input,  div.label select, div.label textarea{
 		</div>
 		
 		<div id="tasklist" style="display:none1">
-				<div class="taskItemTemplate" style="display:none" >
+				<div class="taskItemTemplate" style="display:none"  onclick="task.ui.open(this)">
 					<div>
 						<div class="priority">
 							执行中
@@ -349,16 +377,15 @@ div.label input,  div.label select, div.label textarea{
 						<div class="star fr">
 							<div class="mark" onclick="task.ui.mark(this)"></div>
 						</div>
-						<div onclick="task.ui.open(this)">
+						<div>
 							<span class="Nj"><span class="cc Qc Pj"></span><span
 								class="cc ec"></span>
 							</span>
 							<span class="title" dir="ltr">分析思考地所得的发电量</span>
 						</div>
 					</div>
-					<div>
-						<div class="tj"></div>
-						<div class="info">刘晗   完成状态 </div>
+					<div class="snapshot">
+						<div class="progress"></div> <div style="margin-left: 5px;" class="tj">进度</div>
 					</div>
 				</div>
 			</div>
@@ -455,11 +482,11 @@ div.label input,  div.label select, div.label textarea{
 			</div>
 			<div class="label">
 				启动时间 ： 
-				<input type=text" class="start" size="16" width="200">
+				<input type=text" class="start choosedate" size="16" width="200">
 			</div>
 			<div class="label">
 				完成时间 ： 
-				<input type=text" class="end"  size="16" width="200">
+				<input type=text" class="end choosedate"  size="16" width="200">
 			</div>
 		</div>
 		
@@ -491,11 +518,11 @@ div.label input,  div.label select, div.label textarea{
 			</div>
 			<div class="label">
 				启动时间 ： 
-				<input type=text" class="start" size="16" width="200">
+				<input type=text" class="start choosedate" size="16" width="200">
 			</div>
 			<div class="label">
 				完成时间 ： 
-				<input type=text" class="end"  size="16" width="200">
+				<input type=text" class="end choosedate"  size="16" width="200">
 			</div>
 			
 			<div class="label">
@@ -532,6 +559,61 @@ div.label input,  div.label select, div.label textarea{
     			</select>
 			</div>
 		</div>
+		
+		
+		
+		
+		<div class="content" id="addMessageForm" style="display: none;">
+			<div class="title"><h2>增加备注消息</h2> </div>
+			
+			<div class="label">
+				标题 ： 
+					<input type=text" class="title" size="16" width="200">
+			</div>
+			
+			<div class="label">
+				描述 ： 
+				<textarea rows="4" cols="40"  class="desc" ></textarea>
+			</div>
+		</div>
+		
+
+		<div class="content" id="addMessageForm" style="display: none;">
+			<div class="title"><h2>修改进度</h2> </div>
+			
+			<div class="label">
+				进度修改为： 
+				<select class="progress" >
+              		<option value="0" selected="">0%</option>
+              		<option value="5">5%</option>
+              		<option value="10">10%</option>
+              		<option value="15">15%</option>
+              		<option value="20">20%</option>
+              		<option value="25">25%</option>
+              		<option value="30">30%</option>
+              		<option value="35">35%</option>
+              		<option value="40">40%</option>
+					<option value="45">45%</option>
+					<option value="50">50%</option>
+					<option value="55">55%</option>
+					<option value="60">60%</option>
+					<option value="65">65%</option>
+					<option value="70">70%</option>
+					<option value="75">75%</option>
+					<option value="80">80%</option>
+					<option value="85">85%</option>
+					<option value="90">90%</option>
+					<option value="95">95%</option>
+					<option value="100">100%</option>
+    			</select>
+			</div>
+			
+			<div class="label">
+				描述 ： 
+				<textarea rows="4" cols="40"  class="desc" ></textarea>
+			</div>
+		</div>
+		
 		
 		
 	</div>

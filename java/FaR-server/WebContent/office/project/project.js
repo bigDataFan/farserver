@@ -6,6 +6,16 @@ $(document).ready(function(){
 	project.load();
 	resource.load();
 	layout.go('main', $('#mainwelcome'), ['btn-add-proj','btn-add-res']);
+	
+	
+	$( "input.choosedate" ).datepicker({
+		autoSize: false,
+		dateFormat: 'yy-mm-dd' ,
+		monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		showWeek: true
+	});
+	
 });
 
 var project = {
@@ -184,18 +194,43 @@ var task = {
 		);
 	},
 	
+	saveEvent: function(event) {
+		$.post("/service/office/project/task/eventSave",
+				event,
+				function(data) {
+					task.ui.addEvent(jQuery.parseJSON(data));
+				}
+		);
+	},
+	
+	listEvent: function(taskid) {
+		$.getJSON('/service/office/project/task/eventList',
+				{'id':taskid, 'n':new Date().getTime()},
+				function(data) {
+					for ( var i = 0; i < data.length; i++) {
+						task.ui.addEvent(data[i]);
+					}
+				}
+		);
+	},
+	
 	ui : {
 		
 		current : null,
 		
 		//点击任务， 打开任务的活动，进入任务视图
 		open: function(t) {
-			var taskDiv = $(t).parent().parent();
+			var taskDiv = $(t);
 			var taskData = taskDiv.data('taskData');
+			
+			if ($('#tasklist div.selected').length>0 && taskData==task.ui.current) {
+				return;
+			}
+			
 			task.ui.current = taskData;
 			$('#tasklist div.item').removeClass("selected");
 			taskDiv.addClass("selected");
-			layout.go(null, $('#taskdetails'), ['btn-return-main', 'btn-add-task', 'btn-task-edit','btn-add-more']);
+			layout.go(null, $('#taskdetails'), ['btn-return-main', 'btn-add-task', 'btn-task-edit','btn-add-message','btn-set-progress','btn-attach-file']);
 		},
 		
 		//保存任务编辑信息
@@ -238,6 +273,14 @@ var task = {
 			taskDiv.find('.priority').html(taskData.priority);
 			taskDiv.find('.title').html(taskData.name);
 			taskDiv.find('.resource').html(taskData.resource);
+			
+			taskDiv.find('div.progress').progressbar({
+				value: parseInt(taskData.progress)
+			});
+
+			taskDiv.find('div.snapshot .tj').html(taskData.progress + "%完成");
+			
+			
 			taskDiv.data('taskData', taskData);
 			taskDiv.fadeIn('fast');
 		},
@@ -270,6 +313,21 @@ var task = {
 					layout.go(null, $('#editTaskForm'), ['btn-close','btn-task-save','btn-task-remove']);
 				}
 			}
+		},
+		
+		dialogAddMessage:function() {
+			$('#addMessageForm input  #addMessageForm textarea').val('');
+			layout.go(null, $('#addMessageForm'), ['btn-close','btn-save-message']);
+		},
+		saveMessage : function() {
+			var msssage = {};
+			message.title = $('#addMessageForm .title').val();
+			message.desc = $('#addMessageForm .desc').val();
+			task.saveEvent(message);
+		},
+		
+		addEvent:function(event) {
+			
 		},
 		
 		mark: function(t) {
@@ -388,6 +446,8 @@ var layout = {
 	//点击返回到主页面
 	home : function () {
 		layout.go('main', $('#mainwelcome'), ['btn-add-proj','btn-add-res']);
+		
+		$('div.selected').removeClass('selected');
 	}
 	
 	
