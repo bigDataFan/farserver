@@ -157,6 +157,7 @@ var task = {
 				function(data){
 					var result = jQuery.parseJSON(data);
 					task.ui.addOrUpdate(result);
+					layout.close();
 				});
 	},
 	
@@ -189,8 +190,11 @@ var task = {
 		
 		//点击任务， 打开任务的活动，进入任务视图
 		open: function(t) {
-			var taskData = $(t).data('taskData');
+			var taskDiv = $(t).parent().parent();
+			var taskData = taskDiv.data('taskData');
 			task.ui.current = taskData;
+			$('#tasklist div.item').removeClass("selected");
+			taskDiv.addClass("selected");
 			layout.go(null, $('#taskdetails'), ['btn-return-main', 'btn-add-task', 'btn-task-edit','btn-add-more']);
 		},
 		

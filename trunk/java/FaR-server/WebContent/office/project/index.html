@@ -180,6 +180,12 @@ button:HOVER {
 	color: #666;
 }
 
+#tasklist div.selected {
+	background: #5E8BDB;
+	color: white;
+}
+
+
 div.star .unmark {
 	background: url('star_grey.png');
 	width: 16px;
@@ -298,7 +304,9 @@ div.label input,  div.label select, div.label textarea{
 			<button class="rbtn" id="btn-project-remove" onclick="project.ui.removeProject()">删除项目</button>
 			<button class="rbtn" id="btn-task-save" onclick="task.ui.save()">保存任务</button>
 			<button class="rbtn" id="btn-task-remove" onclick="task.ui.remove()">删除任务</button>
-			<button class="l rbtn" id="btn-add-more">增加</button>
+			<button class="rbtn" id="btn-add-more">增加信息</button>
+			<button class="rbtn" id="btn-add-more">设置进度</button>
+			<button class="rbtn" id="btn-add-more">附加文件</button>
 		</td>
 	</tr>
 </table>
@@ -325,7 +333,7 @@ div.label input,  div.label select, div.label textarea{
 		</div>
 		
 		<div id="tasklist" style="display:none1">
-				<div class="taskItemTemplate" style="display:none" onclick="task.ui.open(this)">
+				<div class="taskItemTemplate" style="display:none" >
 					<div>
 						<div class="priority">
 							执行中
@@ -341,7 +349,7 @@ div.label input,  div.label select, div.label textarea{
 						<div class="star fr">
 							<div class="mark" onclick="task.ui.mark(this)"></div>
 						</div>
-						<div>
+						<div onclick="task.ui.open(this)">
 							<span class="Nj"><span class="cc Qc Pj"></span><span
 								class="cc ec"></span>
 							</span>
