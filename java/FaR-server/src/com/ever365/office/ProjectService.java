@@ -145,6 +145,33 @@ public class ProjectService {
 		return result;
 	}
 	
+	
+	@RestService(method="POST", uri="/office/project/task/eventSave")
+	public Map<String,Object> saveTaskEvent(@RestParam(value="project") String project, @RestParam(value="task") String task, 
+			@RestParam(value="type") String type,
+			@RestParam(value="info") Map<String, Object> info) {
+		DBObject dbo = new BasicDBObject().append("task", new ObjectId(task))
+				.append("project", new ObjectId(project))
+				.append("type", type)
+				.append("info", info)
+				.append("creator", AuthenticationUtil.getCurrentUser())
+				.append("created", new Date());
+		getEventCollection().insert(dbo);
+		return formatResult(dbo);
+	}
+	
+	@RestService(method="GET", uri="/office/project/task/events")
+	public List<Map<String,Object>> getEventList(@RestParam(value="task")String task) {
+		DBCursor cursor = getEventCollection().find(new BasicDBObject("creator", AuthenticationUtil.getCurrentUser()).append("task", new ObjectId(task)));
+		
+		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
+		while (cursor.hasNext()) {
+			result.add(formatResult(cursor.next()));
+		}
+		return result;
+	}
+	
+	
 	private Map<String,Object> formatResult(DBObject dbo) {
 		Map map = dbo.toMap();
 		if (map.get("_id")!=null) {
@@ -175,6 +202,14 @@ public class ProjectService {
 		coll.ensureIndex("creator");
 		coll.ensureIndex("project");
 		
+		return coll;
+	}
+	
+	private DBCollection getEventCollection() {
+		DBCollection coll = dataSource.getDB("office").getCollection("events");
+		coll.ensureIndex("creator");
+		coll.ensureIndex("task");
+		coll.ensureIndex("project");
 		return coll;
 	}
 	
