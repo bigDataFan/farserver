@@ -187,9 +187,13 @@ var task = {
 	
 	getTaskEvents: function(id) {
 		$.getJSON("/service/office/project/task/events",
-				{	"id":id, "n": new Date().getTime() },
+				{	"task":id, "n": new Date().getTime() },
 				function(data) {
-					project.ui.drawTaskEvents(data);
+					task.ui.clearEvent();
+					for ( var i = 0; i < data.length; i++) {
+						task.ui.addEvent(data[i]);
+					}
+					layout.go(null, $('#taskdetails'), ['btn-return-main', 'btn-add-task', 'btn-task-edit','btn-add-message','btn-attach-file']);
 				}
 		);
 	},
@@ -199,21 +203,11 @@ var task = {
 				event,
 				function(data) {
 					task.ui.addEvent(jQuery.parseJSON(data));
+					layout.close();
 				}
 		);
 	},
-	
-	listEvent: function(taskid) {
-		$.getJSON('/service/office/project/task/eventList',
-				{'id':taskid, 'n':new Date().getTime()},
-				function(data) {
-					for ( var i = 0; i < data.length; i++) {
-						task.ui.addEvent(data[i]);
-					}
-				}
-		);
-	},
-	
+
 	ui : {
 		
 		current : null,
@@ -230,9 +224,9 @@ var task = {
 			task.ui.current = taskData;
 			$('#tasklist div.item').removeClass("selected");
 			taskDiv.addClass("selected");
-			layout.go(null, $('#taskdetails'), ['btn-return-main', 'btn-add-task', 'btn-task-edit','btn-add-message','btn-set-progress','btn-attach-file']);
+			task.getTaskEvents(taskData.id);
 		},
-		
+
 		//保存任务编辑信息
 		save: function() {
 			var taskData = new Object();
@@ -259,6 +253,8 @@ var task = {
 			}
 		},
 		
+		
+		
 		//绘制单个增加Task
 		addOrUpdate:function(taskData) {
 			var taskDiv = null;
@@ -277,13 +273,11 @@ var task = {
 			taskDiv.find('div.progress').progressbar({
 				value: parseInt(taskData.progress)
 			});
-
 			taskDiv.find('div.snapshot .tj').html(taskData.progress + "%完成");
-			
-			
 			taskDiv.data('taskData', taskData);
 			taskDiv.fadeIn('fast');
 		},
+		
 		
 		//显示创建任务框
 		dialogEdit : function(t) {
@@ -319,15 +313,35 @@ var task = {
 			$('#addMessageForm input  #addMessageForm textarea').val('');
 			layout.go(null, $('#addMessageForm'), ['btn-close','btn-save-message']);
 		},
+		
 		saveMessage : function() {
-			var msssage = {};
-			message.title = $('#addMessageForm .title').val();
-			message.desc = $('#addMessageForm .desc').val();
+			var message = {};
+			message.type = 'message';
+			message.info = {
+					'title': $('#addMessageForm input.title').val(),
+					'desc':$('#addMessageForm .desc').val()
+			};
+			message.task = task.ui.current.id;
+			message.project = task.ui.current.project;
 			task.saveEvent(message);
 		},
 		
+		
+		clearEvent: function() {
+			$('#taskdetails div.taskEventDiv').remove();
+		},
+		
 		addEvent:function(event) {
-			
+			if (event.type=="message") {
+				var cloned = $('div.taskMessageTemplate').clone();
+				cloned.removeClass('taskMessageTemplate').addClass('taskEventDiv');
+				cloned.find('div.title').html(event.info.title);
+				cloned.find('div.time').html(event.created);
+				cloned.find('div.oper').html(event.info.desc);
+				cloned.data('eventData', event);
+				$('#taskdetails').append(cloned);
+				cloned.show();
+			}
 		},
 		
 		mark: function(t) {
@@ -453,6 +467,12 @@ var layout = {
 	
 	
 }
+
+
+function formateDate(str) {
+	
+}
+
 
 $('#ajaxInfos').ajaxSend(function() {
 	$(this).text('正在发送请求');
