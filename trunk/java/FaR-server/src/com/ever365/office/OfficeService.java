@@ -40,7 +40,6 @@ public class OfficeService {
 		this.dataSource = dataSource;
 	}
 
-
 	public void setFileService(VFileService fileService) {
 		this.fileService = fileService;
 	}
@@ -347,9 +346,6 @@ public class OfficeService {
 		return result;
 	}
 
-	
-
-
 	private DBCollection getNotesCollection() {
 		DBCollection coll = dataSource.getDB("office").getCollection("notes");
 		coll.ensureIndex("creator");
@@ -475,6 +471,8 @@ public class OfficeService {
 	public void removeTasks(@RestParam(value="id") String id) {
 		getTaskCollection().remove(new BasicDBObject("_id", new ObjectId(id)));
 	}
+	
+
 	
 	
 	public static Date getMondayOfThisWeek() {

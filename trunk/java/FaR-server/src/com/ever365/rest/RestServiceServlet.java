@@ -166,7 +166,17 @@ public class RestServiceServlet extends HttpServlet {
 				Enumeration paramNames = request.getParameterNames();
 				while (paramNames.hasMoreElements()) {
 					String name = (String) paramNames.nextElement();
-					args.put(name, URLDecoder.decode(request.getParameter(name), "UTF-8"));
+					if (name.endsWith("]") && name.indexOf("[")>-1) {
+						String pureName = name.substring(0, name.indexOf("["));
+						if (args.get(pureName)==null) {
+							args.put(pureName, new HashMap<String, String>());
+						}
+						((Map)args.get(pureName)).put(name.substring(name.indexOf("[")+1, name.indexOf("]")), URLDecoder.decode(request.getParameter(name), "UTF-8"));
+						
+					} else {
+						args.put(name, URLDecoder.decode(request.getParameter(name), "UTF-8"));
+					}
+					
 					//args.put(name, request.getParameter(name));
 					//args.put(name, new String(request.getParameter(name).getBytes("ISO-8859-1"), "UTF-8"));
 				}
