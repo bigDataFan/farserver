@@ -20,14 +20,15 @@
 	padding: 0;
 }
 
+body {
+	height: 100%;
+}
 a {
 	text-decoration: none;
 }
-
 .fr {
 	float: right;	
 }
-
 .fl {
 	float:left;
 }
@@ -90,18 +91,20 @@ button:HOVER {
 
 /*左部分*/
 .left {
-	width: 50%;
-	position: fixed;
-	float: left;
+	width: 400px;
+	top: 44px;
+	bottom:0px;
+	position: absolute;
 }
 
 /*右部分*/
 .right {
-	width: 50%;
-	position: relative;
-	float: right;
+	left:400px;
+	position: absolute;
+	top: 44px;
+	bottom: 0px;
 	background: #EBEFF9 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAIAAACqZzA+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAC5JREFUeNpivHbvMzMzIwsYARnMTIxMjAyMIMCACZgYSAGjqkdVj6oeWaoBAgwAkuADAzOWjPUAAAAASUVORK5CYII=") repeat-y;
-	height: 100%;
+	right:0px;
 }
 
 
@@ -235,7 +238,6 @@ button:HOVER {
 
 
 #tasklist div.title {
-	height: 25px;
 	background:#E3E3E3;
 	border-bottom: 1px solid #CCC;
 	position: relative;
@@ -260,7 +262,6 @@ div.star .mark {
 
 
 /*右部内容样式*/
-
 .right .title {
 	padding: 10px;
 }
@@ -272,10 +273,8 @@ div.star .mark {
 	text-shadow: white 0 1px 0;
 }
 
-
-
-
 .right .content {
+	bottom:0;
 	border: 1px solid #DAE0E5;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -285,17 +284,17 @@ div.star .mark {
 	-moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
 	 margin:10px;
 	 padding: 10px;
-	 height: 500px;
 	 background: white;
-	 overflow-y: scroll;
-	 
+	 overflow-x: hidden;
+	 overflow-y: auto;
+	 -webkit-user-select: none;
+	 -moz-user-select: none;	
 }
 
 .right .list {
 	position:relative;
 	top: 0px;
 	left: 0px;
-
 }
 
 .right .box {
@@ -395,14 +394,14 @@ div.emptyInfo {
 <div id="nav" class="nav">
 <table style="border: 0px; " width="100%">
 	<tr>
-		<td width="50%">
+		<td width="400px">
 			<button onclick="project.ui.dialogEdit(null);" class="lbtn" id="btn-add-proj"> 创建项目</button>
 			<button class="lbtn" id="btn-add-res">增加人员</button>
 			<button style="display:none"  onclick="layout.home()" class="lbtn" id="btn-return-main">返回项目列表</button>
 			<button class="rbtn" id="btn-edit-proj" onclick="project.ui.edit()">编辑项目</button>
 			<button class="rbtn" id="btn-add-task" onclick="task.ui.dialogEdit(null)">增加子任务</button>
 		</td>
-		<td width="50%">
+		<td>
 			<button class="rbtn" id="btn-close" onclick="layout.close()">关闭</button>
 			<button class="rbtn" id="btn-task-edit" onclick="task.ui.dialogEdit(this)">编辑任务</button>
 			<button class="rbtn" id="btn-project-save" onclick="project.ui.saveProject()">保存项目</button>
@@ -427,7 +426,6 @@ div.emptyInfo {
 	 -->	
 </div>
 
-<div id="main">
 	<div class="left" >
 		<div id="toplist">
 			<div class="projectlist">
@@ -701,9 +699,8 @@ div.emptyInfo {
 		
 		
 	</div>
-</div>
-
+<!-- 
 <div class="bottom nav"><button>退出</button><span id="ajaxInfos"></span></div>
-
+ -->
 </body>
 </html>
