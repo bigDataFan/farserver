@@ -11,15 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.gqu.utils.FileCopyUtils;
+
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import net.gqu.utils.FileCopyUtils;
-import net.gqu.utils.MimeTypeUtils;
-
-import com.ever365.rest.registry.HttpServiceRegistry;
 import com.ever365.security.AuthenticationUtil;
-import com.ever365.security.UserService;
 import com.ever365.vfile.File;
 import com.ever365.vfile.VFileService;
 
@@ -68,7 +65,7 @@ public class DownloadServlet extends HttpServlet {
 		response.setContentType("Content-Type: application/octet-stream");
 		
 		response.setHeader("Content-Disposition", "attachment; filename=\""
-				+ URLEncoder.encode(file.getName()) + "\";");
+				+ URLEncoder.encode(file.getName(), "utf-8") + "\";");
 		//response.setContentType(MimeTypeUtils.guess(file.getName()));
 		
 		
