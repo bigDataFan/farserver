@@ -52,6 +52,10 @@ public class OfficeService {
 		if (name==null) {
 			return result;
 		}
+		if (name.indexOf("\\")>-1) {
+			name = name.substring(name.lastIndexOf('\\')+1);
+		}
+		
 		Date date = new Date();
 		int year = date.getYear() + 1900;
 		int month = date.getMonth() + 1;
@@ -68,7 +72,7 @@ public class OfficeService {
 		result.put("id", file.getObjectId().toString());
 		return result;
 	}
-
+	
 	private File getUserRoot() {
 		String currentUser = AuthenticationUtil.getCurrentUserName();
 		

@@ -187,6 +187,8 @@ public class VFileService {
 		}
 		
 		getFileCollection().remove(new BasicDBObject(File.ID, file.getObjectId()));
+		
+		
 	}
 	
 }
