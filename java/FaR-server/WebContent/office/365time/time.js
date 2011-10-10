@@ -17,17 +17,17 @@ office.nextday = function() {
 };
 
 office.switchView = function(v) {
-	$('div.pages div.views').hide();
-	$(v).show();
-	$('div.pagebar div.back').show();
-	$('div.pagebar div.addItem').hide();
+	$('div.pages div.views').slideUp('fast');
+	$(v).slideDown('fast');
+	$('div.pagebar div.back').slideDown('fast');
+	$('div.pagebar div.addItem').slideUp('fast');
 };
 
 office.switchBack = function() {
-	$('div.pages div.views').hide();
-	$('div.pages div.list').show();
-	$('div.pagebar div.back').hide();
-	$('div.pagebar div.addItem').show();
+	$('div.pages div.views').slideUp('fast');
+	$('div.pages div.list').slideDown('fast');
+	$('div.pagebar div.back').slideUp('fast');
+	$('div.pagebar div.addItem').slideDown('fast');
 },
 
 
@@ -204,7 +204,7 @@ office.time = {
 					},
 					function(data) {
 						//office.switchBack();
-						$('#itemedit').hide();
+						office.time.hideEdit();
 						office.time.load();
 					}
 			);
@@ -221,7 +221,7 @@ office.time = {
 					},
 					function(data) {
 						//office.switchBack();
-						$('#itemedit').hide();
+						office.time.hideEdit();
 						office.time.load();
 					}
 			);
@@ -229,7 +229,7 @@ office.time = {
 	},
 	
 	showAddTime:function() {
-		$('#emptyinfo').hide();
+		$('#hintinfo').slideUp('fast');
 		$('#itemedit').slideDown('fast');
 		//$('#addTimeDiv').fadeIn(300);
 	},
@@ -244,7 +244,7 @@ office.time = {
 				},
 				function(data) {
 					office.time.addUITime(jQuery.parseJSON(data));
-					$('#itemedit').hide();
+					office.time.hideEdit();
 				});
 	},
 	
@@ -320,7 +320,7 @@ office.time = {
 	},
 	
 	hideEdit: function() {
-		$('#itemedit').hide();
+		$('#itemedit').slideUp('fast');
 	},
 
 	formatDura:function(mill) {
@@ -340,7 +340,7 @@ office.time = {
 	},
 	
 	hideInfo: function() {
-		$('#hintinfo').hide();
+		$('#hintinfo').slideUp('fast');
 	},
 	
 	hitKeys:[
