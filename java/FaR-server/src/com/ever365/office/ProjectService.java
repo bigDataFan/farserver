@@ -80,7 +80,7 @@ public class ProjectService {
 		dbo.put("end", end);
 		dbo.put("resource", resource.split(","));
 		dbo.put("progress", progress);
-		
+		dbo.put("mark", false);
 		
 		dbo.put("creator", AuthenticationUtil.getCurrentUser());
 		if (id==null) {
@@ -178,6 +178,23 @@ public class ProjectService {
 		getEventCollection().insert(dbo);
 		return formatResult(dbo);
 	}
+	
+	@RestService(method="POST", uri="/office/project/task/mark")
+	public void markTask(@RestParam(value="task") String task ) {
+		
+		DBObject found = getTaskCollection().findOne(new BasicDBObject("_id", new ObjectId(task)));
+		
+		if (found!=null) {
+			if (found.get("mark")!=null && (Boolean)found.get("mark")==Boolean.TRUE) {
+				found.put("mark", false);
+			} else {
+				found.put("mark", true);
+			}
+		}
+		getTaskCollection().update(new BasicDBObject("_id", new ObjectId(task)), found);
+	}
+	
+	
 	
 	@RestService(method="GET", uri="/office/project/task/events")
 	public List<Map<String,Object>> getEventList(@RestParam(value="task")String task) {
