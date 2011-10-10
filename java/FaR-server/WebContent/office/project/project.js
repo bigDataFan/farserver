@@ -205,7 +205,14 @@ var task = {
 	},
 	
 	mark: function(taskData) {
-		
+		$.post("/service/office/project/task/mark",
+				{
+					'task':taskData.id
+				},
+				function(data) {
+					
+				}
+			);
 	},
 	
 	getTaskEvents: function(id) {
@@ -273,6 +280,9 @@ var task = {
 			task.ui.current = taskData;
 			$('#tasklist div.item').removeClass("selected");
 			taskDiv.addClass("selected");
+			
+			$('#taskdetails div.title h2').html(taskData.name);
+			
 			task.getTaskEvents(taskData.id);
 		},
 
@@ -338,6 +348,12 @@ var task = {
 			}			
 			//taskDiv.find('.resource').html(taskData.resource);
 			
+			if (taskData.mark) {
+				taskDiv.find('div.star div').removeClass('unmark').addClass('mark');
+			} else {
+				taskDiv.find('div.star div').removeClass('mark').addClass('unmark');
+			}
+			
 			taskDiv.find('div.progress').progressbar({
 				value: parseInt(taskData.progress)
 			});
@@ -359,7 +375,8 @@ var task = {
 			projectSelect.val(project.ui.currentProject.id);
 			
 			if (t==null)  {
-				$('#editTaskForm input #editTaskForm textarea').val('');
+				$('#editTaskForm input').val('');
+				$('#editTaskForm textarea').val('');
 				$('#editTaskForm').data("taskData", null);
 				layout.go(null, $('#editTaskForm'), ['btn-close','btn-task-save']);
 			} else {
@@ -379,7 +396,10 @@ var task = {
 		},
 		
 		dialogAddMessage:function() {
-			$('#addMessageForm input  #addMessageForm textarea').val('');
+			$('#addMessageForm input').val('');
+			$('#addMessageForm textarea').val('');
+			
+			
 			layout.go(null, $('#addMessageForm'), ['btn-close','btn-save-message']);
 		},
 		
@@ -484,7 +504,6 @@ var task = {
 			var p = $(t).parent().parent().parent();
 			if (p.hasClass('item')) {
 				task.mark(p.data("taskData"));
-				
 				
 				if ($(t).hasClass('mark')) {
 					$(t).removeClass('mark').addClass('unmark');
