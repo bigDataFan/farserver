@@ -129,7 +129,7 @@ office.time = {
 	
 	addUITime: function(o) {
 		var timed = $('div.timeTemplate').clone();
-		$('#content div.list').append(timed);
+		$('#timelist').append(timed);
 		
 		timed.removeClass('timeTemplate').addClass("timeItem");
 		timed.data("timedata", o);
@@ -164,7 +164,7 @@ office.time = {
 		timed.find('div.timeStatics span.timePending').html((o.checks==null)?0:o.checks.length);
 		timed.find('div.timeDesc').html(o.desc);
 		
-		timed.fadeIn(300);
+		timed.fadeIn('fast');
 	},
 	
 	itemDetailView:function(data) {

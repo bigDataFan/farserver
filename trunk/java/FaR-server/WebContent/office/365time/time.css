@@ -1,5 +1,250 @@
 @CHARSET "UTF-8";
 
+* {
+	padding: 0px;
+	margin: 0px;
+	font-family: arial,sans-serif;
+}
+body
+{
+	padding: 0px;
+	margin: 0px;
+	height: 100%;
+	color: #333;
+}
+
+a {
+	color: #BB3E26;
+	text-decoration: none;
+}
+
+html,body,div,p,table,td,form,img,h1,h2,h3,h4,h5,h6,input
+{
+	font-size: 12px;
+	font-family:Verdana,Tahoma,Segoe,sans-serif;
+}
+
+
+
+
+
+div.header-back-l {
+	height:40px;
+	background: url(header-sprite.png) 0 0 no-repeat;
+}
+
+
+div.header-back-r {
+	background: url(header-sprite.png) 100% -94px no-repeat;
+	height:40px;
+	padding: 0 25px;
+}
+
+div.header-back-c{
+	background: url(header-sprite.png) 0 -47px repeat-x;
+	height:40px;
+}
+
+
+div.logo {
+	font-size:14px;
+	display: block;
+	float: left;
+	color: #36C;
+	font-weight:bold;
+	background :url("clock24.png") no-repeat 5px;
+	height:25px;
+	padding: 8px 12px 5px 32px;
+	border-right: 1px solid #CDDEEF;
+}
+
+div.headeroper {
+	float: right;
+	height:25px;
+	border-left: 1px solid #CDDEEF;
+	padding: 8px;
+}
+
+
+div.pagebar {
+    background: url("header_bg-x.png") repeat-x scroll bottom left;
+    color: #999999;
+    font-size: 14px;
+    height: 35px;
+    left: 0;
+    margin: 0;
+    top: 0;
+    width: 100%;
+	display:block;
+}
+
+
+
+div.pagebar div.summary {
+	float:right;
+	right: 50px;
+	padding: 7px;
+	font-weight: bold;
+	color: #069;
+}
+
+
+
+div.list {
+	position: absolute;
+	top: 45px;
+	left : 8px;
+	right: 230px;
+	bottom: 0px;
+	border: 1px solid #DDD;
+}
+div.list div.title  div.opers {
+	float:left;
+	padding: 10px;
+}
+
+
+div.list div.title {
+	height:35px;
+	background: url("navigation.png");
+	border-bottom: 1px solid #DDD;
+}
+
+
+div.list div.title  div.opers {
+	float:left;
+	padding: 10px;
+}
+
+
+div.details div.label {
+    border-bottom: 1px solid #EEEEEE;
+    padding: 14px 20px;
+    position: relative;
+}
+
+div.details div.label input {
+    background: none repeat scroll 0 0 #F7F7F7;
+    border-color: #CCCCCC #E7E6E6 #E7E6E6 #CCCCCC;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    color: #222222;
+    font-size: 1.2em;
+    outline: medium none;
+    padding: 5px;
+}
+
+
+div.details a.operations {
+	color: #7D7D7D;
+	text-decoration: none;
+	background: none repeat scroll 0 0 #EB5847;
+    border: 1px solid #9E281B;
+    border-radius: 3px;
+    box-shadow: 0 2px 1px #831E12;
+    color: #FFFFFF;
+    margin-right: 10px;
+    padding: 5px;
+    text-shadow: 0 -1px 0 #9E281B;
+}
+
+
+div.pageFootbar {
+    background: url("image/header_bg-x.png") repeat-x scroll top left transparent;
+    color: #999999;
+    font-size: 14px;
+    height: 30px;
+    left: 0;
+    margin: 0;
+    top: 0;
+    width: 100%;
+	display:block;
+}
+
+div.pageFootbar div.pleaseLogin {
+	float: left;
+	padding:7px;
+}
+
+div.pageFootbar div.pleaseLogin a {
+	color: #BB3E26;
+	text-decoration: none;
+}
+
+
+div.pageFootbar div.helloUser {
+	float: left;
+	padding:7px;
+	color: #BB3E26;
+}
+
+
+div.pageFootbar div.flipPageBar {
+	float: right;
+	padding:7px;
+	color: #BB3E26;
+}
+
+
+
+.btn-1 {
+	padding: 4px 10px;
+	font-weight:bold;
+	letter-spacing: -0.03em;
+	text-align: center;
+	background: #3A8FCE url(image/bkg-btn-blue.gif) repeat-x 0 top;
+	color: white;
+	text-shadow: 0 -1px 2px #2063AB;
+	border: 1px solid #2F6EA7;
+	border-color: #508FCD #4483BF #2F6EA7 #3F7EB9;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+
+
+
+.page-info {
+    line-height: 2;
+    padding: 15px 15px 0 45px;
+}
+
+
+.page-info h3 {
+    font-size: 12px;
+    line-height: 24px;
+    margin-bottom: 10px;
+    min-height: 24px;
+    position: relative;
+}
+
+.i-hint {
+    background-image: url("image/icon_hint.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+    left: -27px;
+    position: absolute;
+    top: 3px;
+}
+
+.ico-inf {
+    background-position: -60px -35px;
+}
+
+
+.ico-war, .ico-suc, .ico-err, .ico-inf {
+    height: 20px;
+    width: 20px;
+}
+
+div.page-info a {
+	float: right;
+}
+
 
 
 div.quoto div.pagebar {
@@ -146,9 +391,21 @@ div.running div.timeOper a span {
 }
 
 
+
+div.nav {
+	position: absolute;
+	top: 45px;
+	right : 8px;
+	width: 200px;
+	bottom: 0px;
+	border: 1px solid #DDD;
+	padding: 8px;
+}
+/*
 div.nav ul {
 	margin: 0 0 10px 0px;
 }
+*/
 div.nav ul li {
 	padding-bottom:10px;
 	padding-top:10px;

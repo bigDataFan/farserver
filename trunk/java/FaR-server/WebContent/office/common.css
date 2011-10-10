@@ -96,22 +96,38 @@ div.pagebar div.summary {
 }
 
 
-#content {
-	padding-top: 10px;
-}
 
-#content div.list {
-	float: left;
-	display:block;
-	width: 570px;
-	height:500px;
+div.list {
+	position: absolute;
+	top: 42px;
+	left : 0px;
+	right: 210px;
+	bottom: 0px;
 	border: 1px solid #DDD;
 }
 
-#content div.list div.title {
+div.list div.title {
 	height:35px;
 	background: url("image/navigation.png");
 	border-bottom: 1px solid #DDD;
+}
+
+
+div.list div.title  div.opers {
+	float:left;
+	padding: 10px;
+}
+
+
+div.nav {
+	position: absolute;
+	top: 42px;
+	right : 0px;
+	width: 200px;
+	bottom: 0px;
+	border: 1px solid #DDD;
+	padding: 8px;
+	
 }
 
 div.list div.title  div.opers {
