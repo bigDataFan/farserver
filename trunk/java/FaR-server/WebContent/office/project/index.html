@@ -274,6 +274,7 @@ div.star .mark {
 }
 
 .right .content {
+	min-height:400px;
 	bottom:0;
 	border: 1px solid #DAE0E5;
 	border-radius: 10px;
@@ -412,9 +413,20 @@ div.emptyInfo {
 			<button class="rbtn" id="btn-set-progress">设置进度</button>
 			<button class="rbtn" id="btn-attach-file" onclick="task.ui.dialogAttachFile()">附加文件</button>
 			
-			
 			<button class="rbtn" id="btn-save-message" onclick="task.ui.saveMessage()">保存</button>
 			<button class="rbtn" id="btn-save-files" onclick="task.ui.saveFiles()">保存</button>
+			
+			
+			 <div  style="float:right;" id="helloLink">
+	  				<span style="margin-right: 10px"></span><a class="fixed hidden" href="/logout?redirect=/office/project/index.html" >注销</a>
+			  </div>
+			  
+			  
+			 <div style="float:right;" id="loginLink">
+				<a class="fixed hidden" id="queueLink" href="../login.jsp?redirectTo=/office/project/index.html" >登陆</a>
+			</div>
+			
+	
 		</td>
 	</tr>
 </table>
@@ -657,7 +669,11 @@ div.emptyInfo {
 		
 		
 		<div class="content list" id="mainwelcome" style="display:none">
-			<div class="title"><h2>欢迎使用ever项目与计划管理</h2> </div>
+			<div class="title"><h2>欢迎使用ever进度计划管理</h2> </div>
+			
+			<div class="label">
+				   <div class="status">ever进度计划管理是一种简单好用的项目管理工具，相比像复杂和严格的Project等软件，进度计划管理侧重于项目任务的分解，任务的进展、资源、附件、消息等方面功能</div> 
+				</div>
 			
 		</div>
 		

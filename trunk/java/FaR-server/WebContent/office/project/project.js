@@ -3,6 +3,7 @@
  */
 
 $(document).ready(function(){
+	initUserInfo();
 	project.load();
 	//resource.load();
 	layout.go('main', $('#mainwelcome'), ['btn-add-proj']);
@@ -606,6 +607,27 @@ function formateDate(str) {
 }
 
 
+var currentUser = null;
+
+function initUserInfo() {
+	$.getJSON("/service/authority/current", {"r":new Date().getTime()}, 
+			function(data) {
+				currentUser = data.userName;
+				if (data.userName.indexOf('guest.')>-1) {
+					//匿名用户
+					$('#loginLink').show();
+					$('#helloLink').hide();
+				} else {
+					$('#loginLink').hide();
+					$('#helloLink span').html('您好 ' + data.userName);
+					$('#helloLink').show();
+				}
+	}
+	);
+}
+
+
+
 $('#ajaxInfos').ajaxSend(function() {
-	$(this).text('正在发送请求');
+	alert("1");
 });
