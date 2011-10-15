@@ -1,9 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%@page import="com.ever365.open.qq.QQInfoClient"%>
+<%@page import="java.util.Map"%><html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>时间记录小助手</title>
+<%
 
+WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+QQInfoClient openqq = (QQInfoClient) ctx.getBean("openqq");
+
+Map<String, Object> ifo= openqq.getCurrentUserInfo(request.getParameter("openid"), request.getParameter("openkey"));
+
+%>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js"></script>
 
@@ -12,10 +23,10 @@
 <script type="text/javascript" src="/office/365time/time.js"> </script>
 <link rel="stylesheet" type="text/css" href="/office/365time/time.css"/>
 
+
 <script type="text/javascript">
 
 $(document).ready(function() {
-	alert($.urlParam('openid'));
 	office.time.load();
 	$( "#datepicker" ).datepicker({
 		autoSize: true,

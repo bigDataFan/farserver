@@ -54,8 +54,6 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
-	
-	
 	<bean id="authorityRestService" class="com.ever365.rest.AuthorityRestService">
 		
 	</bean>
@@ -79,4 +77,21 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="openqq" class="com.ever365.open.qq.QQInfoClient">
+		<property name="appid">
+			<value>30745</value>
+		</property>
+		<property name="appkey">
+			<value>c75a7a7e08194c8892ed6374e96fbde3</value>
+		</property>
+		<property name="appname">
+			<value>app30745</value>
+		</property>
+		<property name="openip" >
+			<value>119.147.75.204</value>
+		</property>
+	</bean>
+	
+	
 </beans>
