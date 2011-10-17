@@ -4,7 +4,9 @@
 <%@page import="org.springframework.web.context.WebApplicationContext"%>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <%@page import="com.ever365.open.qq.QQInfoClient"%>
-<%@page import="java.util.Map"%><html>
+<%@page import="java.util.Map"%>
+<%@page import="com.ever365.security.SetUserFilter"%>
+<%@page import="com.ever365.security.AuthenticationUtil"%><html>
 <head>
 <title>时间记录小助手</title>
 <%
@@ -12,7 +14,15 @@
 WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 QQInfoClient openqq = (QQInfoClient) ctx.getBean("openqq");
 
-Map<String, Object> ifo= openqq.getCurrentUserInfo(request.getParameter("openid"), request.getParameter("openkey"));
+Map<String, Object> ifo = null;
+if (request.getParameter("openid")!=null && request.getParameter("openkey")!=null) {
+	ifo = openqq.getCurrentUserInfo(request.getParameter("openid"), request.getParameter("openkey"));
+	
+	if (ifo!=null && ifo.get("ret").equals(0)) {
+		request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, "3rd." + request.getParameter("openid"));
+		AuthenticationUtil.setCurrentUser("3rd." + request.getParameter("openid"));
+	}
+}
 
 %>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
@@ -52,17 +62,21 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 	<div class="logo section">
 		时间记录小助手
 	</div>
-	<div class="buttons headeroper" id="helloLink">
+	<div class="buttons headeroper" id="helloLink" style="display: none">
 		<span></span>|<a class="fixed hidden" href="/logout?redirect=/office/365time/main.html" >注销</a>
 	</div>
 	  
-	  
-	 <div class="buttons headeroper" id="loginLink">
+	 <div class="buttons headeroper" id="loginLink" style="display: none">
 		<a class="fixed hidden" id="queueLink" href="/office/login.jsp?redirectTo=/office/365time/main.html" >登陆</a>
 	</div>
 	
+	<%if (ifo!=null) { %>
+		<div class="buttons headeroper " id="thirdPartyLink" style="display: none">
+			<img alt="" width="24" height="24" src="<%=ifo.get("figureurl") %>"> <%=ifo.get("nickname") %>
+		</div>
+	<%} %>
 	<div class="buttons headeroper">
-		<a class="fixed hidden" id="queueLink" href="help.html">帮助</a>
+		<a class="fixed hidden" id="queueLink" href="/office/365time/help.html">帮助</a>
 	</div>
 </div></div></div>
 
