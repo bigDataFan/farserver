@@ -68,6 +68,10 @@ office.time = {
 						//匿名用户
 						$('#loginLink').show();
 						$('#helloLink').hide();
+					} else if (data.userName.indexOf('3rd.')>-1) {
+						$('#thirdPartyLink').show();
+						$('#loginLink').hide();
+						$('#helloLink').hide();
 					} else {
 						$('#loginLink').hide();
 						$('#helloLink span').html('您好 ' + data.userName);
