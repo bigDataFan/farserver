@@ -15,7 +15,6 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-	alert($.urlParam('openid'));
 	office.time.load();
 	$( "#datepicker" ).datepicker({
 		autoSize: true,
@@ -45,7 +44,6 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 		<span></span>|<a class="fixed hidden" href="/logout?redirect=/office/365time/main.html" >注销</a>
 	</div>
 	  
-	  
 	 <div class="buttons headeroper" id="loginLink">
 		<a class="fixed hidden" id="queueLink" href="/office/login.jsp?redirectTo=/office/365time/main.html" >登陆</a>
 	</div>
@@ -65,8 +63,6 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
            			<a href="#"><span>12:00</span></a>
            		</div>
            	</div>
-           	
-           	
            		<div class="list" id="timelist">
            			<div class="title">
            				<div class="opers addItem" >

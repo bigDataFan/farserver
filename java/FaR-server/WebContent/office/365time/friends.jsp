@@ -2,11 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>帮助</title>
-
-
+<title>我的朋友</title>
 <link rel="stylesheet" type="text/css" href="/office/365time/time.css"/>
-
 </head>
 <body>
 
@@ -22,12 +19,16 @@
 		<a class="fixed hidden" id="queueLink" href="/office/365time/index.jsp" >返回软件</a>
 	</div>
 </div></div></div>
+           
            	<div id="content" class="views">
+           		
+           		
            			<div id="emptyinfo" class="page-info" style="border-bottom:1px dashed #DDD;">
 	           			<h3><i class="i-hint ico-inf"></i>使用时间记录小助手，为您合理安排和使用时间助力</h3>
 	           			<p>
 	           			时间管理的一个重要途径就是记录你的时间：你花了多少时间在哪些事情，把它详细地，记录下来，每天从刷牙开始，洗澡，早上穿衣花了多少时间，早上搭车的时间，平上出去拜访客户的时间，把每天花的时间一一记录下来，做了哪些事，你会发现浪费了哪些时间。当你找到浪费时间的根源，你才有办法改变。 时间记录小助手就是这样一款软件，每天创建1个或多个任务，并设置执行的时限， 当然执行过程中可以点击停止或启动来记录某个时间项。 软件还提供了统计和浏览功能， 您可以查看您一共记录了多少时间，多少个工作项目，浏览每天的时间占用。
 	           			</p>
+	           			
 	           		</div>
 	           	
 	           		
