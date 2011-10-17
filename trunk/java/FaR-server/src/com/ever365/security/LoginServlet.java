@@ -47,6 +47,11 @@ public class LoginServlet extends HttpServlet {
     	String redirectTo = (request.getSession().getAttribute("rediretTo")==null)?"/":(String)request.getSession().getAttribute("rediretTo");
     	String loginFrom = request.getParameter("from");
     	
+    	if (loginFrom!=null && !loginFrom.startsWith("/")) {
+    		response.setStatus(400);
+    		return;
+    	}
+    	
     	if (username==null || pwd==null ) {
     		request.getSession().setAttribute("loginError", "请输入用户名和密码");
     		response.sendRedirect(loginFrom);
