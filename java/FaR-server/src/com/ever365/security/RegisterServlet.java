@@ -57,6 +57,12 @@ public class RegisterServlet extends HttpServlet {
 		String password = request.getParameter("pwd");
 		String passwordc = request.getParameter("pwdcfm");
 		String from = request.getParameter("from");
+		
+		if (!from.startsWith("/")) {
+			response.setStatus(400);
+			return;
+		}
+		
 		Object rndimg = request.getSession().getAttribute(RandomImgServlet.VALIDATE_CODE);
 		//removeAllAttr(request.getSession());
 		logger.debug("register: " + username + "  " +  email + " " + password + "  " );

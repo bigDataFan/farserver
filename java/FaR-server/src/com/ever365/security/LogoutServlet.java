@@ -45,6 +45,10 @@ public class LogoutServlet extends HttpServlet {
     	if (red==null) {
     		response.sendRedirect("/");
     	} else {
+    		if (!red.startsWith("/")) {
+    			response.setStatus(400);
+    			return;
+    		}
     		response.sendRedirect(red);
     	}
 	}
