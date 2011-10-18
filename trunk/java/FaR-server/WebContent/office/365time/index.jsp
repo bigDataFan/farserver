@@ -9,22 +9,7 @@
 <%@page import="com.ever365.security.AuthenticationUtil"%><html>
 <head>
 <title>时间记录小助手</title>
-<%
 
-WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-QQInfoClient openqq = (QQInfoClient) ctx.getBean("openqq");
-
-Map<String, Object> ifo = null;
-if (request.getParameter("openid")!=null && request.getParameter("openkey")!=null) {
-	ifo = openqq.getCurrentUserInfo(request.getParameter("openid"), request.getParameter("openkey"));
-	
-	if (ifo!=null && ifo.get("ret").equals(0)) {
-		request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, "3rd." + request.getParameter("openid"));
-		AuthenticationUtil.setCurrentUser("3rd." + request.getParameter("openid"));
-	}
-}
-
-%>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js"></script>
 
@@ -70,9 +55,27 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 		<a class="fixed hidden" id="queueLink" href="/office/login.jsp?redirectTo=/office/365time/main.html" >登陆</a>
 	</div>
 	
+	<!-- 以下为QQ平台特别开发 -->
+	<%
+
+WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+QQInfoClient openqq = (QQInfoClient) ctx.getBean("openqq");
+
+Map<String, Object> ifo = null;
+if (request.getParameter("openid")!=null && request.getParameter("openkey")!=null) {
+	ifo = openqq.getCurrentUserInfo(request.getParameter("openid"), request.getParameter("openkey"));
+	
+	if (ifo!=null && ifo.get("ret").equals(0)) {
+		request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, "3rd." + request.getParameter("openid"));
+		AuthenticationUtil.setCurrentUser("3rd." + request.getParameter("openid"));
+	}
+}
+
+%>
+
 	<%if (ifo!=null) { %>
 		<div class="buttons headeroper " id="thirdPartyLink" style="display: none">
-			<img alt="" width="24" height="24" src="<%=ifo.get("figureurl") %>"> <%=ifo.get("nickname") %>
+			<%=ifo.get("nickname") %>
 		</div>
 	<%} %>
 	<div class="buttons headeroper">
