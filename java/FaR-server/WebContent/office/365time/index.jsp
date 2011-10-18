@@ -93,7 +93,7 @@ var userName = "<%=userName%>";
 <%if (!userName.startsWith("guest.") && !userName.startsWith("3rd.")) { %>
 	
 	<div class="buttons headeroper" id="helloLink" >
-		<span>你好 <%=userName %></span>|<a class="fixed hidden" href="/logout?redirect=/office/365time/main.html" >注销</a>
+		<span>你好 <%=userName %></span>|<a class="fixed hidden" href="/logout?redirect=/office/365time/index.jsp" >注销</a>
 		
 	</div>
 <%} %>
@@ -101,7 +101,7 @@ var userName = "<%=userName%>";
 <!-- 用户是匿名 -->
 <%if (userName.startsWith("guest.")) { %>	  
 	 <div class="buttons headeroper" id="loginLink">
-		<a class="fixed hidden" id="queueLink" href="/office/login.jsp?redirectTo=/office/365time/main.html" >登陆</a>
+		<a class="fixed hidden" id="queueLink" href="/office/login.jsp?redirectTo=/office/365time/index.jsp" >登陆</a>
 	</div>
 <%} %>
 
