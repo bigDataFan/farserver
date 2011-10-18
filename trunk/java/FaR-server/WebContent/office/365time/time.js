@@ -60,7 +60,7 @@ office.time = {
 		$('div.timeStatics a.details').live('click', function(data) {
 			office.time.itemDetailView($(this).parent().parent().data("timedata"));
 		});
-		
+		/*
 		$.getJSON("/service/authority/current", {"r":new Date().getTime()}, 
 				function(data) {
 					office.currentUser = data.userName;
@@ -79,7 +79,7 @@ office.time = {
 					}
 				}
 		);
-		
+		*/
 		$.getJSON("/service/office/time/info", 
 				{"r":new Date().getTime()},
 				function(data){
