@@ -206,6 +206,13 @@ public class OfficeService {
 		return result;
 	}
 	
+	
+
+	@RestService(method="GET", uri="/office/time/titles")
+	public List<String> getRecentTitles() {
+		return null;
+	}
+	
 	public Long getDura(DBObject time) {
 		Long ls = (Long)time.get("laststart");
 		return (Long)time.get("dura") + ((ls==0)?0:(new Date().getTime()-ls)); 
