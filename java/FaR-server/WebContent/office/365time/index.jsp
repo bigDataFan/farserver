@@ -7,6 +7,31 @@
 <%@page import="java.util.Map"%>
 <%@page import="com.ever365.security.SetUserFilter"%>
 <%@page import="com.ever365.security.AuthenticationUtil"%><html>
+
+<!-- 以下为QQ平台特别开发 -->
+<%
+
+WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+QQInfoClient openqq = (QQInfoClient) ctx.getBean("openqq");
+
+
+
+Map<String, Object> ifo = null;
+if (request.getParameter("openid")!=null && request.getParameter("openkey")!=null) {
+	ifo = openqq.getCurrentUserInfo(request.getParameter("openid"), request.getParameter("openkey"));
+	
+	if (ifo!=null && ifo.get("ret").equals(0)) {
+		request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, "3rd." + request.getParameter("openid"));
+		AuthenticationUtil.setCurrentUser("3rd." + request.getParameter("openid"));
+	}
+}
+
+
+String  userName = AuthenticationUtil.getCurrentUser();
+
+%>
+
+
 <head>
 <title>时间记录小助手</title>
 
@@ -37,7 +62,7 @@ $(document).ready(function() {
 
 $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href); if (!results) { return 0; } return results[1] || 0;}
 
-
+var userName = "<%=userName%>";
 </script>
 </head>
 <body>
@@ -47,37 +72,47 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 	<div class="logo section">
 		时间记录小助手
 	</div>
-	<div class="buttons headeroper" id="helloLink" style="display: none">
-		<span></span>|<a class="fixed hidden" href="/logout?redirect=/office/365time/main.html" >注销</a>
+	
+	<!-- JiaThis Button BEGIN -->
+	<script type="text/javascript">
+		var jiathis_config = {
+			    siteNum:4,
+			    sm:"xiaoyou,tqq,qzone",
+			    url:"http://www.pengyou.com/index.php?mod=appmanager&act=openapp&type=qzone&appid=30745"
+			};
+	</script>
+	<div id="ckepop" class="buttons headeroper">
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt" target="_blank"><img src="http://v2.jiathis.com/code_mini/images/btn/v1/jiathis1.gif" border="0" /></a>
+		<a class="jiathis_counter_style_margin:3px 0 0 2px"></a>
 	</div>
-	  
-	 <div class="buttons headeroper" id="loginLink" style="display: none">
+	<script type="text/javascript" src="http://v2.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+
+
+<!-- 用户既不是匿名 也不是以第三方身份登入  -->	
+<%if (!userName.startsWith("guest.") && !userName.startsWith("3rd.")) { %>
+	
+	<div class="buttons headeroper" id="helloLink" >
+		<span>你好 <%=userName %></span>|<a class="fixed hidden" href="/logout?redirect=/office/365time/main.html" >注销</a>
+		
+	</div>
+<%} %>
+
+<!-- 用户是匿名 -->
+<%if (userName.startsWith("guest.")) { %>	  
+	 <div class="buttons headeroper" id="loginLink">
 		<a class="fixed hidden" id="queueLink" href="/office/login.jsp?redirectTo=/office/365time/main.html" >登陆</a>
 	</div>
-	
-	<!-- 以下为QQ平台特别开发 -->
-	<%
+<%} %>
 
-WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-QQInfoClient openqq = (QQInfoClient) ctx.getBean("openqq");
 
-Map<String, Object> ifo = null;
-if (request.getParameter("openid")!=null && request.getParameter("openkey")!=null) {
-	ifo = openqq.getCurrentUserInfo(request.getParameter("openid"), request.getParameter("openkey"));
-	
-	if (ifo!=null && ifo.get("ret").equals(0)) {
-		request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, "3rd." + request.getParameter("openid"));
-		AuthenticationUtil.setCurrentUser("3rd." + request.getParameter("openid"));
-	}
-}
+<!-- 第三方登陆信息 -->
+<%if (ifo!=null) { %>
+	<div class="buttons headeroper " id="thirdPartyLink">
+		<%=ifo.get("nickname") %>
+	</div>
+<%} %>
 
-%>
-
-	<%if (ifo!=null) { %>
-		<div class="buttons headeroper " id="thirdPartyLink" style="display: none">
-			<%=ifo.get("nickname") %>
-		</div>
-	<%} %>
 	<div class="buttons headeroper">
 		<a class="fixed hidden" id="queueLink" href="/office/365time/help.html">帮助</a>
 	</div>
