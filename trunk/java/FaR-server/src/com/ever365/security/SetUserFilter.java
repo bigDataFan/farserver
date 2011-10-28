@@ -16,10 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
+import org.scribe.model.Token;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.collections.mongodb.MongoDBDataSource;
+import com.ever365.oauth.sina.SinaAuthUrlServlet;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
@@ -64,6 +66,12 @@ public class SetUserFilter implements Filter {
         	httpReq.getSession().setAttribute(AUTHENTICATION_USER, sessionedUser);
 		}
 		
+		if (httpReq.getSession().getAttribute(SinaAuthUrlServlet._SINA_ACCESS_TOKEN)!=null) {
+			AuthenticationUtil.setSinaAccessToken((Token) httpReq.getSession().getAttribute(SinaAuthUrlServlet._SINA_ACCESS_TOKEN));
+		} else {
+			AuthenticationUtil.setSinaAccessToken(null);
+		}
+		
 		if (sessionedUser.startsWith(GUEST)) {
 			AuthenticationUtil.setCurrentAsGuest(true);
 		} else {
@@ -76,9 +84,6 @@ public class SetUserFilter implements Filter {
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}
-
-
-	
 
 	/**
 	 * @see Filter#init(FilterConfig)

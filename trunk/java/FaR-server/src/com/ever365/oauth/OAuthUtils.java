@@ -11,8 +11,8 @@ public class OAuthUtils {
 		if (sinaOAuthService==null) {
 			sinaOAuthService = 
 				new ServiceBuilder().provider(SinaWeiboApi.class)
-				.apiKey("1385206646")
-				.apiSecret("b0d8992e2c271bd514aadefdc53445cb")
+				.apiKey("1365238076")
+				.apiSecret("7177e20f50d259342a46b186c9d3893d")
 				.callback("http://www.ever365.com/oauth/sina?service_provider_id=0")
 				.build();
 		}

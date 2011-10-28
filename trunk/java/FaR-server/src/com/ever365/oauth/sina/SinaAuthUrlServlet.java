@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.gqu.utils.GUID;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
@@ -18,7 +20,9 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import com.ever365.oauth.OAuthUtils;
 import com.ever365.security.SetUserFilter;
+import com.ever365.security.UserService;
 
 /**
  * Servlet implementation class SinaAuthUrlServlet
@@ -27,6 +31,7 @@ public class SinaAuthUrlServlet extends HttpServlet {
 	public static final String _SINA_ACCESS_TOKEN = "_sina_access_token";
 	private static final long serialVersionUID = 1L;
 	
+	private UserService userService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -40,14 +45,8 @@ public class SinaAuthUrlServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		OAuthService service = new ServiceBuilder().provider(SinaWeiboApi.class)
-		.apiKey("1385206646")
-		.apiSecret("b0d8992e2c271bd514aadefdc53445cb")
-		.callback("http://www.ever365.com/oauth/sina?code=0")
-		.build();
-		
+		OAuthService service =  OAuthUtils.getSinaOAuthService();
 		if (request.getParameter("code")!=null) {
-			
 			try {
 				Verifier v = new Verifier(request.getParameter("code"));
 				Token accessToken = service.getAccessToken((Token) request.getSession().getAttribute("_sina_req_token"), v);
@@ -59,6 +58,8 @@ public class SinaAuthUrlServlet extends HttpServlet {
 					JSONObject jso = new JSONObject(ores.getBody());
 					String userName = jso.getString("name") + "@weibo.com";
 					request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, userName);
+					
+					userService.createUser(userName, GUID.generate(), null, null, false);
 					
 					if (request.getSession().getAttribute("redirectTo")!=null) {
 						response.sendRedirect((String)request.getSession().getAttribute("redirectTo"));
