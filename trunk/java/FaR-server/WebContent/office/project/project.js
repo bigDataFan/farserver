@@ -644,9 +644,3 @@ function initUserInfo() {
 	}
 	);
 }
-
-
-
-$('#ajaxInfos').ajaxSend(function() {
-	alert("1");
-});
