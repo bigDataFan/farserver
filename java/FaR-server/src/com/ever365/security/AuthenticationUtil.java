@@ -1,5 +1,6 @@
 package com.ever365.security;
 
+import org.scribe.model.Token;
 
 
 public class AuthenticationUtil
@@ -13,15 +14,29 @@ public class AuthenticationUtil
          */
         Result doWork() throws Exception;
     }
+    
     public static ThreadLocal<String> currentUser = new ThreadLocal<String>();
     public static ThreadLocal<Boolean> guest =  new ThreadLocal<Boolean>();
     public static ThreadLocal<Boolean> admin =  new ThreadLocal<Boolean>();
     
+    public static ThreadLocal<Token> sinaAccessToken = new ThreadLocal<Token>();
+    
     public static final String SYSTEM_USER_NAME = "system";
     
-        
     
-    public static void setCurrentUser(String user) {
+    
+    
+    public static Token getSinaAccessToken() {
+		return sinaAccessToken.get();
+	}
+
+
+	public static void setSinaAccessToken(Token t) {
+		sinaAccessToken.set(t);
+	}
+
+
+	public static void setCurrentUser(String user) {
     	currentUser.set(user);
     }
     
