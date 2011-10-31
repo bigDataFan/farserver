@@ -64,3 +64,5 @@ var layout = {
 		$('div.selected').removeClass('selected');
 	}
 };
+
+
