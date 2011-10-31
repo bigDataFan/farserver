@@ -431,28 +431,34 @@ div.emptyInfo {
 ul.category li {
 	border: 1px solid #DAE0E5;
 }
+
+
 ul.category li h3 {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='white', endColorstr='#F8F8F8'); /* for IE */
 	background: -webkit-gradient(linear, left top, left bottom, from(white), to(#F8F8F8)); /* for webkit browsers */
-	
 	font-size: 105%;
 	font-weight: bold;
-	padding: 10px 15px 8px 15px;
+	padding: 10px 0px 8px 15px;
 }
 
-ul.sub {
-	margin-left: 10px;	
+ul.category li.sub {
+	border: none;
+	margin-left: 15px;
+}
+
+ul.category li.sub h3 {
+	font-weight: normal;
+	padding: 10px 0px 8px 15px;
 }
 
 
-
-ul.category li span.oper{
+ul.category li span.oper {
 	float: right;
 	font-weight: normal;
 }
 
 ul.category li span a {
-	margin-left: 5px;
+	margin-right: 5px;
 }
 
 
