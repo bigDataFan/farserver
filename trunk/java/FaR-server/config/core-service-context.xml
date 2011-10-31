@@ -50,6 +50,11 @@
 		<property name="fileService" ref="fileService"></property>
 	</bean>	
 	
+	<bean id="moneyService" class="com.ever365.office.MoneyService">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="fileService" ref="fileService"></property>
+	</bean>
+	
 	<bean id="toolsService" class="com.ever365.tools.ToolsService">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
@@ -65,6 +70,12 @@
 	<bean id="sina.api.service" class="com.ever365.oauth.sina.SinaApiService">
 	</bean>
 
+
+
+	<bean id="weibo.connect" class="com.ever365.oauth.sina.WeiboService">
+	</bean>
+
+
 	<bean id="registry" class="com.ever365.rest.registry.HttpServiceRegistry">
 		<property name="injectedServices">
 			<list>
@@ -72,8 +83,10 @@
 				<ref bean="officeService"/>
 				<ref bean="projectService"/>
 				<ref bean="toolsService"/>
+				<ref bean="moneyService"/>
 				<ref bean="authorityRestService"/>
 				<ref bean="sina.api.service"/>
+				<ref bean="weibo.connect"/>
 			</list>
 		</property>
 	</bean>
