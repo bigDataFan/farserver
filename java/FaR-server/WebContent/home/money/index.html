@@ -4,11 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>记账助手</title>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
 
 
-<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/json2.js"></script>
 <script type="text/javascript" src="money.js"></script>
 
 
@@ -462,10 +463,21 @@ ul.category li span a {
 }
 
 
-
-
 </style>
 
+
+<script type="text/javascript">
+function getto() {
+	alert(JSON.stringify(category.toJson($('ul.category'),{})));
+	//JSON.stringify
+}
+
+
+function loadto() {
+	var o = JSON.parse('{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}');
+	category.load($('ul.category'), o, true);
+}
+</script>
 </head>
 <body>
 
@@ -590,22 +602,16 @@ ul.category li span a {
 			</div>
 			
 			
+			
+			
+			
+			
 			<div id="single" class="label outcometype">
 					所属分类 ： 
-					<select class="status">
-							<option>未开始</option>
-							<option>进行中</option>
-							<option>暂停</option>
-							<option>已完成</option>
-							<option>中止</option>
+					<select class="status" id="category1">
+						
 					</select> 
-					<select class="status">
-							<option>未开始</option>
-							<option>进行中</option>
-							<option>暂停</option>
-							<option>已完成</option>
-							<option>中止</option>
-					</select> 
+					
 			</div>
 			
 			
@@ -634,7 +640,8 @@ ul.category li span a {
 		<div class="content" id="eidtCat">
 			
 			<button onclick="category.addRoot($('ul.category'))">增加大类</button>
-			<button onclick="alert(category.toJson($('ul.category'),{}))">获取大类</button>
+			<button onclick="getto()">获取大类</button>
+			<button onclick="loadto()">载入</button>
 			
 			<ul class="category">
 				
@@ -667,12 +674,11 @@ ul.category li span a {
 		
 	</div>
 	
-	<div id="radio">
-					<input type="radio" id="radio1" name="radio" /><label for="radio1">Choice 1</label>
-					<input type="radio" id="radio2" name="radio" checked="checked" /><label for="radio2">Choice 2</label>
-					<input type="radio" id="radio3" name="radio" /><label for="radio3">Choice 3</label>
-				</div>
-				
+<div id="categoryDialog" title="选择分类">
+	<ul id="selectCatul" >
+		
+	</ul>
+</div>
 <!-- 
 <div class="bottom nav"><button>退出</button><span id="ajaxInfos"></span></div>
  -->
