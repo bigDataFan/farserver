@@ -86,7 +86,7 @@ var layout = {
 	}
 };
 
-var local = {
+var db = {
 		updated: {},
 		collections: {},
 		getCollection: function(name) {
