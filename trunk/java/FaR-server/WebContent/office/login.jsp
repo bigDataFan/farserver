@@ -8,7 +8,7 @@
 
 <%
 	if (request.getParameter("redirectTo")!=null) {
-		session.setAttribute("rediretTo", request.getParameter("redirectTo"));
+	session.setAttribute("redirectTo", request.getParameter("redirectTo"));
 	}
 	
 	if (request.getParameter("oauth")!=null) {
@@ -50,12 +50,12 @@
 				<div class="label">
 					  没有账号？请 <a href="/office/register.jsp">注册</a> 
 				</div>
+				
+				<!-- 
 				<div class="label other">
 					 &nbsp;<img src="http://static.youku.com/v1.0.0687/partner/img/ico_sina_16x16.png" alt="新浪微博"> <a href="/login/sina.jsp">用新浪微博账号登陆</a>
 				</div>
-				     	  
-				
-				
+				 -->	  
 				</form>
 			</div>
 			
@@ -63,6 +63,5 @@
 				
 			</div>
 	</div>
-<script src="http://app.baidu.com/static/appstore/monitor.st"></script>
 </body>
 </html>
