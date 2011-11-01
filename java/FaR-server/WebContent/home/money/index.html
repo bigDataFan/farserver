@@ -1,11 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html manifest="clock.appcache">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>记账助手</title>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+
+<!-- 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
+ -->
+ 
+<link rel="stylesheet" type="text/css" href="style.css"/>
 
 
 <script type="text/javascript" src="../../js/common.js"></script>
@@ -13,457 +18,6 @@
 <script type="text/javascript" src="money.js"></script>
 
 
-<style type="text/css">
-
-* {
-	margin: 0;
-	padding: 0;
-}
-
-body {
-	height: 100%;
-}
-a {
-	text-decoration: none;
-	color: #1364C4;
-	font-size: small;
-}
-
-a :VISITED {
-	color: #1364C4;
-}
-
-
-.fr {
-	float: right;	
-}
-.fl {
-	float:left;
-}
-
-li {
-	list-style: none;
-}
-
-/*最上面的导航栏*/
-.nav {
-	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAsCAIAAAArRUU2AAAAOElEQVQIW2O6+egX0///DEwMDAxM/xkYEOz/ED7DfwQbhUZWB1fzH87+hyGHykfRi2Y2AzIb1V0AEFlAz5gMk7cAAAAASUVORK5CYII=) repeat-x;
-	color: #182647;
-	padding: 4px 3px;
-	position: relative;
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	font-size: small;
-}
-
-
-/*靠底的状态栏*/
-.bottom {
-    bottom: 0;
-    position: absolute;
-    width: 100%;
-}
-
-
-/*按钮*/
-button {
-	-webkit-box-sizing: content-box;
-	background: url("bg_button.png");
-	text-shadow: 0 -1px rgba(0, 0, 0, .4);
-	min-height: 25px;
-	line-height: 24px;
-	margin: 0 3px;
-	color: #2E4987;
-	font: bold normal 13px;
-	text-align: center;
-	-webkit-user-select: none;
-	background-color:#DAE2FA;
-	border:1px solid #95AEEC; 
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	cursor:pointer;
-	padding:3px 5px 3px 5px;
-	text-shadow: white 0 1px 0;
-}
-
-
-button.l {
-	background: url("rsz_down.png") 30px 5px no-repeat;
-	padding-right: 16px;
-}
-
-
-button:HOVER {
-	background: #4E7AD0;
-	color:white;
-	text-shadow: #4E7AD0 0 1px 0;
-}
-
-
-/*左部分*/
-.left {
-	width: 400px;
-	top: 44px;
-	bottom:0px;
-	position: absolute;
-}
-
-/*右部分*/
-.right {
-	left:260px;
-	position: absolute;
-	top: 44px;
-	bottom: 0px;
-	background: #EBEFF9 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAIAAACqZzA+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAC5JREFUeNpivHbvMzMzIwsYARnMTIxMjAyMIMCACZgYSAGjqkdVj6oeWaoBAgwAkuADAzOWjPUAAAAASUVORK5CYII=") repeat-y;
-	right:0px;
-}
-
-
-/*分类头样式*/
-.qi {
-	height: 14px;
-	border-bottom: 1px solid #CCC;
-	font-size: 13px;
-	font-weight: bold;
-	padding: 6px 6px 6px 27px;
-	background-color: #EEE;
-	color: #666;
-}
-
-
-/*列表项样式*/
-.si, .ti {
-	height: 17px;
-	border-bottom: 1px solid #CCC;
-	font-size: 16px;
-	font-weight: bold;
-	background-color: white;
-	padding: 11px 11px 13px 16px;
-	cursor: pointer;
-}
-
-.si:HOVER {
-	background-color: #DAE2FA;
-}
-
-
-/*右向的小箭头*/
-.Uc {
-	margin-top: 3px;
-	float: right;
-	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANCAYAAACUwi84AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH2AwLFgQURlWQWQAAAJ9JREFUGNN9kT0KwlAQhL8kEGztbSTHeAoB7+EF7Ae1iY0Ir/cQXsJCs8ews7cWG5sXWGN0u5lvdng/AEhqJDUMTJHADqhDCC8zu/pADpRO7yVtPxrM7BxCKIF58ha+qQBIoREwc6GnmbWZr5N0ANbO2uS9Qx+Bh9Or3G1PgAswTtYdqLMenHoYY7xl/2D3DqdfsAssE/iC/nqVpGroL97i6EA1SD/1YwAAAABJRU5ErkJggg==);
-	-webkit-background-size: 8px 13px;
-	width: 8px;
-	height: 13px;
-}
-
-
-/*详细信息列表项---通用项**/
-.item {
-	background: #F3F4F7;
-	padding: 4px 6px;
-	border-bottom: 1px solid #CCC;
-}
-
-.item:HOVER {
-	background: #D6E0FA;
-	cursor: pointer;
-}
-
-.item .checkbox {
-	background: url('checkbox.png');
-	-webkit-background-size: 18px 19px;
-	width: 18px;
-	height: 19px;
-}
-
-.item .dotc {
-	float: left;
-	left: -7px;
-	margin: 2px -9px 0 2px;
-	padding: 7px;
-	position: relative;
-	top: -7px;
-}
-
-.item  .priority {
-	color: #666;
-	float: right;
-	font-size: small;
-}
-
-.item .resource {
-	font-size: medium;
-	font-size: 14px;
-	height: 21px;
-	margin-left: 28px;
-}
-
-
-.item .resource span {
-	margin-left:5px;
-	background:#0F67A1;
-	color:white;
-	padding: 0px 3px 0px 3px;
-	border-radius: 2px;
-	-webkit-border-radius: 2px;
-}
-
-.item .title {
-	font-size: medium;
-}
-
-.item .snapshot {
-	padding-top:5px;
-	height: 20px;
-}
-
-
-
-.item .snapshot div {
-	float: left;
-}
-
-.item div.tj {
-	font-size: small;
-	color: #666;
-}
-.selected div.tj{
-	color: white;
-}
-
-
-.item .progress {
-	width:100px;
-	height: 15px;
-}
-
-
-/**task列表的一些特定样式*/
-#tasklist div.selected {
-	background: #5E8BDB;
-	color: white;
-}
-
-
-#tasklist div.title {
-	background:#E3E3E3;
-	border-bottom: 1px solid #CCC;
-	position: relative;
-	padding: 5px 44px;
-	color: #1F274A;
-	font-size: 15px;
-	font-weight: bold;
-}
-
-
-div.star .unmark {
-	background: url('star_grey.png');
-	width: 16px;
-	height: 16px;
-}
-
-div.star .mark {
-	background: url('star.png');
-	width: 16px;
-	height: 16px;
-}
-
-
-/*右部内容样式*/
-.right .title {
-	padding: 10px;
-}
-
-.right .title h2 {
-	font:16px;
-	font-weight:bold;
-	color: #ccc;
-	text-shadow: white 0 1px 0;
-}
-
-.right .content {
-	min-height:400px;
-	bottom:0;
-	border: 1px solid #DAE0E5;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-khtml-border-radius: 10px;
-	-webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
-	-moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
-	 margin:10px;
-	 padding: 10px;
-	 background: white;
-	 overflow-x: hidden;
-	 overflow-y: auto;
-	 -webkit-user-select: none;
-	 -moz-user-select: none;	
-}
-
-.right .list {
-	position:relative;
-	top: 0px;
-	left: 0px;
-}
-
-.right .box {
-	margin-top:5px;
-	-webkit-border-radius: 3px;
-	-webkit-box-shadow: 0 0 2px #afb1b8;
-	background: white;
-	border: 1px solid #AFB1B8;
-}
-
-
-.box .title {
-	padding: 5px;
-	font-size:small;
-	min-height:20px;
-	color: #00681C;
-	background: #F5F5F5;
-	border-bottom: 1px solid #AFB1B8;
-}
-
-.box .info {
-	padding: 5px;
-	font-size: small;
-}
-
-.box .info .time {
-	text-align: right;
-}
-
-
-.box .buttons {
-	float:right;
-	text-align:right;
-	white-space: nowrap;
-	font-size: small;
-	color: #3B5998;
-}
-
-.box .delete {
-	background: url("delete.png") no-repeat;
-	padding-left: 16px;
-}
-
-div.content div.label {
-	border-bottom: 1px solid #ccc;
-	padding: 14px 20px;
-	position: relative;
-	font-size: small;
-}
-
-div.content div.label h3 {
-	background: none;
-	color: #00681C;
-	border: 0;
-	clear: both;
-	font-size: 1em;
-	font-weight: bold;
-	line-height: 20px;
-	margin: 0;
-	padding: 9px 0 0 0;
-	text-transform: uppercase;
-}
-
-
-div.label input[type="text"],  div.label select, div.label textarea {
-	background: none repeat scroll 0 0 #F7F7F7;
-	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
-	border-radius: 2px;
-	border-style: solid;
-	border-width: 1px;
-	color: #222;
-	font-size: small;
-	outline: medium none;
-	padding: 5px;
-}
-
-
-
-div.emptyInfo {
-	display:none; 
-	text-align: center; 
-	color: #00681C; 
-	font-weight: bold; 
-	text-shadow: 0 1px 0 #ccc; 
-	margin-top: 20px; 
-	font-size: 16px;	
-}
-
-
-
-#menu1 {
-	list-style: none;
-	color: #333;
-	z-index: 10;
-	font: normal 13px Arial;
-	text-align: left;
-	max-width: 150px;
-	position: absolute;
-	left: 280px;
-	text-shadow: white 0 1px 0;
-	box-shadow: 2x 2px #ccc;
-	border-left:  1px solid #ccc;
-	border-right:  1px solid #ccc;
-}
-
-#menu1 li {
-	border-bottom: 1px solid #ccc;
-	padding: 10px 10px;
-	width: auto;
-	height: auto;
-	min-width: 94px;
-	min-height: 15px;
-	max-width: 150px;
-	max-height: 30px;
-	background-color:white;
-	---webkit-border-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAFCAYAAABxeg0vAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADZJREFUeNpiYGBgYAZiLiAWkdKLTfqPBkBiIDmoGmYmBhIBC7rA2bNnSdNgbGyMVwPJTgIIMAAkHxVNd5viEAAAAABJRU5ErkJggg==") 0 5 3 5;
-}
-
-#menu1 li:HOVER{
-	background-color: #DAE2FA;
-}
-
-
-ul.category li {
-	border: 1px solid #DAE0E5;
-}
-
-
-ul.category li h3 {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='white', endColorstr='#F8F8F8'); /* for IE */
-	background: -webkit-gradient(linear, left top, left bottom, from(white), to(#F8F8F8)); /* for webkit browsers */
-	font-size: 105%;
-	font-weight: bold;
-	padding: 10px 0px 8px 15px;
-}
-
-ul.category li.sub {
-	border: none;
-	margin-left: 15px;
-}
-
-ul.category li.sub h3 {
-	font-weight: normal;
-	padding: 10px 0px 8px 15px;
-}
-
-
-ul.category li span.oper {
-	float: right;
-	font-weight: normal;
-}
-
-ul.category li span a {
-	margin-right: 5px;
-}
-
-
-</style>
 
 
 <script type="text/javascript">
@@ -485,16 +39,18 @@ function loadto() {
 <table style="border: 0px; " width="100%">
 	<tr>
 		<td width="260px">
-			<button style="display:none"  onclick="layout.home()" class="lbtn" id="btn-return-main">返回项目列表</button>
+			<button onclick="layout.back()" class="tbtn" id="btn-return-main">返回</button>
 		</td>
 		<td>
-			<button class="rbtn" id="btn-back" onclick="layout.back()">关闭</button>
-			<button class="rbtn" id="btn-add-outcome" onclick="">增加支出</button>
-			<button class="rbtn" id="btn-project-save" onclick="project.ui.saveProject()">增加收入</button>
-			<button class="rbtn" id="btn-project-remove" onclick="project.ui.removeProject()">统计和工具</button>
-			<button class="rbtn" id="btn-task-save" onclick="more.showMenu()">配置</button>
+			<button class="tbtn" id="btn-save-outcome" onclick="layout.back()">保存</button>
+			<button class="tbtn" id="btn-add-outcome" onclick="">增加支出</button>
+			<button class="tbtn" id="btn-project-save" onclick="project.ui.saveProject()">增加收入</button>
+			<button class="tbtn" id="btn-project-remove" onclick="project.ui.removeProject()">统计和工具</button>
+			<button class="tbtn" id="btn-task-save" onclick="more.showMenu()">配置</button>
 			
 			
+			 <button style="float:right;">帮助</button>
+			 
 			 <div  style="float:right;" id="helloLink">
 	  				<span style="margin-right: 10px"></span><a class="fixed hidden" href="/logout?redirect=/office/project/index.html" >注销</a>
 			  </div>
@@ -517,10 +73,21 @@ function loadto() {
 </div>
 
 	<div class="left" >
-		<div id="toplist">
+		<div id="toplist" style="display:none" btns="">
 			<div class="projectlist">
-				<div class="qi">项目列表</div>
+				<div class="qi">支出管理</div>
 			</div>
+			<div class="si" id="navoutcome"><div class="cc Uc"></div><span>支出记录</span></div>
+			<div class="si"><div class="cc Uc"></div><span>支出报表</span></div>
+			<div class="si"><div class="cc Uc"></div><span>导入导出</span></div>
+
+			<div class="projectlist">
+				<div class="qi">收入与配置</div>
+			</div>
+			<div class="si" id=""><div class="cc Uc"></div><span>记录收入</span></div>
+			<div class="si"><div class="cc Uc"></div><span>预算</span></div>
+			<div class="si"><div class="cc Uc"></div><span>目标设置</span></div>
+			<div class="si"><div class="cc Uc"></div><span>类别配置</span></div>
 			
 			<div style="display:none" class="projectTemplate si"><div class="cc Uc"></div><span>重要而且未读11</span></div>
 			<!-- 
@@ -530,14 +97,14 @@ function loadto() {
 			 -->
 		</div>
 		
-		<div id="tasklist" style="display:none1">
+		<div id="outcomelist" style="display:none" btns="btn-return-main">
 				<div class="title">
 					<div class="Yj Nd"><div class="ak bk" style=""></div>
 					<span class="name" dir="ltr"></span> <span class="count" dir="ltr"></span></div>
 				</div>
 
-				<div class="emptyInfo" style="">
-					项目中还没有创建任务
+				<div class="emptyInfo">
+					您还没有支出记录
 				</div>				
 				
 				<div class="taskItemTemplate" style="display:none"  onclick="task.ui.open(this)">
@@ -568,12 +135,14 @@ function loadto() {
 				</div>
 			</div>
 	</div>
+	
+	
 	<div class="right">
 	
 		<ul id="menu1" class="ul" style="display:none"><li class="Al Gn pl" onclick="_e(event, 's', '')" tabindex="0">回复</li><li class="Bl Gn pl" onclick="_e(event, 'g', '')" tabindex="0">移动...</li><li class="Bl Gn pl" onclick="_e(event, 'h', '')" tabindex="0">加标签...</li><li class="Bl Gn pl" onclick="_e(event, 'f', '11')" tabindex="0">忽略</li><li class="Bl Gn pl" onclick="_e(event, 'f', '7')" tabindex="0">这是垃圾邮件</li><li class="Bl pl" onclick="_e(event, 'E', '')" tabindex="0">打印</li><li class="Cl Gn pl" onclick="_e(event, 'f', '4')" tabindex="0">标记为未读</li></ul>
 	
 		
-		<div class="content" id="addOutComeForm">
+		<div class="content" id="addOutComeForm" style="display:none" btns="btn-save-outcome">
 			<div class="title"><h2>新增支出</h2> </div>
 			<div class="label">
 				支出描述： <input type="text" class="desc" size="36"> 
@@ -596,28 +165,21 @@ function loadto() {
 			</div> 
 			
 			<div class="label" class="radio" id="outcomeType">
-				<input type="radio" name="radio" checked="checked" onclick="money.showSingle()"/><label for="radio1">单笔支出</label>
+				<input type="radio" name="radio" checked="true" onclick="money.showSingle()"/><label for="radio1">单笔支出</label>
 				<input type="radio" name="radio" onclick="money.showMulti()"/><label for="radio2">多笔(超市购物等)</label>
 				<input type="radio" name="radio" /><label for="radio3">特殊支出(预算外)</label>
 			</div>
 			
 			
-			
-			
-			
-			
 			<div id="single" class="label outcometype">
 					所属分类 ： 
 					<select class="status" id="category1">
-						
 					</select> 
-					
 			</div>
 			
 			
 			
-			
-			<div id="multi" class="label outcometype" >
+			<div id="multi" class="label outcometype" style="display:none" >
 				<ul id="subitemlist">
 					<li class="forclone">支出项：<input type="text" class="desc" size="16"> 金额 <input type="text" class="spend" size="4"> 类别<select class="status">
 							<option>未开始</option>
@@ -632,12 +194,9 @@ function loadto() {
 				</ul>	
 				<button onclick="money.cloneSubitem()">增加一项</button> <button onclick="money.cloneSubitem()">计算到总金额</button>
 			</div>
-			
-			
 		</div>
 		
-		
-		<div class="content" id="eidtCat">
+		<div class="content" id="eidtCat" style="display:none">
 			
 			<button onclick="category.addRoot($('ul.category'))">增加大类</button>
 			<button onclick="getto()">获取大类</button>
@@ -646,21 +205,25 @@ function loadto() {
 			<ul class="category">
 				
 			</ul>
-			
-			
 		</div>
 		
 		<div class="content list" id="mainwelcome" style="display:none">
-			<div class="title"><h2>欢迎使用进度计划小助手</h2> </div>
+			<div class="title"><h2>Hi</h2> </div>
 			
 			<div class="label">
-				   <div class="status">进度计划小助手是一款简单好用的项目管理工具。<br>
-				   相比像控制复杂与严格的project等软件来说，进度计划小助手更侧重于对项目任务的分解、任务的进展、资源、附加文件、即时进展等方面功能。<br>
-				   使用者首先针对将工作或事务建立项目，然后在项目中增加子任务。 而针对于子任务， 可以设置起止时间、完成进度、资源、紧急程度等信息。<br>
-				   另外，也可以进行添加任务进展的备注消息、附加文件等操作。
-				   </div> 
-				</div>
+				本周支出 ： 122	    
+			</div>
+			<div class="label">
+				本月支出 ： 1122	    
+			</div>
 			
+			<div class="label">
+				本月预算 ： 1122	    
+			</div>
+			
+			<div class="label">
+				预算使用 ： 12%	    
+			</div>
 			
 			<div class="label">
 					<h3>还没有创建项目？  马上点击左上角的"创建项目"按钮把</h3>
@@ -674,11 +237,6 @@ function loadto() {
 		
 	</div>
 	
-<div id="categoryDialog" title="选择分类">
-	<ul id="selectCatul" >
-		
-	</ul>
-</div>
 <!-- 
 <div class="bottom nav"><button>退出</button><span id="ajaxInfos"></span></div>
  -->

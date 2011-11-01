@@ -1,7 +1,15 @@
 var more = new Object();
 
+var categories = JSON.parse('{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}'); 
+
 $(document).ready(function(){
-	var o = JSON.parse('{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}');
+	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
+
+	$('#navoutcome').click(
+			function(data) {
+				layout.pushCurrent($('#outcomelist'), $('#addOutComeForm'));
+			}
+	);
 	/*
 	category.load($('#selectCatul'), o, true);
 	$('#selectCatul').find('span').remove();
@@ -32,6 +40,8 @@ var money = {
 						cloned.remove();
 					}
 			);
+			
+			
 			$('#subitemlist').append(cloned);
 		},
 		
@@ -44,14 +54,9 @@ var money = {
 			$('div.outcometype').hide();
 			$('#multi').slideDown('fast');
 		}
-		
 };
 
-
-
-
 var category = {
-		
 		fillSelect:function(sel, json) {
 			var children = json.children;
 			if (children!=null) {
