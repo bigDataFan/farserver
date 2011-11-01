@@ -633,7 +633,8 @@ ul.category li span a {
 		
 		<div class="content" id="eidtCat">
 			
-			<button onclick="category.addRoot()">增加大类</button>
+			<button onclick="category.addRoot($('ul.category'))">增加大类</button>
+			<button onclick="alert(category.toJson($('ul.category'),{}))">获取大类</button>
 			
 			<ul class="category">
 				

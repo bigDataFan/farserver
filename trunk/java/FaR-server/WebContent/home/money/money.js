@@ -43,8 +43,32 @@ var money = {
 
 
 var category = {
-		addRoot: function() {
-			var ul = $('ul.category');
+		load: function(ul, json) {
+		},
+		
+		
+		toJson: function(ul, o) {
+			o.children = [];
+			var lis = ul.children('li');
+			for ( var i = 0; i < lis.length; i++) {
+				var li = $(lis[i]);
+				var b = {};
+				b.name = li.data('v');
+				var childul = li.children('ul');
+				if (childul.length!=0) {
+					b = category.toJson(childul, b);
+				}
+				o.children.push(b);
+			}
+			return o;
+		},
+		
+		writeOneLevel: function(o,  ul) {
+			
+		},
+		
+		
+		addRoot: function(ul) {
 			category.showEdit(ul, true);
 		},
 		
@@ -61,7 +85,8 @@ var category = {
 		editSave: function(li, c) {
 			var v = li.find('input').val();
 			li.data('v',v);
-			li.html('<h3>' + v + '<span class="oper"><a href="javascript:void(0)" class="edit">编辑</a><a href="javascript:void(0)" class="delete">删除</a> '
+			li.children('h3').remove();
+			li.prepend('<h3>' + v + '<span class="oper"><a href="javascript:void(0)" class="edit">编辑</a><a href="javascript:void(0)" class="delete">删除</a> '
 					+ (c?'<a href="javascript:void(0)" class="addchild">增加子类</a>':'') + '</span>' + '</h3>');
 			if (c) {
 				li.addClass('parent');
@@ -71,7 +96,15 @@ var category = {
 			
 			li.find('a.edit').click(
 					function(data) {
+						var h3 = $(this).parent().parent();
+						v = h3.parent().data('v');
+						h3.html('<input type="text" class="nname"><a href="javascript:void(0)">保存</a>');
+						h3.find('input').val(v);
 						
+						h3.find('a').click(function(data) {
+							var li = $(this).parent().parent();
+							category.editSave(li, c);
+						});
 					}
 			);
 			
@@ -85,17 +118,21 @@ var category = {
 			li.find('a.addchild').click(
 					function(data) {
 						var li = $(this).parent().parent().parent();
-						category.showEdit(li, false);
+						var ul = li.find('ul');
+						if (ul.length==0) {
+							ul = $('<ul></ul>');
+							li.append(ul);
+						}
+						category.showEdit(ul, false);
 					}
 			);
 			
-			
 			li.hover(
 					function(){
-						$(this).find('span').show();
+						$(this).children('h3').children('span').show();
 					}, 
 					function() {
-						$(this).find('span').hide();
+						$(this).children('h3').children('span').hide();
 					}
 			);
 			
