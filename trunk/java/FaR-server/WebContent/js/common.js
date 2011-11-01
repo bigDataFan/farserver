@@ -18,10 +18,29 @@ var layout = {
 		};
 		layout.viewstacks.push(newview);
 		layout.current = newview;
+		
+		$('button.tbtn').hide();
+		layout.showRelatedBtns(left);
+		layout.showRelatedBtns(right);
 	},
 	
+	showRelatedBtns: function(div) {
+		if (div.attr('btns')!=null) {
+			var lbtns = div.attr('btns').split(',');
+			for ( var i = 0; i < lbtns.length; i++) {
+				if (lbtns!="") {
+					$('#' + lbtns[i]).show();
+				}
+			}
+		}
+	}, 
+	
 	popCurrent : function () {
+		
 		var v = layout.viewstacks.pop();
+		if (layout.viewstacks.length>0) {
+			v = layout.viewstacks[layout.viewstacks.length-1];
+		}
 		
 		if (v.left!=layout.current.left) {
 			layout.hideview(layout.current.left);
@@ -33,17 +52,20 @@ var layout = {
 			layout.showview(v.right);
 		};
 		layout.current = v;
+		layout.viewstacks.push(v);
+		
+		$('button.tbtn').hide();
+		layout.showRelatedBtns(v.left);
+		layout.showRelatedBtns(v.right);
 	},
 
 	
 	hideview: function(div) {
-		$(div).slideUp();
+		$(div).slideUp('fast');
 	},
 	showview: function(div) {
-		$(div).slideDown();
+		$(div).slideDown('fast');
 	},
-	
-	btns:[],
 	
 	back: function() {
 		layout.popCurrent();
@@ -56,7 +78,6 @@ var layout = {
 			$('#' + btn[i]).show();
 		}
 	},
-	
 	//点击返回到主页面
 	home : function () {
 		layout.go('main', $('#mainwelcome'), ['btn-add-proj']);
@@ -65,4 +86,49 @@ var layout = {
 	}
 };
 
+var local = {
+		updated: {},
+		collections: {},
+		getCollection: function(name) {
+			if (local.collections[name]!=null) {
+				var coll = [];
+				for ( var i = 0; i < localStorage.length; i++) {
+					var key = localStorage.key(i);
+					if (key.indexOf(name+ '-')==0) {
+						coll.push(localStorage.getItem(key));
+					}
+				}
+				local.collections[name] = coll;
+			}
+			return local.collections[name];
+		}
+};
 
+function Collection(name)  {
+	this.name = name;
+	this.list = [{parent:"aa"}];
+	
+	this.add = function(o) {
+		this.list.push(o);
+	};
+
+	
+	
+	this.find = function(query) {
+		var result = [];
+		for ( var i = 0; i < this.list.length; i++) {
+			var o = this.list[i];
+			var matched = true;
+			for (var q in query) {
+				if (o[q]!=query[q]) {
+					matched = false;
+					break;
+				} 
+			}
+			if (matched) {
+				result.push(o);
+			}
+		}
+		return result;
+	};
+}
