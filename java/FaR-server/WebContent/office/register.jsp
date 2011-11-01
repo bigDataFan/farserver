@@ -11,7 +11,7 @@
 		session.setAttribute("rediretTo", request.getParameter("redirectTo"));
 	}
 %>
-<title>请登陆ever365</title>
+<title>注册成为ever365的用户</title>
 </head>
 <body>
 	

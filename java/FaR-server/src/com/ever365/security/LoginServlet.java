@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
     	String pwd = request.getParameter("password");
     	
-    	String redirectTo = (request.getSession().getAttribute("rediretTo")==null)?"/":(String)request.getSession().getAttribute("rediretTo");
+    	String redirectTo = (request.getSession().getAttribute("redirectTo")==null)?"/":(String)request.getSession().getAttribute("redirectTo");
     	String loginFrom = request.getParameter("from");
     	
     	if (loginFrom!=null && !loginFrom.startsWith("/")) {
