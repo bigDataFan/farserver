@@ -8,6 +8,13 @@ $(document).ready(function(){
 	$('#navoutcome').click(
 			function(data) {
 				layout.pushCurrent($('#outcomelist'), $('#addOutComeForm'));
+				
+				$('#outcomelist div.group').remove();
+				groupdb().order("___id desc").start(0).limit(10).each(
+						function(record,recordnumber) {
+							money.uiAddGroup(record);
+						}
+				);
 			}
 	);
 	
@@ -35,11 +42,13 @@ $(document).ready(function(){
 	groupdb = new TAFFY();
 	groupdb.store("moneygroup");
 	itemdb = new TAFFY();
-	groupdb.store("itemgroup");
+	itemdb.store("itemgroup");
 });
 
 var groupdb;
 var itemdb;
+
+/*
 more.showMenu = function() {
 	$('#menu1').slideDown('fast');
 	
@@ -49,9 +58,23 @@ more.showMenu = function() {
 			}
 	);
 };
-
+*/
 
 var money = {
+		
+		uiAddGroup:function(o) {
+			$('#outcomelist div.emptyInfo').hide();
+			cloned = $('div.taskItemTemplate').clone();
+			
+			cloned.removeClass('taskItemTemplate').addClass('group').slideDown('fast');
+			$('#outcomelist').append(cloned);
+			cloned.find('.priority').html(o.total);
+			cloned.find('.resource').html(o.type);
+			cloned.find('.title').html(o.desc);
+			cloned.find('.progress').html(o.time);
+			cloned.find('.tj').html(o.by);
+		},
+		
 		cloneSubitem: function() {
 			var cloned =  $('#subitemlist li.forclone').clone();
 			cloned.removeClass('forclone').show();
@@ -72,10 +95,37 @@ var money = {
 					time: form.find('input.start').val(),
 					total:form.find('input.total').val(),
 					by: form.find('select.outmethod').val(),
-					type:form.find('select.outtype').val()
+					type:form.find('select.outtype').val(),
+					updated: new Date().getTime()
 			};
-			var aa = groupdb.insert(group);
-			alert(group.___id);
+			groupdb.insert(group);
+			var groupid = group.___id;
+			
+			if (group.type=="single") {
+				//保存1条支出记录
+				var item = {
+						'gid': groupid,
+						'cat': $('#single select').val(),
+						'cost': group.total,
+						'updated': new Date().getTime()
+				};
+				itemdb.insert(item);
+			} else if (group.type=="multi") {
+				//保存多条支出记录
+				$('#subitemlist li').each(
+						function(){
+							var li = $(this);
+							var item = {
+									'gid': groupid,
+									'updated': new Date().getTime(),
+									'desc':  li.find('input.desc').val(),
+									'cost': li.find('input.cost').val(),
+									'cat': li.find('select').val()
+							};
+							itemdb.insert(item);			
+						}
+				);
+			}
 			//groupdb.store('moneygroup');
 		}
 };
