@@ -189,7 +189,7 @@ div.pageFootbar div.flipPageBar {
 	font-weight:bold;
 	letter-spacing: -0.03em;
 	text-align: center;
-	background: #3A8FCE url(image/bkg-btn-blue.gif) repeat-x 0 top;
+	background: #3A8FCE url(bkg-btn-blue.gif) repeat-x 0 top;
 	color: white;
 	text-shadow: 0 -1px 2px #2063AB;
 	border: 1px solid #2F6EA7;
@@ -217,7 +217,7 @@ div.pageFootbar div.flipPageBar {
 }
 
 .i-hint {
-    background-image: url("image/icon_hint.png");
+    background-image: url("icon_hint.png");
     background-repeat: no-repeat;
     display: inline-block;
     overflow: hidden;
@@ -278,7 +278,6 @@ div.timeItem {
     display: block;
     height: 60px;
     width: 100%;
-    
     --border-bottom: 	1px dashed #DDD;
     background: url("networks.png") left repeat-x transparent;
 }
@@ -364,7 +363,7 @@ div.running div.timeOper a {
     height: 19px;
     padding: 5px 60px 0 0;
     text-decoration: none;
-	background: transparent url('/office/image/btn_running.gif') no-repeat scroll right top;
+	background: transparent url('btn_running.gif') no-repeat scroll right top;
 }
  
 div.pending div.timeOper a {
@@ -374,11 +373,11 @@ div.pending div.timeOper a {
     height: 19px;
     padding: 5px 60px 0 0;
     text-decoration: none;
-	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right top;
+	background: transparent url('btn_timer.png') no-repeat scroll right top;
 }
 
 div.pending div.timeOper a:HOVER {
-	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right -24px;
+	background: transparent url('btn_timer.png') no-repeat scroll right -24px;
 } 
 
 div.running div.timeOper a span {
