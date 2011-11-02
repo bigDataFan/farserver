@@ -15,17 +15,12 @@
 
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/json2.js"></script>
+<script type="text/javascript" src="taffy-min.js"></script>
 <script type="text/javascript" src="money.js"></script>
 
 
 
-
 <script type="text/javascript">
-function getto() {
-	alert(JSON.stringify(category.toJson($('ul.category'),{})));
-	//JSON.stringify
-}
-
 
 function loadto() {
 	var o = JSON.parse('{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}');
@@ -42,7 +37,8 @@ function loadto() {
 			<button onclick="layout.back()" class="tbtn" id="btn-return-main">返回</button>
 		</td>
 		<td>
-			<button class="tbtn" id="btn-save-outcome" onclick="layout.back()">保存</button>
+			<button class="tbtn" id="btn-save-outcome" onclick="money.uiSaveOutCome()">保存</button>
+			<button class="tbtn" id="btn-save-outcome-add" onclick="money.uiSaveAdd()">增加一条</button>
 			<button class="tbtn" id="btn-add-outcome" onclick="">增加支出</button>
 			<button class="tbtn" id="btn-project-save" onclick="project.ui.saveProject()">增加收入</button>
 			<button class="tbtn" id="btn-project-remove" onclick="project.ui.removeProject()">统计和工具</button>
@@ -142,7 +138,7 @@ function loadto() {
 		<ul id="menu1" class="ul" style="display:none"><li class="Al Gn pl" onclick="_e(event, 's', '')" tabindex="0">回复</li><li class="Bl Gn pl" onclick="_e(event, 'g', '')" tabindex="0">移动...</li><li class="Bl Gn pl" onclick="_e(event, 'h', '')" tabindex="0">加标签...</li><li class="Bl Gn pl" onclick="_e(event, 'f', '11')" tabindex="0">忽略</li><li class="Bl Gn pl" onclick="_e(event, 'f', '7')" tabindex="0">这是垃圾邮件</li><li class="Bl pl" onclick="_e(event, 'E', '')" tabindex="0">打印</li><li class="Cl Gn pl" onclick="_e(event, 'f', '4')" tabindex="0">标记为未读</li></ul>
 	
 		
-		<div class="content" id="addOutComeForm" style="display:none" btns="btn-save-outcome">
+		<div class="content" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add">
 			<div class="title"><h2>新增支出</h2> </div>
 			<div class="label">
 				支出描述： <input type="text" class="desc" size="36"> 
@@ -157,7 +153,7 @@ function loadto() {
 			
 			<div class="label">
 				支出方式 * ：  
-				<select class="status">
+				<select class="outmethod">
 						<option>现金</option>
 						<option>刷卡</option>
 						<option>网上支付</option>
@@ -165,34 +161,34 @@ function loadto() {
 			</div> 
 			
 			<div class="label" class="radio" id="outcomeType">
-				<input type="radio" name="radio" checked="true" onclick="money.showSingle()"/><label for="radio1">单笔支出</label>
-				<input type="radio" name="radio" onclick="money.showMulti()"/><label for="radio2">多笔(超市购物等)</label>
-				<input type="radio" name="radio" /><label for="radio3">特殊支出(预算外)</label>
+				支出类型： 
+				<select class="outtype" >
+					<option value="single">单笔支出</option>
+					<option value="multi">多笔(超市购物等)</option>
+					<option value="exp">特殊支出(预算外)</option>
+				</select>
 			</div>
 			
 			
 			<div id="single" class="label outcometype">
 					所属分类 ： 
-					<select class="status" id="category1">
+					<select class="category">
 					</select> 
 			</div>
 			
-			
-			
 			<div id="multi" class="label outcometype" style="display:none" >
 				<ul id="subitemlist">
-					<li class="forclone">支出项：<input type="text" class="desc" size="16"> 金额 <input type="text" class="spend" size="4"> 类别<select class="status">
-							<option>未开始</option>
-							<option>进行中</option>
-							<option>暂停</option>
-							<option>已完成</option>
-							<option>中止</option>
+					<li class="forclone">支出项：<input type="text" class="desc" size="16"> 金额 <input type="text" class="spend" size="4"> 类别
+					<select class="category">
+					
 					</select> 
 					<a class="delete" href="javascript:void(0)">删除</a>
 					
 					 </li>
-				</ul>	
+				</ul>
+				<div style="margin-top: 10px;">
 				<button onclick="money.cloneSubitem()">增加一项</button> <button onclick="money.cloneSubitem()">计算到总金额</button>
+				</div>
 			</div>
 		</div>
 		
