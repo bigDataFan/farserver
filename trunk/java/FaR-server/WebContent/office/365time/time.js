@@ -175,10 +175,6 @@ office.time = {
 		office.time.currentEdit = data;
 		$('#editTime').val(data.desc);
 		$('#autoStop').val((data.autostop==null)?"0":data.autostop);
-		
-		if (office.currentUser.indexOf("@weibo.com>0")) {
-			$('div.sharetosina').show();
-		}
 		office.switchView('div.details');
 	},
 	
