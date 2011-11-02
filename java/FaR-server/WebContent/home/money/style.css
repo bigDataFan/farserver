@@ -91,6 +91,7 @@ button:HOVER {
 	width: 260px;
 	top: 44px;
 	bottom:0px;
+	overflow:hidden;
 	position: absolute;
 }
 
