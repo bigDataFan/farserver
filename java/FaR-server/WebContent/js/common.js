@@ -109,12 +109,38 @@ function Collection(name)  {
 	this.list = [{parent:"aa"}];
 	
 	this.add = function(o) {
+		o.updated = new Date().getTime();
 		this.list.push(o);
 	};
-
 	
+	this.update = function(q, o) {
+		o.updated = new Date().getTime();
+		var result = this.find(q);
+		for ( var i = 0; i < result.length; i++) {
+			result[i] = o;
+		}
+	};
+	
+	this.findOne = function(q) {
+		for ( var i = 0; i < this.list.length; i++) {
+			var o = this.list[i];
+			var matched = true;
+			for (var q in query) {
+				if (o[q]!=query[q]) {
+					matched = false;
+					break;
+				} 
+			}
+			if (matched) {
+				return o;
+			}
+		}
+	};
 	
 	this.find = function(query) {
+		if (query==null) {
+			return this.list;
+		}
 		var result = [];
 		for ( var i = 0; i < this.list.length; i++) {
 			var o = this.list[i];

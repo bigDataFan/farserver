@@ -27,7 +27,7 @@ if (request.getParameter("openid")!=null && request.getParameter("openkey")!=nul
 }
 
 
-String  userName = AuthenticationUtil.getCurrentUser();
+String  userName = AuthenticationUtil.getCurrentUserName();
 
 %>
 
