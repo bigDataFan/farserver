@@ -97,9 +97,12 @@ var money = {
 			$('#subitemlist').append(cloned);
 		},
 		
-		uiEditOutCome: function() {
-			var data = $(this).data('outcome');
+		uiEditOutCome: function(t) {
+			var data = $(t).data('outcome');
 			var form = $('#addOutComeForm');
+			
+			$('#outcomelist div.item').removeClass("selected");
+			$(t).addClass("selected");
 			
 			form.data("outcome", data);
 			

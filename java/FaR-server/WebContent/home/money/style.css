@@ -145,6 +145,8 @@ button:HOVER {
 }
 
 
+
+
 /*详细信息列表项---通用项**/
 .item {
 	background: #F3F4F7;
@@ -229,14 +231,20 @@ button:HOVER {
 }
 
 
+
 /**task列表的一些特定样式*/
-#tasklist div.selected {
+div.selected {
+	background: #5E8BDB;
+	color: white;
+}
+
+div.selected:HOVER {
 	background: #5E8BDB;
 	color: white;
 }
 
 
-#tasklist div.title {
+div.item  div.title {
 	background:#E3E3E3;
 	border-bottom: 1px solid #CCC;
 	position: relative;
@@ -245,6 +253,9 @@ button:HOVER {
 	font-size: 15px;
 	font-weight: bold;
 }
+
+
+
 
 
 div.star .unmark {
