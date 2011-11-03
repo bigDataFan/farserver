@@ -109,8 +109,8 @@ public class RegisterServlet extends HttpServlet {
     		cookieService.saveUserCookie(request, response, username);
 			request.getSession().removeAttribute("loginError");
 			
-			if (request.getSession().getAttribute("rediretTo")!=null) {
-    			response.sendRedirect((String)request.getSession().getAttribute("rediretTo"));
+			if (request.getSession().getAttribute("redirectTo")!=null) {
+    			response.sendRedirect((String)request.getSession().getAttribute("redirectTo"));
     			return;
     		} else {
     			response.sendRedirect("/");
