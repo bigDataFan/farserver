@@ -59,20 +59,30 @@ more.showMenu = function() {
 	);
 };
 */
+var utils = {
+		'single': "单笔支出",
+		"multi": "多项支出",
+		"exp":"预算外"
+};
 
 var money = {
-		
 		uiAddGroup:function(o) {
 			$('#outcomelist div.emptyInfo').hide();
 			cloned = $('div.taskItemTemplate').clone();
-			
+			$('#outcomelist').prepend(cloned);
 			cloned.removeClass('taskItemTemplate').addClass('group').slideDown('fast');
-			$('#outcomelist').append(cloned);
-			cloned.find('.priority').html(o.total);
-			cloned.find('.resource').html(o.type);
-			cloned.find('.title').html(o.desc);
-			cloned.find('.progress').html(o.time);
-			cloned.find('.tj').html(o.by);
+			cloned.find('.total').html(o.total);
+			
+			cloned.find('.resource span').html(utils[o.type]);
+			if (o.desc.length>10) {
+				cloned.find('.title').html(o.desc.substring(0,10) + "..");
+			} else {
+				cloned.find('.title').html(o.desc);
+			}
+			
+			cloned.find('.info1').html(o.time);
+			cloned.find('.info2').html(o.by);
+			cloned.data("outcome", o);
 		},
 		
 		cloneSubitem: function() {
@@ -85,6 +95,20 @@ var money = {
 					}
 			);
 			$('#subitemlist').append(cloned);
+		},
+		
+		uiEditOutCome: function() {
+			var data = $(this).data('outcome');
+			var form = $('#addOutComeForm');
+			
+			form.data("outcome", data);
+			
+			form.find('input.desc').val(data.desc);
+			form.find('input.start').val(data.time);
+			form.find('input.total').val(data.total);
+			form.find('select.outmethod').val(data.by);
+
+			
 		},
 		
 		uiSaveOutCome: function() {
@@ -126,6 +150,14 @@ var money = {
 						}
 				);
 			}
+			money.uiAddGroup(group);
+			form.find('input.desc').val('');
+			form.find('input.start').val('');
+			form.find('input.total').val('');
+			form.find('select.outmethod').val('现金');
+			type:form.find('select.outtype').val('single');
+			$('div.outcometype').hide();
+			$('#single').slideDown('fast');
 			//groupdb.store('moneygroup');
 		}
 };
