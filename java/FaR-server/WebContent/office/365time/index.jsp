@@ -74,7 +74,24 @@ var userName = "<%=userName%>";
 		时间记录小助手
 	</div>
 	
-	<!-- JiaThis Button BEGIN -->
+
+<!-- 用户既不是匿名 也不是以第三方身份登入  -->	
+<%if (!userName.startsWith("guest.") && !userName.startsWith("3rd.")) { %>
+	<div class="buttons headeroper" id="helloLink" >
+		<a class="fixed hidden" href="/logout?redirect=/office/365time/index.jsp" >注销</a>
+	</div>
+	
+<%} %>
+
+
+
+	
+<div class="buttons headeroper">
+	<a class="fixed hidden" id="queueLink" href="/office/365time/help.html">帮助</a>
+</div>
+
+
+<!-- JiaThis Button BEGIN -->
 	<script type="text/javascript">
 		var jiathis_config = {
 			    siteNum:4,
@@ -88,15 +105,17 @@ var userName = "<%=userName%>";
 	</div>
 	<script type="text/javascript" src="http://v2.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
 	<!-- JiaThis Button END -->
+	
 
 
 <!-- 用户既不是匿名 也不是以第三方身份登入  -->	
 <%if (!userName.startsWith("guest.") && !userName.startsWith("3rd.")) { %>
 	
 	<div class="buttons headeroper" id="helloLink" >
-		<span>你好 <%=userName %></span>|<a class="fixed hidden" href="/logout?redirect=/office/365time/index.jsp" >注销</a>
+		<span>你好 <%=userName %></span>
 		
 	</div>
+	
 <%} %>
 
 <!-- 用户是匿名 -->
@@ -113,10 +132,6 @@ var userName = "<%=userName%>";
 		<%=ifo.get("nickname") %>
 	</div>
 <%} %>
-
-	<div class="buttons headeroper">
-		<a class="fixed hidden" id="queueLink" href="/office/365time/help.html">帮助</a>
-	</div>
 </div></div></div>
 
 
