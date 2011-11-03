@@ -223,6 +223,7 @@ office.time = {
 					},
 					function(data) {
 						//office.switchBack();
+						office.time.currentEdit = null;
 						office.time.hideEdit();
 						office.time.load();
 					}
@@ -238,7 +239,12 @@ office.time = {
 	hideAddTime:function() {
 		$('#addTimeDiv').fadeOut(300);
 	},
+	
+	adding: false,
 	add:function(desc, autostop) {
+		if (office.time.adding) return;
+		
+		office.time.adding = true;
 		$.post("/service/office/time/add", 
 				{
 					"desc":desc,
@@ -323,6 +329,7 @@ office.time = {
 	
 	hideEdit: function() {
 		$('#itemedit').slideUp('fast');
+		office.time.adding = false;
 	},
 
 	formatDura:function(mill) {
