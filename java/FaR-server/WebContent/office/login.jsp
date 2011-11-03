@@ -19,13 +19,14 @@
 	}
 
 %>
-<title>请登陆ever365</title>
+<title>请登陆以进一步使用</title>
 
 </head>
 <body>
 	
 	<div id="times" class="pages">
 		<div class="pagebar">
+		请登陆以进一步使用
              </div>
              
 			<div class="details views" >

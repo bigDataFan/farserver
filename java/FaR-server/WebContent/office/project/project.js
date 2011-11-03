@@ -633,9 +633,12 @@ function initUserInfo() {
 			function(data) {
 				currentUser = data.userName;
 				if (data.userName.indexOf('guest.')>-1) {
+					location.href="/office/login.jsp?redirectTo=/office/project/index.html";
 					//匿名用户
+						/*
 					$('#loginLink').show();
 					$('#helloLink').hide();
+					*/
 				} else {
 					$('#loginLink').hide();
 					$('#helloLink span').html('您好 ' + data.userName);
