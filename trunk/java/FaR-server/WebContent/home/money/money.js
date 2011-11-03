@@ -19,12 +19,7 @@ $(document).ready(function(){
 	);
 	
 	$('select.outtype').change(function(data){
-		$('div.outcometype').hide();
-		if ($(this).val()=="single") {
-			$('#single').slideDown('fast');
-		} else if ($(this).val()=="multi") {
-			$('#multi').slideDown('fast');
-		}
+		money.uiswitchType($(this).val());
 	});
 	/*
 	category.load($('#selectCatul'), o, true);
@@ -66,6 +61,16 @@ var utils = {
 };
 
 var money = {
+		
+		uiswitchType: function(t) {
+			$('div.outcometype').hide();
+			if (t=="single") {
+				$('#single').slideDown('fast');
+			} else if (t=="multi") {
+				$('#multi').slideDown('fast');
+			}
+		},
+		
 		uiAddGroup:function(o) {
 			$('#outcomelist div.emptyInfo').hide();
 			cloned = $('div.taskItemTemplate').clone();
@@ -110,7 +115,12 @@ var money = {
 			form.find('input.start').val(data.time);
 			form.find('input.total').val(data.total);
 			form.find('select.outmethod').val(data.by);
+			form.find('select.outtype').val(data.type);
 
+			money.uiswitchType(data.type);
+			if (data.type=="single") {
+				$('#single select').val(itemdb({gid:data.___id}).cat);
+			}
 			
 		},
 		
