@@ -373,7 +373,7 @@ div.pending div.timeOper a {
     height: 19px;
     padding: 5px 60px 0 0;
     text-decoration: none;
-	background: transparent url('btn_timer.png') no-repeat scroll right top;
+	background: transparent url('btn_timer.png') no-repeat scroll right -1px;
 }
 
 div.pending div.timeOper a:HOVER {
