@@ -179,7 +179,7 @@ var userName = "<%=userName%>";
 					</div>
 			
            		</div>
-<div class="nav">
+			<div class="nav">
  			<ul>
  				<li>
  					<span class="title">总计用时</span>
