@@ -278,7 +278,7 @@ div.timeItem {
     display: block;
     height: 60px;
     width: 100%;
-    --border-bottom: 	1px dashed #DDD;
+    --border-bottom: 1px dashed #DDD;
     background: url("networks.png") left repeat-x transparent;
 }
 
