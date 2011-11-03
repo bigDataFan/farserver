@@ -191,39 +191,46 @@ var userName = "<%=userName%>";
  					<span class="title">统计信息</span>
  					<table cellspacing="0" cellpadding="0" class="tbl tbl-timesummary" id="tbl-timesummary">
 						<tbody>
-					
+						
 						<tr>
 							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
-							  <a href="#" onclick="genTodayGraph()">
+							  <a href="javascript:void(0)" >
 							    <span class="type-smallgrey">昨日统计</span>
 							    <span id="yesterdayTime" class="type-largehours">0:00</span>
 							  </a>
 							</td>
 							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
-						 	 <a href="#" onclick="genYesterdayGraph()">
+						 	 <a href="javascript:void(0)" >
 						      <span class="type-smallgrey">本周统计</span>
 						      <span id="weekTime" class="type-largehours">0:00</span>
 						    </a>
 						 	</td>
 						</tr>
+						
+						
 						<tr>
-						  <td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
-						  <a href="#" onclick="genWeekyGraph()">
+						  <td class="big_link" style="background-color: white;">
+						  <a href="javascript:void(0)">
 						    <span class="type-smallgrey">条目总计</span>
-						    <span id="itemCount" class="type-largehours"></span>
+						    <span id="itemCount" class="type-largehours">00:00</span>
 						  </a>
 						</td>
-						<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
-						      <a href="#">
+							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
+						      <a href="javascript:void(0)">
 						        <span class="type-smallgrey">时间累计</span>
-						        <span id="totalTime" class="type-largehours"></span>
+						        <span id="totalTime" class="type-largehours">00:00</span>
 						      </a>
 						    </td>
 						  </tr>
-					 
+						  
+						
+					
+						
+					
 					</tbody></table>
      				</li>
-				<li>
+     				
+					<li>
      					<span class="title">时间日历</span>
      					<div id="datepicker" style="width: 200px;"></div>
      				</li>
