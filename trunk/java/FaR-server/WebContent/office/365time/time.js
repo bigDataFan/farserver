@@ -137,7 +137,7 @@ office.time = {
 		
 		timed.removeClass('timeTemplate').addClass("timeItem");
 		timed.data("timedata", o);
-		if (jQuery.browser.msie && jQuery.browser.version=="6.0") {
+		if (isIE6()) {
 			timed.css("width", $('#timelist').css("width"));
 		}
 		
@@ -167,8 +167,14 @@ office.time = {
 			
 		}
 		
-		timed.find('div.timeStatics span.timeStart').html(office.time.formatHour(o.created));
-		timed.find('div.timeStatics span.timePending').html((o.checks==null)?0:o.checks.length);
+		timed.find('div.timeStatics span.timeStart').html('开始于:' + office.time.formatHour(o.created));
+		timed.find('div.timeStatics span.timePending').html(',中断了' + ((o.checks==null)?0:o.checks.length) + '次');
+		
+		if(isIE6()) {
+			timed.find('div.timeStatics span.timeStart').hide();
+			timed.find('div.timeStatics span.timePending').hide();
+		}
+		
 		timed.find('div.timeDesc').html(o.desc);
 		
 		timed.fadeIn('fast');
@@ -381,3 +387,7 @@ office.time = {
 	
 	other:null
 };
+
+function isIE6() {
+	return jQuery.browser.msie && jQuery.browser.version=="6.0";
+}

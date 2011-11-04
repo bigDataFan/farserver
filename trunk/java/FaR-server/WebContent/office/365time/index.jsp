@@ -138,7 +138,7 @@ var userName = "<%=userName%>";
 
            	<div class="timeTemplate itemcontainer" style="display: none">
            		<div class="timeDesc"> </div>
-           		<div class="timeStatics"><span class="timeStart"></span>(<span class="timePending"></span>)&nbsp;<a class="details" href="#">操作</a><span class="warning" style="display:none">已记录了指定时长</span></div>
+           		<div class="timeStatics"><span class="timeStart"></span><span class="timePending"></span>&nbsp;<a class="details" href="#">操作</a><span class="warning" style="display:none">已记录了指定时长</span></div>
            		<!--  <div class="timeDura">12:00</div>  -->
            		<div class="timeOper">
            			<a href="#"><span>12:00</span></a>
