@@ -41,6 +41,11 @@ public class LogoutServlet extends HttpServlet {
     	cookieService.removeCookie(request);
     	
     	String red = request.getParameter("redirect");
+    	String loginTo = request.getParameter("loginTo");
+    	if (loginTo!=null) {
+    		request.getSession().setAttribute("redirectTo", loginTo);
+    	}
+    	
     	
     	if (red==null) {
     		response.sendRedirect("/");
