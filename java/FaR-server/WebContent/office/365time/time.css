@@ -291,7 +291,7 @@ div.timeItem:HOVER {
 div.timeItem div.timeDesc {
 	padding:10px;
 	float: left;
-	min-width:400px;
+	min-width:300px;
 	position: fixed;
 }
 
@@ -299,7 +299,7 @@ div.timeItem div.timeDesc {
 div.timeItem div.timeStatics {
 	padding: 36px 0px 0px 10px;
 	float: left;
-	min-width:200px;
+	min-width:80px;
 	color: #7D7D7D;
 	font-size: 12px;
 	position: fixed;
@@ -335,7 +335,7 @@ div.timeItem div.timeDura {
 div.timeItem div.timeOper {
 	color: black;
 	float: right;
-	width: 120px;
+	width: 90px;
 	font-weight: bold;
 	padding-top: 20px;
 }
@@ -361,7 +361,7 @@ div.running div.timeOper a {
     color: #333333;
     display: block;
     height: 19px;
-    padding: 5px 60px 0 0;
+    padding: 5px 40px 0 0;
     text-decoration: none;
 	background: transparent url('btn_running.gif') no-repeat scroll right top;
 }
@@ -371,7 +371,7 @@ div.pending div.timeOper a {
     color: #333333;
     display: block;
     height: 19px;
-    padding: 5px 60px 0 0;
+    padding: 5px 40px 0 0;
     text-decoration: none;
 	background: transparent url('btn_timer.png') no-repeat scroll right -1px;
 }
