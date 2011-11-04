@@ -12,7 +12,7 @@ $(document).ready(function(){
 				$('#outcomelist div.group').remove();
 				groupdb().order("___id desc").start(0).limit(10).each(
 						function(record,recordnumber) {
-							money.uiAddGroup(record);
+							money.uiAddOrUpdateGroup(record);
 						}
 				);
 			}
@@ -71,11 +71,18 @@ var money = {
 			}
 		},
 		
-		uiAddGroup:function(o) {
+		uiAddOrUpdateGroup:function(o) {
 			$('#outcomelist div.emptyInfo').hide();
-			cloned = $('div.taskItemTemplate').clone();
-			$('#outcomelist').prepend(cloned);
-			cloned.removeClass('taskItemTemplate').addClass('group').slideDown('fast');
+			
+			var cloned = $('#' + o.___id);
+			
+			if (cloned.length==0) {
+				cloned = $('div.taskItemTemplate').clone();
+				$('#outcomelist').prepend(cloned);
+				cloned.attr("id", o.___id);
+				cloned.removeClass('taskItemTemplate').addClass('group').slideDown('fast');
+			}
+			
 			cloned.find('.total').html(o.total);
 			
 			cloned.find('.resource span').html(utils[o.type]);
@@ -92,7 +99,7 @@ var money = {
 		
 		cloneSubitem: function() {
 			var cloned =  $('#subitemlist li.forclone').clone();
-			cloned.removeClass('forclone').show();
+			cloned.removeClass('forclone').addClass('cloned').show();
 			
 			cloned.find('a.delete').click(
 					function() {
@@ -120,22 +127,32 @@ var money = {
 			money.uiswitchType(data.type);
 			if (data.type=="single") {
 				$('#single select').val(itemdb({gid:data.___id}).cat);
+			} else if (data.type=="multi") {
+				
 			}
-			
 		},
-		
 		uiSaveOutCome: function() {
 			var form = $('#addOutComeForm');
 			
-			var group = {
-					desc: form.find('input.desc').val(),
-					time: form.find('input.start').val(),
-					total:form.find('input.total').val(),
-					by: form.find('select.outmethod').val(),
-					type:form.find('select.outtype').val(),
-					updated: new Date().getTime()
-			};
-			groupdb.insert(group);
+			var group = form.data("group");
+			
+			if (group==null) {
+				updated = false;
+				group = {};
+			}
+			
+			group.desc = form.find('input.desc').val();
+			group.time = form.find('input.start').val();
+			group.total = form.find('input.total').val();
+			group.by = form.find('select.outmethod').val();
+			group.type = form.find('select.outtype').val();
+			group.updated = new Date().getTime();
+			
+			if (updated) {
+				
+			} else {
+				groupdb.insert(group);
+			}
 			var groupid = group.___id;
 			
 			if (group.type=="single") {
@@ -146,8 +163,9 @@ var money = {
 						'cost': group.total,
 						'updated': new Date().getTime()
 				};
-				itemdb.insert(item);
+				group.items = [item]; 
 			} else if (group.type=="multi") {
+				group.items = new Array();
 				//保存多条支出记录
 				$('#subitemlist li').each(
 						function(){
@@ -159,11 +177,13 @@ var money = {
 									'cost': li.find('input.cost').val(),
 									'cat': li.find('select').val()
 							};
-							itemdb.insert(item);			
+							group.items.push(item);	
 						}
 				);
 			}
-			money.uiAddGroup(group);
+			money.uiAddOrUpdateGroup(group);
+			
+			
 			form.find('input.desc').val('');
 			form.find('input.start').val('');
 			form.find('input.total').val('');
@@ -172,6 +192,10 @@ var money = {
 			$('div.outcometype').hide();
 			$('#single').slideDown('fast');
 			//groupdb.store('moneygroup');
+		},
+		
+		uiNewOutCome: function() {
+			
 		}
 };
 
