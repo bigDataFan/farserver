@@ -137,8 +137,9 @@ office.time = {
 		
 		timed.removeClass('timeTemplate').addClass("timeItem");
 		timed.data("timedata", o);
-		
-		timed.css("width", $('#timelist').css("width"));
+		if (jQuery.browser.msie && jQuery.browser.version=="6.0") {
+			timed.css("width", $('#timelist').css("width"));
+		}
 		
 		timed.find('div.timeOper a').attr("id", o.id);
 		var dura = 0;

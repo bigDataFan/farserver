@@ -73,9 +73,7 @@ var money = {
 		
 		uiAddOrUpdateGroup:function(o) {
 			$('#outcomelist div.emptyInfo').hide();
-			
 			var cloned = $('#' + o.___id);
-			
 			if (cloned.length==0) {
 				cloned = $('div.taskItemTemplate').clone();
 				$('#outcomelist').prepend(cloned);
@@ -94,7 +92,7 @@ var money = {
 			
 			cloned.find('.info1').html(o.time);
 			cloned.find('.info2').html(o.by);
-			cloned.data("outcome", o);
+			cloned.data("group", o);
 		},
 		
 		cloneSubitem: function() {
@@ -110,13 +108,13 @@ var money = {
 		},
 		
 		uiEditOutCome: function(t) {
-			var data = $(t).data('outcome');
+			var data = $(t).data('group');
 			var form = $('#addOutComeForm');
 			
 			$('#outcomelist div.item').removeClass("selected");
 			$(t).addClass("selected");
 			
-			form.data("outcome", data);
+			form.data("group", data);
 			
 			form.find('input.desc').val(data.desc);
 			form.find('input.start').val(data.time);
@@ -131,15 +129,15 @@ var money = {
 				
 			}
 		},
-		uiSaveOutCome: function() {
+		uiSaveOutCome: function(createNew) {
 			var form = $('#addOutComeForm');
 			
 			var group = form.data("group");
-			
+			var updated = true;
 			if (group==null) {
 				updated = false;
 				group = {};
-			}
+			} 
 			
 			group.desc = form.find('input.desc').val();
 			group.time = form.find('input.start').val();
@@ -148,11 +146,6 @@ var money = {
 			group.type = form.find('select.outtype').val();
 			group.updated = new Date().getTime();
 			
-			if (updated) {
-				
-			} else {
-				groupdb.insert(group);
-			}
 			var groupid = group.___id;
 			
 			if (group.type=="single") {
@@ -181,22 +174,28 @@ var money = {
 						}
 				);
 			}
+			if (updated) {
+				groupdb({___id:groupid}).update(group);
+			} else {
+				groupdb.insert(group);
+			}
 			money.uiAddOrUpdateGroup(group);
 			
+			if (createNew) {
+				form.find('input.desc').val('');
+				form.find('input.start').val('');
+				form.find('input.total').val('');
+				form.find('select.outmethod').val('现金');
+				type:form.find('select.outtype').val('single');
+				$('div.outcometype').hide();
+				$('#single').slideDown('fast');
+			} else {
+				form.data("group", group)
+			}
 			
-			form.find('input.desc').val('');
-			form.find('input.start').val('');
-			form.find('input.total').val('');
-			form.find('select.outmethod').val('现金');
-			type:form.find('select.outtype').val('single');
-			$('div.outcometype').hide();
-			$('#single').slideDown('fast');
 			//groupdb.store('moneygroup');
 		},
 		
-		uiNewOutCome: function() {
-			
-		}
 };
 
 var category = {

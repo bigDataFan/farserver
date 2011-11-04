@@ -299,7 +299,7 @@ div.timeItem div.timeDesc {
 div.timeItem div.timeStatics {
 	padding: 36px 0px 0px 10px;
 	float: left;
-	min-width:400px;
+	min-width:200px;
 	color: #7D7D7D;
 	font-size: 12px;
 	position: fixed;
