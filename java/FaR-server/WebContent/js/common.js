@@ -110,6 +110,8 @@ var sync = {
 			
 			for ( var i = 0; i < sync.dbs.length; i++) {
 				var newer = sync.dbs[i]().filter({"updated":{'gt': updated}});
+				
+				var currentIndex = i;
 				if (newer.count()>0) {
 					$.post("/service/db/sync",
 							{
@@ -121,20 +123,20 @@ var sync = {
 						    	var result = $.parseJSON(data);
 						    	
 						    	for ( var j = 0; j < result.gotten.length; j++) {
-						    		sync.dbs[i].insert(result.gotten[j]);
+						    		sync.dbs[currentIndex].insert(result.gotten[j]);
 								}
 						    	
 						    	for ( var id in result.ids) {
-						    		db({___id: id}).update({_id: result.ids[id]});
+						    		sync.dbs[currentIndex]({___id: id}).update({_id: result.ids[id]});
 								}
 
 						    	for ( var id in result.removed) {
-						    		db({_id: id}).remove();
+						    		sync.dbs[currentIndex]({_id: id}).remove();
 								}
 						    	
 						    	if (sync.request==sync.dbs.length) {
 									sync.connecting = false;
-									$.cookie("updated", updated);
+									$.cookie("updated", new Date().getTime());
 								}
 						    }
 					);
