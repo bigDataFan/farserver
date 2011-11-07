@@ -3,6 +3,14 @@ var categories = JSON.parse('{"children":[{"name":"多发点","children":[{"name
 $(document).ready(function(){
 	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
 
+	$( "input.choosedate" ).datepicker({
+		autoSize: false,
+		dateFormat: 'yy-mm-dd' ,
+		monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		showWeek: true
+	});
+	
 	$('#navoutcome').click(
 			function(data) {
 				layout.pushCurrent($('#outcomelist'), $('#addOutComeForm'));
@@ -143,6 +151,7 @@ var money = {
 		
 		uiResetOutCome: function() {
 			var form = $('#addOutComeForm');
+			form.data("group", null);
 			form.find('input.desc').val('');
 			form.find('input.start').val('');
 			form.find('input.total').val('');
@@ -150,6 +159,20 @@ var money = {
 			type:form.find('select.outtype').val('single');
 			$('div.outcometype').hide();
 			$('#single').show();
+		},
+		
+		calculateTotal: function() {
+			var form = $('#addOutComeForm');
+			var total = 0;
+			$('#subitemlist li.cloned').each(
+					function(){
+						var li = $(this);
+						if (!isNaN(li.find('input.cost').val())) {
+							total += parseFloat(li.find('input.cost').val());
+						}
+					}
+			);
+			form.find('input.total').val(total);
 		},
 		
 		uiSaveOutCome: function(createNew) {
