@@ -11,7 +11,6 @@ var layout = {
 			layout.hideview(layout.current.left);
 			layout.showview(left);
 		};
-		
 		if (right!=layout.current.right) {
 			layout.hideview(layout.current.right);
 			layout.showview(right);
@@ -61,10 +60,12 @@ var layout = {
 
 	
 	hideview: function(div) {
-		$(div).slideUp('fast');
+		$(div).hide();
+		//$(div).slideUp('fast');
 	},
 	showview: function(div) {
-		$(div).slideDown('fast');
+		$(div).show();
+		//$(div).slideDown('fast');
 	},
 	
 	back: function() {
@@ -104,57 +105,3 @@ var db = {
 		}
 };
 
-function Collection(name)  {
-	this.name = name;
-	this.list = [{parent:"aa"}];
-	
-	this.add = function(o) {
-		o.updated = new Date().getTime();
-		this.list.push(o);
-	};
-	
-	this.update = function(q, o) {
-		o.updated = new Date().getTime();
-		var result = this.find(q);
-		for ( var i = 0; i < result.length; i++) {
-			result[i] = o;
-		}
-	};
-	
-	this.findOne = function(q) {
-		for ( var i = 0; i < this.list.length; i++) {
-			var o = this.list[i];
-			var matched = true;
-			for (var q in query) {
-				if (o[q]!=query[q]) {
-					matched = false;
-					break;
-				} 
-			}
-			if (matched) {
-				return o;
-			}
-		}
-	};
-	
-	this.find = function(query) {
-		if (query==null) {
-			return this.list;
-		}
-		var result = [];
-		for ( var i = 0; i < this.list.length; i++) {
-			var o = this.list[i];
-			var matched = true;
-			for (var q in query) {
-				if (o[q]!=query[q]) {
-					matched = false;
-					break;
-				} 
-			}
-			if (matched) {
-				result.push(o);
-			}
-		}
-		return result;
-	};
-}
