@@ -3,8 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>记账助手</title>
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+<!--   <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
+-->
 <!-- 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
@@ -38,7 +40,7 @@ function loadto() {
 		</td>
 		<td>
 			<button class="tbtn" id="btn-save-outcome" onclick="money.uiSaveOutCome()">保存</button>
-			<button class="tbtn" id="btn-save-outcome-add" onclick="money.uiSaveAdd()">保存并新增</button>
+			<button class="tbtn" id="btn-save-outcome-add" onclick="money.uiSaveOutCome(1)">保存并新增</button>
 			<button class="tbtn" id="btn-project-save" onclick="project.ui.saveProject()">增加收入</button>
 			<button class="tbtn" id="btn-project-remove" onclick="project.ui.removeProject()">统计和工具</button>
 			<button class="tbtn" id="btn-task-save" onclick="more.showMenu()">配置</button>
@@ -175,7 +177,7 @@ function loadto() {
 			
 			<div id="multi" class="label outcometype" style="display:none" >
 				<ul id="subitemlist">
-					<li class="forclone">支出项：<input type="text" class="desc" size="16"> 金额 <input type="text" class="cost" size="4"> 类别
+					<li class="forclone" style="display:none">支出项：<input type="text" class="desc" size="16"> 金额 <input type="text" class="cost" size="4"> 类别
 					<select class="category">
 					
 					</select> 
