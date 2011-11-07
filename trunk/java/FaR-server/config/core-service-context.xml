@@ -59,6 +59,10 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
+	<bean id="syncMongodbService" class="com.ever365.syncdb.SyncMonggoDBService">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
 	<bean id="authorityRestService" class="com.ever365.rest.AuthorityRestService">
 		
 	</bean>
@@ -84,6 +88,7 @@
 				<ref bean="projectService"/>
 				<ref bean="toolsService"/>
 				<ref bean="moneyService"/>
+				<ref bean="syncMongodbService"/>
 				<ref bean="authorityRestService"/>
 				<ref bean="sina.api.service"/>
 				<ref bean="weibo.connect"/>
