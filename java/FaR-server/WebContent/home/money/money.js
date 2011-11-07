@@ -45,7 +45,9 @@ $(document).ready(function(){
 	if (!isIE6()) {
 		groupdb.store("moneygroup");
 	}
-	
+	sync.dbs.push(groupdb);
+	sync.dbnames.push("ocgroup");
+	setInterval('sync.doUpdate()', 10000);
 });
 
 var groupdb;
@@ -69,6 +71,7 @@ var utils = {
 
 var money = {
 		
+		//切换支出类型
 		uiswitchType: function(t) {
 			$('div.outcometype').hide();
 			if (t=="single") {
@@ -78,6 +81,7 @@ var money = {
 			}
 		},
 		
+		//增加或者更新左侧导航的支出项
 		uiAddOrUpdateGroup:function(o) {
 			$('#outcomelist div.emptyInfo').hide();
 			var cloned = $('#' + o.___id);
@@ -102,6 +106,7 @@ var money = {
 			cloned.data("group", o);
 		},
 		
+		//复制一个支出项
 		cloneSubitem: function(o) {
 			var cloned =  $('#subitemlist li.forclone').clone();
 			cloned.removeClass('forclone').addClass('cloned').show();
@@ -121,6 +126,7 @@ var money = {
 			$('#subitemlist').append(cloned);
 		},
 		
+		//根据支出对象打开支出表单
 		uiEditOutCome: function(t) {
 			var data = $(t).data('group');
 			var form = $('#addOutComeForm');
@@ -149,6 +155,7 @@ var money = {
 			}
 		},
 		
+		//重置支出表单
 		uiResetOutCome: function() {
 			var form = $('#addOutComeForm');
 			form.data("group", null);
@@ -160,7 +167,7 @@ var money = {
 			$('div.outcometype').hide();
 			$('#single').show();
 		},
-		
+		//将支出每项加到总额中
 		calculateTotal: function() {
 			var form = $('#addOutComeForm');
 			var total = 0;
@@ -174,7 +181,7 @@ var money = {
 			);
 			form.find('input.total').val(total);
 		},
-		
+		//保存一笔支出
 		uiSaveOutCome: function(createNew) {
 			var form = $('#addOutComeForm');
 			
@@ -362,9 +369,6 @@ var category = {
 		}
 };
 
-function isIE6() {
-	return jQuery.browser.msie && jQuery.browser.version=="6.0";
-}
 
 
 

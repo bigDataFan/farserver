@@ -35,7 +35,6 @@ var layout = {
 	}, 
 	
 	popCurrent : function () {
-		
 		var v = layout.viewstacks.pop();
 		if (layout.viewstacks.length>0) {
 			v = layout.viewstacks[layout.viewstacks.length-1];
@@ -87,21 +86,105 @@ var layout = {
 	}
 };
 
-var db = {
-		updated: {},
-		collections: {},
-		getCollection: function(name) {
-			if (local.collections[name]!=null) {
-				var coll = [];
-				for ( var i = 0; i < localStorage.length; i++) {
-					var key = localStorage.key(i);
-					if (key.indexOf(name+ '-')==0) {
-						coll.push(localStorage.getItem(key));
-					}
-				}
-				local.collections[name] = coll;
+
+
+var sync = {
+		dbnames:[],
+		dbs: [],
+		request:0,
+		connecting: false,
+		doUpdate: function() {
+			if (sync.connecting) {
+				return;
 			}
-			return local.collections[name];
+			sync.connecting = true;
+			
+			var updated = $.cookie("updated");
+			if (updated==null) {
+				updated = 0;
+			} else {
+				updated = parseInt(updated);
+			}
+			
+			sync.request = 0;
+			
+			for ( var i = 0; i < sync.dbs.length; i++) {
+				var newer = sync.dbs[i]().filter({"updated":{'gt': updated}});
+				if (newer.count()>0) {
+					$.post("/service/db/sync",
+							{
+								'updated': updated,
+								'db': sync.dbnames[i],
+								'list': newer.stringify()
+						    },  function(data) {
+						    	sync.request ++;
+						    	var result = $.parseJSON(data);
+						    	
+						    	for ( var j = 0; j < result.gotten.length; j++) {
+						    		sync.dbs[i].insert(result.gotten[j]);
+								}
+						    	
+						    	for ( var id in result.ids) {
+						    		db({___id: id}).update({_id: result.ids[id]});
+								}
+
+						    	for ( var id in result.removed) {
+						    		db({_id: id}).remove();
+								}
+						    	
+						    	if (sync.request==sync.dbs.length) {
+									sync.connecting = false;
+									$.cookie("updated", updated);
+								}
+						    }
+					);
+				} else {
+					sync.request ++;
+				}
+			}
+			
+			if (sync.request==sync.dbs.length) {
+				sync.connecting = false;
+			}
 		}
 };
+
+
+jQuery.cookie = function (key, value, options) {
+
+    // key and at least value given, set cookie...
+    if (arguments.length > 1 && String(value) !== "[object Object]") {
+        options = jQuery.extend({}, options);
+
+        if (value === null || value === undefined) {
+            options.expires = -1;
+        }
+
+        if (typeof options.expires === 'number') {
+            var days = options.expires, t = options.expires = new Date();
+            t.setDate(t.getDate() + days);
+        }
+
+        value = String(value);
+
+        return (document.cookie = [
+            encodeURIComponent(key), '=',
+            options.raw ? value : encodeURIComponent(value),
+            options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+            options.path ? '; path=' + options.path : '',
+            options.domain ? '; domain=' + options.domain : '',
+            options.secure ? '; secure' : ''
+        ].join(''));
+    }
+
+    // key and possibly options given, get cookie...
+    options = value || {};
+    var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
+};
+
+
+function isIE6() {
+	return jQuery.browser.msie && jQuery.browser.version=="6.0";
+}
 
