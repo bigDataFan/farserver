@@ -5,12 +5,11 @@
 <title>记账助手</title>
 
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+
 <!--   <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
 -->
-<!-- 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
- -->
  
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
@@ -19,7 +18,6 @@
 <script type="text/javascript" src="../../js/json2.js"></script>
 <script type="text/javascript" src="taffy-min.js"></script>
 <script type="text/javascript" src="money.js"></script>
-
 
 
 <script type="text/javascript">
@@ -71,17 +69,16 @@ function loadto() {
 	<div class="left" >
 		<div id="toplist" style="display:none" btns="">
 			<div class="projectlist">
-				<div class="qi">支出管理</div>
+				<div class="qi">收入与支出</div>
 			</div>
 			<div class="si" id="navoutcome"><div class="cc Uc"></div><span>支出记录</span></div>
-			<div class="si"><div class="cc Uc"></div><span>支出报表</span></div>
-			<div class="si"><div class="cc Uc"></div><span>导入导出</span></div>
+			<div class="si"><div class="cc Uc"></div><span>收入记录</span></div>
+			<div class="si"><div class="cc Uc"></div><span>报表与统计</span></div>
 
 			<div class="projectlist">
-				<div class="qi">收入与配置</div>
+				<div class="qi">配置</div>
 			</div>
-			<div class="si" id=""><div class="cc Uc"></div><span>记录收入</span></div>
-			<div class="si"><div class="cc Uc"></div><span>预算</span></div>
+			<div class="si"><div class="cc Uc"></div><span>设置预算</span></div>
 			<div class="si"><div class="cc Uc"></div><span>目标设置</span></div>
 			<div class="si"><div class="cc Uc"></div><span>类别配置</span></div>
 			
@@ -186,7 +183,7 @@ function loadto() {
 					 </li>
 				</ul>
 				<div style="margin-top: 10px;">
-				<button onclick="money.cloneSubitem()">增加一项</button> <button onclick="money.cloneSubitem()">计算到总金额</button>
+				<button onclick="money.cloneSubitem()">增加一项</button> <button onclick="money.calculateTotal()">计算到总金额</button>
 				</div>
 			</div>
 		</div>
