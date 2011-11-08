@@ -90,6 +90,10 @@ public class MethodInvocation {
 			return Integer.parseInt((String) obj);
 		}
 		
+		if (clazz==Long.class) {
+			return Long.parseLong((String)obj);
+		}
+		
 		if (clazz==Double.class) {
 			return Double.parseDouble((String) obj);
 		}
