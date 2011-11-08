@@ -37,7 +37,7 @@ function loadto() {
 			<button onclick="layout.back()" class="tbtn" id="btn-return-main">返回</button>
 			<button onclick="layout.back()" class="tbtn" id="btn-return-main">帮助</button>
 			
-			<button id="loginLink" onclick="location.href='/office/login.jsp?redirectTo=/home/money.index.html'">
+			<button id="loginLink" onclick="location.href='/office/login.jsp?redirectTo=/home/money/index.html'">
 				登陆
 			</button>
 			
@@ -45,6 +45,7 @@ function loadto() {
 		<td>
 			<button class="tbtn" id="btn-save-outcome" onclick="money.uiSaveOutCome()">保存</button>
 			<button class="tbtn" id="btn-save-outcome-add" onclick="money.uiSaveOutCome(1)">保存并新增</button>
+			<button class="tbtn" id="btn-save-outcome-remove" onclick="money.uiRemoveCurrent()">删除</button>
 		</td>
 	</tr>
 </table>
@@ -70,7 +71,8 @@ function loadto() {
 			</div>
 			<div class="si"><div class="cc Uc"></div><span>设置预算</span></div>
 			<div class="si"><div class="cc Uc"></div><span>目标设置</span></div>
-			<div class="si"><div class="cc Uc"></div><span>类别配置</span></div>
+			<div class="si"><div class="cc Uc"></div><span>类别</span></div>
+			<div class="si" id="navsync"><div class="cc Uc"></div><span>同步</span></div>
 			
 			<div style="display:none" class="projectTemplate si"><div class="cc Uc"></div><span>重要而且未读11</span></div>
 			<!-- 
@@ -124,7 +126,7 @@ function loadto() {
 		<ul id="menu1" class="ul" style="display:none"><li class="Al Gn pl" onclick="_e(event, 's', '')" tabindex="0">回复</li><li class="Bl Gn pl" onclick="_e(event, 'g', '')" tabindex="0">移动...</li><li class="Bl Gn pl" onclick="_e(event, 'h', '')" tabindex="0">加标签...</li><li class="Bl Gn pl" onclick="_e(event, 'f', '11')" tabindex="0">忽略</li><li class="Bl Gn pl" onclick="_e(event, 'f', '7')" tabindex="0">这是垃圾邮件</li><li class="Bl pl" onclick="_e(event, 'E', '')" tabindex="0">打印</li><li class="Cl Gn pl" onclick="_e(event, 'f', '4')" tabindex="0">标记为未读</li></ul>
 	
 		
-		<div class="content" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add">
+		<div class="content" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add,btn-save-outcome-remove">
 			<div class="title"><h2>新增支出</h2> </div>
 			<div class="label">
 				支出描述： <input type="text" class="desc" size="36"> 
@@ -177,6 +179,16 @@ function loadto() {
 				</div>
 			</div>
 		</div>
+		
+		<div class="content" id="syncinfo" style="display:none">
+			
+			<div class="title"><h2>同步及浏览器支持程度</h2> </div>
+			
+			<div class="label browser">
+			</div>
+			
+		</div>
+		
 		
 		<div class="content" id="eidtCat" style="display:none">
 			

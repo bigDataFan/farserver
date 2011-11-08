@@ -1,4 +1,11 @@
 var categories = JSON.parse('{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}'); 
+var groupdb;
+var utils = {
+		'single': "单笔支出",
+		"multi": "多项支出",
+		"exp":"预算外"
+};
+
 
 $(document).ready(function(){
 	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
@@ -18,56 +25,44 @@ $(document).ready(function(){
 				money.uiResetOutCome();
 				groupdb().order("___id desc").start(0).limit(10).each(
 						function(record,recordnumber) {
-							money.uiAddOrUpdateGroup(record);
+							if (!record._deleted) {
+								money.uiAddOrUpdateGroup(record);
+							}
 						}
 				);
 			}
 	);
 	
+	$('#navsync').click(function() {
+		var info = $('#syncinfo');
+		layout.pushCurrent($('#toplist'), info);
+		info.find('div.browser').html('浏览器类型：' + navigator.userAgent);
+		
+		
+	});
+	
 	$('select.outtype').change(function(data){
 		money.uiswitchType($(this).val());
 	});
-	/*
-	category.load($('#selectCatul'), o, true);
-	$('#selectCatul').find('span').remove();
-	$( "#categoryDialog" ).dialog({
-		autoOpen: true,
-		show: "drop"
-	});*/
-	//category.fillSelect($('#category1'), categories);
 	$('select.category').each(
 			function(){
 				category.fillSelect($(this), categories);
 			}
 	);
+	
 	groupdb = new TAFFY();
 	
 	if (!isIE6()) {
 		groupdb.store("moneygroup");
 	}
-	sync.dbs.push(groupdb);
-	sync.dbnames.push("ocgroup");
-	setInterval('sync.doUpdate()', 10000);
+	$.getJSON("/service/authority/current", {"r":new Date().getTime()}, 
+			function(data) {
+				currentUser = data.userName;
+				synchronize(groupdb, 'ocgroup', currentUser);
+			}
+		);
 });
 
-var groupdb;
-
-/*
-more.showMenu = function() {
-	$('#menu1').slideDown('fast');
-	
-	$('#menu1').hover(function(data){},
-			function(data){
-			$('#menu1').slideUp('fast');
-			}
-	);
-};
-*/
-var utils = {
-		'single': "单笔支出",
-		"multi": "多项支出",
-		"exp":"预算外"
-};
 
 var money = {
 		
@@ -239,7 +234,22 @@ var money = {
 			} else {
 				form.data("group", group);
 			}
+		},
+		
+		uiRemoveCurrent: function() {
+			var form = $('#addOutComeForm');
+			var group = form.data("group");
+			
+			if (group!=null) {
+				group["_deleted"] = 1;
+				group["updated"] = new Date().getTime();
+				groupdb({___id:group.___id}).update(group);
+				
+				$('#' + group.___id).remove();
+			}
 		}
+		
+		
 };
 
 var category = {
