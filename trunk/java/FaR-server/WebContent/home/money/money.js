@@ -6,6 +6,7 @@ var utils = {
 		"exp":"预算外"
 };
 
+var currentUser;
 
 $(document).ready(function(){
 	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
@@ -37,8 +38,9 @@ $(document).ready(function(){
 		var info = $('#syncinfo');
 		layout.pushCurrent($('#toplist'), info);
 		info.find('div.browser').html('浏览器类型：' + navigator.userAgent);
-		
-		
+		info.find('div.localstorage').html("支持本地数据存储:"  + ((window.localStorage==null)? "否":"是"));
+		info.find('div.user').html("你的用户账号:"  + currentUser);
+		info.find('div.updated').html("你的数据更新时间: "  + new Date(parseInt($.cookie(currentUser + ".ocgroup.updated"))).format('isoDateTime'));
 	});
 	
 	$('select.outtype').change(function(data){

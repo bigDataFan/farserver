@@ -35,7 +35,7 @@ li {
 .nav {
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAsCAIAAAArRUU2AAAAOElEQVQIW2O6+egX0///DEwMDAxM/xkYEOz/ED7DfwQbhUZWB1fzH87+hyGHykfRi2Y2AzIb1V0AEFlAz5gMk7cAAAAASUVORK5CYII=) repeat-x;
 	color: #182647;
-	padding: 4px 3px;
+	padding: 4px 0px;
 	position: relative;
 	width: 100%;
 	-webkit-box-sizing: border-box;
