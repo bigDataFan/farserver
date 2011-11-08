@@ -51,14 +51,13 @@ $(document).ready(function(){
 				category.fillSelect($(this), categories);
 			}
 	);
-	
 	groupdb = new TAFFY();
 	
-	if (!isIE6()) {
-		groupdb.store("moneygroup");
-	}
 	$.getJSON("/service/authority/current", {"r":new Date().getTime()}, 
 			function(data) {
+				if (!isIE6()) {
+					groupdb.store("moneygroup");
+				}
 				currentUser = data.userName;
 				synchronize(groupdb, 'ocgroup', currentUser);
 			}
