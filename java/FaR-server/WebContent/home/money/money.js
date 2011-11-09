@@ -1,5 +1,7 @@
-var categories = JSON.parse('{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}'); 
 var groupdb;
+var categories;
+
+var CAT_STRING = '{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}';
 var utils = {
 		'single': "单笔支出",
 		"multi": "多项支出",
@@ -9,8 +11,16 @@ var utils = {
 var currentUser;
 
 $(document).ready(function(){
+	if (window.localStorage!=null) {
+		if (window.localStorage.getItem(currentUser+".category")!=null) {
+			categories = JSON.parse(window.localStorage.getItem(currentUser+".category"));
+		} 
+	}
+	categories = JSON.parse(CAT_STRING);
+	
+	
 	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
-
+	
 	$( "input.choosedate" ).datepicker({
 		autoSize: false,
 		dateFormat: 'yy-mm-dd' ,
@@ -34,6 +44,12 @@ $(document).ready(function(){
 			}
 	);
 	
+	$('#navcat').click(
+			function(data) {
+				layout.pushCurrent($('#toplist'), $('#eidtCat'));
+				category.load($('#eidtCat ul.category'), categories, true);
+			}
+	);
 	$('#navsync').click(function() {
 		var info = $('#syncinfo');
 		layout.pushCurrent($('#toplist'), info);
@@ -43,27 +59,48 @@ $(document).ready(function(){
 		info.find('div.updated').html("你的数据更新时间: "  + new Date(parseInt($.cookie(currentUser + ".ocgroup.updated"))).format('isoDateTime'));
 	});
 	
+	
+	
 	$('select.outtype').change(function(data){
 		money.uiswitchType($(this).val());
 	});
-	$('select.category').each(
-			function(){
-				category.fillSelect($(this), categories);
-			}
-	);
+	
+	
+
 	groupdb = new TAFFY();
 	
-	$.getJSON("/service/authority/current", {"r":new Date().getTime()}, 
+	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
 			function(data) {
 				if (!isIE6()) {
 					groupdb.store("moneygroup");
 				}
-				currentUser = data.userName;
+				currentUser = data.user;
 				synchronize(groupdb, 'ocgroup', currentUser);
+				if (data.category) {
+					categories = JSON.parse(data.category.value);
+					if (window.localStorage!=null) {
+						window.localStorage.setItem(currentUser+".category", data.category);
+					}
+				} else {
+					http.saveConfig(CAT_STRING);
+				}
+				$('select.category').each(
+						function(){
+							category.fillSelect($(this), categories);
+						}
+				);
 			}
 		);
 });
 
+
+var http = {
+		saveConfig:function(cat) {
+			$.post("/service/db/setconfig",
+					{"app":"money", 'name':"category", "value": cat},
+					function(){});
+		}
+};
 
 var money = {
 		
@@ -244,10 +281,21 @@ var money = {
 			if (group!=null) {
 				group["_deleted"] = 1;
 				group["updated"] = new Date().getTime();
-				groupdb({___id:group.___id}).update(group);
+				groupdb(group.___id).update(group);
 				
 				$('#' + group.___id).remove();
 			}
+		},
+		uiSaveCategory: function() {
+			var o = category.toJson(ul, {});
+			categories = o;
+			http.saveConfig( JSON.stringify(categories));
+		},
+		
+		resync: function() {
+			groupdb().remove();
+			$.cookie(currentUser + ".ocgroup.updated", 0);
+			location.href = location.href;
 		}
 		
 		
@@ -372,12 +420,10 @@ var category = {
 			);
 			
 		},
-		
-		
 		editSave: function(li, c) {
 			var v = li.find('input').val();
 			category.drawLi(li, v, c);
-		}
+		},
 };
 
 
