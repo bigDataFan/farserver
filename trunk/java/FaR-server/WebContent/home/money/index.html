@@ -14,7 +14,8 @@
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
 
-<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript" src="taffy-min.js"></script>
 <script type="text/javascript" src="money.js"></script>
 
@@ -34,7 +35,6 @@ function loadto() {
 	<tr>
 		<td width="260px">
 			<button onclick="layout.back()" class="tbtn" id="btn-return-main">返回</button>
-			<button onclick="layout.back()" class="tbtn" id="btn-return-main">帮助</button>
 			
 			<button id="loginLink" onclick="location.href='/office/login.jsp?redirectTo=/home/money/index.html'">
 				登陆
@@ -45,6 +45,13 @@ function loadto() {
 			<button class="tbtn" id="btn-save-outcome" onclick="money.uiSaveOutCome()">保存</button>
 			<button class="tbtn" id="btn-save-outcome-add" onclick="money.uiSaveOutCome(1)">保存并新增</button>
 			<button class="tbtn" id="btn-save-outcome-remove" onclick="money.uiRemoveCurrent()">删除</button>
+			
+			
+						
+			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
+			<button class="tbtn" id="btn-save-cat" onclick="money.uiSaveCategory()">保存设置</button>
+	
+	
 		</td>
 	</tr>
 </table>
@@ -70,7 +77,7 @@ function loadto() {
 			</div>
 			<div class="si"><div class="cc Uc"></div><span>设置预算</span></div>
 			<div class="si"><div class="cc Uc"></div><span>目标设置</span></div>
-			<div class="si"><div class="cc Uc"></div><span>类别</span></div>
+			<div class="si" id="navcat"><div class="cc Uc"></div><span>类别</span></div>
 			<div class="si" id="navsync"><div class="cc Uc"></div><span>同步</span></div>
 			
 			<div style="display:none" class="projectTemplate si"><div class="cc Uc"></div><span>重要而且未读11</span></div>
@@ -195,16 +202,13 @@ function loadto() {
 			<div class="label updated">
 			</div>
 			
-			
+			<div class="label resync">
+				<button onclick="money.resync()">重新同步</button>
+			</div>
 		</div>
 		
 		
-		<div class="content" id="eidtCat" style="display:none">
-			
-			<button onclick="category.addRoot($('ul.category'))">增加大类</button>
-			<button onclick="getto()">获取大类</button>
-			<button onclick="loadto()">载入</button>
-			
+		<div class="content" id="eidtCat" style="display:none" btns="btn-add-bigcat,btn-save-cat">
 			<ul class="category">
 				
 			</ul>
