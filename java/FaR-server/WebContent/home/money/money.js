@@ -47,6 +47,7 @@ $(document).ready(function(){
 	$('#navcat').click(
 			function(data) {
 				layout.pushCurrent($('#toplist'), $('#eidtCat'));
+				$('#eidtCat ul.category li').remove();
 				category.load($('#eidtCat ul.category'), categories, true);
 			}
 	);
@@ -287,7 +288,7 @@ var money = {
 			}
 		},
 		uiSaveCategory: function() {
-			var o = category.toJson(ul, {});
+			var o = category.toJson($('#eidtCat ul.category'), {});
 			categories = o;
 			http.saveConfig( JSON.stringify(categories));
 		},
@@ -330,8 +331,10 @@ var category = {
 					var li = $('<li></li>');
 					ul.append(li);
 					category.drawLi(li, children[i].name, t);
-					var cul = $('<ul></ul>');
-					li.append(cul);
+					if (t) {
+						var cul = $('<ul></ul>');
+						li.append(cul);
+					}
 					category.load(cul, children[i], false);
 				}
 			}
@@ -410,6 +413,7 @@ var category = {
 					}
 			);
 			
+			li.children('h3').children('span').hide();
 			li.hover(
 					function(){
 						$(this).children('h3').children('span').show();
@@ -423,9 +427,5 @@ var category = {
 		editSave: function(li, c) {
 			var v = li.find('input').val();
 			category.drawLi(li, v, c);
-		},
+		}
 };
-
-
-
-
