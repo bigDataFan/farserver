@@ -1,4 +1,5 @@
 var groupdb;
+var incomedb;
 var categories;
 
 var CAT_STRING = '{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}';
@@ -69,14 +70,19 @@ $(document).ready(function(){
 	
 
 	groupdb = new TAFFY();
-	
+	incomedb = new TAFFY();
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
 			function(data) {
-				if (!isIE6()) {
-					groupdb.store("moneygroup");
-				}
 				currentUser = data.user;
+				if (!isIE6()) {
+					groupdb.store(currentUser + ".moneygroup");
+					incomedb.store(currentUser + ".income");
+				}
+				
+				
 				synchronize(groupdb, 'ocgroup', currentUser);
+				synchronize(incomedb, 'icgroup', currentUser);
+				
 				if (data.category) {
 					categories = JSON.parse(data.category.value);
 					if (window.localStorage!=null) {
@@ -297,8 +303,77 @@ var money = {
 			groupdb().remove();
 			$.cookie(currentUser + ".ocgroup.updated", 0);
 			location.href = location.href;
-		}
+		},
 		
+		
+		
+		
+		//for income
+		
+		//保存一笔收入
+		uiSaveOutCome: function(createNew) {
+			var form = $('#addInComeForm');
+			
+			var income = form.data("income");
+			var updated = true;
+			if (income==null) {
+				income = false;
+				income = {};
+			};
+			
+			income.title = form.find('input.title').val();
+			income.total = form.find('input.total').val();
+			income.time = form.find('input.time').val();
+			income.intype = form.find('select.intype').val();
+			income.updated = new Date().getTime();
+			income.desc = form.find('textarea.desc').val();
+			income.from = form.find('textarea.from').val();
+			
+			if (updated) {
+				
+			}
+			
+			var groupid = group.___id;
+			
+			if (group.type=="single") {
+				//保存1条支出记录
+				var item = {
+						'gid': groupid,
+						'cat': $('#single select').val(),
+						'cost': group.total,
+						'updated': new Date().getTime()
+				};
+				group.items = [item]; 
+			} else if (group.type=="multi") {
+				group.items = new Array();
+				//保存多条支出记录
+				$('#subitemlist li.cloned').each(
+						function(){
+							var li = $(this);
+							var item = {
+									'gid': groupid,
+									'updated': new Date().getTime(),
+									'desc':  li.find('input.desc').val(),
+									'cost': li.find('input.cost').val(),
+									'cat': li.find('select').val()
+							};
+							group.items.push(item);	
+						}
+				);
+			}
+			if (updated) {
+				groupdb({___id:groupid}).update(group);
+			} else {
+				groupdb.insert(group);
+			}
+			money.uiAddOrUpdateGroup(group);
+			
+			if (createNew) {
+				money.uiResetOutCome();
+			} else {
+				form.data("group", group);
+			}
+		},
 		
 };
 
