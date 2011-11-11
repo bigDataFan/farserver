@@ -20,13 +20,6 @@
 <script type="text/javascript" src="money.js"></script>
 
 
-<script type="text/javascript">
-
-function loadto() {
-	var o = JSON.parse('{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}');
-	category.load($('ul.category'), o, true);
-}
-</script>
 </head>
 <body>
 
@@ -51,6 +44,11 @@ function loadto() {
 			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
 			<button class="tbtn" id="btn-save-cat" onclick="money.uiSaveCategory()">保存设置</button>
 	
+
+
+			<button class="tbtn" id="btn-save-income" onclick="money.uiSaveInCome()">保存</button>
+			<button class="tbtn" id="btn-save-income-add" onclick="money.uiSaveInCome(1)">保存并新增</button>
+			<button class="tbtn" id="btn-save-income-remove" onclick="money.uiRemoveCurrent()">删除</button>
 	
 		</td>
 	</tr>
@@ -188,11 +186,34 @@ function loadto() {
 		
 		<div class="content" id="addInComeForm" style="display:none" btns="btn-save-income,btn-save-income-add,btn-save-income-remove">
 			<div class="title"><h2>收入编辑</h2> </div>
-			<div class="label">
-				收入描述： <input type="text" class="desc" size="36"> 
-			</div>
-			<div class="label">
+				<div class="label">
+					收入描述： <input type="text" class="title" size="36"> 
+				</div>
+				<div class="label">
 					收入金额： <input type="text" class="total" size="36"> 
+				</div>
+				<div class="label">
+				日期 * ： 
+				<input type="text" class="time choosedate" size="16" width="200">
+				</div>
+				<div class="label">
+					收入类型: 
+					<select class="intype" >
+						<option>固定收入</option>
+						<option>奖金及补贴</option>
+						<option>股票与其他投资</option>
+						<option>兼职</option>
+						<option>固定资产收益</option>
+						<option>其他</option>
+					</select>
+				</div>
+				
+				<div class="label">
+					付款方： <input type="text" class="from" size="36"> 
+				</div>
+				
+				<div class="label">
+					备注：<textarea rows="5" cols="60" class="desc"></textarea>
 				</div>
 			</div>
 			
