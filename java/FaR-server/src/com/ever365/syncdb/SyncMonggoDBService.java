@@ -126,7 +126,9 @@ public class SyncMonggoDBService {
 			DBCursor cur = dbcoll.find(query);
 			
 			while (cur.hasNext()) {
-				newer.add(cur.next().toMap());
+				Map one = cur.next().toMap();
+				one.put("_id", ((ObjectId)one.get("_id")).toString());
+				newer.add(one);
 			}
 			
 			Map<String, String> added = new HashMap<String, String>(); 
@@ -140,9 +142,6 @@ public class SyncMonggoDBService {
 			e.printStackTrace();
 			return null;
 		}
-		
-		
-		
 	}
 
 	
