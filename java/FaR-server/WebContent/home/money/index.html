@@ -18,7 +18,7 @@
 <script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript" src="taffy-min.js"></script>
 <script type="text/javascript" src="money.js"></script>
-
+<script type="text/javascript" src="form.js"></script>
 
 </head>
 <body>
@@ -35,19 +35,16 @@
 			
 		</td>
 		<td>
-			<button class="tbtn" id="btn-save-outcome" onclick="money.uiSaveOutCome()">保存</button>
-			<button class="tbtn" id="btn-save-outcome-add" onclick="money.uiSaveOutCome(1)">保存并新增</button>
-			<button class="tbtn" id="btn-save-outcome-remove" onclick="money.uiRemoveCurrent()">删除</button>
-			
-			
+			<button class="tbtn" id="btn-save-outcome" onclick="uiSaveOutCome()">保存</button>
+			<button class="tbtn" id="btn-save-outcome-add" onclick="uiResetOutCome()">新增</button>
+			<button class="tbtn" id="btn-save-outcome-remove" onclick="uiRemoveCurrent()">删除</button>
 						
 			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
 			<button class="tbtn" id="btn-save-cat" onclick="money.uiSaveCategory()">保存设置</button>
-	
 
 
 			<button class="tbtn" id="btn-save-income" onclick="money.uiSaveInCome()">保存</button>
-			<button class="tbtn" id="btn-save-income-add" onclick="money.uiSaveInCome(1)">保存并新增</button>
+			<button class="tbtn" id="btn-save-income-add" onclick="money.uiSaveInCome(1)">新增</button>
 			<button class="tbtn" id="btn-save-income-remove" onclick="money.uiRemoveCurrent()">删除</button>
 	
 		</td>
@@ -86,17 +83,17 @@
 			 -->
 		</div>
 		
-		<div id="outcomelist" style="display:none" btns="btn-return-main">
+		<div id="detailList" style="display:none" btns="btn-return-main">
 				<div class="title">
 					<div class="Yj Nd"><div class="ak bk" style=""></div>
 					<span class="name" dir="ltr"></span> <span class="count" dir="ltr"></span></div>
 				</div>
 
 				<div class="emptyInfo">
-					您还没有支出记录
+					您还没有增加记录
 				</div>				
 				
-				<div class="taskItemTemplate item" style="display:none"  onclick="money.uiEditOutCome(this)">
+				<div class="taskItemTemplate item" style="display:none"  onclick="uiEditOutCome(this)">
 					<div>
 						<div class="selectedArrow" style="visibility: visible;"></div>
 						<div class="resource">
@@ -130,56 +127,54 @@
 		<ul id="menu1" class="ul" style="display:none"><li class="Al Gn pl" onclick="_e(event, 's', '')" tabindex="0">回复</li><li class="Bl Gn pl" onclick="_e(event, 'g', '')" tabindex="0">移动...</li><li class="Bl Gn pl" onclick="_e(event, 'h', '')" tabindex="0">加标签...</li><li class="Bl Gn pl" onclick="_e(event, 'f', '11')" tabindex="0">忽略</li><li class="Bl Gn pl" onclick="_e(event, 'f', '7')" tabindex="0">这是垃圾邮件</li><li class="Bl pl" onclick="_e(event, 'E', '')" tabindex="0">打印</li><li class="Cl Gn pl" onclick="_e(event, 'f', '4')" tabindex="0">标记为未读</li></ul>
 	
 		
-		<div class="content" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add,btn-save-outcome-remove">
+		<div class="content from" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add,btn-save-outcome-remove">
 			<div class="title"><h2>新增支出</h2> </div>
 			<div class="label">
-				支出描述： <input type="text" class="desc" size="36"> 
+				支出描述： <input type="text" name="title" size="36"> 
 			</div>
 			<div class="label">
 				日期 * ： 
-				<input type="text" class="start choosedate" size="16" width="200">
+				<input type="text" class="choosedate" name="time" size="16" width="200">
 			</div>
 			<div class="label">
-				金额 * ：  <input type="text" class="total" size="5" >
+				金额 * ：  <input type="text" name="total" size="5" > <span style="color: green;" id="calculateTotalProcess"></span>
 			</div> 
 			
 			<div class="label">
 				支出方式 * ：  
-				<select class="outmethod">
-						<option>现金</option>
+				<select name="outmethod">
+						<option default="1">现金</option>
 						<option>刷卡</option>
 						<option>网上支付</option>
 				</select> 
 			</div> 
 			
-			<div class="label" class="radio" id="outcomeType">
+			<div class="label">
 				支出类型： 
-				<select class="outtype" >
-					<option value="single">单笔支出</option>
-					<option value="multi">多笔(超市购物等)</option>
-					<option value="exp">特殊支出(预算外)</option>
+				<select name="outtype" rellabel="outtype">
+					<option default="1" reldiv="singleitem">单笔支出</option>
+					<option reldiv="multiitems">多笔(超市购物等)</option>
+					<option>特殊支出(预算外)</option>
 				</select>
 			</div>
 			
-			
-			<div id="single" class="label outcometype">
-					所属分类 ： 
-					<select class="category">
-					</select> 
+			<div id="singleitem" class="label switched outtype" default="1">
+				所属分类 ： 
+				<select name="category" class="category">
+				</select> 
 			</div>
 			
-			<div id="multi" class="label outcometype" style="display:none" >
-				<ul id="subitemlist">
-					<li class="forclone" style="display:none">支出项：<input type="text" class="desc" size="16"> 金额 <input type="text" class="cost" size="4"> 类别
-					<select class="category">
-					
-					</select> 
-					<a class="delete" href="javascript:void(0)">删除</a>
-					
+			<div id="multiitems" class="label switched outtype">
+				<ul name="subitems">
+					<li class="forclone" style="display:none">
+						<label>支出项：<input type="text" class="desc" size="16"></label>
+						<label>金额 <input type="text" class="cost" size="4"></label>
+						<label>类别<select class="category"></select></label>
+						<a class="delete" href="javascript:void(0)">删除</a>
 					 </li>
 				</ul>
 				<div style="margin-top: 10px;">
-				<button onclick="money.cloneSubitem()">增加一项</button> <button onclick="money.calculateTotal()">计算到总金额</button>
+					<button clone="subitems" onclick="uicloneSubitem(this)">增加一项</button> <button onclick="calculateTotal()">计算到总金额</button>
 				</div>
 			</div>
 		</div>
@@ -282,3 +277,4 @@
  -->
 </body>
 </html>
+

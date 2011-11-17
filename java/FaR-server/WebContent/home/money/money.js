@@ -3,72 +3,15 @@ var incomedb;
 var categories;
 
 var CAT_STRING = '{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}';
-var utils = {
-		'single': "单笔支出",
-		"multi": "多项支出",
-		"exp":"预算外"
-};
 
 var currentUser;
 
 $(document).ready(function(){
-	if (window.localStorage!=null) {
-		if (window.localStorage.getItem(currentUser+".category")!=null) {
-			categories = JSON.parse(window.localStorage.getItem(currentUser+".category"));
-		} 
-	}
-	categories = JSON.parse(CAT_STRING);
 	
+	initStaticUI();
+	initOutCome();
+	initSync();
 	
-	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
-	
-	$( "input.choosedate" ).datepicker({
-		autoSize: false,
-		dateFormat: 'yy-mm-dd' ,
-		monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-		dayNamesMin: ['日','一','二','三','四','五','六'],
-		showWeek: true
-	});
-	
-	$('#navoutcome').click(
-			function(data) {
-				layout.pushCurrent($('#outcomelist'), $('#addOutComeForm'));
-				$('#outcomelist div.group').remove();
-				money.uiResetOutCome();
-				groupdb().order("___id desc").start(0).limit(10).each(
-						function(record,recordnumber) {
-							if (!record._deleted) {
-								money.uiAddOrUpdateGroup(record);
-							}
-						}
-				);
-			}
-	);
-	
-	$('#navcat').click(
-			function(data) {
-				layout.pushCurrent($('#toplist'), $('#eidtCat'));
-				$('#eidtCat ul.category li').remove();
-				category.load($('#eidtCat ul.category'), categories, true);
-			}
-	);
-	$('#navsync').click(function() {
-		var info = $('#syncinfo');
-		layout.pushCurrent($('#toplist'), info);
-		info.find('div.browser').html('浏览器类型：' + navigator.userAgent);
-		info.find('div.localstorage').html("支持本地数据存储:"  + ((window.localStorage==null)? "否":"是"));
-		info.find('div.user').html("你的用户账号:"  + currentUser);
-		info.find('div.updated').html("你的数据更新时间: "  + new Date(parseInt($.cookie(currentUser + ".ocgroup.updated"))).format('isoDateTime'));
-	});
-	
-	
-	
-	$('select.outtype').change(function(data){
-		money.uiswitchType($(this).val());
-	});
-	
-	
-
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
@@ -78,28 +21,94 @@ $(document).ready(function(){
 					groupdb.store(currentUser + ".moneygroup");
 					incomedb.store(currentUser + ".income");
 				}
-				
-				
 				synchronize(groupdb, 'ocgroup', currentUser);
 				synchronize(incomedb, 'icgroup', currentUser);
 				
+				initCategory();
 				if (data.category) {
 					categories = JSON.parse(data.category.value);
 					if (window.localStorage!=null) {
-						window.localStorage.setItem(currentUser+".category", data.category);
+						window.localStorage.setItem(currentUser+".category", data.category.value);
 					}
-				} else {
-					http.saveConfig(CAT_STRING);
-				}
-				$('select.category').each(
-						function(){
-							category.fillSelect($(this), categories);
-						}
-				);
+				} 
+				
 			}
 		);
 });
 
+
+function initSync() {
+	$('#navsync').click(function() {
+		var info = $('#syncinfo');
+		layout.pushCurrent($('#toplist'), info);
+		info.find('div.browser').html('浏览器类型：' + navigator.userAgent);
+		info.find('div.localstorage').html("支持本地数据存储:"  + ((window.localStorage==null)? "否":"是"));
+		info.find('div.user').html("你的用户账号:"  + currentUser);
+		info.find('div.updated').html("你的数据更新时间: "  + new Date(parseInt($.cookie(currentUser + ".ocgroup.updated"))).format('isoDateTime'));
+	});
+}
+
+function initOutCome() {
+	$('#navoutcome').click(
+			function(data) {
+				layout.pushCurrent($('#detailList'), $('#addOutComeForm'));
+				$('#outcomelist div.group').remove();
+				formReset();
+				groupdb().order("___id desc").start(0).limit(10).each(
+						function(record,recordnumber) {
+							if (!record._deleted) {
+								uiAddLeftItem(record, 'group');
+							}
+						}
+				);
+			}
+	);
+}
+
+function initStaticUI() {
+	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
+	$( "input.choosedate" ).datepicker({
+		autoSize: false,
+		dateFormat: 'yy-mm-dd' ,
+		monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		showWeek: true
+	});
+	
+	$('select').change(function(data){
+		var select = $(this);
+		var selected = select.find("option:selected");
+		$('div.' + select.attr("rellabel")).hide();
+		if (selected.attr('reldiv')!=null) {
+			$('#' + selected.attr('reldiv')).show();
+		}
+	});
+	
+}
+
+function initCategory() {
+	categories = JSON.parse(CAT_STRING);
+	if (window.localStorage!=null) {
+		if (window.localStorage.getItem(currentUser+".category")!=null) {
+			categories = JSON.parse(window.localStorage.getItem(currentUser+".category"));
+		} 
+	}
+	
+	
+	$('#navcat').click(
+			function(data) {
+				layout.pushCurrent($('#toplist'), $('#eidtCat'));
+				$('#eidtCat ul.category li').remove();
+				category.load($('#eidtCat ul.category'), categories, true);
+			}
+	);
+	$('select.category').each(
+			function(){
+				category.fillSelect($(this), categories);
+			}
+	);
+	http.saveConfig(CAT_STRING);
+}
 
 var http = {
 		saveConfig:function(cat) {
@@ -109,272 +118,207 @@ var http = {
 		}
 };
 
-var money = {
-		
-		//切换支出类型
-		uiswitchType: function(t) {
-			$('div.outcometype').hide();
-			if (t=="single") {
-				$('#single').show();
-			} else if (t=="multi") {
-				$('#multi').show();
-			}
-		},
-		
-		//增加或者更新左侧导航的支出项
-		uiAddOrUpdateGroup:function(o) {
-			$('#outcomelist div.emptyInfo').hide();
-			var cloned = $('#' + o.___id);
-			if (cloned.length==0) {
-				cloned = $('div.taskItemTemplate').clone();
-				$('#outcomelist').prepend(cloned);
-				cloned.attr("id", o.___id);
-				cloned.removeClass('taskItemTemplate').addClass('group').slideDown('fast');
-			}
-			
-			cloned.find('.total').html(o.total);
-			
-			cloned.find('.resource span').html(utils[o.type]);
-			if (o.desc.length>10) {
-				cloned.find('.title').html(o.desc.substring(0,10) + "..");
-			} else {
-				cloned.find('.title').html(o.desc);
-			}
-			
-			cloned.find('.info1').html(o.time);
-			cloned.find('.info2').html(o.by);
-			cloned.data("group", o);
-		},
-		
-		//复制一个支出项
-		cloneSubitem: function(o) {
-			var cloned =  $('#subitemlist li.forclone').clone();
-			cloned.removeClass('forclone').addClass('cloned').show();
-			
-			if (o) {
-				cloned.find('input.desc').val(o.desc);
-				cloned.find('input.cost').val(o.cost);
-				cloned.find('input.category').val(o.cat);
-			}
-			
-			
-			cloned.find('a.delete').click(
-					function() {
-						cloned.remove();
-					}
-			);
-			$('#subitemlist').append(cloned);
-		},
-		
-		//根据支出对象打开支出表单
-		uiEditOutCome: function(t) {
-			var data = $(t).data('group');
-			var form = $('#addOutComeForm');
-			
-			$('#outcomelist div.item').removeClass("selected");
-			$(t).addClass("selected");
-			
-			form.data("group", data);
-			
-			form.find('input.desc').val(data.desc);
-			form.find('input.start').val(data.time);
-			form.find('input.total').val(data.total);
-			form.find('select.outmethod').val(data.by);
-			form.find('select.outtype').val(data.type);
+function uiAddLeftItem(o, type) {
+	var listcontainer = $('#detailList');
+	listcontainer.find('div.emptyInfo').hide();
+	var cloned = $('#' + o.___id);
+	if (cloned.length==0) {
+		cloned = $('div.taskItemTemplate').clone();
+		listcontainer.prepend(cloned);
+		cloned.attr("id", o.___id);
+		cloned.removeClass('taskItemTemplate').addClass('item').slideDown('fast');
+	}
+	if (o.title.length>10) {
+		cloned.find('.title').html(o.title.substring(0,10) + "..");
+	} else {
+		cloned.find('.title').html(o.title);
+	}
+	cloned.find('.total').html(o.total);
+	cloned.find('.resource span').html(o.type);
+	
+	if (type=="group") {
+		cloned.find('.info1').html(o.time);
+		cloned.find('.info2').html(o.by);
+		cloned.data("group", o);
+	} else if (type=="income") {
+		cloned.find('.info1').html(o.time);
+		cloned.find('.info2').html(o.by);
+		cloned.data("income", o);
+	}
+}
 
-			money.uiswitchType(data.type);
-			
-			form.find('li.cloned').remove();
-			
-			if (data.type=="single") {
-				$('#single select').val(data.items[0].cat);
-			} else if (data.type=="multi") {
-				for(var i=0; i<data.items.length; i++) {
-					money.cloneSubitem(data.items[i]);
+//复制一个支出项
+function uicloneSubitem(button, o) {
+	var template = $('ul[name="' + $(button).attr("clone") + '"] li.forclone');
+	if (template.length!=0) {
+		var cloned = template.clone();
+		cloned.removeClass('forclone').addClass('cloned').show();
+		if (o) {
+			fillEditForm(cloned, o);
+		}
+		cloned.find('a.delete').click(
+				function() {
+					cloned.remove();
+				}
+		);
+		$('ul[name="' + $(button).attr("clone") + '"]').append(cloned);
+	}
+};
+
+
+//将支出每项加到总额中
+calculateTotal = function() {
+	var form = $('#addOutComeForm');
+	var total = 0;
+	
+	var process = "";
+	$('#subitemlist li.cloned').each(
+			function(){
+				var li = $(this);
+				if (!isNaN(li.find('input.cost').val())) {
+					var val = parseFloat(li.find('input.cost').val());
+					process += "+" + val ;
+					total += val;
 				}
 			}
-		},
-		
-		//重置支出表单
-		uiResetOutCome: function() {
-			var form = $('#addOutComeForm');
-			form.data("group", null);
-			form.find('input.desc').val('');
-			form.find('input.start').val('');
-			form.find('input.total').val('');
-			form.find('select.outmethod').val('现金');
-			type:form.find('select.outtype').val('single');
-			$('div.outcometype').hide();
-			$('#single').show();
-		},
-		//将支出每项加到总额中
-		calculateTotal: function() {
-			var form = $('#addOutComeForm');
-			var total = 0;
-			$('#subitemlist li.cloned').each(
-					function(){
-						var li = $(this);
-						if (!isNaN(li.find('input.cost').val())) {
-							total += parseFloat(li.find('input.cost').val());
-						}
-					}
-			);
-			form.find('input.total').val(total);
-		},
-		//保存一笔支出
-		uiSaveOutCome: function(createNew) {
-			var form = $('#addOutComeForm');
-			
-			var group = form.data("group");
-			var updated = true;
-			if (group==null) {
-				updated = false;
-				group = {};
-			};
-			
-			group.desc = form.find('input.desc').val();
-			group.time = form.find('input.start').val();
-			group.total = form.find('input.total').val();
-			group.by = form.find('select.outmethod').val();
-			group.type = form.find('select.outtype').val();
-			group.updated = new Date().getTime();
-			
-			var groupid = group.___id;
-			
-			if (group.type=="single") {
-				//保存1条支出记录
-				var item = {
-						'gid': groupid,
-						'cat': $('#single select').val(),
-						'cost': group.total,
-						'updated': new Date().getTime()
-				};
-				group.items = [item]; 
-			} else if (group.type=="multi") {
-				group.items = new Array();
-				//保存多条支出记录
-				$('#subitemlist li.cloned').each(
-						function(){
-							var li = $(this);
-							var item = {
-									'gid': groupid,
-									'updated': new Date().getTime(),
-									'desc':  li.find('input.desc').val(),
-									'cost': li.find('input.cost').val(),
-									'cat': li.find('select').val()
-							};
-							group.items.push(item);	
-						}
-				);
-			}
-			if (updated) {
-				groupdb({___id:groupid}).update(group);
-			} else {
-				groupdb.insert(group);
-			}
-			money.uiAddOrUpdateGroup(group);
-			
-			if (createNew) {
-				money.uiResetOutCome();
-			} else {
-				form.data("group", group);
-			}
-		},
-		
-		uiRemoveCurrent: function() {
-			var form = $('#addOutComeForm');
-			var group = form.data("group");
-			
-			if (group!=null) {
-				group["_deleted"] = 1;
-				group["updated"] = new Date().getTime();
-				groupdb(group.___id).update(group);
-				
-				$('#' + group.___id).remove();
-			}
-		},
-		uiSaveCategory: function() {
-			var o = category.toJson($('#eidtCat ul.category'), {});
-			categories = o;
-			http.saveConfig( JSON.stringify(categories));
-		},
-		
-		resync: function() {
-			groupdb().remove();
-			$.cookie(currentUser + ".ocgroup.updated", 0);
-			location.href = location.href;
-		},
-		
-		
-		
-		
-		//for income
-		
-		//保存一笔收入
-		uiSaveOutCome: function(createNew) {
-			var form = $('#addInComeForm');
-			
-			var income = form.data("income");
-			var updated = true;
-			if (income==null) {
-				income = false;
-				income = {};
-			};
-			
-			income.title = form.find('input.title').val();
-			income.total = form.find('input.total').val();
-			income.time = form.find('input.time').val();
-			income.intype = form.find('select.intype').val();
-			income.updated = new Date().getTime();
-			income.desc = form.find('textarea.desc').val();
-			income.from = form.find('textarea.from').val();
-			
-			if (updated) {
-				
-			}
-			
-			var groupid = group.___id;
-			
-			if (group.type=="single") {
-				//保存1条支出记录
-				var item = {
-						'gid': groupid,
-						'cat': $('#single select').val(),
-						'cost': group.total,
-						'updated': new Date().getTime()
-				};
-				group.items = [item]; 
-			} else if (group.type=="multi") {
-				group.items = new Array();
-				//保存多条支出记录
-				$('#subitemlist li.cloned').each(
-						function(){
-							var li = $(this);
-							var item = {
-									'gid': groupid,
-									'updated': new Date().getTime(),
-									'desc':  li.find('input.desc').val(),
-									'cost': li.find('input.cost').val(),
-									'cat': li.find('select').val()
-							};
-							group.items.push(item);	
-						}
-				);
-			}
-			if (updated) {
-				groupdb({___id:groupid}).update(group);
-			} else {
-				groupdb.insert(group);
-			}
-			money.uiAddOrUpdateGroup(group);
-			
-			if (createNew) {
-				money.uiResetOutCome();
-			} else {
-				form.data("group", group);
-			}
-		},
-		
+	);
+	
+	if(process.charAt(0)=='+') {
+		process = "=" + process.substring(1);
+	}
+	$('#calculateTotalProcess').hide().html(process).fadeIn();
+	$('#calculateTotalProcess').delay(2000).fadeOut();
+	
+	form.find('input.total').val(total);
+};
+
+//根据支出对象打开支出表单
+uiEditOutCome = function(t) {
+	var data = $(t).data('group');
+	var form = $('#addOutComeForm');
+	
+	$('#detailList div.item').removeClass("selected");
+	$(t).addClass("selected");
+	
+	fillEditForm(form, data);
+	
+	/*
+	form.data("group", data);
+	
+	form.find('input.desc').val(data.desc);
+	form.find('input.start').val(data.time);
+	form.find('input.total').val(data.total);
+	form.find('select.outmethod').val(data.by);
+	form.find('select.outtype').val(data.type);
+
+	uiswitchType(data.type);
+	
+	form.find('li.cloned').remove();
+	
+	if (data.type=="single") {
+		$('#single select').val(data.items[0].cat);
+	} else if (data.type=="multi") {
+		for(var i=0; i<data.items.length; i++) {
+			uicloneSubitem(data.items[i]);
+		}
+	}
+	*/
+};
+
+//重置支出表单
+uiResetOutCome = function() {
+	var form = $('#addOutComeForm');
+	
+	form.data("group", null);
+	form.find('input').val('');
+	form.find('select[name="outmethod"]').val('现金');
+	type:form.find('select[name="outtype"]').val('single');
+	$('div.outcometype').hide();
+	$('#single').show();
+};
+
+//保存一笔支出
+uiSaveOutCome = function(createNew) {
+	var form = $('#addOutComeForm');
+	var extracted = extractFormObject(form);
+	extracted.updated = new Date().getTime();
+
+	if (extracted.___id) {
+		groupdb(extracted.___id).update(extracted);
+	} else {
+		groupdb.insert(extracted);
+	}
+	uiAddLeftItem(extracted, 'group');
+};
+
+uiRemoveCurrent= function() {
+	var form = $('#addOutComeForm');
+	var group = form.data("group");
+	
+	if (group!=null) {
+		group["_deleted"] = 1;
+		group["updated"] = new Date().getTime();
+		groupdb(group.___id).update(group);
+		$('#' + group.___id).remove();
+		$('.' + group.___id).remove();
+	}
+};
+
+//保存一笔收入
+uiSaveInCome = function(createNew) {
+	var form = $('#addInComeForm');
+	
+	var income = form.data("income");
+	var updated = true;
+	if (income==null) {
+		income = false;
+		income = {};
+	};
+	
+	income.title = form.find('input.title').val();
+	income.total = form.find('input.total').val();
+	income.time = form.find('input.time').val();
+	income.type = form.find('select.intype').val();
+	income.updated = new Date().getTime();
+	income.desc = form.find('textarea.desc').val();
+	income.from = form.find('textarea.from').val();
+	
+	if (updated) {
+		incomedb(income.___id).update(income);
+	} else {
+		incomedb.insert(income);
+	}
+	uiAddLeftItem(income, 'income');
+	if (createNew) {
+		uiResetInCome();
+	} else {
+		form.data("income", income);
+	}
+};
+
+function uiResetInCome() {
+	var form = $('#addInComeForm');
+	form.data('income', null);
+	form.find('input.title').val('');
+	form.find('input.total').val('');
+	form.find('input.time').val('');
+	form.find('select.intype').val('');
+	form.find('textarea.desc').val('');
+	form.find('textarea.from').val('');
+}
+
+
+resync =  function() {
+	groupdb().remove();
+	$.cookie(currentUser + ".ocgroup.updated", 0);
+	location.href = location.href;
+};
+
+
+uiSaveCategory = function() {
+	var o = category.toJson($('#eidtCat ul.category'), {});
+	categories = o;
+	http.saveConfig( JSON.stringify(categories));
 };
 
 var category = {
