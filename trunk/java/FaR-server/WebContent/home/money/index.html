@@ -93,7 +93,7 @@
 					您还没有增加记录
 				</div>				
 				
-				<div class="taskItemTemplate item" style="display:none"  onclick="uiEdit(this)">
+				<div class="taskItemTemplate item" style="display:none">
 					<div>
 						<div class="selectedArrow" style="visibility: visible;"></div>
 						<div class="resource">
@@ -162,7 +162,7 @@
 			</div>
 			
 			<div id="multiitems" name="items" class="label switched outtype">
-				<ul class="sublist">
+				<ul>
 					<li class="forclone" style="display:none">
 						<label>支出项：<input type="text" name="title" size="16"></label>
 						<label>金额 <input type="text" name="cost" size="4"></label>
@@ -171,7 +171,7 @@
 					 </li>
 				</ul>
 				<div style="margin-top: 10px;">
-					<button clone="subitems" onclick="uicloneSubitem(this)">增加一项</button> <button onclick="calculateTotal()">计算到总金额</button>
+					<button clone="items" onclick="uicloneSubitem(this)">增加一项</button> <button onclick="calculateTotal()">计算到总金额</button>
 				</div>
 			</div>
 		</div>
