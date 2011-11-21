@@ -186,28 +186,6 @@ uiEdit = function(t) {
 	$(t).addClass("selected");
 	
 	fillEditForm(form, data);
-	
-	/*
-	form.data("group", data);
-	
-	form.find('input.desc').val(data.desc);
-	form.find('input.start').val(data.time);
-	form.find('input.total').val(data.total);
-	form.find('select.outmethod').val(data.by);
-	form.find('select.outtype').val(data.type);
-
-	uiswitchType(data.type);
-	
-	form.find('li.cloned').remove();
-	
-	if (data.type=="single") {
-		$('#single select').val(data.items[0].cat);
-	} else if (data.type=="multi") {
-		for(var i=0; i<data.items.length; i++) {
-			uicloneSubitem(data.items[i]);
-		}
-	}
-	*/
 };
 
 //保存一笔支出
@@ -224,17 +202,21 @@ uiSaveOutCome = function(createNew) {
 	uiAddLeftItem(extracted, 'group');
 };
 
-uiRemoveCurrent= function() {
-	var form = $('#addOutComeForm');
-	var group = form.data("group");
-	
-	if (group!=null) {
-		group["_deleted"] = 1;
-		group["updated"] = new Date().getTime();
-		groupdb(group.___id).update(group);
-		$('#' + group.___id).remove();
-		$('.' + group.___id).remove();
-	}
+uiRemoveSelected = function() {
+	$('div.checked').each(
+			function() {
+				if ($(this).hasClass("selected")) {
+					formReset(true);
+				}
+				var data = $(this).data("data");
+				if (data!=null) {
+					data["_deleted"] = 1;
+					data["updated"] = new Date().getTime();		
+					groupdb(data.___id).update(data);
+					$(this).remove();
+				}
+			}
+	);
 };
 
 //保存一笔收入
