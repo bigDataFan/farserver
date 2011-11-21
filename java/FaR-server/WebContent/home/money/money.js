@@ -53,7 +53,7 @@ function initOutCome() {
 			function(data) {
 				layout.pushCurrent($('#detailList'), $('#addOutComeForm'));
 				$('#outcomelist div.group').remove();
-				formReset();
+				formReset(true);
 				groupdb().order("___id desc").start(0).limit(10).each(
 						function(record,recordnumber) {
 							if (!record._deleted) {
@@ -208,18 +208,6 @@ uiEdit = function(t) {
 	*/
 };
 
-//重置支出表单
-uiResetOutCome = function() {
-	var form = $('#addOutComeForm');
-	
-	form.data("group", null);
-	form.find('input').val('');
-	form.find('select[name="outmethod"]').val('现金');
-	type:form.find('select[name="outtype"]').val('single');
-	$('div.outcometype').hide();
-	$('#single').show();
-};
-
 //保存一笔支出
 uiSaveOutCome = function(createNew) {
 	var form = $('#addOutComeForm');
@@ -278,18 +266,6 @@ uiSaveInCome = function(createNew) {
 		form.data("income", income);
 	}
 };
-
-function uiResetInCome() {
-	var form = $('#addInComeForm');
-	form.data('income', null);
-	form.find('input.title').val('');
-	form.find('input.total').val('');
-	form.find('input.time').val('');
-	form.find('select.intype').val('');
-	form.find('textarea.desc').val('');
-	form.find('textarea.from').val('');
-}
-
 
 resync =  function() {
 	groupdb().remove();
