@@ -1,10 +1,12 @@
 
 function fillEditForm(form, data) {
 	form.data("data", data);
+	formReset(false);
 	for ( var key in data) {
 		if (jQuery.isArray(data[key])) { //添加数组类型的成员
-			var div = form.find('*[name="' + key + '"]');
-			var subul = div.find('ul.subitems');
+			var div = form.find('div[name="' + key + '"]');
+			div.show();
+			var subul = div.find('ul.list');
 			if (subul.length!=0) {
 				subul.find('li.cloned').remove();
 				$(data[key]).each(function() {
@@ -13,7 +15,7 @@ function fillEditForm(form, data) {
 					subul.append(cloned);
 					var subitem = $(this)
 					for(var subkey in subitem) {
-						cloned.find('.' + subkey).val(subitem[subkey]);
+						cloned.find('*[name="' + subkey + '"]').val(subitem[subkey]);
 					}
 				});
 			} else {
@@ -32,8 +34,6 @@ function bindObject(div, o) {
 	if (o.___id) {
 		div.attr("id", o.___id);
 	}
-	
-	
 	
 	div.removeClass('taskItemTemplate').addClass('item').show();
 	$(div).data("data", o);
@@ -61,8 +61,6 @@ function bindObject(div, o) {
 				}
 			}
 	);
-	
-	
 	$(div).click(
 			function() {
 				if (o.formid) {
@@ -74,7 +72,7 @@ function bindObject(div, o) {
 	
 }
 
-function formReset() {
+function formReset(switched) {
 	var form = $('div.form');
 	form.data('data', null);
 	
@@ -89,13 +87,16 @@ function formReset() {
 		}
 	);
 	form.find('div.switched').hide();
-	form.find('div.switched').each(function(data) {
-		if ($(this).attr("default")=="1") {
-			$(this).show();
-		} else {
-			$(this).hide();
-		}
-	});
+	
+	if (switched) {
+		form.find('div.switched').each(function(data) {
+			if ($(this).attr("default")=="1") {
+				$(this).show();
+			} else {
+				$(this).hide();
+			}
+		});
+	}
 }
 
 
@@ -132,7 +133,7 @@ function extractFormObject(form) {
 								a.push(one);
 							}
 					);
-					o[subitemul.attr('name')] = a;
+					o[subitemul.parent().attr('name')] = a;
 				} 
 			}
 	);

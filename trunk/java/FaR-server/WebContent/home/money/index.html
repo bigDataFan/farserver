@@ -36,7 +36,7 @@
 		</td>
 		<td>
 			<button class="tbtn" id="btn-save-outcome" onclick="uiSaveOutCome()">保存</button>
-			<button class="tbtn" id="btn-save-outcome-add" onclick="formReset()">新增</button>
+			<button class="tbtn" id="btn-save-outcome-add" onclick="formReset(true)">新增</button>
 			<button class="tbtn" id="btn-save-outcome-remove" onclick="uiRemoveCurrent()">删除</button>
 						
 			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
@@ -161,8 +161,8 @@
 				</select> 
 			</div>
 			
-			<div id="multiitems" class="label switched outtype">
-				<ul name="subitems">
+			<div id="multiitems" name="items" class="label switched outtype">
+				<ul class="sublist">
 					<li class="forclone" style="display:none">
 						<label>支出项：<input type="text" name="title" size="16"></label>
 						<label>金额 <input type="text" name="cost" size="4"></label>
