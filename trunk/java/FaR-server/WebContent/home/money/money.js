@@ -211,8 +211,13 @@ uiRemoveSelected = function() {
 				var data = $(this).data("data");
 				if (data!=null) {
 					data["_deleted"] = 1;
-					data["updated"] = new Date().getTime();		
-					groupdb(data.___id).update(data);
+					data["updated"] = new Date().getTime();
+					if (data.formid=="addOutComeForm") {
+						groupdb(data.___id).update(data);
+					} 
+					if (data.formid=="addInComeForm") {
+						incomedb(data.___id).update(data);
+					}
 					$(this).remove();
 				}
 			}
