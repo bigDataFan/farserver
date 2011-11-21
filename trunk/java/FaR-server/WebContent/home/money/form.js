@@ -1,3 +1,4 @@
+
 function fillEditForm(form, data) {
 	form.data("data", data);
 	for ( var key in data) {
@@ -22,11 +23,56 @@ function fillEditForm(form, data) {
 				}
 			}
 		} else {
-			form.find("." + key).val(data[key]);
+			form.find('*[name="' + key + '"]').val(data[key]);
 		}
 	}
 }
 
+function bindObject(div, o) {
+	if (o.___id) {
+		div.attr("id", o.___id);
+	}
+	
+	
+	
+	div.removeClass('taskItemTemplate').addClass('item').show();
+	$(div).data("data", o);
+	$(div).find('.bind').each(
+			function() {
+				var bindTo = $(this).attr("bindTo");
+				var maxLength = $(this).attr("max");
+				if (maxLength!=null) {
+					maxLength = parseInt(maxLength);
+				} else {
+					maxLength = 100;
+				}
+				if (bindTo) {
+					var keys = bindTo.split(",");
+					for ( var i = 0; i < keys.length; i++) {
+						if (o[keys[i]]!=null) {
+							var fullvalue = o[keys[i]];
+							if (fullvalue>maxLength) {
+								$(this).html(fullvalue.substring(0,maxLength) + "...");
+							} else {
+								$(this).html(fullvalue);
+							}
+						}
+					}
+				}
+			}
+	);
+	
+	
+	$(div).click(
+			function() {
+				if (o.formid) {
+					var targetForm = $('#'  + o.formid);
+					fillEditForm(targetForm, o);
+				}
+			}
+	);
+	
+}
 
 function formReset() {
 	var form = $('div.form');
@@ -42,8 +88,9 @@ function formReset() {
 			}
 		}
 	);
+	form.find('div.switched').hide();
 	form.find('div.switched').each(function(data) {
-		if ($(this).attr("default")==1) {
+		if ($(this).attr("default")=="1") {
 			$(this).show();
 		} else {
 			$(this).hide();
@@ -52,20 +99,22 @@ function formReset() {
 }
 
 
-
 function extractFormObject(form) {
 	var o = {};
+	if (form.attr("id")) {
+		o.formid = form.attr("id");
+	}
 	if (form.data("data")) {
 		o = form.data("data");
 	}
-	form.find('label>input:visible, div.label>input:visible').each(
+	form.find('div.label>input:visible').each(
 			function(data) {
 				var input = $(this);
 				o[input.attr('name')] = input.val();
 			}
 	);
 	
-	form.find('label>select:visible, div.label>select:visible').each(
+	form.find('div.label>select:visible').each(
 			function(data) {
 				var select = $(this);
 				o[select.attr("name")] = select.val();
@@ -74,7 +123,13 @@ function extractFormObject(form) {
 					var a = new Array();
 					subitemul.find('li.cloned').each(
 							function(data) {
-								a.push(extractFormObject($(this)));
+								var one = {};
+								$(this).find('input,select,textarea').each(
+										function() {
+											one[$(this).attr("name")] = $(this).val();
+										}
+								);
+								a.push(one);
 							}
 					);
 					o[subitemul.attr('name')] = a;

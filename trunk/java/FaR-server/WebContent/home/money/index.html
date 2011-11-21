@@ -36,7 +36,7 @@
 		</td>
 		<td>
 			<button class="tbtn" id="btn-save-outcome" onclick="uiSaveOutCome()">保存</button>
-			<button class="tbtn" id="btn-save-outcome-add" onclick="uiResetOutCome()">新增</button>
+			<button class="tbtn" id="btn-save-outcome-add" onclick="formReset()">新增</button>
 			<button class="tbtn" id="btn-save-outcome-remove" onclick="uiRemoveCurrent()">删除</button>
 						
 			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
@@ -93,11 +93,11 @@
 					您还没有增加记录
 				</div>				
 				
-				<div class="taskItemTemplate item" style="display:none"  onclick="uiEditOutCome(this)">
+				<div class="taskItemTemplate item" style="display:none"  onclick="uiEdit(this)">
 					<div>
 						<div class="selectedArrow" style="visibility: visible;"></div>
 						<div class="resource">
-							<span></span>
+							<span class="bind" bindTo="outtype">ddd</span>
 						</div>
 					</div>
 					<div>
@@ -105,17 +105,17 @@
 							<div class="checkbox"></div>
 						</div>
 						<div class="total">
-							<div class="mark" ></div>
+							<div class="mark bind" bindTo="total" ></div>
 						</div>
 						<div>
 							<span class="Nj"><span class="cc Qc Pj"></span><span
 								class="cc ec"></span>
 							</span>
-							<span class="title" dir="ltr">title</span>
+							<span class="title bind" bindTo="title" max="10">title</span>
 						</div>
 					</div>
 					<div class="snapshot">
-						<!-- <div class="progress"></div> --> <div style="margin-left: 5px;" class="info1">进度</div> <div style="margin-left: 5px;" class="info2">进度</div> 
+						<!-- <div class="progress"></div> --> <div style="margin-left: 5px;" class="bind" bindTo="time"></div> <div style="margin-left: 5px;" class="bind" bindTo="outmethod"></div> 
 					</div>
 				</div>
 		</div>
@@ -123,11 +123,8 @@
 	
 	
 	<div class="right">
-	
 		<ul id="menu1" class="ul" style="display:none"><li class="Al Gn pl" onclick="_e(event, 's', '')" tabindex="0">回复</li><li class="Bl Gn pl" onclick="_e(event, 'g', '')" tabindex="0">移动...</li><li class="Bl Gn pl" onclick="_e(event, 'h', '')" tabindex="0">加标签...</li><li class="Bl Gn pl" onclick="_e(event, 'f', '11')" tabindex="0">忽略</li><li class="Bl Gn pl" onclick="_e(event, 'f', '7')" tabindex="0">这是垃圾邮件</li><li class="Bl pl" onclick="_e(event, 'E', '')" tabindex="0">打印</li><li class="Cl Gn pl" onclick="_e(event, 'f', '4')" tabindex="0">标记为未读</li></ul>
-	
-		
-		<div class="content from" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add,btn-save-outcome-remove">
+		<div class="content form" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add,btn-save-outcome-remove">
 			<div class="title"><h2>新增支出</h2> </div>
 			<div class="label">
 				支出描述： <input type="text" name="title" size="36"> 
@@ -167,9 +164,9 @@
 			<div id="multiitems" class="label switched outtype">
 				<ul name="subitems">
 					<li class="forclone" style="display:none">
-						<label>支出项：<input type="text" class="desc" size="16"></label>
-						<label>金额 <input type="text" class="cost" size="4"></label>
-						<label>类别<select class="category"></select></label>
+						<label>支出项：<input type="text" name="title" size="16"></label>
+						<label>金额 <input type="text" name="cost" size="4"></label>
+						<label>类别<select class="category" name="category"></select></label>
 						<a class="delete" href="javascript:void(0)">删除</a>
 					 </li>
 				</ul>

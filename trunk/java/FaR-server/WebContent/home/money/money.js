@@ -126,25 +126,8 @@ function uiAddLeftItem(o, type) {
 		cloned = $('div.taskItemTemplate').clone();
 		listcontainer.prepend(cloned);
 		cloned.attr("id", o.___id);
-		cloned.removeClass('taskItemTemplate').addClass('item').slideDown('fast');
 	}
-	if (o.title.length>10) {
-		cloned.find('.title').html(o.title.substring(0,10) + "..");
-	} else {
-		cloned.find('.title').html(o.title);
-	}
-	cloned.find('.total').html(o.total);
-	cloned.find('.resource span').html(o.type);
-	
-	if (type=="group") {
-		cloned.find('.info1').html(o.time);
-		cloned.find('.info2').html(o.by);
-		cloned.data("group", o);
-	} else if (type=="income") {
-		cloned.find('.info1').html(o.time);
-		cloned.find('.info2').html(o.by);
-		cloned.data("income", o);
-	}
+	bindObject(cloned, o);
 }
 
 //复制一个支出项
@@ -193,8 +176,8 @@ calculateTotal = function() {
 };
 
 //根据支出对象打开支出表单
-uiEditOutCome = function(t) {
-	var data = $(t).data('group');
+uiEdit = function(t) {
+	var data = $(t).data('data');
 	var form = $('#addOutComeForm');
 	
 	$('#detailList div.item').removeClass("selected");
