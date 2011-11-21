@@ -1,19 +1,20 @@
 
 function fillEditForm(form, data) {
-	form.data("data", data);
 	formReset(false);
+	form.data("data", data);
 	for ( var key in data) {
 		if (jQuery.isArray(data[key])) { //添加数组类型的成员
 			var div = form.find('div[name="' + key + '"]');
 			div.show();
-			var subul = div.find('ul.list');
+			var subul = div.find('ul');
 			if (subul.length!=0) {
 				subul.find('li.cloned').remove();
 				$(data[key]).each(function() {
 					var cloned = subul.find("li.forclone").clone();
 					cloned.removeClass("forclone").addClass('cloned');
 					subul.append(cloned);
-					var subitem = $(this)
+					cloned.show();
+					var subitem = this;
 					for(var subkey in subitem) {
 						cloned.find('*[name="' + subkey + '"]').val(subitem[subkey]);
 					}
@@ -25,7 +26,9 @@ function fillEditForm(form, data) {
 				}
 			}
 		} else {
-			form.find('*[name="' + key + '"]').val(data[key]);
+			var field = form.find('*[name="' + key + '"]');
+			field.parent().show();
+			field.val(data[key]);
 		}
 	}
 }
@@ -63,9 +66,21 @@ function bindObject(div, o) {
 	);
 	$(div).click(
 			function() {
-				if (o.formid) {
+				if (!$(this).hasClass("selected") && o.formid) {
 					var targetForm = $('#'  + o.formid);
+					$('div.selected').removeClass('selected');
+					$(this).addClass("selected");
 					fillEditForm(targetForm, o);
+				}
+			}
+	);
+	$(div).find('div.dotc').click(
+			function(data) {
+				var container = $(this).parent().parent();
+				if (container.hasClass("checked")) {
+					container.removeClass("checked");
+				} else {
+					container.addClass("checked");
 				}
 			}
 	);
@@ -102,11 +117,11 @@ function formReset(switched) {
 
 function extractFormObject(form) {
 	var o = {};
-	if (form.attr("id")) {
-		o.formid = form.attr("id");
-	}
 	if (form.data("data")) {
 		o = form.data("data");
+	}
+	if (form.attr("id")) {
+		o.formid = form.attr("id");
 	}
 	form.find('div.label>input:visible').each(
 			function(data) {

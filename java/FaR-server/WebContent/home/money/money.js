@@ -132,7 +132,8 @@ function uiAddLeftItem(o, type) {
 
 //复制一个支出项
 function uicloneSubitem(button, o) {
-	var template = $('ul[name="' + $(button).attr("clone") + '"] li.forclone');
+	var template = $('li.forclone');
+	//var parentul = template.parent();
 	if (template.length!=0) {
 		var cloned = template.clone();
 		cloned.removeClass('forclone').addClass('cloned').show();
@@ -144,7 +145,8 @@ function uicloneSubitem(button, o) {
 					cloned.remove();
 				}
 		);
-		$('ul[name="' + $(button).attr("clone") + '"]').append(cloned);
+		template.after(cloned);
+		//parentul.append(cloned);
 	}
 };
 
@@ -155,11 +157,11 @@ calculateTotal = function() {
 	var total = 0;
 	
 	var process = "";
-	$('#subitemlist li.cloned').each(
+	$('#multiitems li.cloned').each(
 			function(){
 				var li = $(this);
-				if (!isNaN(li.find('input.cost').val())) {
-					var val = parseFloat(li.find('input.cost').val());
+				if (!isNaN(li.find('input[name="cost"]').val())) {
+					var val = parseFloat(li.find('input[name="cost"]').val());
 					process += "+" + val ;
 					total += val;
 				}
@@ -172,7 +174,7 @@ calculateTotal = function() {
 	$('#calculateTotalProcess').hide().html(process).fadeIn();
 	$('#calculateTotalProcess').delay(2000).fadeOut();
 	
-	form.find('input.total').val(total);
+	form.find('input[name="total"]').val(total);
 };
 
 //根据支出对象打开支出表单
