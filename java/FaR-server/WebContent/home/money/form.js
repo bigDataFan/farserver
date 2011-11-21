@@ -82,6 +82,12 @@ function bindObject(div, o) {
 				} else {
 					container.addClass("checked");
 				}
+				
+				if ($('div.checked').length>0) {
+					$('#btn-save-outcome-remove').show();
+				} else {
+					$('#btn-save-outcome-remove').hide();
+				}
 			}
 	);
 	
@@ -103,7 +109,8 @@ function formReset(switched) {
 	);
 	form.find('div.switched').hide();
 	
-	if (switched) {
+	if (switched) { //表示新建一个表单
+		$('div.selected').removeClass('selected');
 		form.find('div.switched').each(function(data) {
 			if ($(this).attr("default")=="1") {
 				$(this).show();

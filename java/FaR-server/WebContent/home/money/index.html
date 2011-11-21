@@ -28,6 +28,7 @@
 	<tr>
 		<td width="260px">
 			<button onclick="layout.back()" class="tbtn" id="btn-return-main">返回</button>
+			<button class="tbtn" id="btn-save-outcome-remove" onclick="uiRemoveSelected()">删除</button>
 			
 			<button id="loginLink" onclick="location.href='/office/login.jsp?redirectTo=/home/money/index.html'">
 				登陆
@@ -37,7 +38,6 @@
 		<td>
 			<button class="tbtn" id="btn-save-outcome" onclick="uiSaveOutCome()">保存</button>
 			<button class="tbtn" id="btn-save-outcome-add" onclick="formReset(true)">新增</button>
-			<button class="tbtn" id="btn-save-outcome-remove" onclick="uiRemoveCurrent()">删除</button>
 						
 			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
 			<button class="tbtn" id="btn-save-cat" onclick="money.uiSaveCategory()">保存设置</button>
@@ -124,7 +124,7 @@
 	
 	<div class="right">
 		<ul id="menu1" class="ul" style="display:none"><li class="Al Gn pl" onclick="_e(event, 's', '')" tabindex="0">回复</li><li class="Bl Gn pl" onclick="_e(event, 'g', '')" tabindex="0">移动...</li><li class="Bl Gn pl" onclick="_e(event, 'h', '')" tabindex="0">加标签...</li><li class="Bl Gn pl" onclick="_e(event, 'f', '11')" tabindex="0">忽略</li><li class="Bl Gn pl" onclick="_e(event, 'f', '7')" tabindex="0">这是垃圾邮件</li><li class="Bl pl" onclick="_e(event, 'E', '')" tabindex="0">打印</li><li class="Cl Gn pl" onclick="_e(event, 'f', '4')" tabindex="0">标记为未读</li></ul>
-		<div class="content form" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add,btn-save-outcome-remove">
+		<div class="content form" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add">
 			<div class="title"><h2>新增支出</h2> </div>
 			<div class="label">
 				支出描述： <input type="text" name="title" size="36"> 
