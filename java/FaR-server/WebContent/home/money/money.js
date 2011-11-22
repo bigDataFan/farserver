@@ -34,7 +34,6 @@ $(document).ready(function(){
 						window.localStorage.setItem(currentUser+".category", data.category.value);
 					}
 				} 
-				
 			}
 		);
 });
@@ -112,7 +111,6 @@ function initCategory() {
 		} 
 	}
 	
-	
 	$('#navcat').click(
 			function(data) {
 				layout.pushCurrent($('#toplist'), $('#eidtCat'));
@@ -125,7 +123,7 @@ function initCategory() {
 				category.fillSelect($(this), categories);
 			}
 	);
-	http.saveConfig(CAT_STRING);
+	//http.saveConfig(CAT_STRING);
 }
 
 var http = {
@@ -260,6 +258,9 @@ resync =  function() {
 uiSaveCategory = function() {
 	var o = category.toJson($('#eidtCat ul.category'), {});
 	categories = o;
+	if (window.localStorage!=null) {
+		window.localStorage.setItem(currentUser+".category", JSON.stringify(categories));
+	} 
 	http.saveConfig( JSON.stringify(categories));
 };
 

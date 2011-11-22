@@ -84,7 +84,8 @@ public class SyncMonggoDBService {
 		List<String> removed = new ArrayList<String>();
 		try {
 			JSONArray source = new JSONArray(list);
-			updateStored(source, dbcoll, added);
+			List<String> deleted = new ArrayList<String>();
+			updateStored(source, dbcoll, added, deleted);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -132,10 +133,11 @@ public class SyncMonggoDBService {
 			}
 			
 			Map<String, String> added = new HashMap<String, String>(); 
-			
-			updateStored(source, dbcoll, added);
+			List<String> deleted = new ArrayList<String>();
+			updateStored(source, dbcoll, added, deleted);
 			result.put("added", added);
 			result.put("gotten", newer);
+			result.put("deleted", deleted);
 			return result;
 		} catch (JSONException e) {
 			
@@ -146,7 +148,7 @@ public class SyncMonggoDBService {
 
 	
 	private void updateStored(JSONArray source, DBCollection dbcoll,
-			Map<String, String> added) throws JSONException {
+			Map<String, String> added, List<String> deleted) throws JSONException {
 		for (int i = 0; i < source.length(); i++) {
 			JSONObject jso = source.getJSONObject(i);
 			
@@ -156,6 +158,9 @@ public class SyncMonggoDBService {
 			if (dbo.get("_id")!=null) {
 				dbcoll.update(new BasicDBObject("_id",new ObjectId((String)dbo.get("_id"))),
 						dbo, true, false);
+				if (dbo.get("_deleted")!=null) {
+					deleted.add((String)dbo.get("___id"));
+				}
 			} else {
 				if (dbo.get("_deleted")==null) {
 					dbcoll.insert(dbo);
