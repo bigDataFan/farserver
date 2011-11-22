@@ -36,16 +36,11 @@
 			
 		</td>
 		<td>
-			<button class="tbtn" id="btn-save-outcome" onclick="uiSaveOutCome()">保存</button>
-			<button class="tbtn" id="btn-save-outcome-add" onclick="formReset(true)">新增</button>
+			<button class="tbtn" id="btn-save-form" onclick="saveCurrentForm()">保存</button>
+			<button class="tbtn" id="btn-add-form" onclick="formReset(true)">新增</button>
 						
 			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
 			<button class="tbtn" id="btn-save-cat" onclick="money.uiSaveCategory()">保存设置</button>
-
-
-			<button class="tbtn" id="btn-save-income" onclick="money.uiSaveInCome()">保存</button>
-			<button class="tbtn" id="btn-save-income-add" onclick="money.uiSaveInCome(1)">新增</button>
-			<button class="tbtn" id="btn-save-income-remove" onclick="money.uiRemoveCurrent()">删除</button>
 	
 		</td>
 	</tr>
@@ -84,20 +79,15 @@
 		</div>
 		
 		<div id="detailList" style="display:none" btns="btn-return-main">
-				<div class="title">
-					<div class="Yj Nd"><div class="ak bk" style=""></div>
-					<span class="name" dir="ltr"></span> <span class="count" dir="ltr"></span></div>
-				</div>
-
 				<div class="emptyInfo">
 					您还没有增加记录
 				</div>				
 				
-				<div class="taskItemTemplate item" style="display:none">
+				<div class="taskItemTemplate" style="display:none">
 					<div>
 						<div class="selectedArrow" style="visibility: visible;"></div>
 						<div class="resource">
-							<span class="bind" bindTo="outtype">ddd</span>
+							<span class="bind" bindTo="outtype,intype">ddd</span>
 						</div>
 					</div>
 					<div>
@@ -124,7 +114,7 @@
 	
 	<div class="right">
 		<ul id="menu1" class="ul" style="display:none"><li class="Al Gn pl" onclick="_e(event, 's', '')" tabindex="0">回复</li><li class="Bl Gn pl" onclick="_e(event, 'g', '')" tabindex="0">移动...</li><li class="Bl Gn pl" onclick="_e(event, 'h', '')" tabindex="0">加标签...</li><li class="Bl Gn pl" onclick="_e(event, 'f', '11')" tabindex="0">忽略</li><li class="Bl Gn pl" onclick="_e(event, 'f', '7')" tabindex="0">这是垃圾邮件</li><li class="Bl pl" onclick="_e(event, 'E', '')" tabindex="0">打印</li><li class="Cl Gn pl" onclick="_e(event, 'f', '4')" tabindex="0">标记为未读</li></ul>
-		<div class="content form" id="addOutComeForm" style="display:none" btns="btn-save-outcome,btn-save-outcome-add">
+		<div class="content form" id="addOutComeForm" style="display:none" db="groupdb" btns="btn-save-form,btn-add-form">
 			<div class="title"><h2>新增支出</h2> </div>
 			<div class="label">
 				支出描述： <input type="text" name="title" size="36"> 
@@ -176,21 +166,21 @@
 			</div>
 		</div>
 		
-		<div class="content" id="addInComeForm" style="display:none" btns="btn-save-income,btn-save-income-add,btn-save-income-remove">
+		<div class="content form" id="addInComeForm" db="incomedb" style="display:none" btns="btn-save-form,btn-add-form">
 			<div class="title"><h2>收入编辑</h2> </div>
 				<div class="label">
-					收入描述： <input type="text" class="title" size="36"> 
+					收入描述： <input type="text" name="title" size="36"> 
 				</div>
 				<div class="label">
-					收入金额： <input type="text" class="total" size="36"> 
+					收入金额： <input type="text" name="total" size="8" class="number"> 
 				</div>
 				<div class="label">
 				日期 * ： 
-				<input type="text" class="time choosedate" size="16" width="200">
+				<input type="text" class="choosedate" name="time" size="16" width="200">
 				</div>
 				<div class="label">
 					收入类型: 
-					<select class="intype" >
+					<select name="intype" >
 						<option>固定收入</option>
 						<option>奖金及补贴</option>
 						<option>股票与其他投资</option>
@@ -201,11 +191,20 @@
 				</div>
 				
 				<div class="label">
-					付款方： <input type="text" class="from" size="36"> 
+					付款方： <input type="text" name="from" size="36"> 
 				</div>
 				
 				<div class="label">
-					备注：<textarea rows="5" cols="60" class="desc"></textarea>
+					备注：<textarea rows="5" cols="60" name="desc"></textarea>
+				</div>
+				
+				<div class="label"> 
+					税前工资 <input type="text" name="fullSalary" class="number"><button onclick="calculateTax()">计算</button> <br>
+					住房公积金: <input type="text" name="housingReserve" size="5" class="number">
+					养老保险: <input type="text" name="endowmentInsurance" size="5" class="number">
+					医疗保险: <input type="text" name="medicalInsurance" size="5" class="number">
+					失业保险: <input type="text" name="jobInsurance" size="5" class="number">
+					缴纳个税:  <input type="text" name="personalTax" size="5" class="number">
 				</div>
 			</div>
 			

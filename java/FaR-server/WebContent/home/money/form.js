@@ -1,4 +1,23 @@
 
+saveCurrentForm = function() {
+	var form = $('div.form:visible');
+	form.each(
+			function(data) {
+				var extracted = extractFormObject(form);
+				extracted.updated = new Date().getTime();
+				if (extracted.___id) {
+					dbreg[extracted.db](extracted.___id).update(extracted);
+				} else {
+					dbreg[extracted.db].insert(extracted);
+				}
+				uiAddLeftItem(extracted);
+			}
+	);
+};
+
+
+
+
 function fillEditForm(form, data) {
 	formReset(false);
 	form.data("data", data);
@@ -33,6 +52,21 @@ function fillEditForm(form, data) {
 	}
 }
 
+
+
+function uiAddLeftItem(o) {
+	var listcontainer = $('#detailList');
+	listcontainer.find('div.emptyInfo').hide();
+	var cloned = $('#' + o.___id);
+	if (cloned.length==0) {
+		cloned = $('div.taskItemTemplate').clone();
+		listcontainer.prepend(cloned);
+		cloned.attr("id", o.___id);
+	}
+	bindObject(cloned, o);
+}
+
+
 function bindObject(div, o) {
 	if (o.___id) {
 		div.attr("id", o.___id);
@@ -54,7 +88,7 @@ function bindObject(div, o) {
 					for ( var i = 0; i < keys.length; i++) {
 						if (o[keys[i]]!=null) {
 							var fullvalue = o[keys[i]];
-							if (fullvalue>maxLength) {
+							if (fullvalue.length>maxLength) {
 								$(this).html(fullvalue.substring(0,maxLength) + "...");
 							} else {
 								$(this).html(fullvalue);
@@ -130,6 +164,8 @@ function extractFormObject(form) {
 	if (form.attr("id")) {
 		o.formid = form.attr("id");
 	}
+	o.db = form.attr("db");
+	
 	form.find('div.label>input:visible').each(
 			function(data) {
 				var input = $(this);

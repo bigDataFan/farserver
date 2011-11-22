@@ -89,6 +89,7 @@ var layout = {
 
 var ie6sync = false;
 var syncinit = false;
+
 function synchronize(db, dbname, username) {
 	
 	//获取最近和服务器更新联系的时间
@@ -130,6 +131,11 @@ function synchronize(db, dbname, username) {
 		    	for ( var id in result.removed) {
 		    		db(id).remove();
 				}
+		    	
+		    	for (var j=0; j<result.deleted.length; j++) {
+					db(result.deleted[j]).remove();
+				}
+		    	
 		    	$.cookie(username + "." + dbname + ".updated", currentTime);
 		    	
 		    	syncinit = true;
@@ -291,3 +297,17 @@ Date.prototype.format = function (mask, utc) {
 	return dateFormat(this, mask, utc);
 };
 
+
+function getTax(A) {
+	if((A-3500)<1500) return 0.03*(A-3500);
+	if((A-3500)<4500) return 0.1*(A-3500)-105;
+	if((A-3500)<9000) return 0.2*(A-3500)-555; 
+	if((A-3500)<35000) return 0.25*(A-3500)-1005;
+	if((A-3500)<55000) return 0.3*(A-3500)-2755; 
+	if((A-3500)<80000) return 0.35*(a-3500)-5505;
+	return 0.45*(A-3500)-13505; 
+}
+
+function getFloorTax(A) {
+	return Math.floor(getTax(A));
+}

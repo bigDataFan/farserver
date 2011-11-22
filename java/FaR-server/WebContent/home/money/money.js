@@ -2,18 +2,21 @@ var groupdb;
 var incomedb;
 var categories;
 
+var dbreg = {};
 var CAT_STRING = '{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}';
 
 var currentUser;
 
 $(document).ready(function(){
-	
 	initStaticUI();
 	initOutCome();
+	initInCome();
 	initSync();
 	
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
+	dbreg["groupdb"] = groupdb;
+	dbreg["incomedb"] = incomedb;
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
 			function(data) {
 				currentUser = data.user;
@@ -36,7 +39,6 @@ $(document).ready(function(){
 		);
 });
 
-
 function initSync() {
 	$('#navsync').click(function() {
 		var info = $('#syncinfo');
@@ -52,13 +54,29 @@ function initOutCome() {
 	$('#navoutcome').click(
 			function(data) {
 				layout.pushCurrent($('#detailList'), $('#addOutComeForm'));
-				$('#outcomelist div.group').remove();
+				$('#detailList div.item').remove();
 				formReset(true);
-				groupdb().order("___id desc").start(0).limit(10).each(
+				groupdb().order("time").start(0).limit(10).each(
 						function(record,recordnumber) {
 							if (!record._deleted) {
-								uiAddLeftItem(record, 'group');
+								uiAddLeftItem(record);
 							}
+						}
+				);
+			}
+	);
+}
+
+function initInCome() {
+	$('#navincome').click(
+			function(data) {
+				$('div.emptyInfo').show();
+				layout.pushCurrent($('#detailList'), $('#addInComeForm'));
+				$('#detailList div.item').remove();
+				formReset(true);
+				incomedb().order('time').start(0).limit(10).each(
+						function(record, recordernumber) {
+							uiAddLeftItem(record);
 						}
 				);
 			}
@@ -118,22 +136,9 @@ var http = {
 		}
 };
 
-function uiAddLeftItem(o, type) {
-	var listcontainer = $('#detailList');
-	listcontainer.find('div.emptyInfo').hide();
-	var cloned = $('#' + o.___id);
-	if (cloned.length==0) {
-		cloned = $('div.taskItemTemplate').clone();
-		listcontainer.prepend(cloned);
-		cloned.attr("id", o.___id);
-	}
-	bindObject(cloned, o);
-}
-
 //复制一个支出项
 function uicloneSubitem(button, o) {
 	var template = $('li.forclone');
-	//var parentul = template.parent();
 	if (template.length!=0) {
 		var cloned = template.clone();
 		cloned.removeClass('forclone').addClass('cloned').show();
@@ -146,7 +151,6 @@ function uicloneSubitem(button, o) {
 				}
 		);
 		template.after(cloned);
-		//parentul.append(cloned);
 	}
 };
 
@@ -199,7 +203,7 @@ uiSaveOutCome = function(createNew) {
 	} else {
 		groupdb.insert(extracted);
 	}
-	uiAddLeftItem(extracted, 'group');
+	uiAddLeftItem(extracted);
 };
 
 uiRemoveSelected = function() {
@@ -224,37 +228,27 @@ uiRemoveSelected = function() {
 	);
 };
 
-//保存一笔收入
-uiSaveInCome = function(createNew) {
-	var form = $('#addInComeForm');
-	
-	var income = form.data("income");
-	var updated = true;
-	if (income==null) {
-		income = false;
-		income = {};
-	};
-	
-	income.title = form.find('input.title').val();
-	income.total = form.find('input.total').val();
-	income.time = form.find('input.time').val();
-	income.type = form.find('select.intype').val();
-	income.updated = new Date().getTime();
-	income.desc = form.find('textarea.desc').val();
-	income.from = form.find('textarea.from').val();
-	
-	if (updated) {
-		incomedb(income.___id).update(income);
-	} else {
-		incomedb.insert(income);
+
+function calculateTax() {
+	if (!isNaN($('input[name="fullSalary"]').val())) {
+		var fullvalue = parseInt($('input[name="fullSalary"]').val());
+		var housingReserve = Math.floor(fullvalue * 0.12);
+		var endowmentInsurance = Math.floor(fullvalue * 0.08);
+		var medicalInsurance = Math.floor(fullvalue * 0.02);
+		var jobInsurance = Math.floor(fullvalue * 0.002);
+		var remains = fullvalue - housingReserve - endowmentInsurance - medicalInsurance - jobInsurance;
+		var tax = getFloorTax(remains);
+		
+		$('input[name="housingReserve"]').val(housingReserve);
+		$('input[name="endowmentInsurance"]').val(endowmentInsurance);
+		$('input[name="medicalInsurance"]').val(medicalInsurance);
+		$('input[name="jobInsurance"]').val(jobInsurance);
+		
+		$('input[name="personalTax"]').val(tax);
+		
+		
 	}
-	uiAddLeftItem(income, 'income');
-	if (createNew) {
-		uiResetInCome();
-	} else {
-		form.data("income", income);
-	}
-};
+}
 
 resync =  function() {
 	groupdb().remove();
