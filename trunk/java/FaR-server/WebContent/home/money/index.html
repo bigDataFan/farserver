@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html manifest="clock.appcache">
+<html  manifest="ever365.appcache">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>懒猫记账</title>
@@ -40,7 +40,7 @@
 			<button class="tbtn" id="btn-add-form" onclick="formReset(true)">新增</button>
 						
 			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
-			<button class="tbtn" id="btn-save-cat" onclick="money.uiSaveCategory()">保存设置</button>
+			<button class="tbtn" id="btn-save-cat" onclick="uiSaveCategory()">保存设置</button>
 	
 		</td>
 	</tr>
@@ -206,7 +206,10 @@
 					失业保险: <input type="text" name="jobInsurance" size="5" class="number">
 					缴纳个税:  <input type="text" name="personalTax" size="5" class="number">
 				</div>
-			</div>
+		</div>
+		
+		<div class="content" style="display:none" id="report">
+		</div>
 			
 		
 		
