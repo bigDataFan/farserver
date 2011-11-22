@@ -309,8 +309,6 @@ div.star .mark {
 	 background: white;
 	 overflow-x: hidden;
 	 overflow-y: auto;
-	 -webkit-user-select: none;
-	 -moz-user-select: none;	
 }
 
 .right .list {
@@ -393,6 +391,10 @@ div.label input[type="text"],  div.label select, div.label textarea {
 	padding: 5px;
 }
 
+
+input.number {
+	text-align: right;
+}
 
 
 div.emptyInfo {
