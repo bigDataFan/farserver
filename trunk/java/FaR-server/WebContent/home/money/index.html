@@ -5,8 +5,8 @@
 <title>懒猫记账</title>
 
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
-
-<!--   <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
+		
+<!-- <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
 -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
@@ -60,7 +60,7 @@
 			</div>
 			<div class="si" id="navoutcome"><div class="cc Uc"></div><span>支出记录</span></div>
 			<div class="si" id="navincome"><div class="cc Uc"></div><span>收入记录</span></div>
-			<div class="si"><div class="cc Uc"></div><span>报表与统计</span></div>
+			<div class="si" id="navreport"><div class="cc Uc"></div><span>报表与统计</span></div>
 
 			<div class="projectlist">
 				<div class="qi">配置</div>
@@ -109,6 +109,45 @@
 					</div>
 				</div>
 		</div>
+		
+		
+		<div id="reportList" style="display:none" btns="btn-return-main">
+			<div class="item">
+						<div class="label">
+				按月报表 <select name="generalyear">
+							<option>2001</option>
+							<option>2002</option>
+							<option>2003</option>
+							<option>2004</option>
+							<option>2005</option>
+							<option>2006</option>
+							<option>2007</option>
+							<option>2008</option>
+							<option>2009</option>
+							<option>2010</option>
+							<option>2011</option>
+							<option>2012</option>
+				        </select> 年  <select name="generalmonth">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+							<option>12</option>
+				        </select>  <button onclick="analyzeMonth()">分析</button>
+			</div>		
+			</div>
+		</div>
+		
+		
+		
+		
 	</div>
 	
 	
@@ -209,6 +248,13 @@
 		</div>
 		
 		<div class="content" style="display:none" id="report">
+			<div id="generalReport" class="reports">
+				<div class="title"></div>
+				<div class="reportlist"></div>
+				
+				<div class="outcomeline"></div>
+				<div class="categorychart"></div>
+			</div>
 		</div>
 			
 		
@@ -230,7 +276,7 @@
 			</div>
 			
 			<div class="label resync">
-				<button onclick="money.resync()">重新同步</button>
+				<button onclick="resync()">重新同步</button>
 			</div>
 		</div>
 		
