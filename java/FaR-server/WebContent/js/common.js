@@ -90,6 +90,25 @@ var layout = {
 var ie6sync = false;
 var syncinit = false;
 
+
+
+var dbreg = {};
+
+
+function resync() {
+	for ( var key in dbreg) {
+		dbreg[key]().remove();
+		$.cookie(currentUser + "." + key + ".updated", 0);
+		location.href = location.href;
+	}
+/*	
+	groupdb().remove();
+	incomedb().remove();
+	$.cookie(currentUser + ".ocgroup.updated", 0);
+	$.cookie(currentUser + ".icgroup.updated", 0);
+	*/
+};
+
 function synchronize(db, dbname, username) {
 	
 	//获取最近和服务器更新联系的时间
