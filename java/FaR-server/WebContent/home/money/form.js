@@ -13,10 +13,8 @@ saveCurrentForm = function() {
 				uiAddLeftItem(extracted);
 			}
 	);
+	formReset(true);
 };
-
-
-
 
 function fillEditForm(form, data) {
 	formReset(false);

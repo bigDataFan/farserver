@@ -2,8 +2,8 @@ var groupdb;
 var incomedb;
 var categories;
 
-var dbreg = {};
-var CAT_STRING = '{"children":[{"name":"多发点","children":[{"name":"水电费"},{"name":"说were"}]},{"name":"风尚大典","children":[{"name":"四点多方位"}]},{"name":"佛挡杀佛","children":[{"name":"电风扇发生大"},{"name":"第三方的发生地"}]}]}';
+
+var CAT_STRING = '{"children":[{"name":"家居日常","children":[{"name":"米面粮油"},{"name":"蔬菜水果"},{"name":"厨卫用品"},{"name":"衣服鞋帽"},{"name":"小吃零食"},{"name":"外出就餐"}]},{"name":"固定开销","children":[{"name":"房租物业"},{"name":"水电煤气"},{"name":"通讯费用"},{"name":"交通费用"}]},{"name":"文体活动","children":[{"name":"旅游"},{"name":"体育健身"}]}]}';
 
 var currentUser;
 
@@ -12,6 +12,7 @@ $(document).ready(function(){
 	initOutCome();
 	initInCome();
 	initSync();
+	initReport();
 	
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
@@ -24,8 +25,8 @@ $(document).ready(function(){
 					groupdb.store(currentUser + ".moneygroup");
 					incomedb.store(currentUser + ".income");
 				}
-				synchronize(groupdb, 'ocgroup', currentUser);
-				synchronize(incomedb, 'icgroup', currentUser);
+				synchronize(groupdb, 'groupdb', currentUser);
+				synchronize(incomedb, 'incomedb', currentUser);
 				
 				initCategory();
 				if (data.category) {
@@ -52,6 +53,7 @@ function initSync() {
 function initOutCome() {
 	$('#navoutcome').click(
 			function(data) {
+				$('div.emptyInfo').show();
 				layout.pushCurrent($('#detailList'), $('#addOutComeForm'));
 				$('#detailList div.item').remove();
 				formReset(true);
@@ -81,6 +83,51 @@ function initInCome() {
 			}
 	);
 }
+
+function initReport() {
+	$('#navreport').click(
+			function(data) {
+				layout.pushCurrent($('#reportList'), $('#report'));
+				$('#report div.reports').hide();
+			}
+	);
+}
+
+function analyzeMonth() {
+	var year = parseInt($('select[name="generalyear"]').val());
+	var month = parseInt($('select[name="generalmonth"]').val());
+	$('#generalReport').show();
+	$('#generalReport div.title').html(year + "年" + month + "月支出账目");
+	
+	var d = new Date(year, month, 0);
+	
+	var total = 0;
+	for ( var i = 1; i <= d.getDate(); i++) {
+		var daydiv  = $('<div class="days"><div class="date">' + i + '</div></div'); 
+		var a = new Date(year, month, i);
+		if(a.getDay()==5 || a.getDay()==6 ) {
+			daydiv.addClass("weekend");
+		}
+		groupdb({time:year+"-"+month + "-" + ((i<10)?("0"+i):i)}).start(0).each(
+				function(record,recordnumber) {
+					if (!record._deleted) {
+						var infodiv = $('<div class="info"><div class="title">' +record.title + " 总计" +  record.total + '</div>');
+						if (record.items) {
+							for ( var j = 0; j < record.items.length; j++) {
+								infodiv.find('div.title').append('<p>' + record.items[j].title + "  " + record.items[j].cost  + '</p>');
+							}
+						}
+						total += parseInt(record.total);
+						daydiv.append(infodiv);
+					}
+				}
+		);
+		$('#generalReport div.reportlist').append(daydiv);
+	}
+	$('#generalReport div.reportlist').after('<div class="total">总计 '  + total + '</div');
+	
+}
+
 
 function initStaticUI() {
 	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
@@ -148,7 +195,7 @@ function uicloneSubitem(button, o) {
 					cloned.remove();
 				}
 		);
-		template.after(cloned);
+		template.parent().append(cloned);
 	}
 };
 
@@ -179,31 +226,6 @@ calculateTotal = function() {
 	form.find('input[name="total"]').val(total);
 };
 
-//根据支出对象打开支出表单
-uiEdit = function(t) {
-	var data = $(t).data('data');
-	var form = $('#addOutComeForm');
-	
-	$('#detailList div.item').removeClass("selected");
-	$(t).addClass("selected");
-	
-	fillEditForm(form, data);
-};
-
-//保存一笔支出
-uiSaveOutCome = function(createNew) {
-	var form = $('#addOutComeForm');
-	var extracted = extractFormObject(form);
-	extracted.updated = new Date().getTime();
-
-	if (extracted.___id) {
-		groupdb(extracted.___id).update(extracted);
-	} else {
-		groupdb.insert(extracted);
-	}
-	uiAddLeftItem(extracted);
-};
-
 uiRemoveSelected = function() {
 	$('div.checked').each(
 			function() {
@@ -214,12 +236,15 @@ uiRemoveSelected = function() {
 				if (data!=null) {
 					data["_deleted"] = 1;
 					data["updated"] = new Date().getTime();
+					
+					dbreg[data.db](data.___id).update(data);
+					/*
 					if (data.formid=="addOutComeForm") {
 						groupdb(data.___id).update(data);
 					} 
 					if (data.formid=="addInComeForm") {
 						incomedb(data.___id).update(data);
-					}
+					}*/
 					$(this).remove();
 				}
 			}
@@ -241,19 +266,9 @@ function calculateTax() {
 		$('input[name="endowmentInsurance"]').val(endowmentInsurance);
 		$('input[name="medicalInsurance"]').val(medicalInsurance);
 		$('input[name="jobInsurance"]').val(jobInsurance);
-		
 		$('input[name="personalTax"]').val(tax);
-		
-		
 	}
 }
-
-resync =  function() {
-	groupdb().remove();
-	$.cookie(currentUser + ".ocgroup.updated", 0);
-	location.href = location.href;
-};
-
 
 uiSaveCategory = function() {
 	var o = category.toJson($('#eidtCat ul.category'), {});
