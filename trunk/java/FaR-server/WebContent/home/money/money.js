@@ -100,11 +100,13 @@ function analyzeMonth() {
 	$('#generalReport div.title').html(year + "年" + month + "月支出账目");
 	
 	$('#generalReport div.reportlist').html('');
+	$('#generalReport div.total').remove();
 	var d = new Date(year, month, 0);
 	
 	var total = 0;
 	var daysCost = [];
 	var xCost = [];
+	var categoryCost = {};
 	for ( var i = 1; i <= d.getDate(); i++) {
 		var daydiv  = $('<div class="days"><div class="date">' + i + '</div></div'); 
 		var a = new Date(year, month, i);
@@ -119,6 +121,18 @@ function analyzeMonth() {
 						if (record.items) {
 							for ( var j = 0; j < record.items.length; j++) {
 								infodiv.find('div.title').append('<p>' + record.items[j].title + "  " + record.items[j].cost  + '</p>');
+								if (categoryCost[record.items[j].category]==null) {
+									categoryCost[record.items[j].category] = parseInt(record.items[j].cost);
+								} else {
+									categoryCost[record.items[j].category] += parseInt(record.items[j].cost);
+								}
+							}
+						}
+						if (record.category) {
+							if (categoryCost[record.category]==null) {
+								categoryCost[record.category] = parseInt(record.total);
+							} else {
+								categoryCost[record.category] += parseInt(record.total);
 							}
 						}
 						total += parseInt(record.total);
@@ -141,12 +155,8 @@ function analyzeMonth() {
 	         marginBottom: 25
 	      },
 	      title: {
-	         text: '本月每日开销',
+	         text:  '月开销图表',
 	         x: -20 //center
-	      },
-	      subtitle: {
-	         text: 'Source: WorldClimate.com',
-	         x: -20
 	      },
 	      xAxis: {
 	         categories:xCost
@@ -163,8 +173,7 @@ function analyzeMonth() {
 	      },
 	      tooltip: {
 	         formatter: function() {
-	                   return '<b>'+ this.series.name +'</b><br/>'+
-	               this.x +': '+ this.y +'';
+	                   return '<b>'+ this.y +'</b>';
 	         }
 	      },
 	      legend: {
@@ -176,11 +185,52 @@ function analyzeMonth() {
 	         borderWidth: 0
 	      },
 	      series: [{
-	         name: '当日开销',
+	         name: year + '年'  + month + '月',
 	         data: daysCost
 	      }]
 	   });
-	   
+	  
+	 
+	 var chartSource = [];
+	 for ( var key in categoryCost) {
+		 chartSource.push([key, categoryCost[key]]);
+	}
+	
+	 new Highcharts.Chart({
+	      chart: {
+	         renderTo: 'categorychart',
+	         plotBackgroundColor: null,
+	         plotBorderWidth: null,
+	         plotShadow: false
+	      },
+	      title: {
+	         text: '按分类查看开销'
+	      },
+	      tooltip: {
+	         formatter: function() {
+	            return '<b>'+ this.point.name +'</b>: '+ Math.floor(this.percentage) +' %';
+	         }
+	      },
+	      plotOptions: {
+	         pie: {
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	               enabled: true,
+	               //color: Highcharts.theme.textColor || '#000000',
+	               //connectorColor: Highcharts.theme.textColor || '#000000',
+	               formatter: function() {
+	                  return '<b>'+ this.point.name +'</b>: '+ Math.floor(this.percentage) +' %';
+	               }
+	            }
+	         }
+	      },
+	       series: [{
+	         type: 'pie',
+	         name: 'Browser share',
+	         data: chartSource
+	      }]
+	   });
 	 
 }
 
@@ -203,7 +253,6 @@ function initStaticUI() {
 			$('#' + selected.attr('reldiv')).show();
 		}
 	});
-	
 }
 
 function initCategory() {
