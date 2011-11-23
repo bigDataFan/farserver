@@ -99,15 +99,19 @@ function analyzeMonth() {
 	$('#generalReport').show();
 	$('#generalReport div.title').html(year + "年" + month + "月支出账目");
 	
+	$('#generalReport div.reportlist').html('');
 	var d = new Date(year, month, 0);
 	
 	var total = 0;
+	var daysCost = [];
+	var xCost = [];
 	for ( var i = 1; i <= d.getDate(); i++) {
 		var daydiv  = $('<div class="days"><div class="date">' + i + '</div></div'); 
 		var a = new Date(year, month, i);
 		if(a.getDay()==5 || a.getDay()==6 ) {
 			daydiv.addClass("weekend");
 		}
+		var daytotal = 0;
 		groupdb({time:year+"-"+month + "-" + ((i<10)?("0"+i):i)}).start(0).each(
 				function(record,recordnumber) {
 					if (!record._deleted) {
@@ -118,14 +122,66 @@ function analyzeMonth() {
 							}
 						}
 						total += parseInt(record.total);
+						daytotal += parseInt(record.total);
 						daydiv.append(infodiv);
 					}
 				}
 		);
+		daysCost.push(daytotal);
+		xCost.push(i);
 		$('#generalReport div.reportlist').append(daydiv);
 	}
 	$('#generalReport div.reportlist').after('<div class="total">总计 '  + total + '</div');
-	
+
+	 chart = new Highcharts.Chart({
+	      chart: {
+	         renderTo: 'outcomeline',
+	         defaultSeriesType: 'line',
+	         marginRight: 130,
+	         marginBottom: 25
+	      },
+	      title: {
+	         text: '本月每日开销',
+	         x: -20 //center
+	      },
+	      subtitle: {
+	         text: 'Source: WorldClimate.com',
+	         x: -20
+	      },
+	      xAxis: {
+	         categories:xCost
+	      },
+	      yAxis: {
+	         title: {
+	            text: '单位:元'
+	         },
+	         plotLines: [{
+	            value: 0,
+	            width: 1,
+	            color: '#808080'
+	         }]
+	      },
+	      tooltip: {
+	         formatter: function() {
+	                   return '<b>'+ this.series.name +'</b><br/>'+
+	               this.x +': '+ this.y +'';
+	         }
+	      },
+	      legend: {
+	         layout: 'vertical',
+	         align: 'right',
+	         verticalAlign: 'top',
+	         x: -10,
+	         y: 100,
+	         borderWidth: 0
+	      },
+	      series: [{
+	         name: '当日开销',
+	         data: daysCost
+	      }]
+	   });
+	   
+	 
 }
 
 
