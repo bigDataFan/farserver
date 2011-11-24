@@ -105,10 +105,9 @@ function analyzeMonth() {
 	var year = parseInt($('select[name="generalyear"]').val());
 	var month = parseInt($('select[name="generalmonth"]').val());
 	$('#generalReport').show();
-	$('#generalReport div.title').html(year + "年" + month + "月支出账目");
+	$('#generalReport div.title div.info').html(year + "年" + month + "月支出账目");
 	
 	$('#generalReport div.reportlist').html('');
-	$('#generalReport div.total').remove();
 	var d = new Date(year, month, 0);
 	
 	var total = 0;
@@ -150,10 +149,14 @@ function analyzeMonth() {
 				}
 		);
 		daysCost.push(daytotal);
+		if (daytotal==0) {
+			daydiv.addClass("empty");
+		}
 		xCost.push(i);
+		
 		$('#generalReport div.reportlist').append(daydiv);
 	}
-	$('#generalReport div.reportlist').after('<div class="total">总计 '  + total + '</div');
+	$('#generalReport div.reportlist').append('<div class="total">总计: '  + total + '</div');
 
 	 chart = new Highcharts.Chart({
 	      chart: {
@@ -242,6 +245,9 @@ function analyzeMonth() {
 	 
 }
 
+function reportToggleEmpty() {
+	$('div.reportlist div.empty').toggle();
+}
 
 function initStaticUI() {
 	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
