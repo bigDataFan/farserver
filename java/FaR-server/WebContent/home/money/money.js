@@ -13,14 +13,23 @@ $(document).ready(function(){
 	initInCome();
 	initSync();
 	initReport();
+	initCategory();
 	
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
 	dbreg["groupdb"] = groupdb;
 	dbreg["incomedb"] = incomedb;
+	
+	currentUser = $.cookie("365ticket");  
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
 			function(data) {
 				currentUser = data.user;
+				if (currentUser.indexOf("guest.")==-1) {
+					$('#loginLink').hide();
+					$('#userInfo').html('您好:' + currentUser);
+					$('#userInfo').show();
+				}
+				$('#networkInfo').html('您已经连接到服务器');
 				if (!isIE6()) {
 					groupdb.store(currentUser + ".moneygroup");
 					incomedb.store(currentUser + ".income");
@@ -28,7 +37,6 @@ $(document).ready(function(){
 				synchronize(groupdb, 'groupdb', currentUser);
 				synchronize(incomedb, 'incomedb', currentUser);
 				
-				initCategory();
 				if (data.category) {
 					categories = JSON.parse(data.category.value);
 					if (window.localStorage!=null) {
