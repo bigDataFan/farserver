@@ -480,11 +480,27 @@ ul.category li span a {
 
 
 #generalReport>div.title {
-	font-size: 24px;
-	padding: 0 0 5px;
+	font-size: 18px;
+	font-weight:bold;
+	padding:0px;
 	text-align: center;
-	text-shadow: 0 -1px rgba(0, 0, 0, .4);
-	border-bottom: 1px solid #ccc;
+	height:30px;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+
+#generalReport>div.title div.info {
+	float: left;
+	width: 500px;
+}
+
+#generalReport>div.title div.toggle {
+	float: right;
+	opacity:0.7;
+	background: url('toggle.png');
+	-webkit-background-size: 28px 28px;
+	width: 28px;
+	height: 28px;
+	cursor: pointer;
 }
 
 #generalReport div.days {
@@ -504,11 +520,18 @@ ul.category li span a {
 }
 
 
+#generalReport div.reportlist div.total {
+	text-align: right;
+	padding-right: 20px;
+	font-size: 20px;
+	font-weight: bold;	
+}
+
 #userInfo {
 	font-weight: bold;
 	color: #182647;
 	font-size: 14px;
-	line-height: 38px;
+	line-height: 32px;
 	text-shadow: 0 1px 0 white;
 }
 
@@ -527,4 +550,9 @@ ul.category li span a {
 #navreport span {
 	padding-left:20px;
 	background: url("report.png") no-repeat;
+}
+
+#navcat span {
+	padding-left:20px;
+	background: url("category.png") no-repeat;
 }
