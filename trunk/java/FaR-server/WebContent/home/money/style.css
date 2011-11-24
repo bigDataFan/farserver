@@ -33,11 +33,11 @@ li {
 
 /*最上面的导航栏*/
 .nav {
-	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAsCAIAAAArRUU2AAAAOElEQVQIW2O6+egX0///DEwMDAxM/xkYEOz/ED7DfwQbhUZWB1fzH87+hyGHykfRi2Y2AzIb1V0AEFlAz5gMk7cAAAAASUVORK5CYII=) repeat-x;
+	background: url('nav_bg.png') repeat-x;
 	color: #182647;
-	padding: 4px 0px;
 	position: relative;
 	width: 100%;
+	height:38px;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	font-size: small;
@@ -51,46 +51,48 @@ li {
     width: 100%;
 }
 
-
-/*按钮*/
 button {
-	-webkit-box-sizing: content-box;
-	background: url("bg_button.png");
-	text-shadow: 0 -1px rgba(0, 0, 0, .4);
-	min-height: 25px;
-	line-height: 24px;
-	margin: 0 3px;
-	color: #2E4987;
-	font: bold normal 13px;
-	text-align: center;
-	-webkit-user-select: none;
-	background-color:#DAE2FA;
-	border:1px solid #95AEEC; 
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#f1f1f1));
+	background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
 	-webkit-border-radius: 3px;
+	background-color: whiteSmoke;
+	background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
+	background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.3);
 	border-radius: 3px;
-	cursor:pointer;
-	padding:3px 5px 3px 5px;
-	text-shadow: white 0 1px 0;
+	color: #666;
+	font-size: 12px;
+	font-weight: bold;
+	height: 29px;
+	line-height: 27px;
+	padding: 0 5px;
+	margin-left:8px;
+	text-align: center;
+	cursor: pointer;
+}
+button:hover {
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f8f8f8),to(#f1f1f1));
+	background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1);
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+	background-color: #F8F8F8;
+	background-image: linear-gradient(top,#f8f8f8,#f1f1f1);
+	background-image: -o-linear-gradient(top,#f8f8f8,#f1f1f1);
+	border: 1px solid #C6C6C6;
+	box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+	color: #333;
+	cursor: pointer;
 }
 
-
-button.l {
-	background: url("rsz_down.png") 30px 5px no-repeat;
-	padding-right: 16px;
+button:active {
+	position:relative;
+	top:1px;
 }
-
-
-button:HOVER {
-	background: #4E7AD0;
-	color:white;
-	text-shadow: #4E7AD0 0 1px 0;
-}
-
 
 /*左部分*/
 .left {
 	width: 260px;
-	top: 44px;
+	top: 38px;
 	bottom:0px;
 	overflow:hidden;
 	position: absolute;
@@ -100,8 +102,10 @@ button:HOVER {
 .right {
 	left:260px;
 	position: absolute;
-	top: 44px;
-	bottom: 0px;
+	top: 38px;
+	bottom: 38px;
+	overflow-y:auto;
+	overflow-x:hidden;
 	background: #EBEFF9 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAIAAACqZzA+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAC5JREFUeNpivHbvMzMzIwsYARnMTIxMjAyMIMCACZgYSAGjqkdVj6oeWaoBAgwAkuADAzOWjPUAAAAASUVORK5CYII=") repeat-y;
 	right:0px;
 }
@@ -126,7 +130,7 @@ button:HOVER {
 	font-size: 16px;
 	font-weight: bold;
 	background-color: white;
-	padding: 11px 11px 13px 16px;
+	padding: 11px 11px 13px 5px;
 	cursor: pointer;
 }
 
@@ -500,5 +504,27 @@ ul.category li span a {
 }
 
 
+#userInfo {
+	font-weight: bold;
+	color: #182647;
+	font-size: 14px;
+	line-height: 38px;
+	text-shadow: 0 1px 0 white;
+}
 
 
+#navoutcome span {
+	padding-left:20px;
+	background: url("outcome.png") no-repeat;
+}
+
+#navincome span {
+	padding-left:20px;
+	background: url("income.png") no-repeat;
+}
+
+
+#navreport span {
+	padding-left:20px;
+	background: url("report.png") no-repeat;
+}
