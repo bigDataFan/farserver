@@ -300,25 +300,6 @@ var http = {
 		}
 };
 
-//复制一个支出项
-function uicloneSubitem(button, o) {
-	var template = $('li.forclone');
-	if (template.length!=0) {
-		var cloned = template.clone();
-		cloned.removeClass('forclone').addClass('cloned').show();
-		if (o) {
-			fillEditForm(cloned, o);
-		}
-		cloned.find('a.delete').click(
-				function() {
-					cloned.remove();
-				}
-		);
-		template.parent().append(cloned);
-	}
-};
-
-
 //将支出每项加到总额中
 calculateTotal = function() {
 	var form = $('#addOutComeForm');

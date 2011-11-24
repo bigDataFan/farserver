@@ -27,6 +27,8 @@ function fillEditForm(form, data) {
 			if (subul.length!=0) {
 				subul.find('li.cloned').remove();
 				$(data[key]).each(function() {
+					uicloneSubitem(this);
+					/*
 					var cloned = subul.find("li.forclone").clone();
 					cloned.removeClass("forclone").addClass('cloned');
 					subul.append(cloned);
@@ -35,6 +37,7 @@ function fillEditForm(form, data) {
 					for(var subkey in subitem) {
 						cloned.find('*[name="' + subkey + '"]').val(subitem[subkey]);
 					}
+					*/
 				});
 			} else {
 				var subitem = data[key][0];
@@ -49,6 +52,26 @@ function fillEditForm(form, data) {
 		}
 	}
 }
+
+//复制一个支出项
+function uicloneSubitem(o) {
+	var template = $('li.forclone');
+	if (template.length!=0) {
+		var cloned = template.clone();
+		cloned.removeClass('forclone').addClass('cloned').show();
+		if (o) {
+			for(var subkey in o) {
+				cloned.find('*[name="' + subkey + '"]').val(o[subkey]);
+			}
+		}
+		cloned.find('a.delete').click(
+				function() {
+					cloned.remove();
+				}
+		);
+		template.parent().append(cloned);
+	}
+};
 
 
 
