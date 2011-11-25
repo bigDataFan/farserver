@@ -26,7 +26,7 @@ $(document).ready(function(){
 				currentUser = data.user;
 				if (currentUser.indexOf("guest.")==-1) {
 					$('#loginLink').hide();
-					$('#userInfo').html('您好:' + currentUser);
+					$('#userInfo span.name').html(currentUser);
 					$('#userInfo').show();
 				}
 				$('#networkInfo').html('您已经连接到服务器');
