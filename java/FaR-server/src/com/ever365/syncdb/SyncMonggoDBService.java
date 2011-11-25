@@ -85,7 +85,26 @@ public class SyncMonggoDBService {
 		try {
 			JSONArray source = new JSONArray(list);
 			List<String> deleted = new ArrayList<String>();
-			updateStored(source, dbcoll, added, deleted);
+			for (int i = 0; i < source.length(); i++) {
+				JSONObject jso = source.getJSONObject(i);
+				
+				DBObject dbo = new BasicDBObject(JSONUtils.jsonObjectToMap(jso));
+				dbo.put("creator", AuthenticationUtil.getCurrentUserName());
+				
+				if (dbo.get("_id")!=null) {
+					dbo.put("_id", new ObjectId((String)dbo.get("_id")));
+					dbcoll.update(new BasicDBObject("_id",dbo.get("_id")),
+							dbo, true, false);
+					if (dbo.get("_deleted")!=null) {
+						deleted.add((String)dbo.get("___id"));
+					}
+				} else {
+					if (dbo.get("_deleted")==null) {
+						dbcoll.insert(dbo);
+						added.put((String)dbo.get("___id"), ((ObjectId)dbo.get("_id")).toString());
+					}
+				}
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -110,31 +129,55 @@ public class SyncMonggoDBService {
 	public Map<String, Object> sync(@RestParam(value="updated")Long updated, @RestParam(value="db") String coll, @RestParam(value="list") String list) {
 		try {
 			Map<String, Object> result = new HashMap<String, Object>();
-			
+			List<String> deleted = new ArrayList<String>();
 			
 			List<Map<String, Object>> newer = new ArrayList<Map<String,Object>>();
 			JSONArray source = new JSONArray(list);
 			DBCollection dbcoll = getSyncCollection(coll);
+
+			
+			//查找自更新时间后的新文档
 			DBObject query = new BasicDBObject("creator", AuthenticationUtil.getCurrentUserName());
 			Map<String, Long> range = new HashMap<String, Long>();
 			
 			if (updated==null) {
 				updated = 0L;
 			}
-			range.put("$gte", updated);
 			query.put("updated", range);
-			
+			range.put("$gte", updated);
 			DBCursor cur = dbcoll.find(query);
 			
 			while (cur.hasNext()) {
 				Map one = cur.next().toMap();
-				one.put("_id", ((ObjectId)one.get("_id")).toString());
-				newer.add(one);
+				if (one.get("_deleted")==null) {
+					one.put("_id", ((ObjectId)one.get("_id")).toString());
+					newer.add(one);
+				} else {
+					deleted.add((String)one.get("___id"));
+				}
 			}
 			
 			Map<String, String> added = new HashMap<String, String>(); 
-			List<String> deleted = new ArrayList<String>();
-			updateStored(source, dbcoll, added, deleted);
+			for (int i = 0; i < source.length(); i++) {
+				JSONObject jso = source.getJSONObject(i);
+				
+				DBObject dbo = new BasicDBObject(JSONUtils.jsonObjectToMap(jso));
+				dbo.put("creator", AuthenticationUtil.getCurrentUserName());
+				
+				if (dbo.get("_id")!=null) {
+					dbo.put("_id", new ObjectId((String)dbo.get("_id")));
+					dbcoll.update(new BasicDBObject("_id",dbo.get("_id")),
+							dbo, true, false);
+					if (dbo.get("_deleted")!=null) {
+						deleted.add((String)dbo.get("___id"));
+					}
+				} else {
+					if (dbo.get("_deleted")==null) {
+						dbcoll.insert(dbo);
+						added.put((String)dbo.get("___id"), ((ObjectId)dbo.get("_id")).toString());
+					}
+				}
+			}
 			result.put("added", added);
 			result.put("gotten", newer);
 			result.put("deleted", deleted);
@@ -147,30 +190,6 @@ public class SyncMonggoDBService {
 	}
 
 	
-	private void updateStored(JSONArray source, DBCollection dbcoll,
-			Map<String, String> added, List<String> deleted) throws JSONException {
-		for (int i = 0; i < source.length(); i++) {
-			JSONObject jso = source.getJSONObject(i);
-			
-			DBObject dbo = new BasicDBObject(JSONUtils.jsonObjectToMap(jso));
-			dbo.put("creator", AuthenticationUtil.getCurrentUserName());
-			
-			if (dbo.get("_id")!=null) {
-				dbo.put("_id", new ObjectId((String)dbo.get("_id")));
-				dbcoll.update(new BasicDBObject("_id",dbo.get("_id")),
-						dbo, true, false);
-				if (dbo.get("_deleted")!=null) {
-					deleted.add((String)dbo.get("___id"));
-				}
-			} else {
-				if (dbo.get("_deleted")==null) {
-					dbcoll.insert(dbo);
-					added.put((String)dbo.get("___id"), ((ObjectId)dbo.get("_id")).toString());
-				}
-			}
-		}
-	}
-
 	private DBCollection getSyncCollection(String coll) {
 		DBCollection dbcoll = dataSource.getDB("sync").getCollection(coll);
 		dbcoll.ensureIndex("creator");
