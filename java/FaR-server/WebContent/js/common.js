@@ -141,7 +141,7 @@ function synchronize(db, dbname, username) {
 					db(result.deleted[j]).remove();
 				}
 		    	
-		    	$.cookie(username + "." + dbname + ".updated", currentTime);
+		    	$.cookie(username + "." + dbname + ".updated", updated);
 		    	
 		    	syncinit = true;
 		    	setTimeout(function(){
