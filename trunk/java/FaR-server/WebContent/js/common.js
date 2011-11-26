@@ -120,6 +120,7 @@ function synchronize(db, dbname, username) {
     	}, 10000);
 		return;
 	}
+	
 	$.post("/service/db/sync",
 			{
 				'updated': updated,
@@ -134,10 +135,6 @@ function synchronize(db, dbname, username) {
 		    	
 		    	for ( var id in result.added) {
 		    		db(id).update({'_id': result.added[id]});
-				}
-
-		    	for ( var id in result.removed) {
-		    		db(id).remove();
 				}
 		    	
 		    	for (var j=0; j<result.deleted.length; j++) {
