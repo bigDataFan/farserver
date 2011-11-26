@@ -75,6 +75,32 @@ function uicloneSubitem(o) {
 
 
 
+uiRemoveSelected = function() {
+	$('#detailList div.checked').each(
+			function() {
+				if ($(this).hasClass("selected")) {
+					formReset(true);
+				}
+				var data = $(this).data("data");
+				if (data!=null) {
+					data["_deleted"] = 1;
+					data["updated"] = new Date().getTime();
+					
+					dbreg[data.db](data.___id).update(data);
+					/*
+					if (data.formid=="addOutComeForm") {
+						groupdb(data.___id).update(data);
+					} 
+					if (data.formid=="addInComeForm") {
+						incomedb(data.___id).update(data);
+					}*/
+					$(this).remove();
+				}
+			}
+	);
+};
+
+
 function uiAddLeftItem(o) {
 	var listcontainer = $('#detailList');
 	listcontainer.find('div.emptyInfo').hide();
