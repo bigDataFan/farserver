@@ -130,11 +130,15 @@ function synchronize(db, dbname, username) {
 		    	var result = $.parseJSON(data);
 		    	
 		    	for ( var j = 0; j < result.updated.length; j++) {
-		    		if(result.___id && db(result.___id).count()》0)
-		    		db.insert(result.gotten[j]);
+		    		var record = result.updated[j];
+		    		if(record.___id && db(record.___id).count()>0) {//表明是其他客户端执行了更新操作
+		    			db(record.___id).update(record);
+		    		} else {
+		    			db.insert(record);
+		    		}
 				}
 		    	
-		    	for ( var id in result.added) {
+		    	for ( var id in result.added) {  //表明本次请求新增的数据
 		    		db(id).update({'_id': result.added[id]});
 				}
 		    	
