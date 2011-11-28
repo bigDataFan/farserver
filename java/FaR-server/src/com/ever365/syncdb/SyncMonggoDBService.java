@@ -179,7 +179,7 @@ public class SyncMonggoDBService {
 				}
 			}
 			result.put("added", added);
-			result.put("gotten", newer);
+			result.put("updated", newer);
 			result.put("deleted", deleted);
 			return result;
 		} catch (JSONException e) {
