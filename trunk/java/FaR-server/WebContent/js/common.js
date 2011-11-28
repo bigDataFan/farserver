@@ -129,7 +129,8 @@ function synchronize(db, dbname, username) {
 		    },  function(data) {
 		    	var result = $.parseJSON(data);
 		    	
-		    	for ( var j = 0; j < result.gotten.length; j++) {
+		    	for ( var j = 0; j < result.updated.length; j++) {
+		    		if(result.___id && db(result.___id).count()》0)
 		    		db.insert(result.gotten[j]);
 				}
 		    	

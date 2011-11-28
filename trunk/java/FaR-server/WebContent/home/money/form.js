@@ -202,9 +202,8 @@ function formReset(switched) {
 	}
 }
 
-
 function extractFormObject(form) {
-	var o = {};
+	var o = {created:new Date().getTime()};
 	if (form.data("data")) {
 		o = form.data("data");
 	}
