@@ -148,6 +148,7 @@ function synchronize(db, dbname, username) {
 		    	
 		    	$.cookie(username + "." + dbname + ".updated", currentTime);
 		    	
+		    	$('#networkInfo').html('您已经连接到服务器 最近更新时间'  + new Date(currentTime).format("h:MM TT"));
 		    	syncinit = true;
 		    	setTimeout(function(){
 		    		synchronize(db, dbname, username)
