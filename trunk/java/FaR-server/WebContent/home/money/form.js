@@ -151,7 +151,7 @@ function bindObject(div, o) {
 					var targetForm = $('#'  + o.formid);
 					$('div.selected').removeClass('selected');
 					$(this).addClass("selected");
-					fillEditForm(targetForm, o);
+					//fillEditForm(targetForm, o);
 				}
 			}
 	);
