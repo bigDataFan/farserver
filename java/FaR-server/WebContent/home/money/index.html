@@ -29,15 +29,17 @@
 <table style="border: 0px; height:36px " width="100%">
 	<tr>
 		<td width="260px">
-			<button onclick="layout.back()" class="tbtn" id="btn-return-main">返回</button>
-			<button class="tbtn" id="btn-save-outcome-remove" onclick="uiRemoveSelected()">删除</button>
+			<button onclick="layout.back()" class="tbtn" style="display:none" id="btn-return-main">返回</button>
+			<button class="tbtn" id="btn-save-outcome-remove" style="display:none" onclick="uiRemoveSelected()">删除</button>
+			
+			<button class="tbtn" id="btn-more" style="display:none" onclick="uiRemoveSelected()">更多</button>
 		</td>
 		<td>
-			<button class="tbtn" id="btn-save-form" onclick="saveCurrentForm()">保存</button>
-			<button class="tbtn" id="btn-add-form" onclick="formReset(true)">新增</button>
+			<button class="tbtn" id="btn-save-form" style="display:none" onclick="saveCurrentForm()">保存</button>
+			<button class="tbtn" id="btn-add-form" style="display:none" onclick="formReset(true)">新增</button>
 						
-			<button class="tbtn" id="btn-add-bigcat" onclick="category.addRoot($('ul.category'))">增加大类</button>
-			<button class="tbtn" id="btn-save-cat" onclick="uiSaveCategory()">保存设置</button>
+			<button class="tbtn" id="btn-add-bigcat" style="display:none" onclick="category.addRoot($('ul.category'))">增加大类</button>
+			<button class="tbtn" id="btn-save-cat" style="display:none" onclick="uiSaveCategory()">保存设置</button>
 		</td>
 	</tr>
 </table>
@@ -54,8 +56,8 @@
 			<div class="projectlist">
 				<div class="qi">收入与支出</div>
 			</div>
-			<div class="si" id="navoutcome"><div class="cc Uc"></div><span>支出记录</span></div>
-			<div class="si" id="navincome"><div class="cc Uc"></div><span>收入记录</span></div>
+			<div class="si" id="navoutcome"><div class="cc Uc"></div><div id="groupdbsize" class="count">0</div> <span>支出记录</span></div>
+			<div class="si" id="navincome"><div class="cc Uc"></div><div id="incomedbsize" class="count">0</div><span>收入记录</span></div>
 			<div class="si" id="navreport"><div class="cc Uc"></div><span>报表与统计</span></div>
 
 			<div class="projectlist">
@@ -99,6 +101,10 @@
 						<!-- <div class="progress"></div> --> <div style="margin-left: 5px;" class="bind" bindTo="time"></div> <div style="margin-left: 5px;" class="bind" bindTo="outmethod"></div> 
 					</div>
 				</div>
+				<div class="moreRecord" style="display: none;">
+						<button style="margin:0px; width:100%;height: 100%" onclick="showMore()">显示更多...</button>
+				</div>	
+				
 		</div>
 		
 		

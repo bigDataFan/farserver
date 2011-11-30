@@ -19,6 +19,8 @@ $(document).ready(function(){
 	incomedb = new TAFFY();
 	dbreg["groupdb"] = groupdb;
 	dbreg["incomedb"] = incomedb;
+	$('#groupdbsize').html(groupdb().count());
+	$('#incomedbsize').html(incomedb().count());
 	
 	currentUser = $.cookie("365ticket");  
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
@@ -58,36 +60,43 @@ function initSync() {
 	});
 }
 
+var currentdb = null;
+var currentLoaded = 0;
 function initOutCome() {
 	$('#navoutcome').click(
 			function(data) {
-				$('div.emptyInfo').show();
+				currentdb = groupdb;
 				layout.pushCurrent($('#detailList'), $('#addOutComeForm'));
-				$('#detailList div.item').remove();
-				formReset(true);
-				groupdb().order("time").start(0).limit(10).each(
-						function(record,recordnumber) {
-							if (!record._deleted) {
-								uiAddLeftItem(record);
-							}
-						}
-				);
+				displayCurrentDB();
 			}
 	);
+}
+
+function displayCurrentDB() {
+	$('div.emptyInfo').show();
+	$('#detailList div.item').remove();
+	formReset(true);
+	currentdb().order("time").start(0).limit(10).each(
+			function(record,recordnumber) {
+				if (!record._deleted) {
+					uiAddLeftItem(record);
+				}
+			}
+	);
+	currentLoaded  = 10;
+	if (currentdb().count()>currentLoaded) {
+		$('div.moreRecord').show();
+	} else {
+		$('div.moreRecord').hide();
+	}
 }
 
 function initInCome() {
 	$('#navincome').click(
 			function(data) {
-				$('div.emptyInfo').show();
+				currentdb = incomedb;
 				layout.pushCurrent($('#detailList'), $('#addInComeForm'));
-				$('#detailList div.item').remove();
-				formReset(true);
-				incomedb().order('time').start(0).limit(10).each(
-						function(record, recordernumber) {
-							uiAddLeftItem(record);
-						}
-				);
+				displayCurrentDB();
 			}
 	);
 }
@@ -99,6 +108,21 @@ function initReport() {
 				$('#report div.reports').hide();
 			}
 	);
+}
+
+
+function showMore() {
+	currentdb().start(currentLoaded).limit(10).each(
+			function(record, recordernumber) {
+				uiAddLeftItem(record);
+			}
+	);
+	
+	currentLoaded +=10;
+	if (currentdb().count()<currentLoaded) {
+		$('div.moreRecord').hide();
+	}
+	
 }
 
 function analyzeMonth() {
