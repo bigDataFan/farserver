@@ -153,8 +153,11 @@ button:active {
 	height: 13px;
 }
 
-
-
+.count {
+	color: #666;
+	float: right;
+	padding-right: 6px;
+}
 
 /*详细信息列表项---通用项**/
 .item {
