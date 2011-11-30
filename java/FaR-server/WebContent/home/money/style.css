@@ -93,9 +93,13 @@ button:active {
 .left {
 	width: 260px;
 	top: 38px;
-	bottom:0px;
-	overflow:hidden;
+	bottom:38px;
 	position: absolute;
+	border-right: solid 1px #CCC;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow-y:auto;
+	overflow-x:hidden;
 }
 
 /*右部分*/
