@@ -550,7 +550,7 @@ ul.category li span a {
 
 #navincome span {
 	padding-left:20px;
-	background: url("income.png") no-repeat;
+	background: url("coins.png") no-repeat;
 }
 
 
@@ -562,4 +562,9 @@ ul.category li span a {
 #navcat span {
 	padding-left:20px;
 	background: url("category.png") no-repeat;
+}
+
+#navdashboard span {
+	padding-left:20px;
+	background: url("dashboard.png") no-repeat;
 }
