@@ -28,16 +28,6 @@ function fillEditForm(form, data) {
 				subul.find('li.cloned').remove();
 				$(data[key]).each(function() {
 					uicloneSubitem(this);
-					/*
-					var cloned = subul.find("li.forclone").clone();
-					cloned.removeClass("forclone").addClass('cloned');
-					subul.append(cloned);
-					cloned.show();
-					var subitem = this;
-					for(var subkey in subitem) {
-						cloned.find('*[name="' + subkey + '"]').val(subitem[subkey]);
-					}
-					*/
 				});
 			} else {
 				var subitem = data[key][0];
@@ -49,9 +39,30 @@ function fillEditForm(form, data) {
 			var field = form.find('*[name="' + key + '"]');
 			field.parent().show();
 			field.val(data[key]);
+			
+			if (field.attr("tagName")=="select") {
+				selectSwitch(field);
+			}
+			
 		}
 	}
 }
+
+
+
+function selectSwitch(select) {
+	select.find('option[targetDiv]').each(
+			function() {
+				$('#' + $(this).attr("targetDiv")).hide();
+			}
+	);
+	var selected = select.find("option:selected");
+	if (selected.attr('targetDiv')!=null) {
+		$('#' + selected.attr('reldiv')).show();
+	}
+}
+
+
 
 //复制一个支出项
 function uicloneSubitem(o) {
@@ -85,15 +96,7 @@ uiRemoveSelected = function() {
 				if (data!=null) {
 					data["_deleted"] = 1;
 					data["updated"] = new Date().getTime();
-					
 					dbreg[data.db](data.___id).update(data);
-					/*
-					if (data.formid=="addOutComeForm") {
-						groupdb(data.___id).update(data);
-					} 
-					if (data.formid=="addInComeForm") {
-						incomedb(data.___id).update(data);
-					}*/
 					$(this).remove();
 				}
 			}

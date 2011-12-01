@@ -53,12 +53,13 @@
 
 	<div class="left" >
 		<div id="toplist" style="display:none" btns="">
+			<div class="si" id="navdashboard" onclick=""><div class="cc Uc"></div><span>账户概况</span></div>
 			<div class="projectlist">
 				<div class="qi">收入与支出</div>
 			</div>
-			<div class="si" id="navoutcome"><div class="cc Uc"></div><div id="groupdbsize" class="count">0</div> <span>支出记录</span></div>
-			<div class="si" id="navincome"><div class="cc Uc"></div><div id="incomedbsize" class="count">0</div><span>收入记录</span></div>
-			<div class="si" id="navreport"><div class="cc Uc"></div><span>报表与统计</span></div>
+			<div class="si" id="navoutcome" onclick="navOutComeClick()"><div class="cc Uc"></div><div id="groupdbsize" class="count">0</div> <span>支出记录</span></div>
+			<div class="si" id="navincome" onclick="navInComeClick()"><div class="cc Uc"></div><div id="incomedbsize" class="count">0</div><span>收入记录</span></div>
+			<div class="si" id="navreport" onclick="navReportClick()"><div class="cc Uc"></div><span>报表与统计</span></div>
 
 			<div class="projectlist">
 				<div class="qi">配置</div>
@@ -187,9 +188,9 @@
 			
 			<div class="label">
 				支出类型： 
-				<select name="outtype" rellabel="outtype">
-					<option default="1" reldiv="singleitem">单笔支出</option>
-					<option reldiv="multiitems">多笔(超市购物等)</option>
+				<select name="outtype">
+					<option default="1" targetDiv="singleitem">单笔支出</option>
+					<option targetDiv="multiitems">多笔(超市购物等)</option>
 					<option>特殊支出(预算外)</option>
 				</select>
 			</div>
@@ -204,7 +205,7 @@
 				<ul>
 					<li class="forclone" style="display:none">
 						<label>支出项：<input type="text" name="title" size="16"></label>
-						<label>金额 <input type="text" name="cost" size="4"></label>
+						<label>金额 <input type="text" name="cost" size="4"  class="number"></label>
 						<label>类别<select class="category" name="category"></select></label>
 						<a class="delete" href="javascript:void(0)">删除</a>
 					 </li>
@@ -296,7 +297,7 @@
 			</ul>
 		</div>
 		
-		<div class="content list" id="mainwelcome" style="display:none">
+		<div class="content list" id="dashboard" style="display:none">
 			<div class="title"><h2>Hi</h2> </div>
 			
 			<div class="label">
@@ -337,7 +338,7 @@
 			</span>
 		</td>
 		<td>
-			<span id="networkInfo">您目前为离线状态</span>
+			<span id="networkInfo">未连接到服务器</span>
 		</td>
 	</tr>
 </table>
