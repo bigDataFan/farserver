@@ -17,6 +17,7 @@ public class CookieService {
 	private MongoDBDataSource dataSource;
 	
     public static final String ARG_TICKET = "365ticket";
+    public static final String ARG_USER = "365user";
 	
 	public void setDataSource(MongoDBDataSource dataSource) {
 		this.dataSource = dataSource;
@@ -30,6 +31,16 @@ public class CookieService {
 	    	return cookie;
 	   }
 
+	  public Cookie setUserNameCookie(HttpServletResponse httpResp , String userName) {
+	    	Cookie cookie = new Cookie(ARG_USER, userName);
+	    	cookie.setMaxAge(60*24*60*60);
+	    	cookie.setPath("/");
+	    	httpResp.addCookie(cookie);
+	    	return cookie;
+	   }
+
+	
+	  
 
 	public String getCookieTicket(HttpServletRequest httpReq) {
 		String url = httpReq.getRequestURI();
