@@ -48,8 +48,6 @@ function fillEditForm(form, data) {
 	}
 }
 
-
-
 function selectSwitch(select) {
 	select.find('option[targetDiv]').each(
 			function() {
@@ -219,6 +217,10 @@ function extractFormObject(form) {
 			function(data) {
 				var input = $(this);
 				o[input.attr('name')] = input.val();
+				
+				if (input.hasClass("choosedate")) {
+					o[input.attr('name') + "_millsecond"] = new Date(input.val());
+				}
 			}
 	);
 	

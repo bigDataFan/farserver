@@ -7,9 +7,6 @@ var CAT_STRING = '{"children":[{"name":"家居日常","children":[{"name":"米�
 var currentUser;
 
 $(document).ready(function(){
-	initStaticUI();
-	initSync();
-	initCategory();
 	
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
@@ -18,6 +15,8 @@ $(document).ready(function(){
 	$('#groupdbsize').html(groupdb().count());
 	$('#incomedbsize').html(incomedb().count());
 	
+	initCategory();
+	initStaticUI();
 	currentUser = $.cookie("365ticket");  
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
 			function(data) {
@@ -45,16 +44,26 @@ $(document).ready(function(){
 		);
 });
 
-function initSync() {
-	$('#navsync').click(function() {
-		var info = $('#syncinfo');
-		layout.pushCurrent($('#toplist'), info);
-		info.find('div.browser').html('浏览器类型：' + navigator.userAgent);
-		info.find('div.localstorage').html("支持本地数据存储:"  + ((window.localStorage==null)? "否":"是"));
-		info.find('div.user').html("你的用户账号:"  + currentUser);
-		info.find('div.updated').html("你的数据更新时间: "  + new Date(parseInt($.cookie(currentUser + ".ocgroup.updated"))).format('isoDateTime'));
+
+function initStaticUI() {
+	layout.pushCurrent($('#toplist'), $('#dashboard'));
+	$( "input.choosedate" ).datepicker({
+		autoSize: false,
+		dateFormat: 'yy-mm-dd' ,
+		monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		showWeek: true
 	});
+	
+	$('select').change(function(data){
+		selectSwitch($(this));
+	});
+	
+	var today = new Date();
+	var day3 = new Date(today.getTime()-3*24*60*60*100);
+	$('#recent3day').html(groupdb({"time_millsecond":{gt:today.getTime(), lt:day3}}).sum("total"));
 }
+
 
 var currentdb = null;
 var currentLoaded = 0;
@@ -76,6 +85,10 @@ function navReportClick() {
 	$('#report div.reports').hide();
 }
 
+function navDashboardClick() {
+	layout.pushCurrent($('#toplist'), $('#dashboard'));
+}
+
 
 function displayCurrentDB() {
 	$('div.emptyInfo').show();
@@ -95,6 +108,7 @@ function displayCurrentDB() {
 		$('div.moreRecord').hide();
 	}
 }
+
 
 
 function showMore() {
@@ -257,20 +271,6 @@ function reportToggleEmpty() {
 	$('div.reportlist div.empty').toggle();
 }
 
-function initStaticUI() {
-	layout.pushCurrent($('#toplist'), $('#dashboard'));
-	$( "input.choosedate" ).datepicker({
-		autoSize: false,
-		dateFormat: 'yy-mm-dd' ,
-		monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-		dayNamesMin: ['日','一','二','三','四','五','六'],
-		showWeek: true
-	});
-	
-	$('select').change(function(data){
-		selectSwitch($(this));
-	});
-}
 
 function initCategory() {
 	categories = JSON.parse(CAT_STRING);
