@@ -37,13 +37,13 @@ function fillEditForm(form, data) {
 			}
 		} else {
 			var field = form.find('*[name="' + key + '"]');
-			field.parent().show();
-			field.val(data[key]);
-			
-			if (field.attr("tagName")=="select") {
-				selectSwitch(field);
+			if (field.length!=0) {
+				field.parent().show();
+				field.val(data[key]);
+				if (field.attr("tagName")=="select") {
+					selectSwitch(field);
+				}
 			}
-			
 		}
 	}
 }
@@ -58,7 +58,7 @@ function selectSwitch(select) {
 	);
 	var selected = select.find("option:selected");
 	if (selected.attr('targetDiv')!=null) {
-		$('#' + selected.attr('reldiv')).show();
+		$('#' + selected.attr('targetDiv')).show();
 	}
 }
 
@@ -154,7 +154,7 @@ function bindObject(div, o) {
 					var targetForm = $('#'  + o.formid);
 					$('div.selected').removeClass('selected');
 					$(this).addClass("selected");
-					//fillEditForm(targetForm, o);
+					fillEditForm(targetForm, o);
 				}
 			}
 	);
