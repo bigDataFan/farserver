@@ -216,11 +216,19 @@ function extractFormObject(form) {
 	form.find('div.label>input:visible').each(
 			function(data) {
 				var input = $(this);
-				o[input.attr('name')] = input.val();
 				
 				if (input.hasClass("choosedate")) {
-					o[input.attr('name') + "_millsecond"] = new Date(input.val());
+					o[input.attr('name') + "_millsecond"] = new Date(input.val()).getTime();
+					return;
 				}
+				
+				if (input.hasClass("number")) {
+					if (jQuery.isNumeric(input.val())) {
+						o[input.attr('name')] = parseFloat(input.val());
+					}
+					return;
+				}
+				o[input.attr('name')] = input.val();
 			}
 	);
 	

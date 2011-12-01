@@ -8,16 +8,20 @@ var currentUser;
 
 $(document).ready(function(){
 	
+	currentUser = $.cookie("365user");  
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
 	dbreg["groupdb"] = groupdb;
 	dbreg["incomedb"] = incomedb;
+	if (!isIE6()) {
+		groupdb.store(currentUser + ".moneygroup");
+		incomedb.store(currentUser + ".income");
+	}
 	$('#groupdbsize').html(groupdb().count());
 	$('#incomedbsize').html(incomedb().count());
 	
 	initCategory();
 	initStaticUI();
-	currentUser = $.cookie("365ticket");  
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
 			function(data) {
 				currentUser = data.user;
@@ -27,10 +31,7 @@ $(document).ready(function(){
 					$('#userInfo').show();
 				}
 				$('#networkInfo').html('您已经连接到服务器');
-				if (!isIE6()) {
-					groupdb.store(currentUser + ".moneygroup");
-					incomedb.store(currentUser + ".income");
-				}
+				
 				synchronize(groupdb, 'groupdb', currentUser);
 				synchronize(incomedb, 'incomedb', currentUser);
 				
@@ -58,10 +59,14 @@ function initStaticUI() {
 	$('select').change(function(data){
 		selectSwitch($(this));
 	});
-	
-	var today = new Date();
-	var day3 = new Date(today.getTime()-3*24*60*60*100);
-	$('#recent3day').html(groupdb({"time_millsecond":{gt:today.getTime(), lt:day3}}).sum("total"));
+	var day3 = new Date(new Date().getTime()-3*24*60*60*1000);
+	var monthd = new Date();
+	monthd.setDate(1);
+	monthd.setHours(0, 0, 0);
+	var day3qry = groupdb({"time_millsecond":{gt :day3.getTime()}});
+	var monthqry = groupdb({"time_millsecond":{gt :monthd.getTime()}});
+	$('#recent3day').html(day3qry.sum("total"));
+	$('#recentmonth').html(monthqry.sum("total"));
 }
 
 
