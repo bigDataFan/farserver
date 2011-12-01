@@ -2,17 +2,13 @@ var groupdb;
 var incomedb;
 var categories;
 
-
 var CAT_STRING = '{"children":[{"name":"家居日常","children":[{"name":"米面粮油"},{"name":"蔬菜水果"},{"name":"厨卫用品"},{"name":"衣服鞋帽"},{"name":"小吃零食"},{"name":"外出就餐"}]},{"name":"固定开销","children":[{"name":"房租物业"},{"name":"水电煤气"},{"name":"通讯费用"},{"name":"交通费用"}]},{"name":"文体活动","children":[{"name":"旅游"},{"name":"体育健身"}]}]}';
 
 var currentUser;
 
 $(document).ready(function(){
 	initStaticUI();
-	initOutCome();
-	initInCome();
 	initSync();
-	initReport();
 	initCategory();
 	
 	groupdb = new TAFFY();
@@ -62,15 +58,24 @@ function initSync() {
 
 var currentdb = null;
 var currentLoaded = 0;
-function initOutCome() {
-	$('#navoutcome').click(
-			function(data) {
-				currentdb = groupdb;
-				layout.pushCurrent($('#detailList'), $('#addOutComeForm'));
-				displayCurrentDB();
-			}
-	);
+
+function navOutComeClick() {
+	currentdb = groupdb;
+	layout.pushCurrent($('#detailList'), $('#addOutComeForm'));
+	displayCurrentDB();
 }
+
+function navInComeClick() {
+	currentdb = incomedb;
+	layout.pushCurrent($('#detailList'), $('#addInComeForm'));
+	displayCurrentDB();
+}
+
+function navReportClick() {
+	layout.pushCurrent($('#reportList'), $('#report'));
+	$('#report div.reports').hide();
+}
+
 
 function displayCurrentDB() {
 	$('div.emptyInfo').show();
@@ -91,25 +96,6 @@ function displayCurrentDB() {
 	}
 }
 
-function initInCome() {
-	$('#navincome').click(
-			function(data) {
-				currentdb = incomedb;
-				layout.pushCurrent($('#detailList'), $('#addInComeForm'));
-				displayCurrentDB();
-			}
-	);
-}
-
-function initReport() {
-	$('#navreport').click(
-			function(data) {
-				layout.pushCurrent($('#reportList'), $('#report'));
-				$('#report div.reports').hide();
-			}
-	);
-}
-
 
 function showMore() {
 	currentdb().start(currentLoaded).limit(10).each(
@@ -117,7 +103,6 @@ function showMore() {
 				uiAddLeftItem(record);
 			}
 	);
-	
 	currentLoaded +=10;
 	if (currentdb().count()<currentLoaded) {
 		$('div.moreRecord').hide();
@@ -266,7 +251,6 @@ function analyzeMonth() {
 	         data: chartSource
 	      }]
 	   });
-	 
 }
 
 function reportToggleEmpty() {
@@ -274,7 +258,7 @@ function reportToggleEmpty() {
 }
 
 function initStaticUI() {
-	layout.pushCurrent($('#toplist'), $('#mainwelcome'));
+	layout.pushCurrent($('#toplist'), $('#dashboard'));
 	$( "input.choosedate" ).datepicker({
 		autoSize: false,
 		dateFormat: 'yy-mm-dd' ,
@@ -284,12 +268,7 @@ function initStaticUI() {
 	});
 	
 	$('select').change(function(data){
-		var select = $(this);
-		var selected = select.find("option:selected");
-		$('div.' + select.attr("rellabel")).hide();
-		if (selected.attr('reldiv')!=null) {
-			$('#' + selected.attr('reldiv')).show();
-		}
+		selectSwitch($(this));
 	});
 }
 
