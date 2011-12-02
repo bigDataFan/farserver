@@ -301,7 +301,7 @@ div.star .mark {
 .right .title h2 {
 	font:16px;
 	font-weight:bold;
-	color: #ccc;
+	color: #009933;
 	text-shadow: white 0 1px 0;
 }
 
@@ -643,7 +643,7 @@ table.tbl-timesummary td.big_link a, table.tbl-invoicesummary td.big_link a {
 
 .type-largehours {
 	font-size: 22px;
-	font-weight: normal;
+	font-weight: bold;
 	line-height: 1.3em;
-	color: #444;
+	color: #EB5847;
 }
