@@ -1,0 +1,14 @@
+CACHE MANIFEST
+#This is a comment
+
+CACHE
+index.html
+style.css
+cache.html
+
+NETWORK:
+search.php
+login.php
+
+FALLBACK:
+/api offline.html
