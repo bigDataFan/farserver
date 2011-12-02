@@ -216,10 +216,8 @@ function extractFormObject(form) {
 	form.find('div.label>input:visible').each(
 			function(data) {
 				var input = $(this);
-				
 				if (input.hasClass("choosedate")) {
 					o[input.attr('name') + "_millsecond"] = new Date(input.val()).getTime();
-					return;
 				}
 				
 				if (input.hasClass("number")) {

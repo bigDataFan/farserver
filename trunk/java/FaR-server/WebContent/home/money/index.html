@@ -266,30 +266,6 @@
 				<div id="categorychart" class="content"></div>
 			</div>
 		</div>
-			
-		
-		
-		<div class="content" id="syncinfo" style="display:none">
-			
-			<div class="title"><h2>同步及浏览器支持程度</h2> </div>
-			
-			<div class="label browser">
-			</div>
-			
-			<div class="label localstorage">
-			</div>
-			
-			<div class="label user">
-			</div>
-			
-			<div class="label updated">
-			</div>
-			
-			<div class="label resync">
-				<button onclick="resync()">重新同步</button>
-			</div>
-		</div>
-		
 		
 		<div class="content" id="eidtCat" style="display:none" btns="btn-add-bigcat,btn-save-cat">
 			<ul class="category">
@@ -297,22 +273,52 @@
 			</ul>
 		</div>
 		
-		<div class="content list" id="dashboard" style="display:none">
+		<div class="content list nav" id="dashboard" style="display:none">
 			<div class="title"><h2>你好，欢迎使用懒猫记账软件</h2> </div>
 			
-			<div class="label">
-				最近3天支出： <span id="recent3day"></span>
-			</div>
-			
-			<div class="label">
-				本月支出：  <span id="recentmonth"></span>
-			</div>
-			<div class="label">
-				本月支出项： 1122	    
-			</div>
-			<div class="label">
-				本月收支： 1122	    
-			</div>
+			<ul style="width: 300px">
+ 				<li>
+ 					<span class="title">本月支出总计</span>
+ 					<div class="total" id="recentmonth">
+ 					</div>
+ 				</li>
+ 				<li>
+ 					<span class="title">统计信息</span>
+ 					<table cellspacing="0" cellpadding="0" class="tbl tbl-timesummary" id="tbl-timesummary">
+						<tbody>
+						<tr>
+							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
+							  <a href="javascript:void(0)" >
+							    <span class="type-smallgrey">最近3天支出</span>
+							    <span id="recent3day" class="type-largehours">0:00</span>
+							  </a>
+							</td>
+							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
+						 	 <a href="javascript:void(0)" >
+						      <span class="type-smallgrey">最近3天支出次数</span>
+						      <span id="recent3daycount" class="type-largehours">0:00</span>
+						    </a>
+						 	</td>
+						</tr>
+						
+						
+						<tr>
+						  <td class="big_link" style="background-color: white;">
+						  <a href="javascript:void(0)">
+						    <span class="type-smallgrey">本月支出条目</span>
+						    <span id="recentmonthcount" class="type-largehours">0</span>
+						  </a>
+						</td>
+							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
+						      <a href="javascript:void(0)">
+						        <span class="type-smallgrey">总计支出条目</span>
+						        <span id="outcometotalcount" class="type-largehours">0</span>
+						      </a>
+						    </td>
+						  </tr>
+					</tbody></table>
+     				</li>
+     			</ul>
 			
 		</div>
 		

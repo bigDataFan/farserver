@@ -568,3 +568,82 @@ ul.category li span a {
 	padding-left:20px;
 	background: url("dashboard.png") no-repeat;
 }
+
+
+/*
+div.nav ul {
+	margin: 0 0 10px 0px;
+}
+*/
+div.nav ul li {
+	padding-bottom:10px;
+	padding-top:10px;
+	list-style: none;
+	
+}
+
+div.nav ul li span.title {
+	background: url(icon-arrow-grey-8x8.gif) no-repeat 1px;
+	padding-left: 15px;
+	font-size: small;
+}
+
+
+div.nav ul li div.total {
+  	color: #EB5847;
+    font-size: x-large;
+    padding-left: 15px;
+}
+
+div.nav ul li table.tbl-timesummary,div.nav ul li table.tbl-invoicesummary {
+	width: 100%;
+	border-collapse: collapse;
+	border-collapse: separate;
+	border-spacing: 2px;
+	border-color: gray;
+}
+table.tbl-timesummary td, table.tbl-invoicesummary td {
+	border: 1px #DDD solid;
+	padding: 0px;
+	width: 50%;
+}
+
+table.tbl-timesummary tr {
+	display: table-row;
+	vertical-align: inherit;
+	border-color: inherit;
+}
+
+td, th {
+	display: table-cell;
+	vertical-align: inherit;
+}
+
+
+table.tbl-timesummary td.big_link a, table.tbl-invoicesummary td.big_link a {
+	padding: 10px;
+	margin: 0;
+	background: url("btn-arrow.gif") no-repeat 95% center;
+	border: 0;
+	overflow: hidden;
+	height: 40px;
+	color: #444;
+	display: block;
+	font-weight: bold;
+	font-size: small;
+}
+.type-smallgrey {
+	color: #999;
+	display: block;
+	font-size: small;
+	font-weight: normal;
+	line-height: 1.3em;
+	padding: 0 0 2px;
+}
+
+.type-largehours {
+	font-size: 22px;
+	font-weight: normal;
+	line-height: 1.3em;
+	color: #444;
+}

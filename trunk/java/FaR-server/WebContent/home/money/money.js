@@ -45,7 +45,6 @@ $(document).ready(function(){
 		);
 });
 
-
 function initStaticUI() {
 	layout.pushCurrent($('#toplist'), $('#dashboard'));
 	$( "input.choosedate" ).datepicker({
@@ -60,13 +59,18 @@ function initStaticUI() {
 		selectSwitch($(this));
 	});
 	var day3 = new Date(new Date().getTime()-3*24*60*60*1000);
-	var monthd = new Date();
-	monthd.setDate(1);
-	monthd.setHours(0, 0, 0);
-	var day3qry = groupdb({"time_millsecond":{gt :day3.getTime()}});
+	var todayend = new Date(); todayend.setHours(23, 59, 59);
+	
+	var monthd = new Date(); monthd.setDate(1); monthd.setHours(0, 0, 0);
+	
+	var day3qry = groupdb({"time_millsecond":{gt :day3.getTime(), lt: todayend.getTime()}});
 	var monthqry = groupdb({"time_millsecond":{gt :monthd.getTime()}});
+	
 	$('#recent3day').html(day3qry.sum("total"));
+	$('#recent3daycount').html(day3qry.count());
 	$('#recentmonth').html(monthqry.sum("total"));
+	$('#recentmonthcount').html(monthqry.count());
+	$('#outcometotalcount').html(groupdb().count());
 }
 
 
