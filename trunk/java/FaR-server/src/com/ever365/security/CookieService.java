@@ -43,8 +43,6 @@ public class CookieService {
 	  
 
 	public String getCookieTicket(HttpServletRequest httpReq) {
-		String url = httpReq.getRequestURI();
-
 		Cookie[] cookies = httpReq.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
@@ -123,12 +121,25 @@ public class CookieService {
 	}
 	
 	
-	public void removeCookie(HttpServletRequest request) {
+	public void removeCookie(HttpServletRequest request, HttpServletResponse response) {
 		String ticket = getCookieTicket(request);
     	if (ticket!=null) {
     		DBCollection cookiesCol = dataSource.getMainDB().getCollection("cookies");
         	cookiesCol.remove(new BasicDBObject("ticket", ticket));
     	}
+    	
+    	
+    	Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals(ARG_TICKET)) {
+					cookie.setValue("");
+					cookie.setMaxAge(0);
+					cookie.setPath("/");
+					response.addCookie(cookie);
+				}
+			}
+		}
 	}
 	
 }

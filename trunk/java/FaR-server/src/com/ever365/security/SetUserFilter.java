@@ -78,7 +78,7 @@ public class SetUserFilter implements Filter {
 			AuthenticationUtil.setCurrentAsGuest(false);
 		}
 		AuthenticationUtil.setCurrentUser(sessionedUser);
-		
+		cookieService.setUserNameCookie(httpResp, sessionedUser);
 		currentSession.set(httpReq.getSession());
 		
 		// pass the request along the filter chain
