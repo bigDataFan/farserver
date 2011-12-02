@@ -38,7 +38,7 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = request.getRequestURI();
     	request.getSession().removeAttribute(SetUserFilter.AUTHENTICATION_USER);
-    	cookieService.removeCookie(request);
+    	cookieService.removeCookie(request, response);
     	
     	String red = request.getParameter("redirect");
     	String loginTo = request.getParameter("loginTo");
