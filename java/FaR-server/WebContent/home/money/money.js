@@ -146,7 +146,7 @@ function showMore() {
 }
 
 
-function drawSomeDaysLine(dateStart, dateEnd, container) {
+function drawSomeDaysLine(dateStart, dateEnd, container, size) {
 	var nowTime = dateStart;
 	var totalDays =Math.floor( (dateEnd-dateStart)/(24*60*60*1000));
 	var i = 0;
@@ -169,7 +169,7 @@ function drawSomeDaysLine(dateStart, dateEnd, container) {
 	}
 	x = x.substring(0, x.length-1);
 	y = y.substring(0, y.length-1);
-	$('#' + container).attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=450x150' 
+	$('#' + container).attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=' + ((size==null)?"450x200":size) 
 			+ '&chd=t:' + x + '|' +  y 
 			+ '&chco=3072F3&chdl=按日对比&chxt=x,y&chxr=0,0,' + totalDays + '|1,0,' + max + '&chg=10,20&chds=0,' + totalDays +',0,' + max
 			+ '&chxl=' + chxl + "|");
@@ -179,7 +179,7 @@ function analyzeMonth() {
 	var year = parseInt($('select[name="generalyear"]').val());
 	var month = parseInt($('select[name="generalmonth"]').val()) -1;
 	$('#generalReport').show();
-	$('#generalReport div.title div.info').html(year + "年" + (month+1) + "月支出账目");
+	//$('#generalReport div.title div.info').html(year + "年" + (month+1) + "月支出账目");
 
 	var reportTable = $('<table cellpadding="0" cellspacing="0" border="0" class="report"><tbody>' 
 			+ '<tr><th width="30px">序号</th><th width="40px">时间</th><th >支出说明</th><th width="100px">分类</th><th width="80px">&nbsp;</th><th width="80px">支出方式</th><th width="30px">金额</th></tr></tbody></table>');
@@ -189,7 +189,7 @@ function analyzeMonth() {
 	
 	var odd = true;
 	monthqry.order("time_millsecond").each(
-			function(record,recordnumber) {
+			function(record, recordnumber) {
 				var tr = $('<tr><td>' + recordnumber + '</td>'
 						+ '<td>' + record.time + '</td>' 
 						+ '<td>' + record.title + '</td>'
@@ -198,7 +198,6 @@ function analyzeMonth() {
 						+ '<td>' + record.outmethod + '</td>'
 						+ '<td>' + record.total + '</td>'
 						+ '</tr>');
-				
 				odd = !odd;
 				if (odd) {
 					tr.addClass('odd'); 
@@ -208,7 +207,7 @@ function analyzeMonth() {
 				reportTable.append(tr);
 			}
 	);
-	drawSomeDaysLine(monthd.getTime(), nextmonthd.getTime(), 'outcomeline');
+	drawSomeDaysLine(monthd.getTime(), nextmonthd.getTime(), 'outcomeline', '650x300');
 	$('#generalReport div.reportlist').append(reportTable);
 }
 
