@@ -31,6 +31,41 @@ li {
 	list-style: none;
 }
 
+table.report {
+	display: table;
+	border-collapse: separate;
+	border: 1px solid #CCC;
+	border-bottom: none;
+	width: 100%;
+}
+
+.report tr {
+	display: table-row;
+	vertical-align: inherit;
+	border-color: inherit;
+}
+
+.report th {
+	padding: 8px;
+	background: #444;
+	color: white;
+	text-align: left;
+	color: #CCC;
+}
+.report td {
+	background: #F2F2F2;
+	padding: 8px;
+	background: white;
+	border-bottom: 1px solid #CCC;
+}
+
+.report tr.even td {
+	background: #F2F2F2;
+}
+.report tr.odd td {
+	background: white;
+}
+
 /*最上面的导航栏*/
 .nav {
 	background: url('nav_bg.png') repeat-x;
@@ -71,6 +106,7 @@ button {
 	text-align: center;
 	cursor: pointer;
 }
+
 button:hover {
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#f8f8f8),to(#f1f1f1));
 	background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1);

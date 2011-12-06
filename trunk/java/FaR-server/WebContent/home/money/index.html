@@ -58,6 +58,7 @@
 				<div class="qi">配置</div>
 			</div>
 			<div class="si" id="navcat"><div class="cc Uc"></div><span>类别</span></div>
+			<div class="si" id="navimport"><div class="cc Uc"></div><span>导入导出</span></div>
 			<!-- 
 			<div class="resourceList">
 				<div class="qi">人员与资源</div>
@@ -101,11 +102,10 @@
 				
 		</div>
 		
-		
 		<div id="reportList" style="display:none" btns="btn-return-main">
 			<div class="item">
 				<div class="label">
-					按月报表 <select name="generalyear">
+					每月报表 <select name="generalyear">
 							<option>2001</option>
 							<option>2002</option>
 							<option>2003</option>
@@ -116,9 +116,9 @@
 							<option>2008</option>
 							<option>2009</option>
 							<option>2010</option>
-							<option>2011</option>
+							<option selected="selected">2011</option>
 							<option>2012</option>
-				        </select> 年  <select name="generalmonth">
+				        </select>年<select name="generalmonth">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -253,7 +253,7 @@
 		
 		<div style="display:none" id="report">
 			<div id="generalReport" class="reports">
-				<div class="title"><div class="info"></div><div class="toggle" onclick="reportToggleEmpty();"></div></div> 
+				<div class="title"><div class="info"></div></div> 
 				<div class="reportlist content"></div>
 				<div id="outcomeline" class="content"></div>
 				<div id="categorychart" class="content"></div>
