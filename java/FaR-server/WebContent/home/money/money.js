@@ -71,6 +71,8 @@ function initStaticUI() {
 	$('#recentmonth').html(monthqry.sum("total"));
 	$('#recentmonthcount').html(monthqry.count());
 	$('#outcometotalcount').html(groupdb().count());
+	
+	drawRecent30Days();
 }
 
 
@@ -130,9 +132,31 @@ function showMore() {
 	if (currentdb().count()<currentLoaded) {
 		$('div.moreRecord').hide();
 	}
-	
 }
 
+
+function drawRecent30Days() {
+	var nowTime = new Date().getTime() - 30*24*60*60*1000;
+	var i = 0;
+	var x = "";
+	var y = "";
+	var max = 0;
+	while (i<=30) {
+		var time = new Date(nowTime + i*24*60*60*1000);
+		var dtext = time.format("yyyy-mm-dd");
+		var total = groupdb({time:dtext}).sum("total");
+		if (total>max) max =total;
+		x += i + ",";
+		y += total + ",";
+		i ++;
+	}
+	x = x.substring(0, x.length-1);
+	y = y.substring(0, y.length-1);
+	
+	$('#recent30daygraph').attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=450x150' + 
+			'&chd=t:' + x + '|' +  y + '&chco=3072F3&chdl=30Days&chxt=x,y&chxr=0,0,30|1,0,200&chg=10,20&chds=0,30,0,' + max);
+}
+	
 function analyzeMonth() {
 	var year = parseInt($('select[name="generalyear"]').val());
 	var month = parseInt($('select[name="generalmonth"]').val());
