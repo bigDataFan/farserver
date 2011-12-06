@@ -58,6 +58,10 @@ function initStaticUI() {
 	$('select').change(function(data){
 		selectSwitch($(this));
 	});
+	initDashBoard();
+}
+
+function initDashBoard() {
 	var day3 = new Date(new Date().getTime()-3*24*60*60*1000);
 	var todayend = new Date(); todayend.setHours(23, 59, 59);
 	
@@ -72,7 +76,9 @@ function initStaticUI() {
 	$('#recentmonthcount').html(monthqry.count());
 	$('#outcometotalcount').html(groupdb().count());
 	
-	drawRecent30Days();
+	var d1 = new Date().getTime() - 30*24*60*60*1000;
+	var d2 = new Date().getTime();
+	drawSomeDaysLine(d1, d2, 'recent30daygraph');
 }
 
 
@@ -93,11 +99,16 @@ function navInComeClick() {
 
 function navReportClick() {
 	layout.pushCurrent($('#reportList'), $('#report'));
+	var d = new Date();
+	$('select[name="generalyear"]').val(d.getFullYear());
+	$('select[name="generalmonth"]').val(d.getMonth()+1);
+	
 	$('#report div.reports').hide();
 }
 
 function navDashboardClick() {
 	layout.pushCurrent($('#toplist'), $('#dashboard'));
+	initDashBoard();
 }
 
 
@@ -135,173 +146,70 @@ function showMore() {
 }
 
 
-function drawRecent30Days() {
-	var nowTime = new Date().getTime() - 30*24*60*60*1000;
+function drawSomeDaysLine(dateStart, dateEnd, container) {
+	var nowTime = dateStart;
+	var totalDays =Math.floor( (dateEnd-dateStart)/(24*60*60*1000));
 	var i = 0;
 	var x = "";
 	var y = "";
 	var max = 0;
-	while (i<=30) {
-		var time = new Date(nowTime + i*24*60*60*1000);
+	chxl = "0:";
+	while (nowTime < dateEnd) {
+		var time = new Date(nowTime);
 		var dtext = time.format("yyyy-mm-dd");
 		var total = groupdb({time:dtext}).sum("total");
 		if (total>max) max =total;
 		x += i + ",";
 		y += total + ",";
-		i ++;
+		nowTime += 24*60*60*1000;
+		i++;
+		if (i%5==0) {
+			chxl += "|" + time.format('mm-dd');
+		}
 	}
 	x = x.substring(0, x.length-1);
 	y = y.substring(0, y.length-1);
-	
-	$('#recent30daygraph').attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=450x150' + 
-			'&chd=t:' + x + '|' +  y + '&chco=3072F3&chdl=30Days&chxt=x,y&chxr=0,0,30|1,0,200&chg=10,20&chds=0,30,0,' + max);
+	$('#' + container).attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=450x150' 
+			+ '&chd=t:' + x + '|' +  y 
+			+ '&chco=3072F3&chdl=按日对比&chxt=x,y&chxr=0,0,' + totalDays + '|1,0,' + max + '&chg=10,20&chds=0,' + totalDays +',0,' + max
+			+ '&chxl=' + chxl + "|");
 }
-	
+
 function analyzeMonth() {
 	var year = parseInt($('select[name="generalyear"]').val());
-	var month = parseInt($('select[name="generalmonth"]').val());
+	var month = parseInt($('select[name="generalmonth"]').val()) -1;
 	$('#generalReport').show();
-	$('#generalReport div.title div.info').html(year + "年" + month + "月支出账目");
+	$('#generalReport div.title div.info').html(year + "年" + (month+1) + "月支出账目");
+
+	var reportTable = $('<table cellpadding="0" cellspacing="0" border="0" class="report"><tbody>' 
+			+ '<tr><th width="30px">序号</th><th width="40px">时间</th><th >支出说明</th><th width="100px">分类</th><th width="80px">&nbsp;</th><th width="80px">支出方式</th><th width="30px">金额</th></tr></tbody></table>');
+	var monthd = new Date(year, month, 1); monthd.setHours(0, 0, 0);
+	var nextmonthd = new Date(year, month, 31); nextmonthd.setHours(23, 59, 59);
+	var monthqry = groupdb({"time_millsecond":{gt :monthd.getTime(), lt: nextmonthd.getTime()}});
 	
-	$('#generalReport div.reportlist').html('');
-	var d = new Date(year, month, 0);
-	
-	var total = 0;
-	var daysCost = [];
-	var xCost = [];
-	var categoryCost = {};
-	for ( var i = 1; i <= d.getDate(); i++) {
-		var daydiv  = $('<div class="days"><div class="date">' + i + '</div></div'); 
-		var a = new Date(year, month, i);
-		if(a.getDay()==5 || a.getDay()==6 ) {
-			daydiv.addClass("weekend");
-		}
-		var daytotal = 0;
-		groupdb({time:year+"-"+month + "-" + ((i<10)?("0"+i):i)}).start(0).each(
-				function(record,recordnumber) {
-					if (!record._deleted) {
-						var infodiv = $('<div class="info"><div class="title">' +record.title + " 总计" +  record.total + '</div>');
-						if (record.items) {
-							for ( var j = 0; j < record.items.length; j++) {
-								infodiv.find('div.title').append('<p>' + record.items[j].title + "  " + record.items[j].cost  + '</p>');
-								if (categoryCost[record.items[j].category]==null) {
-									categoryCost[record.items[j].category] = parseInt(record.items[j].cost);
-								} else {
-									categoryCost[record.items[j].category] += parseInt(record.items[j].cost);
-								}
-							}
-						}
-						if (record.category) {
-							if (categoryCost[record.category]==null) {
-								categoryCost[record.category] = parseInt(record.total);
-							} else {
-								categoryCost[record.category] += parseInt(record.total);
-							}
-						}
-						total += parseInt(record.total);
-						daytotal += parseInt(record.total);
-						daydiv.append(infodiv);
-					}
+	var odd = true;
+	monthqry.order("time_millsecond").each(
+			function(record,recordnumber) {
+				var tr = $('<tr><td>' + recordnumber + '</td>'
+						+ '<td>' + record.time + '</td>' 
+						+ '<td>' + record.title + '</td>'
+						+ '<td>' + record.category + '</td>'
+						+ '<td>' + record.outtype + '</td>'
+						+ '<td>' + record.outmethod + '</td>'
+						+ '<td>' + record.total + '</td>'
+						+ '</tr>');
+				
+				odd = !odd;
+				if (odd) {
+					tr.addClass('odd'); 
+				} else {
+					tr.addClass('even'); 
 				}
-		);
-		daysCost.push(daytotal);
-		if (daytotal==0) {
-			daydiv.addClass("empty");
-		}
-		xCost.push(i);
-		
-		$('#generalReport div.reportlist').append(daydiv);
-	}
-	$('#generalReport div.reportlist').append('<div class="total">总计: '  + total + '</div');
-
-	 chart = new Highcharts.Chart({
-	      chart: {
-	         renderTo: 'outcomeline',
-	         defaultSeriesType: 'line',
-	         marginRight: 130,
-	         marginBottom: 25
-	      },
-	      title: {
-	         text:  '月开销图表',
-	         x: -20 //center
-	      },
-	      xAxis: {
-	         categories:xCost
-	      },
-	      yAxis: {
-	         title: {
-	            text: '单位:元'
-	         },
-	         plotLines: [{
-	            value: 0,
-	            width: 1,
-	            color: '#808080'
-	         }]
-	      },
-	      tooltip: {
-	         formatter: function() {
-	                   return '<b>'+ this.y +'</b>';
-	         }
-	      },
-	      legend: {
-	         layout: 'vertical',
-	         align: 'right',
-	         verticalAlign: 'top',
-	         x: -10,
-	         y: 100,
-	         borderWidth: 0
-	      },
-	      series: [{
-	         name: year + '年'  + month + '月',
-	         data: daysCost
-	      }]
-	   });
-	  
-	 
-	 var chartSource = [];
-	 for ( var key in categoryCost) {
-		 chartSource.push([key, categoryCost[key]]);
-	}
-	
-	 new Highcharts.Chart({
-	      chart: {
-	         renderTo: 'categorychart',
-	         plotBackgroundColor: null,
-	         plotBorderWidth: null,
-	         plotShadow: false
-	      },
-	      title: {
-	         text: '按分类查看开销'
-	      },
-	      tooltip: {
-	         formatter: function() {
-	            return '<b>'+ this.point.name +'</b>: '+ Math.floor(this.percentage) +' %';
-	         }
-	      },
-	      plotOptions: {
-	         pie: {
-	            allowPointSelect: true,
-	            cursor: 'pointer',
-	            dataLabels: {
-	               enabled: true,
-	               //color: Highcharts.theme.textColor || '#000000',
-	               //connectorColor: Highcharts.theme.textColor || '#000000',
-	               formatter: function() {
-	                  return '<b>'+ this.point.name +'</b>: '+ Math.floor(this.percentage) +' %';
-	               }
-	            }
-	         }
-	      },
-	       series: [{
-	         type: 'pie',
-	         name: 'Browser share',
-	         data: chartSource
-	      }]
-	   });
-}
-
-function reportToggleEmpty() {
-	$('div.reportlist div.empty').toggle();
+				reportTable.append(tr);
+			}
+	);
+	drawSomeDaysLine(monthd.getTime(), nextmonthd.getTime(), 'outcomeline');
+	$('#generalReport div.reportlist').append(reportTable);
 }
 
 
