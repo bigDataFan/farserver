@@ -316,7 +316,36 @@ function analyzeMonthIncomeLine() {
 }
 
 function analyzeMonthRemainLine() {
+	$('div.reports').hide();
+	$('#monthReport').show();
+	var year = parseInt($('select[name="monthlineselectremain"]').val());
+	var xr = [];
+	var months = [];
 	
+	for ( var i = 0; i < 12; i++) {
+		months.push(new Date(year, i, 1));
+		xr.push(i+1);
+	}
+	months.push(new Date(year, 12,31));
+	var monthArray = [];
+	var max = 0;
+	var min = 0 ;
+	for ( var i = 0; i < 12; i++) {
+		var outcometotal = groupdb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total");
+		var incometotal = incomedb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total");
+		var total = incometotal - outcometotal;
+		
+		if (total>max) max = total;
+		
+		if (total<0 && total<min) min = total;
+		
+		monthArray.push(total);
+	}
+	$('#outcomemonthline').attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=650x300'  
+			+ '&chd=t:' + xr + '|' +  monthArray
+			+ '&chco=3072F3&chxt=x,y&chxr=0,0,12|1,' + min + ',' + max + '&chg=10,20&chds=0,12,' + min + ',' + max
+			//+ '&chxl=' + chxl + "|"  //&chdl=支出曲线
+			+ '&chtt=' + year + '年每月收入曲线');
 }
 
 function testFill() {
