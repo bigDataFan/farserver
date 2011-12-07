@@ -262,21 +262,31 @@ function analyzeMonth() {
 
 function analyzeMonthLine() {
 	$('div.reports').hide();
+	$('#monthReport').show();
 	var year = parseInt($('select[name="monthlineselect"]').val());
-	
+	var xr = [];
 	var months = [];
 	
 	for ( var i = 0; i < 12; i++) {
 		months.push(new Date(year, i, 1));
+		xr.push(i+1);
 	}
 	months.push(new Date(year, 12,31));
 	var monthArray = [];
-	
+	var max = 0;
 	for ( var i = 0; i < 12; i++) {
-		monthArray.push(groupdb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total"));
+		var total = groupdb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total");
+		if (total>max) max = total;
+		monthArray.push(total);
 	}
 	
-	alert(monthArray);
+	$('#outcomemonthline').attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=450x200'  
+			+ '&chd=t:' + xr + '|' +  monthArray
+			+ '&chco=3072F3&chxt=x,y&chxr=0,0,12|1,0,' + max + '&chg=10,20&chds=0,12,0,' + max
+			//+ '&chxl=' + chxl + "|"  //&chdl=支出曲线
+			+ '&chtt=按日支出曲线');
+	
+	//outcomemonthline
 }
 
 
