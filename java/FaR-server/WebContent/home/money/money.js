@@ -114,7 +114,6 @@ function navDashboardClick() {
 	initDashBoard();
 }
 
-
 function displayCurrentDB() {
 	$('div.emptyInfo').show();
 	$('#detailList div.item').remove();
