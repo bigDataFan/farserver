@@ -181,6 +181,7 @@ function analyzeMonth() {
 	$('#generalReport').show();
 	//$('#generalReport div.title div.info').html(year + "年" + (month+1) + "月支出账目");
 
+	$('#generalReport div.reportlist table').remove();
 	var reportTable = $('<table cellpadding="0" cellspacing="0" border="0" class="report"><tbody>' 
 			+ '<tr><th width="30px">序号</th><th width="40px">时间</th><th >支出说明</th><th width="100px">分类</th><th width="80px">&nbsp;</th><th width="80px">支出方式</th><th width="30px">金额</th></tr></tbody></table>');
 	var monthd = new Date(year, month, 1); monthd.setHours(0, 0, 0);
@@ -210,7 +211,6 @@ function analyzeMonth() {
 	drawSomeDaysLine(monthd.getTime(), nextmonthd.getTime(), 'outcomeline', '650x300');
 	$('#generalReport div.reportlist').append(reportTable);
 }
-
 
 function initCategory() {
 	categories = JSON.parse(CAT_STRING);
