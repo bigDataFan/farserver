@@ -108,7 +108,8 @@ function uiAddLeftItem(o) {
 	var cloned = $('#' + o.___id);
 	if (cloned.length==0) {
 		cloned = $('div.taskItemTemplate').clone();
-		listcontainer.prepend(cloned);
+		$('div.moreRecord').before(cloned);
+		//listcontainer.append(cloned);
 		cloned.attr("id", o.___id);
 	}
 	bindObject(cloned, o);
@@ -223,6 +224,8 @@ function extractFormObject(form) {
 				if (input.hasClass("number")) {
 					if (jQuery.isNumeric(input.val())) {
 						o[input.attr('name')] = parseFloat(input.val());
+					} else {
+						o[input.attr('name')] = 0;
 					}
 					return;
 				}

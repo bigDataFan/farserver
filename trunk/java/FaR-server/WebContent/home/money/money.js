@@ -7,8 +7,12 @@ var CAT_STRING = '{"children":[{"name":"家居日常","children":[{"name":"米�
 var currentUser;
 
 $(document).ready(function(){
-	
 	currentUser = $.cookie("365user");  
+	if (currentUser.indexOf("guest.")==-1) {
+		$('#loginLink').hide();
+		$('#userInfo span.name').html(currentUser);
+		$('#userInfo').show();
+	}
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
 	dbreg["groupdb"] = groupdb;
@@ -115,7 +119,7 @@ function displayCurrentDB() {
 	$('div.emptyInfo').show();
 	$('#detailList div.item').remove();
 	formReset(true);
-	currentdb().order("time").start(0).limit(10).each(
+	currentdb().order("time_millsecond desc").start(0).limit(10).each(
 			function(record,recordnumber) {
 				if (!record._deleted) {
 					uiAddLeftItem(record);
@@ -133,7 +137,7 @@ function displayCurrentDB() {
 
 
 function showMore() {
-	currentdb().start(currentLoaded).limit(10).each(
+	currentdb().order("time_millsecond desc").start(currentLoaded).limit(10).each(
 			function(record, recordernumber) {
 				uiAddLeftItem(record);
 			}
