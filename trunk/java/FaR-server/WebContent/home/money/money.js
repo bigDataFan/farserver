@@ -145,6 +145,52 @@ function showMore() {
 	}
 }
 
+function drawCategoryPie(dateStart, dateEnd, container, size) {
+	
+	var categories = {};
+	
+	groupdb({"time_millsecond":{gt :dateStart, lt: dateEnd}}).each(
+			function(record, recordnumber) {
+				if (record.category) {
+					if (categories[record.category] == null) {
+						categories[record.category] = parseInt(record.total);
+					} else {
+						categories[record.category] += parseInt(record.total);
+					}
+				} else {
+					if (record.items && record.items.length>0) {
+						for (var i=0; i<record.items.length; i++) {
+							if (categories[record.items[i].category] == null) {
+								categories[record.items[i].category] = parseInt(record.items[i].cost);
+							} else {
+								categories[record.items[i].category] += parseInt(record.items[i].cost);
+							}
+						}
+					} else {
+						if (categories['额外支出']==null) {
+							categories['额外支出'] = parseInt(record.total);
+						} else {
+							categories['额外支出'] += parseInt(record.total);
+						}
+					}
+				}
+			}
+	);
+	var ts = "";
+	var vs = "";
+	for ( var key in categories) {
+		ts += categories[key] + ","
+		vs += key + "|";
+	}
+	ts = ts.substring(0, ts.length-1);
+	vs = vs.substring(0, vs.length-1);
+	$('#' + container).attr('src', 'http://chart.googleapis.com/chart?cht=p' 
+			+ '&chd=t:' + ts 
+			+ '&chl=' + vs 
+			+ '&chtt=支出按分类比例'
+			+ '&chs=' + size); 
+			//+ '&chdl=10%C2%B0|40%C2%B0|50%C2%B0|80%C2%B0');
+}
 
 function drawSomeDaysLine(dateStart, dateEnd, container, size) {
 	var nowTime = dateStart;
@@ -171,19 +217,19 @@ function drawSomeDaysLine(dateStart, dateEnd, container, size) {
 	y = y.substring(0, y.length-1);
 	$('#' + container).attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=' + ((size==null)?"450x200":size) 
 			+ '&chd=t:' + x + '|' +  y 
-			+ '&chco=3072F3&chdl=按日对比&chxt=x,y&chxr=0,0,' + totalDays + '|1,0,' + max + '&chg=10,20&chds=0,' + totalDays +',0,' + max
-			+ '&chxl=' + chxl + "|");
+			+ '&chco=3072F3&chxt=x,y&chxr=0,0,' + totalDays + '|1,0,' + max + '&chg=10,20&chds=0,' + totalDays +',0,' + max
+			+ '&chxl=' + chxl + "|"  //&chdl=支出曲线
+			+ '&chtt=按日支出曲线');
 }
 
 function analyzeMonth() {
+	$('div.reports').hide();
 	var year = parseInt($('select[name="generalyear"]').val());
 	var month = parseInt($('select[name="generalmonth"]').val()) -1;
 	$('#generalReport').show();
-	//$('#generalReport div.title div.info').html(year + "年" + (month+1) + "月支出账目");
-
 	$('#generalReport div.reportlist table').remove();
 	var reportTable = $('<table cellpadding="0" cellspacing="0" border="0" class="report"><tbody>' 
-			+ '<tr><th width="30px">序号</th><th width="40px">时间</th><th >支出说明</th><th width="100px">分类</th><th width="80px">&nbsp;</th><th width="80px">支出方式</th><th width="30px">金额</th></tr></tbody></table>');
+			+ '<tr><th width="30px">序号</th><th width="40px">时间</th><th >支出说明</th><th width="100px">分类</th><th width="100px">单项/多项</th><th width="80px">支出方式</th><th width="30px">金额</th></tr></tbody></table>');
 	var monthd = new Date(year, month, 1); monthd.setHours(0, 0, 0);
 	var nextmonthd = new Date(year, month, 31); nextmonthd.setHours(23, 59, 59);
 	var monthqry = groupdb({"time_millsecond":{gt :monthd.getTime(), lt: nextmonthd.getTime()}});
@@ -194,7 +240,7 @@ function analyzeMonth() {
 				var tr = $('<tr><td>' + recordnumber + '</td>'
 						+ '<td>' + record.time + '</td>' 
 						+ '<td>' + record.title + '</td>'
-						+ '<td>' + record.category + '</td>'
+						+ '<td>' + ((record.category==null)?"多个分类":record.category)+ '</td>'
 						+ '<td>' + record.outtype + '</td>'
 						+ '<td>' + record.outmethod + '</td>'
 						+ '<td>' + record.total + '</td>'
@@ -208,9 +254,31 @@ function analyzeMonth() {
 				reportTable.append(tr);
 			}
 	);
-	drawSomeDaysLine(monthd.getTime(), nextmonthd.getTime(), 'outcomeline', '650x300');
 	$('#generalReport div.reportlist').append(reportTable);
+	drawSomeDaysLine(monthd.getTime(), nextmonthd.getTime(), 'outcomeline', '500x250');
+	drawCategoryPie(monthd.getTime(), nextmonthd.getTime(), 'outcomepie', '350x250');
 }
+
+
+function analyzeMonthLine() {
+	$('div.reports').hide();
+	var year = parseInt($('select[name="monthlineselect"]').val());
+	
+	var months = [];
+	
+	for ( var i = 0; i < 12; i++) {
+		months.push(new Date(year, i, 1));
+	}
+	months.push(new Date(year, 12,31));
+	var monthArray = [];
+	
+	for ( var i = 0; i < 12; i++) {
+		monthArray.push(groupdb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total"));
+	}
+	
+	alert(monthArray);
+}
+
 
 function initCategory() {
 	categories = JSON.parse(CAT_STRING);
