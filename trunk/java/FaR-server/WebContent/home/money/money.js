@@ -100,9 +100,8 @@ function navInComeClick() {
 function navReportClick() {
 	layout.pushCurrent($('#reportList'), $('#report'));
 	var d = new Date();
-	$('select[name="generalyear"]').val(d.getFullYear());
-	$('select[name="generalmonth"]').val(d.getMonth()+1);
-	
+	$('select.year').val(d.getFullYear());
+	$('select.month').val(d.getMonth()+1);
 	$('#report div.reports').hide();
 }
 
@@ -279,16 +278,64 @@ function analyzeMonthLine() {
 		if (total>max) max = total;
 		monthArray.push(total);
 	}
-	
-	$('#outcomemonthline').attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=450x200'  
+	$('#outcomemonthline').attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=650x300'  
 			+ '&chd=t:' + xr + '|' +  monthArray
 			+ '&chco=3072F3&chxt=x,y&chxr=0,0,12|1,0,' + max + '&chg=10,20&chds=0,12,0,' + max
 			//+ '&chxl=' + chxl + "|"  //&chdl=支出曲线
-			+ '&chtt=按日支出曲线');
-	
+			+ '&chtt=' + year + '年每月支出曲线');
 	//outcomemonthline
 }
 
+function analyzeMonthIncomeLine() {
+	$('div.reports').hide();
+	$('#monthReport').show();
+	var year = parseInt($('select[name="monthlineselectincome"]').val());
+	var xr = [];
+	var months = [];
+	
+	for ( var i = 0; i < 12; i++) {
+		months.push(new Date(year, i, 1));
+		xr.push(i+1);
+	}
+	months.push(new Date(year, 12,31));
+	var monthArray = [];
+	var max = 0;
+	for ( var i = 0; i < 12; i++) {
+		var total = incomedb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total");
+		if (total>max) max = total;
+		monthArray.push(total);
+	}
+	$('#outcomemonthline').attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=650x300'  
+			+ '&chd=t:' + xr + '|' +  monthArray
+			+ '&chco=3072F3&chxt=x,y&chxr=0,0,12|1,0,' + max + '&chg=10,20&chds=0,12,0,' + max
+			//+ '&chxl=' + chxl + "|"  //&chdl=支出曲线
+			+ '&chtt=' + year + '年每月收入曲线');
+}
+
+function analyzeMonthRemainLine() {
+	
+}
+
+function testFill() {
+	for ( var i = 0; i < 11; i++) {
+		for ( var j = 0; j < 31; j++) {
+			var data = {
+					category: "分类" + Math.floor(Math.random()*11),
+					created: new Date().getTime(),
+					db: "groupdb",
+					formid: "addOutComeForm",
+					outmethod: "现金",
+					outtype: "单笔支出",
+					time : new Date(2011,i,j).format("yyyy-mm-dd"),
+					time_millsecond: new Date(2011,i,j).getTime(),
+					title: "支出的标题" + Math.floor(Math.random()*100),
+					total: Math.floor(Math.random()*100),
+					updated:new Date().getTime()
+			};
+			groupdb.insert(data);
+		}
+	}
+}
 
 function initCategory() {
 	categories = JSON.parse(CAT_STRING);

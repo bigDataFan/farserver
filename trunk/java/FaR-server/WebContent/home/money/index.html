@@ -105,7 +105,7 @@
 		<div id="reportList" style="display:none" btns="btn-return-main">
 			<div class="item">
 				<div class="label">
-					每月报表 <select name="generalyear">
+					每月报表 <select name="generalyear" class="year">
 							<option>2001</option>
 							<option>2002</option>
 							<option>2003</option>
@@ -118,7 +118,7 @@
 							<option>2010</option>
 							<option selected="selected">2011</option>
 							<option>2012</option>
-				        </select>年<select name="generalmonth">
+				        </select>年<select name="generalmonth" class="month">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -137,7 +137,7 @@
 			
 			<div class="item">
 				<div class="label">
-					按月支出线 <select name="monthlineselect">
+					按月支出线 <select name="monthlineselect" class="year">
 							<option>2001</option>
 							<option>2002</option>
 							<option>2003</option>
@@ -155,7 +155,7 @@
 			</div>
 			<div class="item">
 				<div class="label">
-					按月收入线 <select name="monthlineselect">
+					按月收入线 <select name="monthlineselectincome" class="year">
 							<option>2001</option>
 							<option>2002</option>
 							<option>2003</option>
@@ -173,7 +173,7 @@
 			</div>
 			<div class="item">
 				<div class="label">
-					按月盈余线 <select name="monthlineselect">
+					按月盈余线 <select name="monthlineselectremain" class="year">
 							<option>2001</option>
 							<option>2002</option>
 							<option>2003</option>
@@ -380,6 +380,7 @@
 			<span  id="userInfo" style="display:none;">您好 <span  class="name"></span>
 				<a class="fixed" href="/logout?redirect=/home/money/index.html">注销</a>
 			</span>
+			<button onclick="testFill()">aaa</button>
 		</td>
 		<td>
 			<span id="networkInfo">未连接到服务器</span>
