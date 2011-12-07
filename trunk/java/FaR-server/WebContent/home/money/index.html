@@ -137,7 +137,7 @@
 			
 			<div class="item">
 				<div class="label">
-					月支出曲线 <select name="monthlineselect">
+					按月支出线 <select name="monthlineselect">
 							<option>2001</option>
 							<option>2002</option>
 							<option>2003</option>
@@ -151,6 +151,42 @@
 							<option>2011</option>
 							<option>2012</option>
 				        </select> 年  <button onclick="analyzeMonthLine()">分析</button>
+				</div>
+			</div>
+			<div class="item">
+				<div class="label">
+					按月收入线 <select name="monthlineselect">
+							<option>2001</option>
+							<option>2002</option>
+							<option>2003</option>
+							<option>2004</option>
+							<option>2005</option>
+							<option>2006</option>
+							<option>2007</option>
+							<option>2008</option>
+							<option>2009</option>
+							<option>2010</option>
+							<option>2011</option>
+							<option>2012</option>
+				        </select> 年  <button onclick="analyzeMonthIncomeLine()">分析</button>
+				</div>
+			</div>
+			<div class="item">
+				<div class="label">
+					按月盈余线 <select name="monthlineselect">
+							<option>2001</option>
+							<option>2002</option>
+							<option>2003</option>
+							<option>2004</option>
+							<option>2005</option>
+							<option>2006</option>
+							<option>2007</option>
+							<option>2008</option>
+							<option>2009</option>
+							<option>2010</option>
+							<option>2011</option>
+							<option>2012</option>
+				        </select> 年  <button onclick="analyzeMonthRemainLine()">分析</button>
 				</div>
 			</div>
 		</div>
@@ -264,14 +300,10 @@
 			</div>
 			
 			<div id="monthReport" class="reports">
-				<div class="title">
-					<div class="info"></div>
-				</div> 
-				<div class="reportlist content">
-					<img id="outcomeline"/>
+				
+				<div class="content">
+					<img id="outcomemonthline"/>
 				</div>
-				<div></div>
-				<div id="categorychart" ></div>
 			</div>
 			
 		</div>
