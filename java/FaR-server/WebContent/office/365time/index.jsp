@@ -190,7 +190,6 @@ var userName = "<%=userName%>";
  					<span class="title">统计信息</span>
  					<table cellspacing="0" cellpadding="0" class="tbl tbl-timesummary" id="tbl-timesummary">
 						<tbody>
-						
 						<tr>
 							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
 							  <a href="javascript:void(0)" >
@@ -206,7 +205,6 @@ var userName = "<%=userName%>";
 						 	</td>
 						</tr>
 						
-						
 						<tr>
 						  <td class="big_link" style="background-color: white;">
 						  <a href="javascript:void(0)">
@@ -221,11 +219,6 @@ var userName = "<%=userName%>";
 						      </a>
 						    </td>
 						  </tr>
-						  
-						
-					
-						
-					
 					</tbody></table>
      				</li>
      				
@@ -233,6 +226,7 @@ var userName = "<%=userName%>";
      					<span class="title">时间日历</span>
      					<div id="datepicker" style="width: 200px;"></div>
      				</li>
+     				
      				
      			</ul>
 </div>
