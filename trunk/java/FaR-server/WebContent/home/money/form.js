@@ -10,7 +10,7 @@ saveCurrentForm = function() {
 				} else {
 					dbreg[extracted.db].insert(extracted);
 				}
-				uiAddLeftItem(extracted);
+				uiAddLeftItem(extracted, true);
 			}
 	);
 	formReset(true);
@@ -102,13 +102,17 @@ uiRemoveSelected = function() {
 };
 
 
-function uiAddLeftItem(o) {
+function uiAddLeftItem(o, w) {
 	var listcontainer = $('#detailList');
 	listcontainer.find('div.emptyInfo').hide();
 	var cloned = $('#' + o.___id);
 	if (cloned.length==0) {
 		cloned = $('div.taskItemTemplate').clone();
-		$('div.moreRecord').before(cloned);
+		if (w) {
+			listcontainer.append(cloned);
+		} else {
+			$('div.moreRecord').before(cloned);
+		}
 		//listcontainer.append(cloned);
 		cloned.attr("id", o.___id);
 	}
