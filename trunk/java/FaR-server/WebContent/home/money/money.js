@@ -8,7 +8,7 @@ var currentUser;
 
 $(document).ready(function(){
 	currentUser = $.cookie("365user");  
-	if (currentUser.indexOf("guest.")==-1) {
+	if (currentUser!=null && currentUser.indexOf("guest.")==-1) {
 		$('#loginLink').hide();
 		$('#userInfo span.name').html(currentUser);
 		$('#userInfo').show();
@@ -58,6 +58,10 @@ function initStaticUI() {
 		dayNamesMin: ['日','一','二','三','四','五','六'],
 		showWeek: true
 	});
+	
+	if (isIE6()) { 
+		//$('div.content'),attr('width', "600");
+	}
 	
 	$('select').change(function(data){
 		selectSwitch($(this));

@@ -66,8 +66,8 @@ table.report {
 	background: white;
 }
 
-/*最上面的导航栏*/
-.nav {
+/*最上面的导航栏#*/
+#nav {
 	background: url('nav_bg.png') repeat-x;
 	color: #182647;
 	position: relative;
@@ -144,6 +144,7 @@ button:active {
 	position: absolute;
 	top: 38px;
 	bottom: 38px;
+	min-height:500px;
 	overflow-y:auto;
 	overflow-x:hidden;
 	background: #EBEFF9 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAIAAACqZzA+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAC5JREFUeNpivHbvMzMzIwsYARnMTIxMjAyMIMCACZgYSAGjqkdVj6oeWaoBAgwAkuADAzOWjPUAAAAASUVORK5CYII=") repeat-y;
