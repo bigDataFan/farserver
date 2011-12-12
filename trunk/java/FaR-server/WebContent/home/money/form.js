@@ -110,9 +110,6 @@ function uiAddLeftItem(o, w) {
 		cloned = $('div.taskItemTemplate').clone();
 		if (w) {
 			listcontainer.prepend(cloned);
-			cloned.animate({backgroundColor:"#FFF5C2"}, 1500)
-				.animate({backgroundColor:"#F3F4F7"}, 500).animate({backgroundColor:"#FFF5C2"}, 500)
-				.animate({backgroundColor:"#F3F4F7"}, 500);
 		} else {
 			$('div.moreRecord').before(cloned);
 		}
@@ -180,7 +177,11 @@ function bindObject(div, o) {
 				}
 			}
 	);
-	
+	if (o._id) {
+		$(div).find('div.priority img').attr('src', "online_dot.png");
+	} else {
+		$(div).find('div.priority img').attr('src', "status_offline.png");
+	}
 }
 
 function formReset(switched) {
