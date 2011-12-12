@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import net.gqu.cache.EhCacheService;
 import net.gqu.servlet.RandomImgServlet;
+import net.gqu.utils.StringUtils;
 import net.sf.ehcache.Element;
 
 import org.apache.commons.logging.Log;
@@ -66,12 +67,17 @@ public class RegisterServlet extends HttpServlet {
 		Object rndimg = request.getSession().getAttribute(RandomImgServlet.VALIDATE_CODE);
 		//removeAllAttr(request.getSession());
 		logger.debug("register: " + username + "  " +  email + " " + password + "  " );
-		if (username==null || username.length()<4 ) {
-			request.getSession().setAttribute("registerError", "用户名长度要大于4个字符");
+		if (username==null || username.length()<4 || !StringUtils.isUserId(username)) {
+			request.getSession().setAttribute("registerError", "用户名长度要大于4个字符,用英文字母与数字");
 			response.sendRedirect(from);
 			return;
 		} 
 		
+		if (email==null || !StringUtils.isEmail(email)) {
+			request.getSession().setAttribute("registerError", "邮件账号名称不正确");
+			response.sendRedirect(from);
+			return;
+		}
 		
 		if ( password==null || password.length()<6 ) {
 			request.getSession().setAttribute("registerError", "密码长度要大于6个字符");
