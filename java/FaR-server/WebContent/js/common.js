@@ -108,7 +108,7 @@ function synchronize(db, dbname, username) {
 		updated = parseInt(updated);
 	}
 	//IE6未同步的情况下
-	if (!ie6sync && isIE6()) {
+	if (!syncinit && isIE6()) {
 		updated = 0;
 	}
 	var currentTime = new Date().getTime();
@@ -128,7 +128,6 @@ function synchronize(db, dbname, username) {
 				'list': newer.stringify()
 		    },  function(data) {
 		    	var result = $.parseJSON(data);
-		    	
 		    	for ( var j = 0; j < result.updated.length; j++) {
 		    		var record = result.updated[j];
 		    		if(record.___id && db(record.___id).count()>0) {//表明是其他客户端执行了更新操作
@@ -137,9 +136,9 @@ function synchronize(db, dbname, username) {
 		    			db.insert(record);
 		    		}
 				}
-		    	
 		    	for ( var id in result.added) {  //表明本次请求新增的数据
 		    		db(id).update({'_id': result.added[id]});
+		    		$('#' + id).find('div.priority img').attr('src', "online_dot.png");
 				}
 		    	
 		    	for (var j=0; j<result.deleted.length; j++) {
