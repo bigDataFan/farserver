@@ -109,7 +109,9 @@ function uiAddLeftItem(o, w) {
 	if (cloned.length==0) {
 		cloned = $('div.taskItemTemplate').clone();
 		if (w) {
-			listcontainer.append(cloned);
+			listcontainer.prepend(cloned);
+			cloned.animate({backgroundColor:"#FFF5C2"}, 500)
+				.animate({backgroundColor:"#F3F4F7"}, 500);
 		} else {
 			$('div.moreRecord').before(cloned);
 		}

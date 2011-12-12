@@ -60,7 +60,7 @@ function initStaticUI() {
 	});
 	
 	if (isIE6()) { 
-		//$('div.content'),attr('width', "600");
+		//$('div.right'),attr('width', "600");
 	}
 	
 	$('select').change(function(data){
@@ -116,6 +116,12 @@ function navReportClick() {
 function navDashboardClick() {
 	layout.pushCurrent($('#toplist'), $('#dashboard'));
 	initDashBoard();
+}
+
+function navCategoryClick() {
+	layout.pushCurrent($('#toplist'), $('#eidtCat'));
+	$('#eidtCat ul.category li').remove();
+	category.load($('#eidtCat ul.category'), categories, true);
 }
 
 function displayCurrentDB() {
@@ -381,13 +387,6 @@ function initCategory() {
 		} 
 	}
 	
-	$('#navcat').click(
-			function(data) {
-				layout.pushCurrent($('#toplist'), $('#eidtCat'));
-				$('#eidtCat ul.category li').remove();
-				category.load($('#eidtCat ul.category'), categories, true);
-			}
-	);
 	$('select.category').each(
 			function(){
 				category.fillSelect($(this), categories);
