@@ -51,6 +51,7 @@ $(document).ready(function(){
 
 function initStaticUI() {
 	layout.pushCurrent($('#toplist'), $('#dashboard'));
+	/*
 	$( "input.choosedate" ).datepicker({
 		autoSize: false,
 		dateFormat: 'yy-mm-dd' ,
@@ -58,11 +59,8 @@ function initStaticUI() {
 		dayNamesMin: ['日','一','二','三','四','五','六'],
 		showWeek: true
 	});
-	
-	if (isIE6()) { 
-		//$('div.right'),attr('width', "600");
-	}
-	
+	*/
+	$("input.choosedate").glDatePicker({});
 	$('select').change(function(data){
 		selectSwitch($(this));
 	});
