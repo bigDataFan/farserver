@@ -428,7 +428,7 @@ div.content div.label h3 {
 }
 
 
-div.label input[type="text"],  div.label select, div.label textarea {
+div.label input,  div.label select, div.label textarea {
 	background: none repeat scroll 0 0 #F7F7F7;
 	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
 	border-radius: 2px;
@@ -440,6 +440,10 @@ div.label input[type="text"],  div.label select, div.label textarea {
 	padding: 5px;
 }
 
+div.label input {
+	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
+	padding: 5px;
+}
 
 input.number {
 	text-align: right;

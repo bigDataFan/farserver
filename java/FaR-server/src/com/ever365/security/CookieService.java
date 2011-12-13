@@ -90,6 +90,7 @@ public class CookieService {
 					.add("created", new Date()).get());
 
 		}
+		setUserNameCookie(response, username);
 	}
 
 	/**为任意一个请求分配使用用户
@@ -120,7 +121,6 @@ public class CookieService {
 		return sessionedUser;
 	}
 	
-	
 	public void removeCookie(HttpServletRequest request, HttpServletResponse response) {
 		String ticket = getCookieTicket(request);
     	if (ticket!=null) {
@@ -128,16 +128,13 @@ public class CookieService {
         	cookiesCol.remove(new BasicDBObject("ticket", ticket));
     	}
     	
-    	
     	Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals(ARG_TICKET)) {
-					cookie.setValue("");
-					cookie.setMaxAge(0);
-					cookie.setPath("/");
-					response.addCookie(cookie);
-				}
+				cookie.setValue("");
+				cookie.setMaxAge(0);
+				cookie.setPath("/");
+				response.addCookie(cookie);
 			}
 		}
 	}
