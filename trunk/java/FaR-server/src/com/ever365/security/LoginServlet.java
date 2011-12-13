@@ -73,7 +73,6 @@ public class LoginServlet extends HttpServlet {
         		AuthenticationUtil.setCurrentUser(username);
         		
         		cookieService.saveUserCookie(request, response, username);
-        		cookieService.setUserNameCookie(response, username);
         		
     			request.getSession().removeAttribute("loginError");
     			response.sendRedirect(redirectTo);

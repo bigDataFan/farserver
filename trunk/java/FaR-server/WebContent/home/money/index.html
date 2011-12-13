@@ -5,6 +5,7 @@
 <title>懒猫记账</title>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/zebra_datepicker.src.js"></script>
 <!-- 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
@@ -13,7 +14,6 @@
 <link rel="stylesheet" type="text/css" href="zebra_datepicker.css"/>
 
 <script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/zebra_datepicker.js"></script>
 <script type="text/javascript" src="taffy-min.js"></script>
 <script type="text/javascript" src="money.js"></script>
 <script type="text/javascript" src="form.js"></script>
@@ -34,11 +34,11 @@
 			<button class="tbtn" id="btn-save-cat" style="display:none" onclick="uiSaveCategory()">保存设置</button>
 			
 			<div style="right: 3px; bottom: 0; position: absolute; top: 3px; width: 150px;text-align: right;">	
-			<button id="loginLink" onclick="location.href='/office/login.jsp?redirectTo=/home/money/index.html'">
-				登陆
-			</button>
-			<span  id="userInfo" style="display:none;"><span  class="name"></span>-<a class="fixed" href="/logout?redirect=/home/money/index.html">注销</a>
-			</span></div>
+				<button id="loginLink" onclick="location.href='/office/login.jsp?redirectTo=/home/money/index.html'">
+					登陆
+				</button>
+				<button id="logoutLink" onclick="location.href='/logout?redirect=/home/money/index.html'">注销</button>
+			</div>
 		</td>
 	</tr>
 </table>
@@ -333,6 +333,7 @@
  					</div>
  				</li>
  				 -->
+ 				<li><span class="title" id="currentUserName"></span></li>
  				<li>
  					<span class="title">统计信息</span>
  					<table cellspacing="0" cellpadding="0" class="tbl tbl-timesummary" id="tbl-timesummary">

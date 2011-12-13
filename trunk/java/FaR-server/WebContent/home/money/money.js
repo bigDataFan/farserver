@@ -8,10 +8,12 @@ var currentUser;
 
 $(document).ready(function(){
 	currentUser = $.cookie("365user");  
+	$('#logoutLink').hide();
 	if (currentUser!=null && currentUser.indexOf("guest.")==-1) {
 		$('#loginLink').hide();
-		$('#userInfo span.name').html(currentUser);
-		$('#userInfo').show();
+		$('#currentUserName').html('您好 ' + currentUser);
+	} else {
+		$('#currentUserName').html('您好  您未登录<font color="red">(当更换机器或清理浏览数据后，记账信息会丢失)</font>');
 	}
 	groupdb = new TAFFY();
 	incomedb = new TAFFY();
@@ -31,14 +33,12 @@ $(document).ready(function(){
 				currentUser = data.user;
 				if (currentUser.indexOf("guest.")==-1) {
 					$('#loginLink').hide();
-					$('#userInfo span.name').html(currentUser);
-					$('#userInfo').show();
+					$('#currentUserName').html('您好 ' + currentUser);
+					$('#logoutLink').show();
 				}
 				$('#networkInfo').html('您已经连接到服务器');
-				
 				synchronize(groupdb, 'groupdb', currentUser);
 				synchronize(incomedb, 'incomedb', currentUser);
-				
 				if (data.category) {
 					categories = JSON.parse(data.category.value);
 					if (window.localStorage!=null) {
@@ -51,20 +51,11 @@ $(document).ready(function(){
 
 function initStaticUI() {
 	layout.pushCurrent($('#toplist'), $('#dashboard'));
-	/*
-	$( "input.choosedate" ).datepicker({
-		autoSize: false,
-		dateFormat: 'yy-mm-dd' ,
-		monthNames:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-		dayNamesMin: ['日','一','二','三','四','五','六'],
-		showWeek: true
-	});
-	*/
-	$("input.choosedate").glDatePicker({});
 	$('select').change(function(data){
 		selectSwitch($(this));
 	});
-	initDashBoard();
+
+	$("#outcomechoosedate").Zebra_DatePicker({});
 }
 
 function initDashBoard() {
@@ -582,3 +573,84 @@ var category = {
 			category.drawLi(li, v, c);
 		}
 };
+
+
+
+var ie6sync = false;
+var syncinit = false;
+
+var dbreg = {};
+function resync() {
+	for ( var key in dbreg) {
+		dbreg[key]().remove();
+		$.cookie(currentUser + "." + key + ".updated", 0);
+		location.href = location.href;
+	}
+};
+
+function synchronize(db, dbname, username) {
+	//获取最近和服务器更新联系的时间
+	var updated = $.cookie(username + "." + dbname + ".updated");
+	if (updated==null) {
+		updated = 0;
+	} else {
+		updated = parseInt(updated);
+	}
+	//IE6未同步的情况下
+	if (!syncinit && isIE6()) {
+		updated = 0;
+	}
+	var currentTime = new Date().getTime();
+	var newer = db().filter({"updated":{'gt': updated}});
+	
+	if (syncinit && newer.count()==0) {
+		setTimeout(function(){
+    		synchronize(db, dbname, username)
+    	}, 10000);
+		return;
+	}
+	
+	$.post("/service/db/sync",
+			{
+				'updated': updated,
+				'db': dbname,
+				'list': newer.stringify()
+		    },  function(data) {
+		    	var result = $.parseJSON(data);
+		    	for ( var j = 0; j < result.updated.length; j++) {
+		    		var record = result.updated[j];
+		    		if(record.___id && db(record.___id).count()>0) {//表明是其他客户端执行了更新操作
+		    			db(record.___id).update(record);
+		    		} else {
+		    			db.insert(record);
+		    		}
+				}
+		    	for ( var id in result.added) {  //表明本次请求新增的数据
+		    		db(id).update({'_id': result.added[id]});
+		    		$('#' + id).find('div.priority img').attr('src', "online_dot.png");
+				}
+		    	
+		    	for (var j=0; j<result.deleted.length; j++) {
+					db(result.deleted[j]).remove();
+				}
+		    	
+		    	$.cookie(username + "." + dbname + ".updated", currentTime);
+		    	
+		    	$('#' + dbname + 'size').html(db().count());
+		    	
+		    	$('#networkInfo').html('您已经连接到服务器 最近更新时间'  + new Date(currentTime).format("h:MM TT"));
+		    	syncinit = true;
+		    	
+		    	if (dbname=="groupdb") {
+		    		initDashBoard();
+		    	}
+		    	/*
+		    	setTimeout(function(){
+		    		synchronize(db, dbname, username)
+		    	}, 10000);
+		    	*/
+		    }
+	);
+}
+
+

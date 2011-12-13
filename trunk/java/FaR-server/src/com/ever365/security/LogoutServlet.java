@@ -30,7 +30,6 @@ public class LogoutServlet extends HttpServlet {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		cookieService = (CookieService)ctx.getBean("cookieService");
 	}
-	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
