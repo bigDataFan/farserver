@@ -185,11 +185,12 @@ function drawCategoryPie(dateStart, dateEnd, container, size) {
 	}
 	ts = ts.substring(0, ts.length-1);
 	vs = vs.substring(0, vs.length-1);
-	$('#' + container).attr('src', 'http://chart.googleapis.com/chart?cht=p' 
-			+ '&chd=t:' + ts 
-			+ '&chl=' + vs 
-			+ '&chtt=支出按分类比例'
-			+ '&chs=' + size); 
+	var url = 'http://chart.googleapis.com/chart?cht=p' 
+		+ '&chd=t:' + ts 
+		+ '&chl=' + vs 
+		+ '&chtt=支出按分类比例'
+		+ '&chs=' + size;
+	$('#' + container).attr('src', encodeURI(url)); 
 			//+ '&chdl=10%C2%B0|40%C2%B0|50%C2%B0|80%C2%B0');
 }
 
