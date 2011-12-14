@@ -235,7 +235,8 @@ function extractFormObject(form) {
 			function(data) {
 				var input = $(this);
 				if (input.hasClass("choosedate")) {
-					o[input.attr('name') + "_millsecond"] = new Date(input.val()).getTime();
+					alert(input.val()  +  new Date(input.val()).getTime());
+					o[input.attr('name') + "_millsecond"] = getDate(input.val()).getTime();
 				}
 				
 				if (input.hasClass("number")) {
