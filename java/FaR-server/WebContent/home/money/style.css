@@ -37,7 +37,6 @@ table.report {
 	border-collapse: separate;
 	border: 1px solid #CCC;
 	border-bottom: none;
-	width: 100%;
 }
 
 .report tr {
@@ -47,7 +46,7 @@ table.report {
 }
 
 .report th {
-	padding: 8px;
+	padding: 3px;
 	background: #444;
 	color: white;
 	text-align: left;
@@ -55,7 +54,7 @@ table.report {
 }
 .report td {
 	background: #F2F2F2;
-	padding: 8px;
+	padding: 3px;
 	background: white;
 	border-bottom: 1px solid #CCC;
 }

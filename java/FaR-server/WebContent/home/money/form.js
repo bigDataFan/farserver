@@ -8,7 +8,6 @@ saveCurrentForm = function() {
 				if (extracted.___id) {
 					dbreg[extracted.db](extracted.___id).update(extracted);
 				} else {
-					extracted.___id = "T" + new Date().getTime();
 					dbreg[extracted.db].insert(extracted);
 				}
 				uiAddLeftItem(extracted, true);

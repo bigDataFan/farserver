@@ -55,7 +55,7 @@ function initStaticUI() {
 		selectSwitch($(this));
 	});
 
-	$("#outcomechoosedate").Zebra_DatePicker({});
+	$("input.choosedate").Zebra_DatePicker({});
 }
 
 function initDashBoard() {
@@ -230,8 +230,8 @@ function analyzeMonth() {
 	var month = parseInt($('select[name="generalmonth"]').val()) -1;
 	$('#generalReport').show();
 	$('#generalReport div.reportlist table').remove();
-	var reportTable = $('<table cellpadding="0" cellspacing="0" border="0" class="report"><tbody>' 
-			+ '<tr><th width="30px">序号</th><th width="40px">时间</th><th >支出说明</th><th width="100px">分类</th><th width="100px">单项/多项</th><th width="80px">支出方式</th><th width="30px">金额</th></tr></tbody></table>');
+	var reportTable = $('<table width="500px" cellpadding="0" cellspacing="0" border="0" class="report"><tbody>' 
+			+ '<tr><th width="30px">序号</th><th width="30px">时间</th><th width="200px">支出说明</th><th width="80px">分类</th><th width="50px">支出项</th><th width="80px">支出方式</th><th width="30px">金额</th></tr></tbody></table>');
 	var monthd = new Date(year, month, 1); monthd.setHours(0, 0, 0);
 	var nextmonthd = new Date(year, month, 31); nextmonthd.setHours(23, 59, 59);
 	var monthqry = groupdb({"time_millsecond":{gt :monthd.getTime(), lt: nextmonthd.getTime()}});
