@@ -256,7 +256,7 @@ function getDate(s) {
 	var abs = s.split(' ');
 	var days = abs[0].split("-");
 	var date = new Date();
-	date.setFullYear(days[0], days[1], days[2]);
+	date.setFullYear(days[0], parseInt(days[1])-1, days[2]);
 	
 	if (abs.length>1) {
 		var hours = abs[1].split(":");
