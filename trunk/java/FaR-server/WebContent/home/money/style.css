@@ -129,7 +129,6 @@ button:active {
 /*左部分*/
 .left {
 	width: 260px;
-	min-height:600px;
 	top: 38px;
 	position: absolute;
 	border-right: solid 1px #CCC;
