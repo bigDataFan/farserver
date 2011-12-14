@@ -252,6 +252,18 @@ function getFloorTax(A) {
 	return Math.floor(getTax(A));
 }
 
+function getDate(s) {
+	var abs = s.split(' ');
+	var days = abs[0].split("-");
+	var date = new Date();
+	date.setFullYear(days[0], days[1], days[2]);
+	
+	if (abs.length>1) {
+		var hours = abs[1].split(":");
+		date.setHours(hours[0], hours[1], hours[2], 0);
+	}
+	return date;
+}
 
 
 var JSON;
