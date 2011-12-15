@@ -116,8 +116,10 @@ function uiAddLeftItem(o, w) {
 	var cloned = $('#' + o.___id);
 	if (cloned.length==0) {
 		cloned = $('div.taskItemTemplate').clone();
+		cloned.hide();
 		if (w) {
 			listcontainer.prepend(cloned);
+			cloned.fadeIn();
 		} else {
 			$('div.moreRecord').before(cloned);
 		}
