@@ -46,7 +46,7 @@ table.report {
 }
 
 .report th {
-	padding: 3px;
+	padding: 8px;
 	background: #444;
 	color: white;
 	text-align: left;
@@ -54,7 +54,7 @@ table.report {
 }
 .report td {
 	background: #F2F2F2;
-	padding: 3px;
+	padding: 8px;
 	background: white;
 	border-bottom: 1px solid #CCC;
 }

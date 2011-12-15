@@ -5,18 +5,12 @@
 <title>懒猫记账</title>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="/js/zebra_datepicker.src.js"></script>
-<!-- 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/themes/cupertino/jquery-ui.css"/>
--->
+<script type="text/javascript" src="/js/zebra_datepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="style.css"/>
 <link rel="stylesheet" type="text/css" href="zebra_datepicker.css"/>
-
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="taffy-min.js"></script>
 <script type="text/javascript" src="money.js"></script>
-<script type="text/javascript" src="form.js"></script>
 </head>
 <body>
 
@@ -25,6 +19,7 @@
 	<tr>
 		<td width="260px">
 			<button onclick="layout.back()" class="tbtn" style="display:none" id="btn-return-main">返回</button>
+			<button onclick="layout.switchDividedView()" style="display:none" id="switchBackBtn">关闭报表</button>
 			<button class="tbtn" id="btn-save-outcome-remove" style="display:none" onclick="uiRemoveSelected()">删除</button>
 		</td>
 		<td>
@@ -318,7 +313,7 @@
 		</div>
 		
 		<div class="content" id="eidtCat" style="display:none" btns="btn-add-bigcat,btn-save-cat">
-			<ul class="category">
+			<ul class="category" style="width: 450px">
 				
 			</ul>
 		</div>
@@ -376,12 +371,9 @@
      					<img id="recent30daygraph">
      				</li>
      		</ul>
-			
 		</div>
-		
 	</div>
 	
-
 	<!-- 
 	<div class="bottom nav"> <table style="border: 0px; height:36px " width="100%">
 	<tr>
