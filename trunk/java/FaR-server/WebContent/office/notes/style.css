@@ -1,0 +1,171 @@
+@CHARSET "UTF-8";
+
+* {
+	padding: 0px;
+	margin: 0px;
+}
+/**
+ * BASIC STUFF
+ **/
+
+html {
+	height: 100%;
+	overflow-y: scroll;
+}
+
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	color: #333;
+	height: 100%;
+	--background: #ccc;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.left {
+	left: 0;
+}
+.right {
+	right: 0;
+}
+
+#top {
+	font: 13px/27px Arial,sans-serif;
+	color: white;
+	background-color: #2D2D2D;
+	border-bottom: 1px solid black;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 999999999;
+	height: 29px;
+	box-shadow: 0 0 20px rgba(0,0,0,0.25);
+	-webkit-user-select: none;
+}
+
+#top ul {
+	display: block;
+	position: absolute;
+}
+
+
+#top ul li {
+	padding-left:8px;
+	border-right: 1px solid #404040; 
+	padding-right: 8px;
+	display: inline;
+	float: left;
+	height: 30px;
+}
+
+
+#top ul li a{
+	color: white;
+	text-decoration: none;
+}
+
+
+#top ul li:hover {
+	background: #4C4C4C;
+	box-shadow: 0 -1px 0 #999 inset;
+}
+
+span.addnote {
+	background: url("sq_plus.png") no-repeat;
+	padding-left: 20px;
+}
+
+span.gridview {
+	background: url("2x2_grid.png") no-repeat;
+	padding-left: 20px;
+}
+
+
+span.fireview {
+	background: url("fire.png") no-repeat;
+	padding-left: 20px;
+}
+
+.sticky {
+	width: 200px;
+	border:1px solid #ccc;
+	box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.45) inset,-1px -1px 0 rgba(0, 0, 0, 0.45) inset, 0 2px 5px rgba(0,0,0,0.25);
+	float: left;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.1)));
+	-webkit-user-select: none;
+	padding: 0 0 1px;
+}
+
+.sticky h1.sticky-title {
+	cursor: move;
+	padding: 5px 50px 5px 10px;
+	background-color: transparent;
+	background-image: -webkit-gradient(linear, 0 100%, 0 0, from(rgba(0, 0, 0, 0.15)), to(rgba(0, 0, 0, 0.1)));
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3),0 2px 0 rgba(0, 0, 0, 0.05),0 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+
+.sticky h1 {
+	margin: 0;
+	padding: 5px 10px;
+	font-size: 15px;
+	cursor: default;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 18px;
+}
+
+.sticky .iconic {
+	position: absolute;
+	top: 9px;
+	width: 12px;
+	cursor: pointer;
+	margin: -1px 0 0;
+	opacity: 0.5;
+	-webkit-transition: opacity 200ms;
+	color: inherit;
+	font-family: "IconicStroke";
+}
+
+.sticky .iconic.cog {
+	right: 20px;
+}
+
+div[contenteditable=true] {
+	-webkit-user-modify: read-write;
+	word-wrap: break-word;
+	-webkit-nbsp-mode: space;
+	-webkit-line-break: after-white-space;
+}
+
+.sticky .sticky-content {
+	border-top:1px solid #ccc;
+	margin: 1px 0 0 0;
+	padding: 10px 20px 10px 10px;
+	min-height: 140px;
+	overflow:hidden;
+	-webkit-user-select: initial;
+}
+
+.sticky ::-webkit-scrollbar {
+	width: 10px;
+}
+
+
+.sticky ::-webkit-scrollbar-thumb {
+background: -webkit-gradient(linear, 0 100%, 0 0, from(rgba(0, 0, 0, 0.15)), to(rgba(0, 0, 0, 0.1)));
+border-radius: 1px;
+box-shadow: -1px 0 0 rgba(0,0,0,0.25), 
+ 0 -1px 0 rgba(0,0,0,0.25), 
+ 0 1px 0 rgba(0,0,0,0.25), 
+ -1px 1px 2px rgba(0,0,0,0.25);
+}
+
+
