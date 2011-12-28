@@ -166,10 +166,12 @@ public class SyncMonggoDBService {
 				
 				if (dbo.get("_id")!=null) {
 					dbo.put("_id", new ObjectId((String)dbo.get("_id")));
-					dbcoll.update(new BasicDBObject("_id",dbo.get("_id")),
-							dbo, true, false);
 					if (dbo.get("_deleted")!=null) {
+						dbcoll.remove(new BasicDBObject("_id",dbo.get("_id")));
 						deleted.add((String)dbo.get("___id"));
+					} else {
+						dbcoll.update(new BasicDBObject("_id",dbo.get("_id")),
+								dbo, true, false);
 					}
 				} else {
 					if (dbo.get("_deleted")==null) {
