@@ -3,6 +3,8 @@ var incomedb;
 var categories;
 var dbinit = {};
 
+var connected = false;
+
 var CAT_STRING = '{"children":[{"name":"家居日常","children":[{"name":"米面粮油"},{"name":"蔬菜水果"},{"name":"厨卫用品"},{"name":"衣服鞋帽"},{"name":"小吃零食"},{"name":"外出就餐"}]},{"name":"固定开销","children":[{"name":"房租物业"},{"name":"水电煤气"},{"name":"通讯费用"},{"name":"交通费用"}]},{"name":"文体活动","children":[{"name":"旅游"},{"name":"体育健身"}]}]}';
 
 var currentUser;
@@ -33,6 +35,7 @@ $(document).ready(function(){
 	initStaticUI();
 	$.getJSON("/service/db/config", {"r":new Date().getTime(),"app":"money"}, 
 			function(data) {
+				connected = true;
 				currentUser = data.user;
 				if (currentUser.indexOf("guest.")==-1) {
 					$('#loginLink').hide();
@@ -48,6 +51,8 @@ $(document).ready(function(){
 						window.localStorage.setItem(currentUser+".category", data.category.value);
 					}
 				} 
+				
+				$(document).append('<script type="text/javascript" src="http://v1.jiathis.com/code/jia.js?uid=ever365money" charset="utf-8"></script>');
 			}
 		);
 });
@@ -181,7 +186,7 @@ function drawCategoryPie(dateStart, dateEnd, container, size) {
 	var ts = "";
 	var vs = "";
 	for ( var key in categories) {
-		ts += categories[key] + ","
+		ts += categories[key] + ",";
 		vs += key + "|";
 	}
 	ts = ts.substring(0, ts.length-1);
@@ -193,6 +198,12 @@ function drawCategoryPie(dateStart, dateEnd, container, size) {
 		+ '&chtt=支出按分类比例'
 		+ '&chs=' + size;
 	$('#' + container).attr('src', encodeURI(url)); 
+	
+	$('#jiathisshareOutComePie').show();
+	$('#jiathisshareOutComePie').mouseover(function() {
+		setShare("看吧，这是我最近消费支出的分类" ,  url);
+	});
+	
 			//+ '&chdl=10%C2%B0|40%C2%B0|50%C2%B0|80%C2%B0');
 }
 
@@ -219,11 +230,18 @@ function drawSomeDaysLine(dateStart, dateEnd, container, size) {
 	}
 	x = x.substring(0, x.length-1);
 	y = y.substring(0, y.length-1);
-	$('#' + container).attr('src', 'http://chart.googleapis.com/chart?cht=lxy&chs=' + ((size==null)?"450x200":size) 
-			+ '&chd=t:' + x + '|' +  y 
-			+ '&chco=3072F3&chxt=x,y&chxr=0,0,' + totalDays + '|1,0,' + max + '&chg=10,20&chds=0,' + totalDays +',0,' + max
-			+ '&chxl=' + chxl + "|"  //&chdl=支出曲线
-			+ '&chtt=按日支出曲线');
+	var curl = 'http://chart.googleapis.com/chart?cht=lxy&chs=' + ((size==null)?"450x200":size) 
+	+ '&chd=t:' + x + '|' +  y 
+	+ '&chco=3072F3&chxt=x,y&chxr=0,0,' + totalDays + '|1,0,' + max + '&chg=10,20&chds=0,' + totalDays +',0,' + max
+	+ '&chxl=' + chxl + "|"  //&chdl=支出曲线
+	+ '&chtt=按日支出曲线';
+	$('#' + container).attr('src', curl);
+	
+	$('#jiathisshareOutComeLine').show();
+	$('#jiathisshareOutComeLine').mouseover(function() {
+		setShare("大家为 我的努力记账鼓掌吧，这是我的消费支出曲线" ,  curl);
+	});
+	
 }
 
 function analyzeMonth() {
@@ -269,6 +287,7 @@ function analyzeMonth() {
 			}
 	);
 	$('#generalReport div.reportlist').append(reportTable);
+	reportTable.wrap("<div/>");
 	drawSomeDaysLine(monthd.getTime(), nextmonthd.getTime(), 'outcomeline', '470x250');
 	drawCategoryPie(monthd.getTime(), nextmonthd.getTime(), 'outcomepie', '350x250');
 }
@@ -978,6 +997,12 @@ function extractFormObject(form) {
 }
 
 
-
+function setShare(title, url) {
+    jiathis_config.title = title;
+    jiathis_config.pic = url;
+}
+var jiathis_config = {
+    title: ""
+};
 
 
