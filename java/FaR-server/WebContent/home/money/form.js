@@ -14,10 +14,8 @@ saveCurrentForm = function() {
 			}
 	);
 	formReset(true);
-	
-	synchronize(groupdb, 'groupdb', currentUser);
-	synchronize(incomedb, 'incomedb', currentUser);
-	
+	synchronize(dbreg[extracted.db], extracted.db, currentUser);
+	//synchronize(incomedb, 'incomedb', currentUser);
 };
 
 function fillEditForm(form, data) {
