@@ -188,6 +188,7 @@ function drawCategoryPie(dateStart, dateEnd, container, size) {
 	vs = vs.substring(0, vs.length-1);
 	var url = 'http://chart.googleapis.com/chart?cht=p' 
 		+ '&chd=t:' + ts 
+		+ "&chds=a"
 		+ '&chl=' + vs 
 		+ '&chtt=支出按分类比例'
 		+ '&chs=' + size;
@@ -241,10 +242,19 @@ function analyzeMonth() {
 	var odd = true;
 	monthqry.order("time_millsecond").each(
 			function(record, recordnumber) {
+				
+				var cat = record.category;
+				if (cat==null) {
+					if (record.items!=null) {
+						cat = "多个分类";
+					} else {
+						cat = "<font color='red'>额外支出</font>";
+					}
+				}
 				var tr = $('<tr>'
 						+ '<td>' + record.time + '</td>' 
 						+ '<td>' + record.title + '</td>'
-						+ '<td>' + ((record.category==null)?"多个分类":record.category)+ '</td>'
+						+ '<td>' + cat + '</td>'
 						+ '<td>' + ((record.items==null)?1:record.items.length) + '</td>'
 						+ '<td>' + record.outmethod + '</td>'
 						+ '<td>' + record.total + '</td>'
