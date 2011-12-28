@@ -1,6 +1,7 @@
 var groupdb;
 var incomedb;
 var categories;
+var dbinit = {};
 
 var CAT_STRING = '{"children":[{"name":"家居日常","children":[{"name":"米面粮油"},{"name":"蔬菜水果"},{"name":"厨卫用品"},{"name":"衣服鞋帽"},{"name":"小吃零食"},{"name":"外出就餐"}]},{"name":"固定开销","children":[{"name":"房租物业"},{"name":"水电煤气"},{"name":"通讯费用"},{"name":"交通费用"}]},{"name":"文体活动","children":[{"name":"旅游"},{"name":"体育健身"}]}]}';
 
@@ -19,6 +20,8 @@ $(document).ready(function(){
 	incomedb = new TAFFY();
 	dbreg["groupdb"] = groupdb;
 	dbreg["incomedb"] = incomedb;
+	dbinit["groupdb"] = false;
+	dbinit["incomedb"] = false;
 	if (!isIE6()) {
 		groupdb.store(currentUser + ".moneygroup");
 		incomedb.store(currentUser + ".income");
@@ -598,6 +601,8 @@ function resync() {
 	}
 };
 
+
+
 function synchronize(db, dbname, username) {
 	//获取最近和服务器更新联系的时间
 	var updated = $.cookie(username + "." + dbname + ".updated");
@@ -607,16 +612,18 @@ function synchronize(db, dbname, username) {
 		updated = parseInt(updated);
 	}
 	//IE6未同步的情况下
-	if (!syncinit && isIE6()) {
+	if (!dbinit[dbname]) {
 		updated = 0;
 	}
 	var currentTime = new Date().getTime();
 	var newer = db().filter({"updated":{'gt': updated}});
 	
-	if (syncinit && newer.count()==0) {
+	if (dbinit[dbname] && newer.count()==0) {
+		/*
 		setTimeout(function(){
     		synchronize(db, dbname, username)
     	}, 10000);
+    	*/
 		return;
 	}
 	
@@ -626,10 +633,18 @@ function synchronize(db, dbname, username) {
 				'db': dbname,
 				'list': newer.stringify()
 		    },  function(data) {
+		    	
+		    	if (!dbinit[dbname]) {
+		    		db().remove();
+		    	}
+		    	
 		    	var result = $.parseJSON(data);
 		    	for ( var j = 0; j < result.updated.length; j++) {
 		    		var record = result.updated[j];
+		    		record.___id = null;
+		    		
 		    		if(record.___id && db(record.___id).count()>0) {//表明是其他客户端执行了更新操作
+		    			
 		    			db(record.___id).update(record);
 		    		} else {
 		    			db.insert(record);
@@ -649,7 +664,7 @@ function synchronize(db, dbname, username) {
 		    	$('#' + dbname + 'size').html(db().count());
 		    	
 		    	$('#networkInfo').html('您已经连接到服务器 最近更新时间'  + new Date(currentTime).format("h:MM TT"));
-		    	syncinit = true;
+		    	dbinit[dbname] = true;
 		    	
 		    	if (dbname=="groupdb") {
 		    		initDashBoard();
