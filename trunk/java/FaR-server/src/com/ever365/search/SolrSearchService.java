@@ -57,7 +57,9 @@ public class SolrSearchService {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
 			
 		}
 	}
@@ -72,7 +74,6 @@ public class SolrSearchService {
 		map.put("inStock", true);
 		map.put("vv", true);
 		map.put("id", "12127");
-		sss.addDocument(map);
-		
+		sss.updateDocument(map);		
 	}
 }
