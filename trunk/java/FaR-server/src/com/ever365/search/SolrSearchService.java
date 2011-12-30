@@ -1,6 +1,7 @@
 package com.ever365.search;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,13 +19,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.json.JSONObject;
 
-import com.ever365.vfile.protocol.webdav.PostMethod;
+import com.mongodb.BasicDBObject;
 
 public class SolrSearchService {
 	
 	private HttpClient httpClient;
-	
-	
 	
 	public SolrSearchService() {
 		super();
@@ -40,12 +39,11 @@ public class SolrSearchService {
 		cm.setMaxForRoute(new HttpRoute(localhost), 100);
 		httpClient = new DefaultHttpClient(cm);
 	}
-
 	
 	/**
 	 * @param docMap
 	 */
-	public void addDocument(Map<String, Object> docMap) {
+	public void updateDocument(Map<String, Object> docMap) {
 		HttpPost post = new HttpPost("http://localhost/solr/update/json?commit=true");
 		post.setHeader("Content-type", "application/json");
 		try {
@@ -60,6 +58,7 @@ public class SolrSearchService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
+			
 		}
 	}
 	

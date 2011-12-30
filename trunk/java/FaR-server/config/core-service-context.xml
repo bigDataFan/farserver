@@ -112,4 +112,6 @@
 	</bean>
 	
 	
+	<bean id="solrSearchService" class="com.ever365.search.SolrSearchService">
+	</bean>
 </beans>
