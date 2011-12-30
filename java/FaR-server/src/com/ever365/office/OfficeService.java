@@ -17,6 +17,7 @@ import org.bson.types.ObjectId;
 import com.ever365.collections.mongodb.MongoDBDataSource;
 import com.ever365.rest.registry.RestParam;
 import com.ever365.rest.registry.RestService;
+import com.ever365.search.SolrSearchService;
 import com.ever365.security.AuthenticationUtil;
 import com.ever365.vfile.File;
 import com.ever365.vfile.VFileService;
@@ -31,11 +32,17 @@ public class OfficeService {
 
 	private MongoDBDataSource dataSource;
 	private VFileService fileService;
+	private SolrSearchService solrSearchService;
 	
 	@RestService(method="GET", uri="/office/hi")
 	public void hi() {
 	}
 	
+	
+	public void setSolrSearchService(SolrSearchService solrSearchService) {
+		this.solrSearchService = solrSearchService;
+	}
+
 	public void setDataSource(MongoDBDataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -238,6 +245,7 @@ public class OfficeService {
 		coll.insert(dbo);
 		
 		Map map = formatResult(dbo);
+		solrSearchService.updateDocument(map);
 		return map;
 	}
 	
@@ -264,6 +272,8 @@ public class OfficeService {
 		coll.update(dbo, timeItem, false, false);
 		
 		Map map = formatResult(timeItem);
+		
+		solrSearchService.updateDocument(map);
 		return map;
 	}
 	
