@@ -95,7 +95,7 @@ var userName = "<%=userName%>";
 		var jiathis_config = {
 			    siteNum:4,
 			    sm:"xiaoyou,tqq,qzone",
-			    url:"http://www.pengyou.com/index.php?mod=appmanager&act=openapp&type=qzone&appid=30745"
+			    url:"http://vtime.51vip.biz/office/365time/index.jsp"
 			};
 	</script>
 	<div id="ckepop" class="buttons headeroper">
