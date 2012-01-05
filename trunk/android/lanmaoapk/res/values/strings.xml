@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, LanmaoapkActivity!</string>
+    <string name="app_name">懒猫记账</string>
+
+    <string-array name="out_method">
+        <item>现金</item>
+        <item>刷卡</item>
+        <item>网上支付</item>
+    </string-array>
+    
+    <string-array name="out_type">
+        <item>单项支出</item>
+        <item>多项支出</item>
+        <item>特殊支出</item>
+    </string-array>
+    
+</resources>
