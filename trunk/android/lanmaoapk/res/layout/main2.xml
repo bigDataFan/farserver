@@ -21,8 +21,6 @@
         android:id="@+id/outcomeDesc"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-
-        <requestFocus />
     </EditText>
 
     <TextView
@@ -76,62 +74,82 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content" >
 
+           <LinearLayout android:id="@+id/linearLayout2"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:orientation="vertical">
+             
+			<TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="新增一项"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<EditText
+			    android:id="@+id/subdesc"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:inputType="text" >
+			</EditText>
+
+			<TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="金额"
+                 android:textAppearance="?android:attr/textAppearanceMedium" />
+			<EditText
+			    android:id="@+id/subcount"
+			    android:layout_width="119dp"
+			    android:layout_height="wrap_content"
+			    android:inputType="number" />
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="类别"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />			<Spinner
+                 android:id="@+id/subcat"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                 android:entries="@array/out_type" />
+
+			<LinearLayout
+			    android:id="@+id/linearLayout3"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content" >
+			</LinearLayout>
+
+			<Button
+			    android:id="@+id/btnaddsub"
+			    android:layout_width="96dp"
+			    android:layout_height="wrap_content"
+			    android:text="添加" />
+			<Button
+			    android:id="@+id/button2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="计算到总金额" />
+         </LinearLayout>
+         
+           
          <LinearLayout
              android:id="@+id/linearLayout1"
              android:layout_width="fill_parent"
              android:layout_height="fill_parent"
              android:orientation="vertical" >
              <TextView
-                 android:id="@+id/textView4"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:text="Medium Text"
+                 android:text="分类"
                  android:textAppearance="?android:attr/textAppearanceMedium" />
              <Spinner
-                 android:id="@+id/spinner1"
+                 android:id="@+id/spcategory"
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content" />
-
-            
-
          </LinearLayout>
- 			<TableLayout
-                 android:id="@+id/tableLayout1"
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content" >
 
-                 <TableRow
-                     android:id="@+id/tableRow1"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content" >
-                       <TextView
-		                 android:id="@+id/textView4"
-		                 android:layout_width="wrap_content"
-		                 android:layout_height="wrap_content"
-		                 android:text="zzzz"
-		                 android:textAppearance="?android:attr/textAppearanceMedium" />
-                 </TableRow>
-
-                 <TableRow
-                     android:id="@+id/tableRow2"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content" >
-                 </TableRow>
-
-                 <TableRow
-                     android:id="@+id/tableRow3"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content" >
-                 </TableRow>
-
-                 <TableRow
-                     android:id="@+id/tableRow4"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content" >
-                 </TableRow>
-             </TableLayout>
-         
-     </ViewSwitcher>
+       
+	</ViewSwitcher>
      
     <Button
         android:onClick="sayHello"
