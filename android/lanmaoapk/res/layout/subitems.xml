@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/sublistdesc"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_x="7dp"
@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/sublistcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_x="8dp"
@@ -23,7 +23,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/sublistcat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_x="98dp"

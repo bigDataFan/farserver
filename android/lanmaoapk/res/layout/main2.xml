@@ -115,22 +115,21 @@
 
 			<LinearLayout
 			    android:id="@+id/linearLayout3"
-			    android:layout_width="fill_parent"
+			    android:layout_width="289dp"
 			    android:layout_height="wrap_content" >
+				<Button
+				    android:id="@+id/btnaddsub"
+				    android:layout_width="96dp"
+				    android:layout_height="wrap_content"
+				    android:onClick="addNewItem"
+				    android:text="添加" />
+				<Button
+				    android:id="@+id/button2"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:text="计算到总金额" />
 			</LinearLayout>
-
-			<Button
-			    android:id="@+id/btnaddsub"
-			    android:layout_width="96dp"
-			    android:layout_height="wrap_content"
-			    android:text="添加" />
-			<Button
-			    android:id="@+id/button2"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:text="计算到总金额" />
          </LinearLayout>
-         
            
          <LinearLayout
              android:id="@+id/linearLayout1"
@@ -147,9 +146,14 @@
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content" />
          </LinearLayout>
-
-       
 	</ViewSwitcher>
+   
+    <ListView
+         android:id="@+id/subItemList"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent" >
+     </ListView>
+		     
      
     <Button
         android:onClick="sayHello"
