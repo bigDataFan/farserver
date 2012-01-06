@@ -47,12 +47,12 @@ public class SolrSearchService {
 		HttpPost post = new HttpPost("http://localhost/solr/update/json?commit=true");
 		post.setHeader("Content-type", "application/json");
 		try {
-			System.out.println( new JSONObject(docMap).toString());
+			//System.out.println( new JSONObject(docMap).toString());
 			post.setEntity(new StringEntity("[" + new JSONObject(docMap).toString() + "]", "utf-8"));
 			HttpResponse result = httpClient.execute(post);
 			
 			int code = result.getStatusLine().getStatusCode();
-			System.out.println(code);
+			//System.out.println(code);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
