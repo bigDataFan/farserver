@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -20,17 +22,22 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 public class EditOutComeActivity extends Activity {
-	
-	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mneditoutcome, menu);
+		return true;
+	}
+
 	private List<ListItem> currentlist = new ArrayList<EditOutComeActivity.ListItem>();
 	CustomAdapter adapter = null;
+	
 	private ListView subitemsView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main2);
-		
 		Spinner outtypeSpinner = (Spinner)findViewById(R.id.outtype);
 		final ViewSwitcher switcher = (ViewSwitcher)findViewById(R.id.viewSwitcher1);
 		
@@ -54,6 +61,11 @@ public class EditOutComeActivity extends Activity {
 		 switcher.setDisplayedChild(1);
 	 }
 	 
+	 
+	 public void saveOutCome(View v) {
+		 
+	 }
+	 
 	 public void addNewItem(View v) {
 		 EditText descText = (EditText)findViewById(R.id.subdesc);
 		 EditText countText = (EditText)findViewById(R.id.subcount);
@@ -62,6 +74,9 @@ public class EditOutComeActivity extends Activity {
 		 currentlist.add(li);
 		 adapter.notifyDataSetChanged();
 		 Utils.setListViewHeightBasedOnChildren(subitemsView);
+		 
+		 descText.setText("");
+		 countText.setText("");
 	 }
 	
 	 

@@ -4,6 +4,9 @@
     <string name="hello">Hello World, LanmaoapkActivity!</string>
     <string name="app_name">懒猫记账</string>
 
+    <string name="save">保存</string>
+    <string name="savenew">保存并新增</string>
+    
     <string-array name="out_method">
         <item>现金</item>
         <item>刷卡</item>
