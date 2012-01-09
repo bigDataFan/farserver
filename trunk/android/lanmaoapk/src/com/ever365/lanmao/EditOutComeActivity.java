@@ -24,6 +24,7 @@ public class EditOutComeActivity extends Activity {
 	
 	private List<ListItem> currentlist = new ArrayList<EditOutComeActivity.ListItem>();
 	CustomAdapter adapter = null;
+	private ListView subitemsView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,8 +45,8 @@ public class EditOutComeActivity extends Activity {
 			}
 		});
 		adapter = new CustomAdapter(this, R.layout.subitems,currentlist);
-		ListView lv = (ListView)findViewById(R.id.subItemList);
-		lv.setAdapter(adapter);
+		subitemsView = (ListView)findViewById(R.id.subItemList);
+		subitemsView.setAdapter(adapter);
 	}
 	
 	 public void sayHello(View v) {
@@ -60,6 +61,7 @@ public class EditOutComeActivity extends Activity {
 		 ListItem li = new ListItem(descText.getEditableText().toString(), countText.getEditableText().toString(), catText.getSelectedItem().toString());
 		 currentlist.add(li);
 		 adapter.notifyDataSetChanged();
+		 Utils.setListViewHeightBasedOnChildren(subitemsView);
 	 }
 	
 	 
@@ -89,20 +91,20 @@ public class EditOutComeActivity extends Activity {
 			} else {
 				v = convertView;
 			}
+			v.setTag(rowData);
 			
 			v.setOnLongClickListener(new OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
-					currentlist.remove(rowData);
+					ListItem data = (ListItem)v.getTag();
+					currentlist.remove(data);
 					adapter.notifyDataSetChanged();
+					Utils.setListViewHeightBasedOnChildren(subitemsView);
 					return false;
 				}
 			});
 			return v;
 		}
-		 
-		
-		
 	 }
 	 
 	 
