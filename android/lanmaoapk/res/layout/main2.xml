@@ -74,6 +74,23 @@
          android:id="@+id/viewSwitcher1"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content" >
+         
+          <LinearLayout
+             android:id="@+id/linearLayout1"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:orientation="vertical" >
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="分类"
+                 android:textAppearance="?android:attr/textAppearanceMedium" />
+             <Spinner
+                 android:id="@+id/spcategory"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content" />
+         </LinearLayout>
 
            <LinearLayout android:id="@+id/linearLayout2"
              android:layout_width="fill_parent"
@@ -130,22 +147,6 @@
 				    android:layout_height="wrap_content"
 				    android:text="计算到总金额" />
 			</LinearLayout>
-         </LinearLayout>
-           
-         <LinearLayout
-             android:id="@+id/linearLayout1"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent"
-             android:orientation="vertical" >
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="分类"
-                 android:textAppearance="?android:attr/textAppearanceMedium" />
-             <Spinner
-                 android:id="@+id/spcategory"
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content" />
          </LinearLayout>
 	</ViewSwitcher>
    
