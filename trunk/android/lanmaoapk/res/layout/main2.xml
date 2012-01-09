@@ -69,11 +69,11 @@
          android:entries="@array/out_type"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content" />
-
+
      <ViewSwitcher
          android:id="@+id/viewSwitcher1"
          android:layout_width="fill_parent"
-         android:layout_height="wrap_content" >
+         android:layout_height="81dp" >
          
           <LinearLayout
              android:id="@+id/linearLayout1"
@@ -153,16 +153,28 @@
     <ListView
          android:id="@+id/subItemList"
          android:layout_width="fill_parent"
-         android:layout_height="fill_parent" >
+         android:layout_height="0px" >
      </ListView>
-		     
-     
-    <Button
-        android:onClick="sayHello"
-        android:id="@+id/button1"
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="保存并新增" />
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.00"
+            android:onClick="saveOutCome"
+            android:text="保存" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保存并增加" />
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>
