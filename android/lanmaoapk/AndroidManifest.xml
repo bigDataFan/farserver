@@ -20,6 +20,7 @@
         </activity>
         
         <activity android:name=".EditOutComeActivity"></activity>
+        <activity android:name=".OutComeListActivity"></activity>
     </application>
 
 </manifest> 

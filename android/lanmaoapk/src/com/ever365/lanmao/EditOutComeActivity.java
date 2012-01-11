@@ -1,7 +1,12 @@
 package com.ever365.lanmao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.ever365.lanmao.sqldb.LanmaoDAO;
+import com.ever365.lanmao.sqldb.OutCome;
+import com.ever365.lanmao.sqldb.OutComeListItem;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -29,8 +35,9 @@ public class EditOutComeActivity extends Activity {
 		return true;
 	}
 
-	private List<ListItem> currentlist = new ArrayList<EditOutComeActivity.ListItem>();
+	private List<OutComeListItem> currentlist = new ArrayList<OutComeListItem>();
 	CustomAdapter adapter = null;
+	private LanmaoDAO dao;
 	
 	private ListView subitemsView;
 	@Override
@@ -38,7 +45,7 @@ public class EditOutComeActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main2);
-		Spinner outtypeSpinner = (Spinner)findViewById(R.id.outtype);
+		Spinner outtypeSpinner = (Spinner)findViewById(R.id.octype);
 		final ViewSwitcher switcher = (ViewSwitcher)findViewById(R.id.viewSwitcher1);
 		
 		outtypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -54,6 +61,11 @@ public class EditOutComeActivity extends Activity {
 		adapter = new CustomAdapter(this, R.layout.subitems,currentlist);
 		subitemsView = (ListView)findViewById(R.id.subItemList);
 		subitemsView.setAdapter(adapter);
+		
+		dao = new LanmaoDAO(getApplicationContext());
+		
+		
+		
 	}
 	
 	 public void sayHello(View v) {
@@ -61,16 +73,25 @@ public class EditOutComeActivity extends Activity {
 		 switcher.setDisplayedChild(1);
 	 }
 	 
-	 
 	 public void saveOutCome(View v) {
-		 
+		 OutCome oc = new OutCome();
+		 oc.setDesc(((EditText)findViewById(R.id.ocdesc)).getEditableText().toString());
+		 oc.setTotal(new Float(((EditText)findViewById(R.id.octotal)).getEditableText().toString()));
+		 oc.setType(((Spinner)findViewById(R.id.octype)).getSelectedItem().toString());
+		 oc.setMethod(((Spinner)findViewById(R.id.ocmethod)).getSelectedItem().toString());
+		 oc.setUpdated(new Date());
+		 DatePicker dp = (DatePicker)findViewById(R.id.ocdate);
+		 oc.setDate(new Date(dp.getYear(), dp.getMonth(), dp.getDayOfMonth()));
+		 dao.insertOutCome(oc);
+		 //oc.setMethod((findViewById(R.id.ocdate)));
 	 }
+	 
 	 
 	 public void addNewItem(View v) {
 		 EditText descText = (EditText)findViewById(R.id.subdesc);
 		 EditText countText = (EditText)findViewById(R.id.subcount);
 		 Spinner catText = (Spinner)findViewById(R.id.subcat);
-		 ListItem li = new ListItem(descText.getEditableText().toString(), countText.getEditableText().toString(), catText.getSelectedItem().toString());
+		 OutComeListItem li = new OutComeListItem(descText.getEditableText().toString(), countText.getEditableText().toString(), catText.getSelectedItem().toString());
 		 currentlist.add(li);
 		 adapter.notifyDataSetChanged();
 		 Utils.setListViewHeightBasedOnChildren(subitemsView);
@@ -80,15 +101,15 @@ public class EditOutComeActivity extends Activity {
 	 }
 	
 	 
-	 class CustomAdapter  extends ArrayAdapter<ListItem> {
+	 class CustomAdapter  extends ArrayAdapter<OutComeListItem> {
 		public CustomAdapter(Context context, int textViewResourceId,
-				List<ListItem> objects) {
+				List<OutComeListItem> objects) {
 			super(context, textViewResourceId, objects);
 			// TODO Auto-generated constructor stub
 		}
 
 		public CustomAdapter(Context context, int resource,
-				int textViewResourceId, List<ListItem> objects) {
+				int textViewResourceId, List<OutComeListItem> objects) {
 			super(context, resource, textViewResourceId, objects);
 		}
 
@@ -96,7 +117,7 @@ public class EditOutComeActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			
 			View v;
-			final ListItem rowData= getItem(position);
+			final OutComeListItem rowData= getItem(position);
 			if (convertView == null) {
 				LayoutInflater li = getLayoutInflater();
 				v = li.inflate(R.layout.subitems, null);
@@ -111,7 +132,7 @@ public class EditOutComeActivity extends Activity {
 			v.setOnLongClickListener(new OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
-					ListItem data = (ListItem)v.getTag();
+					OutComeListItem data = (OutComeListItem)v.getTag();
 					currentlist.remove(data);
 					adapter.notifyDataSetChanged();
 					Utils.setListViewHeightBasedOnChildren(subitemsView);
@@ -122,35 +143,6 @@ public class EditOutComeActivity extends Activity {
 		}
 	 }
 	 
-	 
-	 
-	 class ListItem {
-		 private String desc;
-		 private String count;
-		 private String cat;
-		public String getDesc() {
-			return desc;
-		}
-		public void setDesc(String desc) {
-			this.desc = desc;
-		}
-		public String getCount() {
-			return count;
-		}
-		public void setCount(String count) {
-			this.count = count;
-		}
-		public String getCat() {
-			return cat;
-		}
-		public void setCat(String cat) {
-			this.cat = cat;
-		}
-		public ListItem(String desc, String count, String cat) {
-			super();
-			this.desc = desc;
-			this.count = count;
-			this.cat = cat;
-		}
-	 }
 }
+
+
