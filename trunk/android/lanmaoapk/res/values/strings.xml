@@ -3,6 +3,8 @@
 
     <string name="hello">Hello World, LanmaoapkActivity!</string>
     <string name="app_name">懒猫记账</string>
+    
+    <string name="outcome_list">记账支出列表</string>
 
     <string name="save">保存</string>
     <string name="savenew">保存并新增</string>

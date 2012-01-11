@@ -12,27 +12,25 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="支出描述"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/outcomeDesc"
+        android:id="@+id/ocdesc"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
     </EditText>
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="支出时间"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <DatePicker
-        android:id="@+id/datePicker1"
+        android:id="@+id/ocdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -43,20 +41,19 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
      <EditText
-         android:id="@+id/editText1"
+         android:id="@+id/octotal"
          android:layout_width="129dp"
          android:layout_height="wrap_content"
          android:inputType="number" />
 
      <TextView
-         android:id="@+id/textView3"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="支出方式"
          android:textAppearance="?android:attr/textAppearanceMedium" />
 
      <Spinner
-         android:id="@+id/outmethod"
+         android:id="@+id/ocmethod"
          android:entries="@array/out_method"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content" />
@@ -65,11 +62,11 @@
          android:layout_height="wrap_content"
          android:text="支出类型"
          android:textAppearance="?android:attr/textAppearanceMedium" />     <Spinner
-         android:id="@+id/outtype"
+         android:id="@+id/octype"
          android:entries="@array/out_type"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content" />
-
+
      <ViewSwitcher
          android:id="@+id/viewSwitcher1"
          android:layout_width="fill_parent"
@@ -87,7 +84,7 @@
                  android:text="分类"
                  android:textAppearance="?android:attr/textAppearanceMedium" />
              <Spinner
-                 android:id="@+id/spcategory"
+                 android:id="@+id/occategory"
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content" />
          </LinearLayout>
@@ -103,7 +100,6 @@
                     android:layout_height="wrap_content"
                     android:text="新增一项"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
-
 			<EditText
 			    android:id="@+id/subdesc"
 			    android:layout_width="fill_parent"
@@ -136,13 +132,11 @@
 			    android:layout_width="289dp"
 			    android:layout_height="wrap_content" >
 				<Button
-				    android:id="@+id/btnaddsub"
 				    android:layout_width="96dp"
 				    android:layout_height="wrap_content"
 				    android:onClick="addNewItem"
 				    android:text="添加" />
 				<Button
-				    android:id="@+id/button2"
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
 				    android:text="计算到总金额" />
