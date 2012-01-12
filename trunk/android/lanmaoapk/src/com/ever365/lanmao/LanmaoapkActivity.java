@@ -2,9 +2,6 @@ package com.ever365.lanmao;
 
 import java.util.List;
 
-import com.ever365.lanmao.adapters.OutComeListItem;
-import com.ever365.lanmao.sqldb.OutCome;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,25 +18,44 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class LanmaoapkActivity extends Activity {
+import com.ever365.lanmao.sqldb.LanmaoDAO;
+import com.ever365.lanmao.sqldb.OutCome;
 
+public class LanmaoapkActivity extends Activity {
+	
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        GridView grid_main = (GridView)findViewById(R.id.maingridview);
+        /*
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.mainLayout);
         
+        ListView container = (ListView)findViewById(R.id.mainoutcomelist);
+        LayoutParams params = container.getLayoutParams();
+        params.height = layout.getHeight() - 80;
+        container.requestLayout();
+        */
+        GridView grid_main = (GridView)findViewById(R.id.maingridview);
         BaseAdapter adapter = new MainAdapter(this);
 		grid_main.setAdapter(adapter);
     }
-    
+    @Override
+	protected void onResume() {
+		super.onResume();
+		displayOutComeList();
+	}
 
-    public void displayOutComeList() {
+	public void displayOutComeList() {
     	ListView outcomeListView = (ListView)findViewById(R.id.mainoutcomelist);
     	
+    	//outcomeListView.setVisibility(1);
+    	List<OutCome> list = LanmaoDAO.getInstance(getApplicationContext()).getOutComeList(null, null);
     	
+    	outcomeListView.setAdapter(new OutComeListAdapter(this, R.id.mainoutcomelist, list));
+    	
+    	//Utils.setListViewHeightBasedOnChildren(outcomeListView);
     }
     
     
@@ -78,7 +94,7 @@ public class LanmaoapkActivity extends Activity {
 			v.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//v.setBackgroundColor();
+					displayOutComeList();
 				}
 			});
 			return v;
@@ -98,9 +114,9 @@ public class LanmaoapkActivity extends Activity {
 		public long getItemId(int arg0) {
 			return 0;
 		}
-
 	}
-
+    
+    
     
     class OutComeListAdapter extends ArrayAdapter<OutCome>{
 
@@ -116,10 +132,10 @@ public class LanmaoapkActivity extends Activity {
     		final OutCome rowData= getItem(position);
     		if (convertView == null) {
     			LayoutInflater li = getLayoutInflater();
-    			v = li.inflate(R.layout.subitems, null);
-    			((TextView) v.findViewById(R.id.sublistdesc)).setText(rowData.getDesc());
-    			((TextView) v.findViewById(R.id.sublistcount)).setText("金额：" + rowData.getCount());
-    			((TextView) v.findViewById(R.id.sublistcat)).setText("类别" + rowData.getCat());
+    			v = li.inflate(R.layout.outcomelistitem, null);
+    			((TextView) v.findViewById(R.id.listItem_title)).setText(rowData.getTitle());
+    			((TextView) v.findViewById(R.id.listItem_total)).setText(rowData.getTotal().toString());
+    			((TextView) v.findViewById(R.id.listItem_date)).setText(rowData.getDate().getYear() + "-" + rowData.getDate().getMonth() + "-" + rowData.getDate().getDate());
     		} else {
     			v = convertView;
     		}
@@ -128,10 +144,6 @@ public class LanmaoapkActivity extends Activity {
     		v.setOnLongClickListener(new OnLongClickListener() {
     			@Override
     			public boolean onLongClick(View v) {
-    				OutComeListItem data = (OutComeListItem)v.getTag();
-    				currentlist.remove(data);
-    				adapter.notifyDataSetChanged();
-    				Utils.setListViewHeightBasedOnChildren(subitemsView);
     				return false;
     			}
     		});

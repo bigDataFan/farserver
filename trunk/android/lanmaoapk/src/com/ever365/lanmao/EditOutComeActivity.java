@@ -75,7 +75,7 @@ public class EditOutComeActivity extends Activity {
 	 
 	 public void saveOutCome(View v) {
 		 OutCome oc = new OutCome();
-		 oc.setDesc(((EditText)findViewById(R.id.ocdesc)).getEditableText().toString());
+		 oc.setTitle(((EditText)findViewById(R.id.ocdesc)).getEditableText().toString());
 		 oc.setTotal(new Float(((EditText)findViewById(R.id.octotal)).getEditableText().toString()));
 		 oc.setType(((Spinner)findViewById(R.id.octype)).getSelectedItem().toString());
 		 oc.setMethod(((Spinner)findViewById(R.id.ocmethod)).getSelectedItem().toString());

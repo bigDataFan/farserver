@@ -1,5 +1,6 @@
 package com.ever365.lanmao.sqldb;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class LanmaoDAO {
@@ -52,7 +54,23 @@ public class LanmaoDAO {
 	}
 	
 	public List<OutCome> getOutComeList(Date from, Date to) {
-		return null;
+		String[] columns={"_ID", OC_TITLE, OC_DESC,OC_TYPE, OC_METHOD, OC_DATE, OC_TOTAL}; 
+		Cursor cursor = db.query("OUTCOME", columns, null, null, null, null, null);
+		cursor.moveToFirst();
+		
+		List<OutCome> result = new ArrayList<OutCome>();
+		while (!cursor.isAfterLast()) {
+			OutCome oc = new OutCome();
+			oc.setTitle(cursor.getString(1));
+			oc.setDesc(cursor.getString(2));
+			oc.setType(cursor.getString(3));
+			oc.setMethod(cursor.getString(4));
+			oc.setDate(new Date(cursor.getLong(5)));
+			oc.setTotal(cursor.getFloat(6));
+			result.add(oc);
+			cursor.moveToNext();
+		}
+		return result;
 	}
 
 	
