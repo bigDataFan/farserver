@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:Android="http://schemas.android.com/apk/res/android"  
-    Android:layout_width="fill_parent"    
-    Android:layout_height="wrap_content" >
-    
-    
-    
-</ScrollView>
