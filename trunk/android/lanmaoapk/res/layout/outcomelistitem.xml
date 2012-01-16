@@ -10,17 +10,26 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="4dp"
         android:text="20"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/listItem_title"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/listItem_total"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="14dp"
+        android:text="title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/listItem_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/listItem_total"
-        android:layout_marginLeft="26dp"
+        android:layout_alignLeft="@+id/listItem_title"
+        android:layout_below="@+id/listItem_title"
         android:text="date"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -30,17 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/listItem_date"
         android:layout_alignBottom="@+id/listItem_date"
-        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/listItem_title"
         android:text="cat"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/listItem_title"
-        android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/listItem_total"
-        android:layout_toLeftOf="@+id/listItem_method"
-        android:text="title"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
