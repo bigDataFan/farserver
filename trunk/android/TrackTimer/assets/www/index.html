@@ -14,60 +14,41 @@
 		var collections = list("me", new Date());
 		
 		for(var i=0; i<collections.length; i++) {
+			x$('div.welcome').remove();
 			var o = collections[i];
-			var shtml ='<div class="content ' + ((o.laststart==0)?"pendding":"running") + '">'
+			var shtml ='<div class="content ' + ((o.laststart==0)?"pending":"running") + '">'
 			 + '<div class="timeDesc">' + o.desc + '</div>'
-			 + '<div class="timeStatics"><span class="timeStart">启动于' + formatHour(o.created) + '</span><span class="timePending">,中断3次</span>&nbsp;<a class="details" href="#">设置</a></div>'
-			 + '<div class="timeOper"><a href="#" id="' + o.created + '"><span>0:01</span></a></div></div>';
+			 + '<div class="timeStatics"><span class="timeStart">启动于' + formatHour(o.created) 
+			 + '</span><span class="timePending">,中断3次</span>&nbsp;<a class="details" href="edit.html?created=' + o.created + '">设置</a></div>'
+			 + '<div class="timeOper"><a href="javascript:switchTime(' + o.created + ')" ><span>' + formatDura(o.dura) + '</span></a></div></div>';
 			x$('#topmenu').after(shtml);
 		}
 		
+		if (collections.length==0) {
+			var vNum = Math.random();
+			vNum = Math.floor(vNum*10);
+			x$('div.timeDesc').html(hitKeys[vNum]);
+			x$('span.timeStart').html(hitInfos[vNum]);
+		}
 	});
-
 </script>
-
 
 </head>
 <body>
 
 <div id="topmenu">
-<ul class="left">
-	<li class="m_write"><a href="edit.html"></a></li>
-</ul>
+	<a class="simple-button" href="edit.html">增加</a>
+	<ul class="right">
+		<li class="m_total"><span>22</span></li>
+	</ul>	
+		
+</div>
 
-<ul class="right">
-	<li class="m_total"><span>22</span></li>
-</ul>	
+<div class="content welcome" style="height:100px">
+	<div class="timeDesc">今日您没有对时间进行统计</div>
+	<div class="timeStatics"><span class="timeStart"></span></div>
 	
 </div>
-
-<div class="content running">
-	<div class="timeDesc">awerewa</div>
-	<div class="timeStatics"><span class="timeStart">启动于12:34</span><span class="timePending">,中断3次</span>&nbsp;<a class="details" href="#">设置</a></div>
-	
-	<div class="timeOper">
-           			<a href="#" id="4f24cc72d0722a8807922977"><span>0:01</span></a>
-    </div>
-</div>
-
-<div class="content pending">
-
-	<div class="timeDesc">awerewa</div>
-	<div class="timeStatics"><span class="timeStart">启动于12:34</span><span class="timePending">,中断3次</span>&nbsp;<a class="details" href="#">设置</a></div>
-	<div class="timeOper">
-           			<a href="#" id="4f24cc72d0722a8807922977"><span>0:01</span></a>
-    </div>
-</div>
-
-
-<div class="content">
-</div>
-
-
-<div class="content">
-</div>
-
-
 
 </body>
 </html>

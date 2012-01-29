@@ -1,4 +1,43 @@
 
+var editing = null;
+x$(window).load(function(e) {
+	var created = getParam("created");
+	if (created!=0) {
+		var o = get("me", new Date(), created);
+		editing = o;
+		if (o!=null) {
+			x$('#editTime').attr("value", o.desc);
+			x$('#autostop').attr("value", o.autostop);
+		}
+	}
+});
+
+
+function switchTime(created) {
+	var all = list("me", new Date());
+	
+	for ( var i = 0; i < all.length; i++) {
+		
+		if (all[i].created == created && all[i].laststart==0) {
+			all[i].laststart = new Date().getTime();
+			continue;
+		}
+		
+		if (all[i].laststart!=0) {
+			all[i].dura += new Date().getTime() - all[i].laststart;
+			if (all[i].stops==null) all[i].stops = [];
+			all[i].stops.push(new Date().getTime());
+			all[i].laststart = 0;
+		}
+	}
+	var u = "me";
+	var d = new Date();
+	var skey = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "-times-" + u;
+	window.localStorage.setItem(skey, JSON.stringify(trimArray(all)));
+	
+	location.href = location.href;
+}
+
 function list(u, d) {
 	var skey = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "-times-" + u;
 	var value = window.localStorage.getItem(skey);
@@ -10,6 +49,27 @@ function list(u, d) {
 	return collections;
 }
 
+
+function removeCurrent() {
+	if (editing!=null && confirm("ç¡®å®šåˆ é™¤ï¼Ÿ")) {
+		remove("me", new Date(), editing.created);
+	}
+	location.href = "index.html";
+}
+
+function remove(u, d, created) {
+	var collections = list(u, d);
+	for ( var i = 0; i < collections.length; i++) {
+		if (collections[i].created==created) {
+			collections[i] = null;
+			
+			var skey = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "-times-" + u;
+			window.localStorage.setItem(skey, JSON.stringify(trimArray(collections)));
+			return;
+		}
+	}
+}
+
 function insert(u, d, o) {
 	var collections = list(u, d);
 	collections.push(o);
@@ -18,19 +78,19 @@ function insert(u, d, o) {
 	window.localStorage.setItem(skey, JSON.stringify(collections));
 }
 
-function get(u, d, started) {
-	collections = list(u, d);
+function get(u, d, created) {
+	var collections = list(u, d);
 	for ( var i = 0; i < collections.length; i++) {
-		if (collections[i].started==started) {
+		if (collections[i].created==created) {
 			return collections[i];
 		}
 	}
 }
 
 function update(u, d, o) {
-	collections = list(u, d);
+	var collections = list(u, d);
 	for ( var i = 0; i < collections.length; i++) {
-		if (collections[i].started==o.started) {
+		if (collections[i].created==o.created) {
 			collections[i] = o;
 			break;
 		}
@@ -41,38 +101,32 @@ function update(u, d, o) {
 }
 
 function saveTimeConfig() {
-	var start = getParam("created");
+	var created = getParam("created");
 	var o;
-	if (start==0) {
+	if (created==0) {
 		o = {
 			"created": new Date().getTime(),
 			"dura": 0,
 			"autostop": x$('#autoStop').attr("value")[0],
 			"laststart": 0,
 			"desc": x$('#editTime').attr("value")[0],
-			"notifyInt": x$('#notifyInterval').attr("value")[0]
+			"notifyInt": x$('#notifyInterval').attr("value")[0],
+			"stops" : []
 		}
 		insert("me", new Date(), o);
 	} else {
-		o = get("me", new Date(), start);
+		o = get("me", new Date(), created);
 		o.desc = x$('#editTime').attr("value");
 		o.autostop = x$('#autostop').attr("value");
 		update("me", new Date(), o);
 	}
-	alert(list("me", new Date()));
 	location.href = "index.html";
-}
-
-function findItem() {
-	
 }
 
 function getParam(name) {
 	var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href); 
 	if (!results) { return 0; } return results[1] || 0;
 }
-
-
 
 function formatDura(mill) {
 	var d3 = new Date(parseInt(mill));
@@ -90,31 +144,41 @@ function formatedToMill(formated) {
 	return parseInt(sr[0])*60*60*1000 + parseInt(sr[1].charAt(0)=='0'?sr[1].charAt(1):sr[1])*60*1000;
 }
 
+function trimArray(array) {
+	var n = [];
+	
+	for ( var i = 0; i < array.length; i++) {
+		if (array[i]!=null) {
+			n.push(array[i]);
+		}
+	}
+	return n;
+}
 
 var hitKeys = [
-	     'Ê±¼äÐ¡ÌùÊ¿Ò».ÉèÁ¢Ã÷È·µÄÄ¿±ê',
-	     'Ê±¼äÐ¡ÌùÊ¿¶þ.Ñ§»áÁÐÇåµ¥',
-	     'Ê±¼äÐ¡ÌùÊ¿Èý.×öºÃ¡°Ê±¼äÈÕÖ¾¡±',
-	     'Ê±¼äÐ¡ÌùÊ¿ËÄ.ÖÆ¶©ÓÐÐ§µÄ¼Æ»®¡£',
-	     'Ê±¼äÐ¡ÌùÊ¿Îå.×ñÑ­20:80¶¨ÂÉ',
-	     'Ê±¼äÐ¡ÌùÊ¿Áù.°²ÅÅ¡°²»±»¸ÉÈÅ¡±Ê±¼ä',
-	     'Ê±¼äÐ¡ÌùÊ¿Æß.È·Á¢¸öÈËµÄ¼ÛÖµ¹Û',
-	     'Ê±¼äÐ¡ÌùÊ¿°Ë.ÑÏ¸ñ¹æ¶¨Íê³ÉÆÚÏÞ',
-	     'Ê±¼äÐ¡ÌùÊ¿¾Å.Ñ§»á³ä·ÖÊÚÈ¨',
-	     'Ê±¼äÐ¡ÌùÊ¿Ê®.Í¬-ÀàµÄÊÂÇé×îºÃÒ»´Î×öÍê'
+               'æ—¶é—´å°è´´å£«ä¸€.è®¾ç«‹æ˜Žç¡®çš„ç›®æ ‡',
+      	     'æ—¶é—´å°è´´å£«äºŒ.å­¦ä¼šåˆ—æ¸…å•',
+      	     'æ—¶é—´å°è´´å£«ä¸‰.åšå¥½â€œæ—¶é—´æ—¥å¿—â€',
+      	     'æ—¶é—´å°è´´å£«å››.åˆ¶è®¢æœ‰æ•ˆçš„è®¡åˆ’ã€‚',
+      	     'æ—¶é—´å°è´´å£«äº”.éµå¾ª20:80å®šå¾‹',
+      	     'æ—¶é—´å°è´´å£«å…­.å®‰æŽ’â€œä¸è¢«å¹²æ‰°â€æ—¶é—´',
+      	     'æ—¶é—´å°è´´å£«ä¸ƒ.ç¡®ç«‹ä¸ªäººçš„ä»·å€¼è§‚',
+      	     'æ—¶é—´å°è´´å£«å…«.ä¸¥æ ¼è§„å®šå®ŒæˆæœŸé™',
+      	     'æ—¶é—´å°è´´å£«ä¹.å­¦ä¼šå……åˆ†æŽˆæƒ',
+      	     'æ—¶é—´å°è´´å£«å.åŒ-ç±»çš„äº‹æƒ…æœ€å¥½ä¸€æ¬¡åšå®Œ'
 	];
 	         
 var hitInfos = [
-	          "Ê±¼ä¹ÜÀíµÄÄ¿µÄÊÇÈÃÄãÔÚ×î¶ÌÊ±¼äÄÚÊµÏÖ¸ü¶àÄãÏëÒªÊµÏÖµÄÄ¿±ê¡£°ÑÊÖÍ·4µ½10¸öÄ¿±êÐ´³öÀ´£¬ÕÒ³öÒ»¸öºËÐÄÄ¿±ê£¬²¢ÒÀ´ÎÅÅÁÐÖØÒªÐÔ£¬È»ºóÒÀÕÕÄãµÄÄ¿±êÉè¶¨ÏêÏ¸µÄ¼Æ»®£¬²¢ÒÀÕÕ¼Æ»®½øÐÐ¡£",
-	          "°Ñ×Ô¼ºËùÒª×öµÄÃ¿Ò»¼þÊÂÇé¶¼Ð´ÏÂÀ´£¬ÁÐÒ»ÕÅ×ÜÇåµ¥£¬ÕâÑù×öÄÜÈÃÄãËæÊ±¶¼Ã÷È·×Ô¼ºÊÖÍ·ÉÏµÄÈÎÎñ¡£ÔÚÁÐºÃÇåµ¥µÄ»ù´¡ÉÏ½øÐÐÄ¿±êÇÐ¸î¡£",
-	          "Äã»¨ÁË¶àÉÙÊ±¼äÔÚÄÄÐ©ÊÂÇé£¬°ÑËüÏêÏ¸µØ£¬¼ÇÂ¼ÏÂÀ´£¬Ã¿Ìì´ÓË¢ÑÀ¿ªÊ¼£¬Ï´Ôè£¬ÔçÉÏ´©ÒÂ»¨ÁË¶àÉÙÊ±¼ä£¬ÔçÉÏ´î³µµÄÊ±¼ä£¬Æ½ÉÏ³öÈ¥°Ý·Ã¿Í»§µÄÊ±¼ä£¬°ÑÃ¿Ìì»¨µÄÊ±¼äÒ»Ò»¼ÇÂ¼ÏÂÀ´£¬×öÁËÄÄÐ©ÊÂ£¬Äã»á·¢ÏÖÀË·ÑÁËÄÄÐ©Ê±¼ä¡£µ±ÄãÕÒµ½ÀË·ÑÊ±¼äµÄ¸ùÔ´£¬Äã²ÅÓÐ°ì·¨¸Ä±ä¡£",
-	          "¾ø´ó¶àÊýÄÑÌâ¶¼ÊÇÓÉÎ´¾­ÈÏÕæË¼¿¼ÂÇµÄÐÐ¶¯ÒýÆðµÄ¡£ÔÚÖÆ¶©ÓÐÐ§µÄ¼Æ»®ÖÐÃ¿»¨·Ñ1Ð¡Ê±£¬ÔÚÊµÊ©¼Æ»®ÖÐ¾Í¿ÉÄÜ½ÚÊ¡3-4Ð¡Ê±£¬²¢»áµÃµ½¸üºÃµÄ½á¹û¡£Èç¹ûÄãÃ»ÓÐÈÏÕæ×÷¼Æ»®£¬ÄÇÃ´Êµ¼ÊÉÏÄãÕý¼Æ»®×ÅÊ§°Ü¡£",
-	          "ÓÃÄã80%µÄÊ±¼äÀ´×ö20%×îÖØÒªµÄÊÂÇé¡£Éú»îÖÐ¿Ï¶¨»áÓÐÒ»Ð©Í»·¢À§ÈÅºÍÆÈ²»¼°´ýÒª½â¾öµÄÎÊÌâ£¬Èç¹ûÄã·¢ÏÖ×Ô¼ºÌìÌì¶¼ÔÚ´¦ÀíÕâÐ©ÊÂÇé£¬ÄÇ±íÊ¾ÄãµÄÊ±¼ä¹ÜÀí²¢²»ÀíÏë¡£Ò»¶¨ÒªÁË½â£¬¶ÔÄãÀ´Ëµ£¬ÄÄÐ©ÊÂÇéÊÇ×îÖØÒªµÄ£¬ÊÇ×îÓÐÉú²úÁ¦µÄ¡£",
-	          "¼ÙÈçÄãÃ¿ÌìÄÜÓÐÒ»¸öÐ¡Ê±ÍêÈ«²»ÊÜÈÎºÎÈË¸ÉÈÅµØË¼¿¼Ò»Ð©ÊÂÇé£¬»òÊÇ×öÒ»Ð©ÄãÈÏÎª×îÖØÒªµÄÊÂÇé£¬ÕâÒ»¸öÐ¡Ê±¿ÉÒÔµÖ¹ýÄãÒ»ÌìµÄ¹¤×÷Ð§ÂÊ£¬ÉõÖÁ¿ÉÄÜ±ÈÈýÌìµÄ¹¤×÷Ð§ÂÊ»¹ÒªºÃ¡£",
-	          "¼ÙÈç¼ÛÖµ¹Û²»Ã÷È·£¬¾ÍºÜÄÑÖªµÀÊ²Ã´¶ÔÄãÊÇ×îÖØÒªµÄ£¬µ±ÄãµÄ¼ÛÖµ¹Û²»Ã÷È·Ê±£¬¾ÍÎÞ·¨×öµ½ºÏÀíµØ·ÖÅäÊ±¼ä¡£Ê±¼ä¹ÜÀíµÄÖØµã²»ÔÚ¹ÜÀíÊ±¼ä£¬¶øÔÚÓÚÈçºÎ·ÖÅäÊ±¼ä¡£ÄãÓÀÔ¶Ã»ÓÐÊ±¼ä×öÃ¿¼þÊÂ£¬µ«ÓÀÔ¶ÓÐÊ±¼ä×ö¶ÔÄãÀ´Ëµ×îÖØÒªµÄÊÂ¡£",
-	          "°Í½ðÉ­(C.Noarthcote Parkinson)ÔÚÆäËùÖøµÄ¡¶°Í½ðÉ­·¨Ôò¡·ÖÐÐ´ÏÂÕâ¶Î»°¡°ÄãÓÐ¶àÉÙÊ±¼äÍê³É¹¤×÷£¬¹¤×÷¾Í»á×Ô¶¯±ä³ÉÐèÒªÄÇÃ´¶àÊ±¼ä¡£¡±Èç¹ûÄãÓÐÒ»ÕûÌìµÄÊ±¼ä¿ÉÒÔ×öÄ³Ïî¹¤×÷£¬Äã¾Í»á»¨Ò»ÌìµÄÊ±¼äÈ¥×öËü¡£¶øÈç¹ûÄãÖ»ÓÐÒ»Ð¡Ê±µÄÊ±¼ä¿ÉÒÔ×öÕâÏî¹¤×÷£¬Äã¾Í»á¸üÑ¸ËÙÓÐÐ§µØÔÚÒ»Ð¡Ê±ÄÚ×öÍêËü¡£",
-	          "ÁÐ³öÄãÄ¿Ç°Éú»îÖÐËùÓÐ¾õµÃ¿ÉÒÔÊÚÈ¨µÄÊÂÇé£¬°ÑËüÃÇÐ´ÏÂÀ´£¬ÕÒÊÊµ±µÄÈËÀ´ÊÚÈ¨¡£",
-	          "¼ÙÈçÄãÔÚ×öÖ½ÉÏ×÷Òµ£¬ÄÇ¶ÎÊ±¼ä¶¼×öÖ½ÉÏ×÷Òµ£»¼ÙÈçÄãÊÇÔÚË¼¿¼£¬ÓÃÒ»¶ÎÊ±¼äÖ»×÷Ë¼¿¼£»´òµç»°µÄ»°£¬×îºÃ°Ñµç»°ÀÛ»ýµ½Ä³Ò»Ê±¼äÒ»´Î°ÑËü´òÍê¡£"
+                "æ—¶é—´ç®¡ç†çš„ç›®çš„æ˜¯è®©ä½ åœ¨æœ€çŸ­æ—¶é—´å†…å®žçŽ°æ›´å¤šä½ æƒ³è¦å®žçŽ°çš„ç›®æ ‡ã€‚æŠŠæ‰‹å¤´4åˆ°10ä¸ªç›®æ ‡å†™å‡ºæ¥ï¼Œæ‰¾å‡ºä¸€ä¸ªæ ¸å¿ƒç›®æ ‡ï¼Œå¹¶ä¾æ¬¡æŽ’åˆ—é‡è¦æ€§ï¼Œç„¶åŽä¾ç…§ä½ çš„ç›®æ ‡è®¾å®šè¯¦ç»†çš„è®¡åˆ’ï¼Œå¹¶ä¾ç…§è®¡åˆ’è¿›è¡Œã€‚",
+  	          "æŠŠè‡ªå·±æ‰€è¦åšçš„æ¯ä¸€ä»¶äº‹æƒ…éƒ½å†™ä¸‹æ¥ï¼Œåˆ—ä¸€å¼ æ€»æ¸…å•ï¼Œè¿™æ ·åšèƒ½è®©ä½ éšæ—¶éƒ½æ˜Žç¡®è‡ªå·±æ‰‹å¤´ä¸Šçš„ä»»åŠ¡ã€‚åœ¨åˆ—å¥½æ¸…å•çš„åŸºç¡€ä¸Šè¿›è¡Œç›®æ ‡åˆ‡å‰²ã€‚",
+  	          "ä½ èŠ±äº†å¤šå°‘æ—¶é—´åœ¨å“ªäº›äº‹æƒ…ï¼ŒæŠŠå®ƒè¯¦ç»†åœ°ï¼Œè®°å½•ä¸‹æ¥ï¼Œæ¯å¤©ä»Žåˆ·ç‰™å¼€å§‹ï¼Œæ´—æ¾¡ï¼Œæ—©ä¸Šç©¿è¡£èŠ±äº†å¤šå°‘æ—¶é—´ï¼Œæ—©ä¸Šæ­è½¦çš„æ—¶é—´ï¼Œå¹³ä¸Šå‡ºåŽ»æ‹œè®¿å®¢æˆ·çš„æ—¶é—´ï¼ŒæŠŠæ¯å¤©èŠ±çš„æ—¶é—´ä¸€ä¸€è®°å½•ä¸‹æ¥ï¼Œåšäº†å“ªäº›äº‹ï¼Œä½ ä¼šå‘çŽ°æµªè´¹äº†å“ªäº›æ—¶é—´ã€‚å½“ä½ æ‰¾åˆ°æµªè´¹æ—¶é—´çš„æ ¹æºï¼Œä½ æ‰æœ‰åŠžæ³•æ”¹å˜ã€‚",
+  	          "ç»å¤§å¤šæ•°éš¾é¢˜éƒ½æ˜¯ç”±æœªç»è®¤çœŸæ€è€ƒè™‘çš„è¡ŒåŠ¨å¼•èµ·çš„ã€‚åœ¨åˆ¶è®¢æœ‰æ•ˆçš„è®¡åˆ’ä¸­æ¯èŠ±è´¹1å°æ—¶ï¼Œåœ¨å®žæ–½è®¡åˆ’ä¸­å°±å¯èƒ½èŠ‚çœ3-4å°æ—¶ï¼Œå¹¶ä¼šå¾—åˆ°æ›´å¥½çš„ç»“æžœã€‚å¦‚æžœä½ æ²¡æœ‰è®¤çœŸä½œè®¡åˆ’ï¼Œé‚£ä¹ˆå®žé™…ä¸Šä½ æ­£è®¡åˆ’ç€å¤±è´¥ã€‚",
+  	          "ç”¨ä½ 80%çš„æ—¶é—´æ¥åš20%æœ€é‡è¦çš„äº‹æƒ…ã€‚ç”Ÿæ´»ä¸­è‚¯å®šä¼šæœ‰ä¸€äº›çªå‘å›°æ‰°å’Œè¿«ä¸åŠå¾…è¦è§£å†³çš„é—®é¢˜ï¼Œå¦‚æžœä½ å‘çŽ°è‡ªå·±å¤©å¤©éƒ½åœ¨å¤„ç†è¿™äº›äº‹æƒ…ï¼Œé‚£è¡¨ç¤ºä½ çš„æ—¶é—´ç®¡ç†å¹¶ä¸ç†æƒ³ã€‚ä¸€å®šè¦äº†è§£ï¼Œå¯¹ä½ æ¥è¯´ï¼Œå“ªäº›äº‹æƒ…æ˜¯æœ€é‡è¦çš„ï¼Œæ˜¯æœ€æœ‰ç”Ÿäº§åŠ›çš„ã€‚",
+  	          "å‡å¦‚ä½ æ¯å¤©èƒ½æœ‰ä¸€ä¸ªå°æ—¶å®Œå…¨ä¸å—ä»»ä½•äººå¹²æ‰°åœ°æ€è€ƒä¸€äº›äº‹æƒ…ï¼Œæˆ–æ˜¯åšä¸€äº›ä½ è®¤ä¸ºæœ€é‡è¦çš„äº‹æƒ…ï¼Œè¿™ä¸€ä¸ªå°æ—¶å¯ä»¥æŠµè¿‡ä½ ä¸€å¤©çš„å·¥ä½œæ•ˆçŽ‡ï¼Œç”šè‡³å¯èƒ½æ¯”ä¸‰å¤©çš„å·¥ä½œæ•ˆçŽ‡è¿˜è¦å¥½ã€‚",
+  	          "å‡å¦‚ä»·å€¼è§‚ä¸æ˜Žç¡®ï¼Œå°±å¾ˆéš¾çŸ¥é“ä»€ä¹ˆå¯¹ä½ æ˜¯æœ€é‡è¦çš„ï¼Œå½“ä½ çš„ä»·å€¼è§‚ä¸æ˜Žç¡®æ—¶ï¼Œå°±æ— æ³•åšåˆ°åˆç†åœ°åˆ†é…æ—¶é—´ã€‚æ—¶é—´ç®¡ç†çš„é‡ç‚¹ä¸åœ¨ç®¡ç†æ—¶é—´ï¼Œè€Œåœ¨äºŽå¦‚ä½•åˆ†é…æ—¶é—´ã€‚ä½ æ°¸è¿œæ²¡æœ‰æ—¶é—´åšæ¯ä»¶äº‹ï¼Œä½†æ°¸è¿œæœ‰æ—¶é—´åšå¯¹ä½ æ¥è¯´æœ€é‡è¦çš„äº‹ã€‚",
+  	          "å·´é‡‘æ£®(C.Noarthcote Parkinson)åœ¨å…¶æ‰€è‘—çš„ã€Šå·´é‡‘æ£®æ³•åˆ™ã€‹ä¸­å†™ä¸‹è¿™æ®µè¯â€œä½ æœ‰å¤šå°‘æ—¶é—´å®Œæˆå·¥ä½œï¼Œå·¥ä½œå°±ä¼šè‡ªåŠ¨å˜æˆéœ€è¦é‚£ä¹ˆå¤šæ—¶é—´ã€‚â€å¦‚æžœä½ æœ‰ä¸€æ•´å¤©çš„æ—¶é—´å¯ä»¥åšæŸé¡¹å·¥ä½œï¼Œä½ å°±ä¼šèŠ±ä¸€å¤©çš„æ—¶é—´åŽ»åšå®ƒã€‚è€Œå¦‚æžœä½ åªæœ‰ä¸€å°æ—¶çš„æ—¶é—´å¯ä»¥åšè¿™é¡¹å·¥ä½œï¼Œä½ å°±ä¼šæ›´è¿…é€Ÿæœ‰æ•ˆåœ°åœ¨ä¸€å°æ—¶å†…åšå®Œå®ƒã€‚",
+  	          "åˆ—å‡ºä½ ç›®å‰ç”Ÿæ´»ä¸­æ‰€æœ‰è§‰å¾—å¯ä»¥æŽˆæƒçš„äº‹æƒ…ï¼ŒæŠŠå®ƒä»¬å†™ä¸‹æ¥ï¼Œæ‰¾é€‚å½“çš„äººæ¥æŽˆæƒã€‚",
+  	          "å‡å¦‚ä½ åœ¨åšçº¸ä¸Šä½œä¸šï¼Œé‚£æ®µæ—¶é—´éƒ½åšçº¸ä¸Šä½œä¸šï¼›å‡å¦‚ä½ æ˜¯åœ¨æ€è€ƒï¼Œç”¨ä¸€æ®µæ—¶é—´åªä½œæ€è€ƒï¼›æ‰“ç”µè¯çš„è¯ï¼Œæœ€å¥½æŠŠç”µè¯ç´¯ç§¯åˆ°æŸä¸€æ—¶é—´ä¸€æ¬¡æŠŠå®ƒæ‰“å®Œã€‚"
 	];
 
 var JSON;if(!JSON)JSON={};(function(){var n="number",m="object",l="string",k="function";"use strict";function f(a){return a<10?"0"+a:a}if(typeof Date.prototype.toJSON!==k){Date.prototype.toJSON=function(){var a=this;return isFinite(a.valueOf())?a.getUTCFullYear()+"-"+f(a.getUTCMonth()+1)+"-"+f(a.getUTCDate())+"T"+f(a.getUTCHours())+":"+f(a.getUTCMinutes())+":"+f(a.getUTCSeconds())+"Z":null};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()}}var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},rep;function quote(a){escapable.lastIndex=0;return escapable.test(a)?'"'+a.replace(escapable,function(a){var b=meta[a];return typeof b===l?b:"\\u"+("0000"+a.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+a+'"'}function str(i,j){var f="null",c,e,d,g,h=gap,b,a=j[i];if(a&&typeof a===m&&typeof a.toJSON===k)a=a.toJSON(i);if(typeof rep===k)a=rep.call(j,i,a);switch(typeof a){case l:return quote(a);case n:return isFinite(a)?String(a):f;case"boolean":case f:return String(a);case m:if(!a)return f;gap+=indent;b=[];if(Object.prototype.toString.apply(a)==="[object Array]"){g=a.length;for(c=0;c<g;c+=1)b[c]=str(c,a)||f;d=b.length===0?"[]":gap?"[\n"+gap+b.join(",\n"+gap)+"\n"+h+"]":"["+b.join(",")+"]";gap=h;return d}if(rep&&typeof rep===m){g=rep.length;for(c=0;c<g;c+=1)if(typeof rep[c]===l){e=rep[c];d=str(e,a);d&&b.push(quote(e)+(gap?": ":":")+d)}}else for(e in a)if(Object.prototype.hasOwnProperty.call(a,e)){d=str(e,a);d&&b.push(quote(e)+(gap?": ":":")+d)}d=b.length===0?"{}":gap?"{\n"+gap+b.join(",\n"+gap)+"\n"+h+"}":"{"+b.join(",")+"}";gap=h;return d}}if(typeof JSON.stringify!==k)JSON.stringify=function(d,a,b){var c;gap="";indent="";if(typeof b===n)for(c=0;c<b;c+=1)indent+=" ";else if(typeof b===l)indent=b;rep=a;if(a&&typeof a!==k&&(typeof a!==m||typeof a.length!==n))throw new Error("JSON.stringify");return str("",{"":d})};if(typeof JSON.parse!==k)JSON.parse=function(text,reviver){var j;function walk(d,e){var b,c,a=d[e];if(a&&typeof a===m)for(b in a)if(Object.prototype.hasOwnProperty.call(a,b)){c=walk(a,b);if(c!==undefined)a[b]=c;else delete a[b]}return reviver.call(d,e,a)}text=String(text);cx.lastIndex=0;if(cx.test(text))text=text.replace(cx,function(a){return"\\u"+("0000"+a.charCodeAt(0).toString(16)).slice(-4)});if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,""))){j=eval("("+text+")");return typeof reviver==="function"?walk({"":j},""):j}throw new SyntaxError("JSON.parse");}})();
