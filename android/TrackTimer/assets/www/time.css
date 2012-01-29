@@ -11,14 +11,41 @@ a {
     vertical-align: baseline;
 }
 
+
+
 #topmenu {
-    background-position: 0 -187px;
-    height: 32px;
-	background: url("navigation.jpg") repeat-x scroll transparent;
-    left:0px;
-    top:0px;
-    z-index: 109;
+	border: 1px solid #456F9A;
+	background: #5E87B0;
+	color: white;
+	font-weight: bold;
+	text-shadow: 0 -1px 1px #254F7A;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#81a8ce),to(#5e87b0));
+	background-image: -webkit-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -moz-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -ms-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -o-linear-gradient(#81a8ce,#5e87b0);
+	background-image: linear-gradient(#81a8ce,#5e87b0);
+	border-image: initial;
+	height: 35px;
+	padding: 5px;
 }
+
+a.simple-button {
+	background: #41B7D8;
+	transition: background-color 0.2s;
+	-webkit-transition: background-color 0.2s;
+	-webkit-border-radius: 5px;
+	color: white;
+	display: inline-block;
+	padding: 7px 10px;
+	margin-right: 10px;
+	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(233, 92, 51, 1)),color-stop(100%,rgba(229, 59, 44, 1)));
+	background: -webkit-linear-gradient(top,rgba(233, 92, 51, 1) 0%,rgba(229, 59, 44, 1) 100%);
+	background-color: #E95C33;
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.4);
+	
+}
+
 
 #topmenu ul {
 	display: inline;
@@ -39,37 +66,23 @@ ul.right {
     position: relative;
 }
 
-#topmenu .m_write a {
-    background: url("navigation.jpg") no-repeat scroll -731px -156px transparent;
-    display: block;
-    height: 30px;
-    width: 32px;
-}
-
-
-#topmenu .m_text a {
-    background: url("navigation.jpg") no-repeat scroll -370px -157px transparent;
-    color: white;
-    display: block;
-    font-size: 12px;
-    height: 29px;
-    line-height: 28px;
-    margin-top: 2px;
-    text-align: center;
-    width: 55px;
-} 
-
-
 #topmenu .m_total span {
 	background: rgba(162, 162, 162, 0.2);
 	margin: 5px;
 	border-radius: 8px;
 	padding: 4px;
 	color: #CCC;
-	font-size: 12px;
+	font-size: 16px;
 	font-weight: bold;
 	display: block;
 }
+
+div.panel {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	display:none;
+}
+
 
 div.content {
     background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
@@ -101,7 +114,7 @@ div.timeStatics {
 	float: left;
 	min-width: 80px;
 	color: #7D7D7D;
-	font-size: 12px;
+	font-size: 14px;
 	position: fixed;
 	text-shadow: 0 1px 0 white;
 }
