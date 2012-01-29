@@ -1,0 +1,178 @@
+@CHARSET "UTF-8";
+* {
+	padding: 0px;
+	margin:  0px;
+}
+
+a {
+    color: #2A78B4;
+    cursor: pointer;
+    text-decoration: none;
+    vertical-align: baseline;
+}
+
+#topmenu {
+    background-position: 0 -187px;
+    height: 32px;
+	background: url("navigation.jpg") repeat-x scroll transparent;
+    left:0px;
+    top:0px;
+    z-index: 109;
+}
+
+#topmenu ul {
+	display: inline;
+	list-style: none outside none;
+}
+
+ul.left {
+	float:left;
+}
+
+ul.right {
+	float:right;
+}
+
+#topmenu ul li {
+	display: inline;
+    float: left;
+    position: relative;
+}
+
+#topmenu .m_write a {
+    background: url("navigation.jpg") no-repeat scroll -731px -156px transparent;
+    display: block;
+    height: 30px;
+    width: 32px;
+}
+
+
+#topmenu .m_text a {
+    background: url("navigation.jpg") no-repeat scroll -370px -157px transparent;
+    color: white;
+    display: block;
+    font-size: 12px;
+    height: 29px;
+    line-height: 28px;
+    margin-top: 2px;
+    text-align: center;
+    width: 55px;
+} 
+
+
+#topmenu .m_total span {
+	background: rgba(162, 162, 162, 0.2);
+	margin: 5px;
+	border-radius: 8px;
+	padding: 4px;
+	color: #CCC;
+	font-size: 12px;
+	font-weight: bold;
+	display: block;
+}
+
+div.content {
+    background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
+    border-left: 1px solid #CBCBCB;
+    border-bottom: 1px solid #CBCBCB;
+    clear: both;
+    height: 60px;
+    overflow: hidden;
+    padding: 0 15px 0 25px;
+    position: relative;
+    
+}
+
+div.running {
+    background: url("index_jb.jpg") repeat-x scroll 0 20px transparent;
+}
+
+div.timeDesc {
+	padding: 10px;
+	float: left;
+	color: #2A78B4;
+	font-weight:bold;
+	min-width: 300px;
+	position: fixed;
+}
+
+div.timeStatics {
+	padding: 36px 0px 0px 10px;
+	float: left;
+	min-width: 80px;
+	color: #7D7D7D;
+	font-size: 12px;
+	position: fixed;
+	text-shadow: 0 1px 0 white;
+}
+
+div.timeOper {
+	color: black;
+	float: right;
+	width: 90px;
+	font-weight: bold;
+	padding-top: 20px;
+}
+
+
+div.timeOper a {
+	border: 0 none;
+	color: #333;
+	display: block;
+	height: 19px;
+	padding: 2px 40px 2px 0;
+	text-decoration: none;
+}
+div.running div.timeOper a {
+	background: transparent url('btn_running.gif') no-repeat scroll right top;
+}
+
+div.timeOper a span {
+	font-size:14px;
+	color: black;
+}
+
+div.pending div.timeOper a {
+	background: transparent url('btn_timer.png') no-repeat scroll right -1px;
+}
+
+
+div.pending div.timeOper a:hover {
+	background: transparent url('btn_timer.png') no-repeat scroll right -24px;
+}
+
+
+
+div.label {
+	border-bottom: 1px solid #EEE;
+	padding: 14px 20px;
+}
+
+
+div.label input {
+	background: none repeat scroll 0 0 #F7F7F7;
+	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	color: #222;
+	font-size: 1.2em;
+	outline: medium none;
+	padding: 5px;
+}
+
+div.label a.operations {
+	color: #7D7D7D;
+	text-decoration: none;
+	font-size:1.2em;
+	background: none repeat scroll 0 0 #2A78B4;
+	border: 1px solid #2A78B4;
+	border-radius: 3px;
+	box-shadow: 0 2px 1px #A6D8FF;
+	color: white;
+	margin-right: 10px;
+	padding: 5px;
+	text-shadow: 0 -1px 0 #A6D8FF;
+}
+
+
