@@ -245,7 +245,7 @@ public class OfficeService {
 		coll.insert(dbo);
 		
 		Map map = formatResult(dbo);
-		solrSearchService.updateDocument(map);
+		//solrSearchService.updateDocument(map);
 		return map;
 	}
 	
@@ -273,7 +273,7 @@ public class OfficeService {
 		
 		Map map = formatResult(timeItem);
 		
-		solrSearchService.updateDocument(map);
+		//solrSearchService.updateDocument(map);
 		return map;
 	}
 	
