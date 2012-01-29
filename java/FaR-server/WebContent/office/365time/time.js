@@ -92,7 +92,7 @@ office.time = {
 		
 		
 		var vNum = Math.random();
-		vNum = Math.round(vNum*10);
+		vNum = Math.floor(vNum*10);
 		
 		$('#hintinfo p').html(office.time.hitKeys[vNum] + "<br>" + office.time.hitInfos[vNum]);
 		
