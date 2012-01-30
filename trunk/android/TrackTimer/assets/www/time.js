@@ -1,17 +1,10 @@
 
 var editing = null;
-x$(window).load(function(e) {
-	var created = getParam("created");
-	if (created!=0) {
-		var o = get("me", new Date(), created);
-		editing = o;
-		if (o!=null) {
-			x$('#editTime').attr("value", o.desc);
-			x$('#autostop').attr("value", o.autostop);
-		}
-	}
-});
 
+
+function updateTime() {
+	location.href = location.href;
+}
 
 function switchTime(created) {
 	var all = list("me", new Date());
@@ -95,7 +88,6 @@ function update(u, d, o) {
 			break;
 		}
 	}
-	
 	var skey = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "-times-" + u;
 	window.localStorage.setItem(skey, JSON.stringify(collections));
 }
@@ -129,9 +121,16 @@ function getParam(name) {
 }
 
 function formatDura(mill) {
+	var minutes = Math.floor((mill/(1000*60))%60);
+	if (minutes<10) {
+		minutes = "0" + minutes;
+	}
+	return Math.floor(mill/(1000*60*60)) + ":" + minutes; 
+	/*
 	var d3 = new Date(parseInt(mill));
 	return ((d3.getDate()-1)*24 + (d3.getHours()-8)) + ":" 
-	+ ((d3.getMinutes()<10)?("0"+d3.getMinutes()):d3.getMinutes()); 
+	+ ((d3.getMinutes()<10)?("0"+d3.getMinutes()):d3.getMinutes());
+	*/ 
 }
 
 function formatHour(mill) {
