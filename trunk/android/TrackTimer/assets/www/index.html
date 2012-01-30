@@ -25,7 +25,7 @@
 			 + '<div class="timeDesc">' + o.desc + '</div>'
 			 + '<div class="timeStatics"><span class="timeStart">启动于' + formatHour(o.created) 
 			 + '</span><span class="timePending">,中断' + o.stops.length  + '次</span>&nbsp;<a class="details" href="edit.html?created=' + o.created + '">设置</a></div>'
-			 + '<div class="timeOper" onclick="switchTime(' + o.created + ')"><a href="javascript:void(0);" ><span>' + formatDura(dura) + '</span></a></div></div>';
+			 + '<div class="timeOper" ontouchstart="switchTime(' + o.created + ')"><a href="javascript:void(0);" ><span>' + formatDura(dura) + '</span></a></div></div>';
 			x$('#topmenu').after(shtml);
 		}
 		
@@ -39,6 +39,7 @@
 		}
 		
 		setTimeout('updateTime()', 60*1000);
+		bindEachLink();
 	});
 </script>
 
@@ -48,8 +49,8 @@
 <div id="topmenu">
 	<a class="simple-button" href="edit.html">增加</a>
 	<ul class="right">
-		<li class="m_chart icon"><a href="chart.html"></a></li>
-		<li class="m_calendar icon"><a href="calendar.html"></a></li>
+		<li class="m_chart icon" ><a ontouchstart="location.href='chart.html'" href="javascript:void(0)"></a></li>
+		<li class="m_calendar icon"><a ontouchstart="location.href='calendar.html'" href="javascript:void(0)"></a></li>
 		<!-- <li class="m_total"><span id="todayTotal">22</span></li>  -->
 	</ul>	
 		
