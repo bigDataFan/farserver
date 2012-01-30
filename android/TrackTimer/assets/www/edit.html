@@ -27,9 +27,9 @@ x$(window).load(function(e) {
 
 <div id="topmenu">
 	<ul class="right">
-		<li><a class="simple-button" href="javascript:saveTimeConfig()">保存</a></li>
-		<li><a class="simple-button" href="index.html">取消</a></li>
-		<li><a class="simple-button" href="javascript:removeCurrent()">删除</a></li>
+		<li><a class="simple-button" ontouchstart="saveTimeConfig()" href="javascript:void(0)">保存</a></li>
+		<li><a class="simple-button" ontouchstart="location.href='index.html'" href="javascript:void(0)">取消</a></li>
+		<li><a class="simple-button" ontouchstart="removeCurrent()" href="javascript:void(0)">删除</a></li>
 	</ul>	
 </div>
 

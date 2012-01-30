@@ -1,6 +1,4 @@
-
 var editing = null;
-
 
 function updateTime() {
 	location.href = location.href;
@@ -49,6 +47,8 @@ function removeCurrent() {
 	}
 	location.href = "index.html";
 }
+
+
 
 function remove(u, d, created) {
 	var collections = list(u, d);
