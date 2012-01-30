@@ -19,25 +19,15 @@ public class TrackTimerActivity extends DroidGap {
     }
 
 	@Override
+	public void overridePendingTransition(int enterAnim, int exitAnim) {
+		// TODO Auto-generated method stub
+		super.overridePendingTransition(R.anim.layout_animation_row_left_slide, exitAnim);
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		 if (keyCode == KeyEvent.KEYCODE_BACK) { // go back home
-			 
-			 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			 builder.setMessage("您是否确认退出?")
-			        .setCancelable(false)
-			        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			            public void onClick(DialogInterface dialog, int id) {
-			                 TrackTimerActivity.this.finish();
-			            }
-			        })
-			        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-			            public void onClick(DialogInterface dialog, int id) {
-			                 dialog.cancel();
-			            }
-			        });
-			 AlertDialog alert = builder.create();
-			 
-			 //this.finish(); 
+			 this.finish(); 
 	         return true; 
 		 }	 
 	     if (keyCode == KeyEvent.KEYCODE_MENU) { //Exit app 
