@@ -115,6 +115,54 @@ function saveTimeConfig() {
 	location.href = "index.html";
 }
 
+
+function drawPieOfDay(d) {
+	var collections = list("me", d);
+	
+	if (collections.length==0) return;
+	var colorSrc = ['#006CFF', '#FF6600', '#34A038', '#945D59', '#93BBF4', '#F493B8'];
+	var colors = [];
+	for(var i=0; i<collections.length; i++) {
+		if (i>colorSrc.length) {
+			colors.push(0);
+		} else {
+			colors.push(colorSrc[i]);
+		}
+	}
+	var data = [];
+	var labels = [];
+	var total = 0;
+	
+	for(var i=0; i<collections.length; i++) {
+		labels.push("");//collections[i].desc
+		var dura = collections[i].dura;
+		if (collections[i].laststart!=0) {
+			dura = collections[i].dura + new Date().getTime()-collections[i].laststart;
+		}
+		//o.dura = formatDura(dura);
+		data.push(dura);
+		total += dura;
+	}
+    
+	for(var i=0; i<collections.length; i++) {
+		x$('#container').after('<div style="margin-top:3px; padding-left:5px; font-weight: bold;font-size: 12px;color:' 
+		+ colors[i] + '; border-left: 20px solid ' + colors[i] + ';">' 
+		+ collections[i].desc + "   -   " + Math.floor((data[i]/total)*100) + "%</font>");
+	}
+	
+	x$('#chartCanvas6').attr("width", screen.width - 30);
+	x$('#chartCanvas6').attr("height", screen.height - 30);
+	
+	var chart6 = new AwesomeChart('chartCanvas6');
+	chart6.chartType = "pie";
+	chart6.pieTotal = total;
+	chart6.title = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+	chart6.data = data;
+	chart6.labels = labels;
+	chart6.colors = colors;
+	chart6.draw();
+}
+
 function getParam(name) {
 	var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href); 
 	if (!results) { return 0; } return results[1] || 0;
