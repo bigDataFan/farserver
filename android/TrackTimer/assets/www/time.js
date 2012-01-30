@@ -143,15 +143,13 @@ function drawPieOfDay(d) {
 		data.push(dura);
 		total += dura;
 	}
-    
 	for(var i=0; i<collections.length; i++) {
 		x$('#container').after('<div style="margin-top:3px; padding-left:5px; font-weight: bold;font-size: 12px;color:' 
 		+ colors[i] + '; border-left: 20px solid ' + colors[i] + ';">' 
 		+ collections[i].desc + "   -   " + Math.floor((data[i]/total)*100) + "%</font>");
 	}
-	
 	x$('#chartCanvas6').attr("width", screen.width - 30);
-	x$('#chartCanvas6').attr("height", screen.height - 30);
+	x$('#chartCanvas6').attr("height", screen.width - 30);
 	
 	var chart6 = new AwesomeChart('chartCanvas6');
 	chart6.chartType = "pie";
