@@ -66,7 +66,12 @@ ul.right {
     position: relative;
 }
 
-#topmenu .m_total span {
+#topmenu ul li.icon {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+#topmenu li.m_total span {
 	background: rgba(162, 162, 162, 0.2);
 	margin: 5px;
 	border-radius: 8px;
@@ -76,6 +81,18 @@ ul.right {
 	font-weight: bold;
 	display: block;
 }
+
+#topmenu li.m_chart a {
+	background: url("pie_chart_red.png") no-repeat;
+	padding: 10px 2px 5px 30px;
+}
+
+#topmenu li.m_calendar a {
+	background: url("date_magnify.png") no-repeat;
+	padding: 10px 2px 5px 30px;
+	color: white;
+}
+
 
 div.panel {
 	box-sizing: border-box;

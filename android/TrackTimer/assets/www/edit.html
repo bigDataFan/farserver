@@ -7,11 +7,26 @@
 <script type="text/javascript" charset="utf-8" src="time.js"></script>
 <link rel="stylesheet" type="text/css" href="time.css"/>
 
+<script type="text/javascript">
+x$(window).load(function(e) {
+	var created = getParam("created");
+	if (created!=0) {
+		var o = get("me", new Date(), created);
+		editing = o;
+		if (o!=null) {
+			x$('#editTime').attr("value", o.desc);
+			x$('#autostop').attr("value", o.autostop);
+		}
+	}
+});
+
+
+</script>
 </head>
 <body>
 
 <div id="topmenu">
-	<ul>
+	<ul class="right">
 		<li><a class="simple-button" href="javascript:saveTimeConfig()">保存</a></li>
 		<li><a class="simple-button" href="index.html">取消</a></li>
 		<li><a class="simple-button" href="javascript:removeCurrent()">删除</a></li>
