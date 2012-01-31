@@ -15,7 +15,7 @@ x$(window).load(function(e) {
 		editing = o;
 		if (o!=null) {
 			x$('#editTime').attr("value", o.desc);
-			x$('#autostop').attr("value", o.autostop);
+			x$('#autoStop').attr("value", o.autostop);
 		}
 	} else {
 		x$('#btn-remove').remove();
@@ -71,10 +71,5 @@ x$(window).load(function(e) {
 <div class="label">
 	启动<input type="text" id="autoStop" size="4" value="8"> 小时后事项自动结束
 </div>
-
-<div class="label">
-	每隔  <input type="text" style="display:none" id="notifyInterval" size="4" value="60"> 分钟提醒
-</div>
-
 </body>
 </html>
