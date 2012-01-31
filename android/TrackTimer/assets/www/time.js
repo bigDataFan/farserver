@@ -95,6 +95,12 @@ function update(u, d, o) {
 function saveTimeConfig() {
 	var created = getParam("created");
 	var o;
+	
+	if (isNaN(x$('#autoStop').attr("value")[0])) {
+		alert("自动结束时间必须为数字");
+		return;
+	}
+	
 	if (created==0) {
 		o = {
 			"created": new Date().getTime(),
@@ -102,7 +108,6 @@ function saveTimeConfig() {
 			"autostop": x$('#autoStop').attr("value")[0],
 			"laststart": 0,
 			"desc": x$('#editTime').attr("value")[0],
-			"notifyInt": x$('#notifyInterval').attr("value")[0],
 			"stops" : [],
 			"notified": []
 		}
@@ -111,7 +116,7 @@ function saveTimeConfig() {
 		o = get("me", new Date(), created);
 		o.desc = x$('#editTime').attr("value")[0];
 		o.autostop = x$('#autoStop').attr("value")[0];
-		o.notifyInt = x$('#notifyInterval').attr("value")[0];
+		//o.notifyInt = x$('#notifyInterval').attr("value")[0];
 		update("me", new Date(), o);
 	}
 	location.href = "index.html";

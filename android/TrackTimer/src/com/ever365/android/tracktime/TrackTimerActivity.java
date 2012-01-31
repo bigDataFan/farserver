@@ -14,12 +14,6 @@ public class TrackTimerActivity extends DroidGap {
     }
 
 	@Override
-	public void overridePendingTransition(int enterAnim, int exitAnim) {
-		// TODO Auto-generated method stub
-		super.overridePendingTransition(R.anim.layout_animation_row_left_slide, R.anim.fade);
-	}
-
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		 if (keyCode == KeyEvent.KEYCODE_BACK) { // go back home
 			 this.finish(); 
