@@ -64,6 +64,7 @@ ul.right {
 	display: inline;
     float: left;
     position: relative;
+    margin-right: 10px;
 }
 
 #topmenu ul li.icon {
@@ -205,3 +206,88 @@ div.label a.operations {
 }
 
 
+#topmenu a.button {
+	display: inline-block;
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.3);
+	box-shadow: 0 1px 0 rgba(255,255,255,.3);
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	-webkit-border-radius: 1em;
+	border-radius: 1em;
+	border: 1px solid #145072;
+	background: #2567AB;
+	font-weight: bold;
+	color: white;
+	text-shadow: 0 -1px 1px #145072;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#5f9cc5),to(#396b9e));
+	background-image: -webkit-linear-gradient(#5f9cc5,#396b9e);
+	background-image: linear-gradient(#5f9cc5,#396b9e);
+	--padding: 8px 5px;
+}
+
+#topmenu a.button>span.innerspan {
+	border-top: 1px solid white;
+border-color: rgba(255, 255, 255, .3);
+	padding-right: 27px;
+	display: block;
+	padding: .4em 8px .5em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	zoom: 1;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	font-weight: bold;
+	color: white;
+	text-shadow: 0 -1px 1px #145072;
+	-webkit-border-radius: 1em;
+	border-radius: 1em;
+}
+
+#topmenu a.button>span.innerspan > span.icon-cal {
+	background-position:  -432px 50%; 
+}
+
+#topmenu a.button>span.innerspan > span.icon-pie {
+	background-position:  -612px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-home {
+	background-position:  -576px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-save {
+	background-position:  -252px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-cancel {
+	background-position:  -396px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-remove {
+	background-position:  -72px 50%; 
+}
+
+
+ span.ui-icon {
+	left: 4px;
+	position: absolute;
+	top: 50%;
+	margin-top: -9px;
+	width: 18px;
+	height: 18px;
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.4);
+	box-shadow: 0 1px 0 rgba(255,255,255,.4);
+	background: rgba(0, 0, 0, .4);
+	background-image: url(icons-18-white.png);	
+	background-repeat: no-repeat;
+	-webkit-border-radius: 9px;
+	border-radius: 9px;
+}
+
+
+#topmenu a.button>span.innerspan > span.text {
+	position: relative;
+	white-space: nowrap;
+	text-align: center;
+	font-weight: bold;
+	color: white;
+	text-shadow: 0 -1px 1px #145072;
+	margin-left: 16px;
+}

@@ -6,6 +6,8 @@
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="xui-2.3.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="time.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="jquery-1.7.min.js"></script>
 <link rel="stylesheet" type="text/css" href="time.css"/>
 
 <script type="text/javascript">
@@ -17,16 +19,43 @@
 			var o = collections[i];
 			
 			var dura = o.dura;
+			
+			//handle with auto stop event
 			if (o.laststart!=0) {
 				dura = o.dura + new Date().getTime()-o.laststart;
+				if (new Date().getTime() - o.laststart > o.autostop*60*60*1000) {
+					switchTime(o.created);
+					location.href = "index.html";
+				}
 			}
+			
+			
 			
 			var shtml ='<div class="content ' + ((o.laststart==0)?"pending":"running") + '">'
 			 + '<div class="timeDesc">' + o.desc + '</div>'
 			 + '<div class="timeStatics"><span class="timeStart">启动于' + formatHour(o.created) 
 			 + '</span><span class="timePending">,中断' + o.stops.length  + '次</span>&nbsp;<a class="details" href="edit.html?created=' + o.created + '">设置</a></div>'
-			 + '<div class="timeOper" ontouchstart="switchTime(' + o.created + ')"><a href="javascript:void(0);" ><span>' + formatDura(dura) + '</span></a></div></div>';
+			 + '<div class="timeOper" ontouchend="switchTime(' + o.created + ')"><a href="javascript:void(0);" ><span>' + formatDura(dura) + '</span></a></div></div>';
 			x$('#topmenu').after(shtml);
+			
+			
+			
+			//handle with nitification event
+			/*
+			if (o.laststart!=0) {
+				if (o.notified==null) o.notified = [];
+				var lastNotified = o.laststart;
+				if (o.notified.length>0) {
+					lastNotified = o.notified[o.notified.length-1];
+				}
+				
+				//alert((new Date().getTime() - lastNotified) + "--" + o.notifyInt*60*1000); 
+				if (new Date().getTime() - lastNotified > o.notifyInt*60*1000) {
+					o.notified.push(new Date().getTime());
+					update("me", new Date(), o);
+					//navigator.notification.beep(2);
+				}
+			}*/
 		}
 		
 		//x$('#todayTotal').html(collections.length);
@@ -39,18 +68,50 @@
 		}
 		
 		setTimeout('updateTime()', 60*1000);
-		bindEachLink();
 	});
+	//
 </script>
 
 </head>
 <body>
 
 <div id="topmenu">
-	<a class="simple-button" href="edit.html">增加</a>
+	<ul class="left">
+		<li>
+			<a  class="button" ontouchend="location.href='edit.html';" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">增加</span>
+					<span class="ui-icon icon-add"></span>
+				</span>
+			</a>
+		</li>
+	</ul>
 	<ul class="right">
+		<li>
+			<a  class="button" ontouchend="location.href='chart.html'" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">饼图</span>
+					<span class="ui-icon icon-pie"></span>
+				</span>
+			</a>
+		</li>
+		
+		
+		<li>
+			<a class="button" ontouchend="location.href='calendar.html'" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">日历</span>
+					<span class="ui-icon icon-cal"></span>
+				</span>
+			</a>
+		</li>
+	
+		<!-- 
+		<li class="m_button"><a class="simple-button" ontouchstart="$location.href='edit.html';" href="javascript:void(0)">增加</a></li>
 		<li class="m_chart icon" ><a ontouchstart="location.href='chart.html'" href="javascript:void(0)"></a></li>
 		<li class="m_calendar icon"><a ontouchstart="location.href='calendar.html'" href="javascript:void(0)"></a></li>
+		
+		 -->
 		<!-- <li class="m_total"><span id="todayTotal">22</span></li>  -->
 	</ul>	
 		
