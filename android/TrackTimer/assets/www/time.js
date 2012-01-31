@@ -103,13 +103,15 @@ function saveTimeConfig() {
 			"laststart": 0,
 			"desc": x$('#editTime').attr("value")[0],
 			"notifyInt": x$('#notifyInterval').attr("value")[0],
-			"stops" : []
+			"stops" : [],
+			"notified": []
 		}
 		insert("me", new Date(), o);
 	} else {
 		o = get("me", new Date(), created);
-		o.desc = x$('#editTime').attr("value");
-		o.autostop = x$('#autostop').attr("value");
+		o.desc = x$('#editTime').attr("value")[0];
+		o.autostop = x$('#autoStop').attr("value")[0];
+		o.notifyInt = x$('#notifyInterval').attr("value")[0];
 		update("me", new Date(), o);
 	}
 	location.href = "index.html";
@@ -124,7 +126,7 @@ function drawPieOfDay(d) {
 	var colors = [];
 	for(var i=0; i<collections.length; i++) {
 		if (i>colorSrc.length) {
-			colors.push(0);
+			colors.push(colorSrc[0]);
 		} else {
 			colors.push(colorSrc[i]);
 		}
@@ -144,7 +146,7 @@ function drawPieOfDay(d) {
 		total += dura;
 	}
 	for(var i=0; i<collections.length; i++) {
-		x$('#container').after('<div style="margin-top:3px; padding-left:5px; font-weight: bold;font-size: 12px;color:' 
+		x$('#container').after('<div style="margin-top:3px; margin-left:10px; padding-left:5px; font-weight: bold;font-size: 12px;color:' 
 		+ colors[i] + '; border-left: 20px solid ' + colors[i] + ';">' 
 		+ collections[i].desc + "   -   " + Math.floor((data[i]/total)*100) + "%</font>");
 	}

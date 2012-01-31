@@ -19,7 +19,10 @@ x$(window).load(function(e) {
 			alert("错误的请求参数");
 			location.href = 'index.html';
 		}
-		x$('#chartLoc').attr("href", "chart.html?date=" + d);
+		x$('#chartLoc').on("touchend", function() {
+			location.href = "chart.html?date=" + d;
+		});
+		
 		var collections = list("me", new Date(d));
 		for(var i=0; i<collections.length; i++) {
 			x$('div.welcome').remove();
@@ -43,11 +46,34 @@ x$(window).load(function(e) {
 <body>
 
 <div id="topmenu">
-	<a class="simple-button" ontouchstart="location.href='calendar.html'" href="javascript:void(0)">返回日历页面</a>
-	<a class="simple-button" ontouchstart="location.href='index.html'" href="javascript:void(0)">返回首页面</a>
+
+	<ul class="left">
+		<li>
+			<a  class="button" ontouchend="location.href='index.html'" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">首页</span>
+					<span class="ui-icon icon-home"></span>
+				</span>
+			</a>
+		</li>
+		<li>
+			<a  class="button"  ontouchend="location.href='calendar.html'" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">返回日历</span>
+					<span class="ui-icon icon-cal"></span>
+				</span>
+			</a>
+		</li>
+	</ul>
 	
 	<ul class="right">
-		<li class="m_chart icon"><a id="chartLoc" href="chart.html"></a></li>
+		<a class="button" id="chartLoc" ontouchend="location.href='chart.html'" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">饼图</span>
+					<span class="ui-icon icon-pie"></span>
+				</span>
+		</a>
+			
 	</ul>
 	
 </div>

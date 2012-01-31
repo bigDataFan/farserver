@@ -17,6 +17,8 @@ x$(window).load(function(e) {
 			x$('#editTime').attr("value", o.desc);
 			x$('#autostop').attr("value", o.autostop);
 		}
+	} else {
+		x$('#btn-remove').remove();
 	}
 });
 
@@ -27,9 +29,38 @@ x$(window).load(function(e) {
 
 <div id="topmenu">
 	<ul class="right">
+		<li>
+			<a  class="button" ontouchend="saveTimeConfig()" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">保存</span>
+					<span class="ui-icon icon-save"></span>
+				</span>
+			</a>
+		</li>
+		
+		<li>
+			<a  class="button" ontouchend="location.href='index.html'" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">取消</span>
+					<span class="ui-icon icon-cancel"></span>
+				</span>
+			</a>
+		</li>
+		
+		<li>
+			<a class="button" id="btn-remove" ontouchend="removeCurrent()" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">删除</span>
+					<span class="ui-icon icon-remove"></span>
+				</span>
+			</a>
+		</li>
+		
+		<!-- 
 		<li><a class="simple-button" ontouchstart="saveTimeConfig()" href="javascript:void(0)">保存</a></li>
 		<li><a class="simple-button" ontouchstart="location.href='index.html'" href="javascript:void(0)">取消</a></li>
 		<li><a class="simple-button" ontouchstart="removeCurrent()" href="javascript:void(0)">删除</a></li>
+		 -->
 	</ul>	
 </div>
 
@@ -38,11 +69,11 @@ x$(window).load(function(e) {
 </div>
 
 <div class="label">
-	超过<input type="text" id="autoStop" size="4" value="8"> 小时此事项自动结束
+	启动<input type="text" id="autoStop" size="4" value="8"> 小时后事项自动结束
 </div>
 
 <div class="label">
-	每隔  <input type="text" id="notifyInterval" size="4" value="60"> 分钟提醒
+	每隔  <input type="text" style="display:none" id="notifyInterval" size="4" value="60"> 分钟提醒
 </div>
 
 </body>

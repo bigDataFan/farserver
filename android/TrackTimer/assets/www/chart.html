@@ -8,6 +8,7 @@
 <script type="text/javascript" charset="utf-8" src="awesomechart.js"></script>
 <script type="text/javascript" charset="utf-8" src="time.js"></script>
 
+
 <link rel="stylesheet" type="text/css" href="time.css"/>
 
 <script type="text/javascript">
@@ -20,6 +21,14 @@ x$(window).load(function(e) {
 	}
 	
 	drawPieOfDay(d);
+	
+	$.jQTouch({
+	    icon: 'jqtouch.png',
+	    statusBar: 'black-translucent',
+	    preloadImages: []
+	});
+	
+	
 });
 
 </script>
@@ -27,7 +36,16 @@ x$(window).load(function(e) {
 <body>
 
 <div id="topmenu">
-	<a class="simple-button" ontouchstart="location.href='index.html'" href="javascript:void(0)">返回主页面</a>
+	<ul class="left">
+		<li>
+			<a  class="button" ontouchend="location.href='index.html'" href="javascript:void(0)">
+				<span class="innerspan">
+					<span class="text">主页面</span>
+					<span class="ui-icon icon-home"></span>
+				</span>
+			</a>
+		</li>
+	</ul>
 </div>
 
 
