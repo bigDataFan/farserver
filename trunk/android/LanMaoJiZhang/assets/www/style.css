@@ -1,0 +1,228 @@
+@CHARSET "UTF-8";
+* {
+	padding: 0px;
+	margin:  0px;
+}
+
+body {
+	background: url("section_bg.png");
+}
+a {
+    color: #2A78B4;
+    cursor: pointer;
+    text-decoration: none;
+    vertical-align: baseline;
+}
+
+
+#topmenu {
+	border: 1px solid #456F9A;
+	background: #5E87B0;
+	color: white;
+	font-weight: bold;
+	text-shadow: 0 -1px 1px #254F7A;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#81a8ce),to(#5e87b0));
+	background-image: -webkit-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -moz-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -ms-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -o-linear-gradient(#81a8ce,#5e87b0);
+	background-image: linear-gradient(#81a8ce,#5e87b0);
+	border-image: initial;
+	height: 35px;
+	padding: 5px;
+}
+
+#topmenu h1 {
+	min-height: 1.1em;
+	text-align: center;
+	font-size: 24px;
+	display: block;
+	margin: .1em 90px .2em;
+	padding: 0;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	outline: 0!important;
+}
+
+#topmenu ul {
+	display: inline;
+	list-style: none outside none;
+}
+
+ul.left {
+	float:left;
+}
+
+ul.right {
+	float:right;
+}
+
+#topmenu ul li {
+	display: inline;
+    float: left;
+    position: relative;
+    margin-right: 10px;
+}
+
+#topmenu ul li.icon {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+#topmenu li.m_total span {
+	background: rgba(162, 162, 162, 0.2);
+	margin: 5px;
+	border-radius: 8px;
+	padding: 4px;
+	color: #CCC;
+	font-size: 16px;
+	font-weight: bold;
+	display: block;
+}
+
+#topmenu li.m_chart a {
+	background: url("pie_chart_red.png") no-repeat;
+	padding: 10px 2px 5px 30px;
+}
+
+#topmenu li.m_calendar a {
+	background: url("date_magnify.png") no-repeat;
+	padding: 10px 2px 5px 30px;
+	color: white;
+}
+
+
+
+#topmenu a.button {
+	display: inline-block;
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.3);
+	box-shadow: 0 1px 0 rgba(255,255,255,.3);
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	-webkit-border-radius: 1em;
+	border-radius: 1em;
+	border: 1px solid #145072;
+	background: #2567AB;
+	font-weight: bold;
+	color: white;
+	text-shadow: 0 -1px 1px #145072;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#5f9cc5),to(#396b9e));
+	background-image: -webkit-linear-gradient(#5f9cc5,#396b9e);
+	background-image: linear-gradient(#5f9cc5,#396b9e);
+	--padding: 8px 5px;
+}
+
+#topmenu a.button>span.innerspan {
+	border-top: 1px solid white;
+border-color: rgba(255, 255, 255, .3);
+	padding-right: 27px;
+	display: block;
+	padding: .4em 8px .5em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	zoom: 1;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	font-weight: bold;
+	color: white;
+	text-shadow: 0 -1px 1px #145072;
+	-webkit-border-radius: 1em;
+	border-radius: 1em;
+}
+
+#topmenu a.button>span.innerspan > span.icon-cal {
+	background-position:  -432px 50%; 
+}
+
+#topmenu a.button>span.innerspan > span.icon-pie {
+	background-position:  -612px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-home {
+	background-position:  -576px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-save {
+	background-position:  -252px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-cancel {
+	background-position:  -396px 50%; 
+}
+#topmenu a.button>span.innerspan > span.icon-remove {
+	background-position:  -72px 50%; 
+}
+
+
+ span.ui-icon {
+	left: 4px;
+	position: absolute;
+	top: 50%;
+	margin-top: -9px;
+	width: 18px;
+	height: 18px;
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.4);
+	box-shadow: 0 1px 0 rgba(255,255,255,.4);
+	background: rgba(0, 0, 0, .4);
+	background-image: url(icons-18-white.png);	
+	background-repeat: no-repeat;
+	-webkit-border-radius: 9px;
+	border-radius: 9px;
+}
+
+
+#topmenu a.button>span.innerspan > span.text {
+	position: relative;
+	white-space: nowrap;
+	text-align: center;
+	font-weight: bold;
+	color: white;
+	text-shadow: 0 -1px 1px #145072;
+	margin-left: 16px;
+}
+
+.grey-button {
+	color: #525252 !important;
+	border: 1px solid #A5A5A5 !important;
+	background-color: #B6BBC0;
+	color: #525252 !important;
+	border: 1px solid #A5A5A5 !important;
+	background-image: url('button_bg.png'), url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(197,199,202,1)), to(rgba(197,199,202,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
+}
+.grey-button:FOCUS {
+	-webkit-transition: background-position 1s;
+	transition: background-position 1s;
+	background-color: #B6BBC0;
+	background-position: top left, bottom right, 0 0, 0 0;
+	background-image:  url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(202,205,208,1)), to(rgba(202,205,208,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#d1d3d6), to(#9fa5a9));
+}
+
+div.griditem {
+	white-space: nowrap;
+	display: inline-block;
+	vertical-align: bottom;
+	float:left;
+	width: 80px;
+	height:80px;
+	margin:10px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: bottom left, top right, 0 0, 0 0;
+	background-clip: border-box;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	-webkit-box-shadow: 0 1px 4px #fff inset;
+	box-shadow: 0 0 1px #fff inset;
+	-webkit-transition: background-position 1s;
+	transition: background-position 1s;
+}
+
+
+div.griditem span {
+	font-size: 16px;
+	font-weight:bold;
+	display:block;
+	text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+	padding: 60px 5px 8px 5px;
+	background: url("blue_yuan.png") no-repeat 8 0 ;
+}
+
