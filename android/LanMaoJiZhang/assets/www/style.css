@@ -188,7 +188,7 @@ border-color: rgba(255, 255, 255, .3);
 	border: 1px solid #A5A5A5 !important;
 	background-image: url('button_bg.png'), url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(197,199,202,1)), to(rgba(197,199,202,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
 }
-.grey-button:FOCUS {
+.touched {
 	-webkit-transition: background-position 1s;
 	transition: background-position 1s;
 	background-color: #B6BBC0;

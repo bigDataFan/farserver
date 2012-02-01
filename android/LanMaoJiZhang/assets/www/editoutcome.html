@@ -14,7 +14,7 @@ x$(window).load(function(e) {
 	x$('div.griditem').touchend(function(evt) {
 		//x$('div.griditem').removeClass("touched");
 		x$('#navgrid').tween({duration:300, opacity :"0"}, function(data) {
-			location.href = "editoutcome.html";
+			location.href = "style.css";
 		});
 	});
 });
@@ -24,7 +24,6 @@ x$(window).load(function(e) {
 <body>
 	
 <div id="topmenu">
-<!-- 
 	<ul class="left">
 		<li>
 			<a  class="button" ontouchend="location.href='index.html'" href="javascript:void(0)">
@@ -35,28 +34,11 @@ x$(window).load(function(e) {
 			</a>
 		</li>
 	</ul>
- -->	
-	<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">懒猫记账</h1>
+	<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">编辑</h1>
 </div>
 
-
-
-<div id="navgrid">
-	<div class="griditem grey-button">
-		<span class="add-outcome ">增加支出</span>
-	</div>
-	<div class="griditem grey-button"><span>增加收入</span></div>
-	<div class="griditem grey-button"><span>支出列表</span></div>
-	<div class="griditem grey-button"><span>收入列表</span></div>
-	<div class="griditem grey-button"><span>支出分析</span></div>
-	<div class="griditem grey-button"><span>分类配置</span></div>
+<div class="label">
+	时间项名称  <input type="text" id="editTime"> 
 </div>
-
-
-
-<div id="recent-chart">
-
-</div>
-
 </body>
 </html>
