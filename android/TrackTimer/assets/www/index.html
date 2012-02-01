@@ -2,12 +2,11 @@
 <html>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <head>
-<title>PhoneGap</title>
+<title>时间管理小助手</title>
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="xui-2.3.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="time.js"></script>
 
-<script type="text/javascript" charset="utf-8" src="jquery-1.7.min.js"></script>
 <link rel="stylesheet" type="text/css" href="time.css"/>
 
 <script type="text/javascript">
@@ -22,14 +21,15 @@
 			
 			//handle with auto stop event
 			if (o.laststart!=0) {
-				dura = o.dura + new Date().getTime()-o.laststart;
 				if (new Date().getTime() - o.laststart > o.autostop*60*60*1000) {
 					switchTime(o.created);
 					location.href = "index.html";
 				}
 			}
 			
-			
+			if (o.laststart!=0) {
+				dura = o.dura + new Date().getTime()-o.laststart;
+			}
 			
 			var shtml ='<div class="content ' + ((o.laststart==0)?"pending":"running") + '">'
 			 + '<div class="timeDesc">' + o.desc + '</div>'
