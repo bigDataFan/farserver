@@ -15,7 +15,11 @@ function switchTime(created) {
 		}
 		
 		if (all[i].laststart!=0) {
-			all[i].dura += new Date().getTime() - all[i].laststart;
+			var addedDura = new Date().getTime() - all[i].laststart;
+			if (addedDura > all[i].autostop*60*60*1000) {
+				addedDura = all[i].autostop*60*60*1000;
+			}
+			all[i].dura += addedDura;
 			if (all[i].stops==null) all[i].stops = [];
 			all[i].stops.push(new Date().getTime());
 			all[i].laststart = 0;
