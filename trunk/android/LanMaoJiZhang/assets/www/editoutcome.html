@@ -89,9 +89,9 @@ function saveOrUpdate() {
 		outcome.total = x$('#total')[0].value;
 		outcome.outmethod = x$('#outmethod')[0].value;
 		outcome.outtype = x$('#outtype')[0].value;
-		outcome.datemill = outcome.date.getTime();
-		outcomedb().insert(outcome);
-		
+		outcome.time_millsecond = outcome.date.getTime();
+		outcomedb.insert(outcome);
+		location.href = 'outcome-list.html';
 	} else {
 		
 	}
@@ -115,7 +115,7 @@ function saveOrUpdate() {
 	
 	<ul class="right">
 		<li>
-			<a  class="button" ontouchend="saveOrUpdate()" href="javascript:void(0)">
+			<a  class="button" onclick="saveOrUpdate()" href="javascript:void(0)">
 				<span class="innerspan">
 					<span class="text">保存</span>
 					<span class="ui-icon icon-save"></span>
