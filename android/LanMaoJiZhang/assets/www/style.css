@@ -7,6 +7,7 @@
 body {
 	background: url("section_bg.png");
 }
+
 a {
     color: #2A78B4;
     cursor: pointer;
@@ -93,6 +94,7 @@ ul.right {
 }
 
 
+/** top menu buttons */
 
 #topmenu a.button {
 	display: inline-block;
@@ -152,8 +154,7 @@ border-color: rgba(255, 255, 255, .3);
 	background-position:  -72px 50%; 
 }
 
-
- span.ui-icon {
+span.ui-icon {
 	left: 4px;
 	position: absolute;
 	top: 50%;
@@ -180,6 +181,12 @@ border-color: rgba(255, 255, 255, .3);
 	margin-left: 16px;
 }
 
+/**-->| top menu buttons */
+
+
+
+/**grid navigation**/
+
 .grey-button {
 	color: #525252 !important;
 	border: 1px solid #A5A5A5 !important;
@@ -188,6 +195,7 @@ border-color: rgba(255, 255, 255, .3);
 	border: 1px solid #A5A5A5 !important;
 	background-image: url('button_bg.png'), url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(197,199,202,1)), to(rgba(197,199,202,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
 }
+
 .touched {
 	-webkit-transition: background-position 1s;
 	transition: background-position 1s;
@@ -226,3 +234,52 @@ div.griditem span {
 	background: url("blue_yuan.png") no-repeat 8 0 ;
 }
 
+
+/**-->|grid navigation**/
+
+
+div.label {
+	border-bottom: 1px solid #EEE;
+	padding: 14px 20px;
+}
+
+
+div.label input {
+	background: none repeat scroll 0 0 #F7F7F7;
+	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	color: #222;
+	font-size: 1.2em;
+	outline: medium none;
+	padding: 5px;
+}
+
+
+
+
+ul.simple-list li {
+	background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
+	border-left: 1px solid #CBCBCB;
+	border-bottom: 1px solid #CBCBCB;
+	clear: both;
+	height: 60px;
+	overflow: hidden;
+	padding: 0 15px 0 25px;
+	position: relative;
+}
+
+ul.simple-list li div.title {
+	float: left;
+	color: black;
+	font-weight: bold;
+	position: fixed;
+}
+
+ul.simple-list li div.opers {
+	padding: 10px;
+	float: right;
+	color: #2A78B4;
+	font-weight: bold;
+}

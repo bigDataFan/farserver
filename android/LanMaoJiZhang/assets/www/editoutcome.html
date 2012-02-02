@@ -4,25 +4,61 @@
 <title>懒猫记账</title>
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="xui-2.3.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="money.js"></script>
+<script type="text/javascript" charset="utf-8" src="taffy-min.js"></script>
+
+
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
+<style type="text/css">
+
+div.hidden {
+	display: none;
+}
+
+</style>
+
 <script type="text/javascript">
+
+
+
+var categories = [];
+
+function loadCategories() {
+	var categorydb = new TAFFY();
+	categorydb.store("categorydb");
+	
+	categorydb().each(
+		function(r, i) {
+			categories.push(r.category);
+		}	
+	);
+}
+
+
 x$(window).load(function(e) {
-	x$('div.griditem').touchstart(function(evt) {
-		x$('div.griditem').addClass("touched");
-	});
-	x$('div.griditem').touchend(function(evt) {
-		//x$('div.griditem').removeClass("touched");
-		x$('#navgrid').tween({duration:300, opacity :"0"}, function(data) {
-			location.href = "style.css";
-		});
-	});
+	loadCategories();
+	fillselect(x$('#category'));
+	fillselect(x$('#subcategory'));
 });
 
+function fillselect(select) {
+	for(var i=0; i<categories.length; i++) {
+		select.bottom('<option>' + categories[i] + "</option>");
+	}
+} 
+
+
+function onOutTypeChange(e) {
+	if (x$('#outtype')[0].value == "single") {
+		x$('div.multiedit').addClass("hidden");
+		x$('div.category').removeClass("hidden");
+	} else if ()
+}
 </script>
 </head>
 <body>
-	
+	<!-- 
 <div id="topmenu">
 	<ul class="left">
 		<li>
@@ -36,9 +72,65 @@ x$(window).load(function(e) {
 	</ul>
 	<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">编辑</h1>
 </div>
+ -->
+<div class="label">
+	支出描述*  <input type="text" id="desc"  size="10"> 
+</div>
+<div class="label">
+	日期   <input id="year" type="number" size="4">年<input id="month" type="number" size="2"> 月 <input type="number"  id="date" size="2">日
+</div>
 
 <div class="label">
-	时间项名称  <input type="text" id="editTime"> 
+	金额*  <input type="text" id="total" type="number" size="4"> 
 </div>
+
+<div class="label">
+	支出方式 * ：  
+	<select id="outmethod" >
+			<option default="1">现金</option>
+			<option>刷卡</option>
+			<option>网上支付</option>
+	</select> 
+</div> 
+
+<div class="label">
+	支出类型： 
+	<select id="outtype" onchange="onOutTypeChange()">
+		<option value="single" >单笔支出</option>
+		<option value="multiple">多笔(超市购物等)</option>
+		<option value="expecial">特殊支出(预算外)</option>
+	</select>
+</div>
+
+
+<div class="label category">
+	所属分类 ： 
+	<select id="category" class="category">
+	</select> 
+</div>
+
+
+
+<div class="label multiedit hidden">
+	支出项：<input type="text" name="title" size="10">
+</div>
+
+<div class="label multiedit hidden">
+	金额 <input type="text" name="cost" size="4"  class="number">
+</div>
+
+<div class="label multiedit hidden">
+	类别<select id="subcategory" name="category"></select></label>
+</div>
+
+
+<ul class="multilist">
+	<li>
+		
+	</li>
+</ul>
+
+
+
 </body>
 </html>
