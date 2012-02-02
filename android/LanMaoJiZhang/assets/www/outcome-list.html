@@ -16,7 +16,14 @@ outcomedb.store("outcomedb");
 
 
 x$(window).load(function(e) {
-		
+	outcomedb().order("time_millsecond desc").start(0).limit(10).each(
+			function(record,recordnumber) {
+				var d = new Date(record.date);
+				x$('ul.simple-list').bottom('<li><div class="title">' + record.desc + '</div>'
+						+ '<div class="infos">分类: ' + record.category + ', 时间: ' + (d.getMonth()+1) + "-" + d.getDate() + '</div>'
+						+ '<div class="big">' + record.total + '</div></li>');
+			}
+	);
 });
 
 </script>
@@ -37,7 +44,7 @@ x$(window).load(function(e) {
 	
 	<ul class="right">
 		<li>
-			<a  class="button" ontouchend="location.href='editoutcome.html'" href="javascript:void(0)">
+			<a  class="button" ontouchend="location.href='editoutcome.html'" href="editoutcome.html">
 				<span class="innerspan">
 					<span class="text">新建</span>
 					<span class="ui-icon icon-add"></span>
