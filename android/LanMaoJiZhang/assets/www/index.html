@@ -9,10 +9,22 @@
 
 <script type="text/javascript">
 x$(window).load(function(e) {
-	x$('div.add-outcome').touchend(function(evt) {
+	x$('div.add-outcome').touchstart(function(evt) {
+		 PhoneGap.exec(function(){},function(){},"MyEffect","getSetting", 
+				 ["file:///android_asset/www/editoutcome.html"]); 
+		 
 		//navigator.app.loadUrl("file:///android_asset/www/editoutcome.html");
-		location.href = "editoutcome.html"
+		//location.href = "editoutcome.html"
 	});
+	
+	x$('div.add-outcome').touchend(function(evt) {
+		 PhoneGap.exec(function(){},function(){},"MyEffect","getSetting", 
+				 ["file:///android_asset/www/editoutcome.html"]); 
+		 
+		//navigator.app.loadUrl("file:///android_asset/www/editoutcome.html");
+		//location.href = "editoutcome.html"
+	});
+	
 	
 	x$('div.config-category').touchend(function(evt) {
 		location.href = "categories.html";

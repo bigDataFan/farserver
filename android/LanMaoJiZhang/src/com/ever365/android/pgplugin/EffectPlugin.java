@@ -3,21 +3,21 @@ package com.ever365.android.pgplugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-
-import com.ever365.android.lanmao.LanMaoJiZhangActivity;
-import com.ever365.android.lanmao.R;
+import com.ever365.android.lanmao.CurrentLocation;
 import com.phonegap.api.Plugin;
 import com.phonegap.api.PluginResult;
 
 public class EffectPlugin extends Plugin {
-
+	
 	@Override
 	public PluginResult execute(String arg0, JSONArray arg1, String arg2) {
 		JSONArray result = new JSONArray();
+		System.out.println("plugin");
+		try {
+			CurrentLocation.currentLocation = arg1.getString(0);
+		} catch (JSONException e) {
+			
+		}
 		
 		/*
 		 new Thread(new Runnable(){
