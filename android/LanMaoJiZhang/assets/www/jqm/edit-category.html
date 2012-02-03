@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="jquery.mobile-1.0.1.min.css" />
+	<script src="jquery.js"></script>
+	<script src="jquery.mobile-1.0.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="taffy-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style.css"/>
+<title></title>
+
+
+<script type="text/javascript">
+
+var categorydb = new TAFFY();
+categorydb.store("categorydb");
+
+
+$(document).ready(function() {
+	categorydb().each(
+		function(record, recordnumber) {
+			addUICategory(record);
+		}
+	);
+});
+
+function addCategory() {
+	categorydb.insert({category: $('#newcat').val()});
+	addUICategory({category: $('#newcat').val()});
+}
+
+function removeCategory (c) {
+	if (confirm("确认删除这个分类?")) {
+		categorydb({"category": c}).remove();
+		location.href = location.href;
+	}
+}
+
+function addUICategory(c) {
+	$('ul.simple-list').append('<li ><div class="title">' + c.category 
+			+ '</div><div class="opers"><a ontouchend="" onclick="removeCategory(\'' + c.category + '\')">删除</a></div></li>');
+	$('#newcat').val('');
+}
+</script>
+
+</head>
+<body>
+
+
+<div data-role="page">
+
+	<div data-role="header">
+		<a href="javascript:changePage()" data-role="button" data-icon="star">保存</a>
+		<h1>编辑</h1>
+		<a href="javascript:changePage()" data-role="button" data-icon="star">保存</a>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+
+		<div class="label">
+			分类增加：<input type="text" id="newcat"> 
+			<a href="javascript:void(0)" onclick="addCategory()" data-role="button" data-inline="true">增加</a>
+		</div>
+		<ul class="simple-list">
+		</ul>				
+	</div><!-- /content -->
+
+</div><!-- /page -->
+
+<div data-role="page">
+</div>
+
+</body>
+</html>
