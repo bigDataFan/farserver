@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="jqtouch.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="apple.css"/>
+<!--  <link rel="stylesheet" type="text/css" href="../style.css"/>  -->
+<script type="text/javascript" charset="utf-8" src="taffy-min.js"></script>
+
+
+<style type="text/css">
+
+div.label {
+	border-bottom: 1px solid #EEE;
+	padding: 14px 20px;
+}
+
+
+div.label input {
+	background: none repeat scroll 0 0 #F7F7F7;
+	border-color: #CCC #E7E6E6 #E7E6E6 #CCC;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	color: #222;
+	font-size: 1.2em;
+	outline: medium none;
+	padding: 5px;
+}
+
+
+</style>
+<script type="text/javascript">
+
+var categorydb = new TAFFY();
+categorydb.store("categorydb");
+
+$(document).ready(function(){
+	categorydb().each(
+			function(record, recordnumber) {
+				addUICategory(record);
+			}
+	);
+});
+
+$.jQTouch({
+});
+
+
+function addCategory() {
+	var cat = {category: $('#newcat').val()};
+	categorydb.insert(cat);
+	addUICategory(cat);
+}
+
+function removeCategory (c) {
+	if (confirm("确认删除这个分类?")) {
+		categorydb(c).remove();
+		$('#' + c).remove();
+	}
+}
+
+function addUICategory(c) {
+	$('ul.simple-list').append('<li id="' + c.___id + '"><div class="title">' + c.category 
+			+ '</div><div class="opers"><a ontouchend="" onclick="removeCategory(\'' + c.___id + '\')">删除</a></div></li>');
+	$('#newcat').val('');
+}
+
+
+</script>
+        
+</head>
+<body>
+
+<div id="jqt">
+	 <div id="home">
+          <div class="toolbar">
+              <h1>懒猫记账</h1>
+              <a href="#home" class="button leftButton flip">关于</a>
+          </div>
+          		
+			  <ul class="rounded">
+                        <li><a href="#add-outcome" class="slide">增加支出</a></li>
+                        <li><a href="#animdemo" class="slideup">增加收入</a></li>
+                        <li><a href="#animdemo" class="dissolve">支出列表</a></li>
+                        <li><a href="#animdemo" class="pop">收入列表</a></li>
+                        <li><a href="#animdemo" class="pop">支出分析</a></li>
+                        <li class="scroll"><a href="#edit-category" class="pop">分类配置</a></li>
+              </ul>
+	</div>
+
+	<div id="edit-category">
+	 		<div class="toolbar">
+              <h1>分类</h1>
+             <a href="#" class="back">Back</a>
+              <a href="#add" class="button add slideup">+</a>
+          	</div>
+                
+			<div class="label">
+				<input type="text" id="newcat"> <a href="javascript:void(0)" onclick="addCategory()">增加</a> 
+			</div>
+			
+			<ul class="simple-list">
+			</ul>
+	</div>
+	
+	<div id="add-outcome">
+		  <div class="toolbar">
+              <h1>新增支出</h1>
+              <a href="#home" class="button leftButton flip">保存</a>
+          </div>
+          
+	          <div class="label">
+		支出描述*  <input type="text" id="desc"  size="10"> 
+	</div>
+	<div class="label">
+		日期   <input id="year" type="number" size="4">年<input id="month" type="number" size="2"> 月 <input type="number"  id="date" size="2">日
+	</div>
+	
+	<div class="label">
+		金额*  <input type="text" id="total" type="number" size="4"> 
+	</div>
+	
+	<div class="label">
+		支出方式 * ：  
+		<select id="outmethod" >
+				<option default="1">现金</option>
+				<option>刷卡</option>
+				<option>网上支付</option>
+		</select> 
+	</div> 
+	
+	<div class="label">
+		支出类型： 
+		<select id="outtype" onchange="onOutTypeChange()">
+			<option value="single" >单项支出</option>
+			<option value="multiple">多项支出</option>
+			<option value="expecial">不计分类支出</option>
+		</select>
+	</div>
+	
+	
+	<div class="label category">
+		所属分类 ： 
+		<select id="category" class="category">
+		</select> 
+	</div>
+	
+	
+	<div class="label multiedit hidden">
+		支出项：<input type="text" name="title" size="10">
+	</div>
+	
+	<div class="label multiedit hidden">
+		金额 :<input type="text" name="cost" size="4"  class="number">
+	</div>
+	
+	<div class="label multiedit hidden">
+		类别:<select id="subcategory" name="category"></select></label>
+	</div>
+	<div class="label multiedit hidden">
+		<a href="javascript:void(0)" ontouchend="addSubItem()">增加子项</a>
+	</div>
+	
+	<div class="hidden multiedit">
+		<ul class="multilist">
+		</ul>
+	</div>
+	</div>
+</div>
+</body>
+</html>

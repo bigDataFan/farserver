@@ -10,7 +10,8 @@
 <script type="text/javascript">
 x$(window).load(function(e) {
 	x$('div.add-outcome').touchend(function(evt) {
-			location.href = "editoutcome.html";
+		//navigator.app.loadUrl("file:///android_asset/www/editoutcome.html");
+		location.href = "editoutcome.html"
 	});
 	
 	x$('div.config-category').touchend(function(evt) {
@@ -19,10 +20,15 @@ x$(window).load(function(e) {
 	
 });
 
+function dd() {
+	
+}
+
 </script>
 </head>
 <body>
-	
+
+
 <div id="topmenu">
 <!-- 
 	<ul class="left">

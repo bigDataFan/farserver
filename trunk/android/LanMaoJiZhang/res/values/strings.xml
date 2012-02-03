@@ -3,5 +3,5 @@
 
     <string name="hello">Hello World, LanMaoJiZhangActivity!</string>
     <string name="app_name">LanMaoJiZhang</string>
-
+	<integer name="s_longAnimTime">300</integer>
 </resources>
