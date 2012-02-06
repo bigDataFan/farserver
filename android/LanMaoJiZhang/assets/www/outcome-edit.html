@@ -1,0 +1,201 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>支出编辑</title>
+<script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
+<script type="text/javascript" charset="utf-8" src="money.js"></script>
+<script type="text/javascript" charset="utf-8" src="taffy-min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css"/>
+
+<script type="text/javascript">
+
+var outcomedb = new TAFFY();
+outcomedb.store("outcomedb");
+
+var outcomeid = null;
+
+$(document).ready(function(){
+	
+	loadCategories("categorydb", [$('#category'), $('#multi-category')]);
+
+	var d = new Date();
+	
+	var id = getParam("id");
+	if (id!=0) {
+		outcomeid = id;
+		var outcome = outcomedb(id).first();
+		$('#total').val(outcome.total);
+		$('#desc').val(outcome.title);
+		d = new Date(outcome.date);
+	}
+	
+	$('#year').val(d.getFullYear());
+	$('#month').val(d.getMonth()+1);
+	$('#date').val(d.getDate());
+	
+});
+
+
+function bindEvent(evt) {
+	$('#link-addsubitem').bind(evt, addsubItemClick);
+	$('#link-calculate').bind(evt, calculateTotal);
+	$('#to-main').bind(evt, goToMain);
+	$('#to-outcome-list').bind(evt, goOutComeList);
+	$('#btn-save').bind(evt, saveOrUpdate);
+}
+
+
+function onOutTypeChange(e) {
+	var value = $('#outtype').val();
+	if (value == "single") {
+		$('.multiedit').addClass("hidden");
+		$('div.category').removeClass("hidden");
+	} else if (value == "multiple") {
+		$('.multiedit').removeClass("hidden");
+		$('div.category').addClass("hidden");
+	} else {
+		$('.multiedit').addClass("hidden");
+		$('div.category').addClass("hidden");
+	}
+}
+
+function saveOrUpdate() {
+	var outcome = {};
+	
+	outcome.title = $('#desc').val();
+	outcome.date = new Date($('#year').val(), parseInt($('#month').val())-1, $('#date').val());
+	outcome.total = $('#total').val();
+	outcome.outmethod = $('#outmethod').val();
+	outcome.outtype = $('#outtype').val();
+	outcome.time_millsecond = outcome.date.getTime();
+	outcome.category = null;
+	if (outcome.outtype=="single") {
+		outcome.category = $('#category').val();	
+	} else if (outcome.outtype=="multiple") {
+		outcome.items = [];
+		$('#sub-list-info li').each(function(el) {
+			var o =  {};
+			o.title = $(this).find('h3').html();
+			o.cost = $(this).find('div').html();
+			o.category = $(this).find('p span').html();
+			outcome.items.push(o);
+		});
+	}
+	
+	
+	
+	
+	if (outcomeid==null) {
+		//insert
+		outcomedb.insert(outcome);
+		goOutComeList();
+	} else {
+		outcomedb.insert(outcome);	
+		goOutComeList();
+	}
+}
+
+function addsubItemClick() {
+	$('#sub-list-info').append('<li><div>' + $('#multi-count').val() + '</div>'  
+			+ '<h3>' + $('#multi-desc').val() +'</h3>' 
+			+ '<p><span>' + $('#multi-category').val() + '</span><a class="multi-remove" >删除</a></p></li>');
+}
+
+function calculateTotal() {
+	
+}
+
+</script>
+</head>
+<body>
+<div id="topmenu">
+	<ul class="left">
+		<li>
+			<a  class="button" id="to-main">
+				<span class="innerspan">
+					<span class="text">主页面</span>
+					<span class="ui-icon icon-home"></span>
+				</span>
+			</a>
+		</li>
+	</ul>
+	
+	<ul class="right">
+		<li>
+			<span  class="button" id="to-outcome-list">
+				<span class="innerspan">
+					<span class="text">支出列表</span>
+					<span class="ui-icon icon-list"></span>
+				</span>
+			</span>
+		</li>
+		<li>
+			<span  class="button" id="btn-save">
+				<span class="innerspan">
+					<span class="text">保存</span>
+					<span class="ui-icon icon-save"></span>
+				</span>
+			</span>
+		</li>
+	</ul>
+</div>
+
+<div class="label">
+	金额*  <input type="text" id="total" type="number" size="4"> 
+</div>
+<div class="label">
+	描述*  <input type="text" id="desc"  size="10"> 
+</div>
+<div class="label">
+	日期*   <input id="year" type="number" size="4">年<input id="month" type="number" size="2"> 月 <input type="number"  id="date" size="2">日
+</div>
+
+<div class="label">
+	支出方式 * ：  
+	<select id="outmethod" >
+			<option >现金</option>
+			<option>刷卡</option>
+			<option>网上支付</option>
+	</select> 
+</div> 
+
+
+<div class="grouped"> 
+	<div class="label">
+		支出类型： 
+		<select id="outtype" onchange="onOutTypeChange()">
+			<option value="single" >单项支出</option>
+			<option value="multiple">多项支出</option>
+			<option value="expecial">不计分类支出</option>
+		</select>
+	</div>
+	
+	
+	<div class="label category">
+		所属分类 ： 
+		<select id="category" class="category">
+		</select> 
+	</div>
+	
+	<div class="label multiedit hidden">
+		金额 :<input type="number" id="multi-count" size="4"  class="number">
+		描述：<input type="text" id="multi-desc" size="10">
+		<p>
+		类别:<select id="multi-category"></select>
+		</p>
+		<p>
+		<a id="link-addsubitem" class="btn">增加子项</a>  
+		<a id="link-calculateTotal" href="javascript:void(0)" class="btn">计算到总金额</a>
+		</p>  
+		<ul class="multilist" id="sub-list-info">
+		</ul>
+	</div>
+
+	
+</div>
+
+
+</body>
+</html>

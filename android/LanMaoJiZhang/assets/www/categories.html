@@ -5,10 +5,10 @@
 <title>分类管理</title>
 
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
-<script type="text/javascript" charset="utf-8" src="xui-2.3.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="taffy-min.js"></script>
-
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
 <script type="text/javascript" charset="utf-8" src="money.js"></script>
+
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
 <script type="text/javascript">
@@ -16,7 +16,11 @@
 var categorydb = new TAFFY();
 categorydb.store("categorydb");
 
-x$(window).load(function(e) {
+
+$(document).ready(function(){
+	bindEvent("click");
+	bindEvent("ontouchend");
+	
 	categorydb().each(
 		function(record, recordnumber) {
 			addUICategory(record);
@@ -25,8 +29,8 @@ x$(window).load(function(e) {
 });
 
 function addCategory() {
-	categorydb.insert({category: x$('#newcat')[0].value});
-	addUICategory({category: x$('#newcat')[0].value});
+	categorydb.insert({category: $('#newcat').val()});
+	addUICategory({category: $('#newcat').val()});
 }
 
 function removeCategory (c) {
@@ -37,36 +41,39 @@ function removeCategory (c) {
 }
 
 function addUICategory(c) {
-	x$('ul.simple-list').bottom('<li ><div class="title">' + c.category 
+	$('ul.simple-list').append('<li class="detail" ><div class="title">' + c.category 
 			+ '</div><div class="opers"><a ontouchend="" onclick="removeCategory(\'' + c.category + '\')">删除</a></div></li>');
-	x$('#newcat')[0].value = "";
+	$('#newcat').val('');
+}
+
+
+function bindEvent(evt) {
+	$('#to-main').bind(evt, goToMain);
 }
 
 </script>
 </head>
 <body>
 
-
 <div id="topmenu">
 	<ul class="left">
 		<li>	
-			<a  class="button" ontouchend="location.href='index.html'" href="javascript:void(0)">
+			<span class="button" id="to-main">
 				<span class="innerspan">
 					<span class="text">主页面</span>
 					<span class="ui-icon icon-home"></span>
 				</span>
-			</a>
+			</span>
 		</li>
 	</ul>
 	<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">编辑分类</h1>
 </div>
 
 <div class="label">
-	分类增加：<input type="text" id="newcat"> <a href="javascript:void(0)" onclick="addCategory()">增加</a> 
+	分类增加：<input type="text" id="newcat"> <a href="javascript:void(0)" class="btn" onclick="addCategory()">增加</a> 
 </div>
 
 <ul class="simple-list">
-	<li><div class="title">分类1</div><div class="opers">删除</div></li>
 </ul>
 
 </body>

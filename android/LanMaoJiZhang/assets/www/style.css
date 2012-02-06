@@ -15,6 +15,26 @@ a {
     vertical-align: baseline;
 }
 
+a.btn {
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	margin: .5em 5px;
+	padding: 8px 10px;
+	-webkit-box-shadow: 0 1px 4px rgba(0,0,0,.3);
+	box-shadow: 0 1px 4px rgba(0,0,0,.3);
+	border: 1px solid #CCC;
+	background: #EEE;
+	font-weight: bold;
+	color: #444;
+	text-shadow: 0 1px 1px #F6F6F6;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#fdfdfd),to(#eee));
+	background-image: -webkit-linear-gradient(#fdfdfd,#eee);
+	background-image: -ms-linear-gradient(#fdfdfd,#eee);
+	background-image: -o-linear-gradient(#fdfdfd,#eee);
+	background-image: linear-gradient(#fdfdfd,#eee);
+}
+
 
 #topmenu {
 	border: 1px solid #456F9A;
@@ -96,7 +116,7 @@ ul.right {
 
 /** top menu buttons */
 
-#topmenu a.button {
+#topmenu .button {
 	display: inline-block;
 	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.3);
 	box-shadow: 0 1px 0 rgba(255,255,255,.3);
@@ -116,7 +136,7 @@ ul.right {
 	--padding: 8px 5px;
 }
 
-#topmenu a.button>span.innerspan {
+#topmenu .button>span.innerspan {
 	border-top: 1px solid white;
 border-color: rgba(255, 255, 255, .3);
 	padding-right: 27px;
@@ -134,25 +154,29 @@ border-color: rgba(255, 255, 255, .3);
 	border-radius: 1em;
 }
 
-#topmenu a.button>span.innerspan > span.icon-cal {
+#topmenu .button>span.innerspan > span.icon-cal {
 	background-position:  -432px 50%; 
 }
 
-#topmenu a.button>span.innerspan > span.icon-pie {
+#topmenu .button>span.innerspan > span.icon-pie {
 	background-position:  -612px 50%; 
 }
-#topmenu a.button>span.innerspan > span.icon-home {
+#topmenu .button>span.innerspan > span.icon-home {
 	background-position:  -576px 50%; 
 }
-#topmenu a.button>span.innerspan > span.icon-save {
+#topmenu .button>span.innerspan > span.icon-save {
 	background-position:  -252px 50%; 
 }
-#topmenu a.button>span.innerspan > span.icon-cancel {
+#topmenu .button>span.innerspan > span.icon-cancel {
 	background-position:  -396px 50%; 
 }
-#topmenu a.button>span.innerspan > span.icon-remove {
+#topmenu .button>span.innerspan > span.icon-remove {
 	background-position:  -72px 50%; 
 }
+#topmenu .button>span.innerspan > span.icon-list {
+	background-position:  -432px 50%; 
+}
+
 
 span.ui-icon {
 	left: 4px;
@@ -171,7 +195,7 @@ span.ui-icon {
 }
 
 
-#topmenu a.button>span.innerspan > span.text {
+#topmenu .button>span.innerspan > span.text {
 	position: relative;
 	white-space: nowrap;
 	text-align: center;
@@ -270,16 +294,31 @@ div.label select {
 	padding: 5px;
 }
 
+ul.simple-list li.head {
+	padding:.25em;
+	height: 20px;
+	border: 1px solid #456F9A;
+	background: #5E87B0;
+	color: white;
+	font-weight: bold;
+	text-shadow: 0 -1px 1px #254F7A;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#81a8ce),to(#5e87b0));
+	background-image: -webkit-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -moz-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -ms-linear-gradient(#81a8ce,#5e87b0);
+	background-image: -o-linear-gradient(#81a8ce,#5e87b0);
+	background-image: linear-gradient(#81a8ce,#5e87b0);
+}
 
-ul.simple-list li {
+
+ul.simple-list li.detail {
 	background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
-	border-left: 1px solid #CBCBCB;
 	border-bottom: 1px solid #CBCBCB;
 	clear: both;
-	height: 50px;
 	overflow: hidden;
 	padding: 10px 15px 0 25px;
 	position: relative;
+	height: 50px;
 }
 
 ul.simple-list li div.title {
@@ -308,10 +347,51 @@ ul.simple-list li div.big {
 	text-shadow: 0 1px 0 white;
 }
 
-
 ul.simple-list li div.opers {
 	padding: 10px;
 	float: right;
 	color: #2A78B4;
 	font-weight: bold;
 }
+
+div.hidden {
+	display: none;
+}
+
+
+div.grouped {
+	margin: 10px;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: #AAA 0 0 10px;
+}
+
+ul.multilist li {
+	background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
+	border-bottom: 1px solid #CBCBCB;
+	height: 35px;
+}
+
+ul.multilist li h3 {
+	margin: 0;
+	padding-left: 18px;
+	font-size: 14px;
+	white-space: nowrap;
+}
+ul.multilist li p {
+	margin: 0;
+	padding-left: 18px;
+	font-size: 11px;
+	color: #777;
+	white-space: nowrap;
+}
+
+ul.multilist li div {
+	position: relative;
+	float: right;
+	margin-right: -10px;
+	border: none;
+	font-size: 11px;
+	font-weight: bold;
+	padding-left: 15px;
+	padding-right: 10px;
+	z-index: 5;
