@@ -13,10 +13,10 @@ public class LanMaoJiZhangActivity extends DroidGap {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.loadUrl("file:///android_asset/www/index.html");
-        System.out.println("kk");
     }
     
-	private long lastClick = 0;
+    
+    /*
 	
 	
 	@Override
@@ -31,7 +31,9 @@ public class LanMaoJiZhangActivity extends DroidGap {
 		super.onUserInteraction();
 	}
 
-
+     */
+    
+    private long lastClick = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		 if (keyCode == KeyEvent.KEYCODE_BACK) { // go back home

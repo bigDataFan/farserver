@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>支出列表</title>
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
-<script type="text/javascript" charset="utf-8" src="xui-2.3.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
 <script type="text/javascript" charset="utf-8" src="money.js"></script>
 <script type="text/javascript" charset="utf-8" src="taffy-min.js"></script>
 
@@ -14,17 +14,33 @@
 var outcomedb = new TAFFY();
 outcomedb.store("outcomedb");
 
-
-x$(window).load(function(e) {
+$(document).ready(function(){
+	
 	outcomedb().order("time_millsecond desc").start(0).limit(10).each(
 			function(record,recordnumber) {
 				var d = new Date(record.date);
-				x$('ul.simple-list').bottom('<li><div class="title">' + record.desc + '</div>'
-						+ '<div class="infos">分类: ' + record.category + ', 时间: ' + (d.getMonth()+1) + "-" + d.getDate() + '</div>'
+				
+				if ($('#month-' + d.getMonth()).length==0) {
+					$('ul.simple-list').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
+				}
+				
+				$('ul.simple-list').append('<li class="detail" id="' + record.___id + '"><div class="title">' + record.title + '</div>'
+						+ '<div class="infos">分类: ' + record.category + ', 时间 ' + d.getDate() + '日</div>'
 						+ '<div class="big">' + record.total + '</div></li>');
 			}
 	);
 });
+
+function bindEvent(evt) {
+	$('#to-main').bind(evt, goToMain);
+	$('#btn-new-outcome').bind(evt, addOutCome);
+	$('ul.simple-list li.detail').live(evt, editOutCome);
+}
+
+function editOutCome() {
+	location.href = "outcome-edit.html?id=" + $(this).attr("id"); 
+}
+
 
 </script>
 </head>
@@ -33,34 +49,30 @@ x$(window).load(function(e) {
 <div id="topmenu">
 	<ul class="left">
 		<li>
-			<a  class="button" ontouchend="location.href='index.html'" href="javascript:void(0)">
+			<span class="button" id="to-main">
 				<span class="innerspan">
 					<span class="text">主页面</span>
 					<span class="ui-icon icon-home"></span>
 				</span>
-			</a>
+			</span>
 		</li>
 	</ul>
 	
 	<ul class="right">
 		<li>
-			<a  class="button" ontouchend="location.href='editoutcome.html'" href="editoutcome.html">
+			<span class="button" id="btn-new-outcome">
 				<span class="innerspan">
 					<span class="text">新建</span>
 					<span class="ui-icon icon-add"></span>
 				</span>
-			</a>
+			</span>
 		</li>
 	</ul>
 </div>
 
 
 <ul class="simple-list">
-	<li>
-		<div class="title">一个支出</div>
-		<div class="infos">分类: aaa, 时间:11-2 </div>
-		<div class="big">42.1</div>
-	</li>
+	
 </ul>
 
 </body>

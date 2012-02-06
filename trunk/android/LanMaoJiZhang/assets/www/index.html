@@ -4,37 +4,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>懒猫记账</title>
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
-<script type="text/javascript" charset="utf-8" src="xui-2.3.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
+<script type="text/javascript" charset="utf-8" src="money.js"></script>
+
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
 <script type="text/javascript">
-x$(window).load(function(e) {
-	x$('div.add-outcome').touchstart(function(evt) {
-		 PhoneGap.exec(function(){},function(){},"MyEffect","getSetting", 
-				 ["file:///android_asset/www/editoutcome.html"]); 
-		 
-		//navigator.app.loadUrl("file:///android_asset/www/editoutcome.html");
-		//location.href = "editoutcome.html"
-	});
-	
-	x$('div.add-outcome').touchend(function(evt) {
-		 PhoneGap.exec(function(){},function(){},"MyEffect","getSetting", 
-				 ["file:///android_asset/www/editoutcome.html"]); 
-		 
-		//navigator.app.loadUrl("file:///android_asset/www/editoutcome.html");
-		//location.href = "editoutcome.html"
-	});
-	
-	
-	x$('div.config-category').touchend(function(evt) {
-		location.href = "categories.html";
-	});
-	
+
+$(document).ready(function(){
+	if ($.os.ios || $.os.android || $.os.iphone || $.os.ipad) {
+		bindEvent('touchend');
+	} else {
+		bindEvent('click');
+	}
 });
 
-function dd() {
-	
+function bindEvent(evt) {
+	$('#to-main').bind(evt, goToMain);
+	$('#btn-new-outcome').bind(evt, addOutCome);
+	$('#btn-outcome-list').bind(evt, goOutComeList);
+	$('#btn-config-category').bind(evt, configCategory);
 }
+
 
 </script>
 </head>
@@ -60,14 +51,14 @@ function dd() {
 
 
 <div id="navgrid">
-	<div class="griditem grey-button add-outcome">
+	<div id="btn-new-outcome" class="griditem grey-button add-outcome">
 		<span>增加支出</span>
 	</div>
-	<div class="griditem grey-button"><span>增加收入</span></div>
-	<div class="griditem grey-button"><span>支出列表</span></div>
+	<div id="btn-new-outcome" class="griditem grey-button"><span>增加收入</span></div>
+	<div id="btn-outcome-list" class="griditem grey-button"><span>支出列表</span></div>
 	<div class="griditem grey-button"><span>收入列表</span></div>
 	<div class="griditem grey-button"><span>支出分析</span></div>
-	<div class="griditem grey-button config-category"><span>分类配置</span></div>
+	<div id="btn-config-category" class="griditem grey-button config-category"><span>分类配置</span></div>
 </div>
 
 
