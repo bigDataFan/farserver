@@ -387,7 +387,6 @@ var Zepto = (function() {
         funcArg(this, name, idx, classList).split(/\s+/g).forEach(function(klass) {
           classList = classList.replace(classRE(klass), " ");
         });
-        alert(classList);
         this.className = classList.trim();
       });
     },

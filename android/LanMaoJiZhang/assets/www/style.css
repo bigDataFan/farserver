@@ -310,30 +310,61 @@ ul.simple-list li.head {
 	background-image: linear-gradient(#81a8ce,#5e87b0);
 }
 
-
 ul.simple-list li.detail {
 	background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
 	border-bottom: 1px solid #CBCBCB;
 	clear: both;
 	overflow: hidden;
-	padding: 10px 15px 0 25px;
+	padding: .4em 1em 0 .4em;
 	position: relative;
 	height: 50px;
 }
 
+
+ul.simple-list li.detail div.dot {
+	float: left;
+	left: -7px;
+	margin: 2px -9px 0 2px;
+	padding: 1em 0 1em .5em;
+	position: relative;
+	top: -7px;
+}
+
+li.detail div.checkbox {
+	background: url('checkbox.png');
+	-webkit-background-size: 18px 19px;
+	width: 18px;
+	height: 19px;
+}
+
+
+li.checked div.checkbox {
+	background: url('checked.png');
+	-webkit-background-size: 18px 19px;
+	width: 18px;
+	height: 19px;
+}
+
+
+
+
 ul.simple-list li div.title {
 	float: left;
+	padding-left:.5em;
+	min-width:10em;
 	color: black;
 	font-weight: bold;
+	font-size: 1em;
 }
 
 ul.simple-list li div.infos {
+	font-size:.8em;
 	position:fixed;
+	padding-left:2em;
 	float: left;
 	margin-top:5px;
 	color: black;
 	color: #7D7D7D;
-	font-size: 14px;
 	text-shadow: 0 1px 0 white;
 }
 
@@ -358,7 +389,6 @@ div.hidden {
 	display: none;
 }
 
-
 div.grouped {
 	margin: 10px;
 	border: 1px solid #ccc;
@@ -368,19 +398,17 @@ div.grouped {
 ul.multilist li {
 	background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
 	border-bottom: 1px solid #CBCBCB;
-	height: 35px;
+	padding: .5em;
 }
 
 ul.multilist li h3 {
 	margin: 0;
-	padding-left: 18px;
-	font-size: 14px;
+	font-size: 1em;
 	white-space: nowrap;
 }
 ul.multilist li p {
 	margin: 0;
-	padding-left: 18px;
-	font-size: 11px;
+	font-size: .8em;
 	color: #777;
 	white-space: nowrap;
 }
@@ -388,10 +416,9 @@ ul.multilist li p {
 ul.multilist li div {
 	position: relative;
 	float: right;
-	margin-right: -10px;
 	border: none;
-	font-size: 11px;
+	font-size: 1em;
 	font-weight: bold;
-	padding-left: 15px;
-	padding-right: 10px;
+	padding-top:.5em;
+	padding-right: .5em;
 	z-index: 5;
