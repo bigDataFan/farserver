@@ -24,8 +24,8 @@ $(document).ready(function(){
 			}
 			
 			$('ul.simple-list').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div>' 
-					+ '<div class="title">' + record.title + '</div>'
-					+ '<div class="infos">来自: ' + record.from + ', 时间 ' + d.getDate() + '日</div>'
+					+ '<div class="title">' + record.intype + '</div>'
+					+ '<div class="infos">' + d.getDate() + '日 ' + record.from + '   ' + record.title  + '</div>'
 					+ '<div class="big">' + record.total + '</div></li>');
 		}
 	);
