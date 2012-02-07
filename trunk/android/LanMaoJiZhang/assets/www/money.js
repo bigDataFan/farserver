@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
 	if ($.os.ios || $.os.android || $.os.iphone || $.os.ipad) {
 		bindEvent('touchend');
@@ -26,6 +24,10 @@ function goOutComeList() {
 	location.href = "outcome-list.html";
 }
 
+function addInCome() {
+	location.href = "income-edit.html";
+}
+
 function configCategory() {
 	location.href = "categories.html";
 }
@@ -35,8 +37,7 @@ function fillselect(select, categories) {
 	for(var i=0; i<categories.length; i++) {
 		select.append('<option>' + categories[i] + "</option>");
 	}
-} 
-
+}
 
 function loadCategories(db, ary) {
 	var categorydb = new TAFFY();

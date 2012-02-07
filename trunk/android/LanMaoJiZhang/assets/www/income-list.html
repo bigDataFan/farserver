@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>支出列表</title>
+<title>收入列表</title>
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="zepto.js"></script>
 <script type="text/javascript" charset="utf-8" src="money.js"></script>
@@ -11,28 +11,20 @@
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
 <script type="text/javascript">
-var outcomedb = new TAFFY();
-outcomedb.store("outcomedb");
+var incomedb = new TAFFY();
+incomedb.store("incomedb");
 
 $(document).ready(function(){
-	outcomedb().order("time_millsecond desc").start(0).limit(10).each(
+	incomedb().order("time_millsecond desc").start(0).limit(10).each(
 		function(record,recordnumber) {
 			var d = new Date(record.date);
-			
+							
 			if ($('#month-' + d.getMonth()).length==0) {
 				$('ul.simple-list').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
 			}
 			
-			var category = "无分类";
-			if (record.items && record.items.length>0) {
-				category = record.items[0].category + "等";
-			} else {
-				if (record.category) {
-					category = record.category;
-				}
-			}
 			$('ul.simple-list').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div><div class="title">' + record.title + '</div>'
-					+ '<div class="infos">分类: ' + category + ', 时间 ' + d.getDate() + '日</div>'
+					+ '<div class="infos">来自: ' + category + ', 时间 ' + d.getDate() + '日</div>'
 					+ '<div class="big">' + record.total + '</div></li>');
 		}
 	);
@@ -40,7 +32,8 @@ $(document).ready(function(){
 
 function bindEvent(evt) {
 	$('#to-main').bind(evt, goToMain);
-	$('#btn-new-outcome').bind(evt, addOutCome);
+	$('#btn-new-income').bind(evt, addInCome);
+	
 	$('#btn-remove-outcome').bind(evt, removeSelected);
 	$('ul.simple-list li.detail div.title').live(evt, editOutCome);
 	$('ul.simple-list li.detail div.infos').live(evt, editOutCome);
@@ -60,9 +53,9 @@ function toggleChecked() {
 	}
 	
 	if ($('li.checked').length>0) {
-		$('#li-remove-outcome').show();
+		$('#li-remove-income').show();
 	} else {
-		$('#li-remove-outcome').hide();
+		$('#li-remove-income').hide();
 	}
 }
 
@@ -93,8 +86,8 @@ function removeSelected() {
 	</ul>
 	
 	<ul class="right">
-		<li style="display:none" id="li-remove-outcome" >
-			<span class="button" id="btn-remove-outcome">
+		<li style="display:none" id="li-remove-income" >
+			<span class="button" id="btn-remove-income">
 				<span class="innerspan">
 					<span class="text">删除</span>
 					<span class="ui-icon icon-remove"></span>
@@ -103,7 +96,7 @@ function removeSelected() {
 		</li>
 		
 		<li>
-			<span class="button" id="btn-new-outcome">
+			<span class="button" id="btn-new-income">
 				<span class="innerspan">
 					<span class="text">新建</span>
 					<span class="ui-icon icon-add"></span>
