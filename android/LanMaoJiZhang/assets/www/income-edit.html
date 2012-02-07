@@ -19,18 +19,29 @@ var incomeid = null;
 $(document).ready(function(){
 	
 	var d = new Date();
-	$('#year').val(d.getFullYear());
-	$('#month').val(d.getMonth()+1);
-	$('#date').val(d.getDate());
 	
 	var id = getParam("id");
 	if (id!=0) {
 		incomeid = id;
 		var income = incomedb(id).first();
-		$('#total').val(outcome.total);
-		$('#desc').val(outcome.title);
-		d = new Date(outcome.date);
+
+		d = new Date(income.date);
+		$('#total').val(income.total);
+		$('#desc').val(income.title);
+		$('#from').val(income.from);
+		$('#intype').val(income.intype);
+		
+		$('#fullSalary').val(income.fullSalary);
+		$('#endowmentInsurance').val(income.endowmentInsurance);
+		$('#medicalInsurance').val(income.medicalInsurance);
+		$('#jobInsurance').val(income.jobInsurance);
+		$('#personalTax').val(income.personalTax);
+		$('#housingReserve').val(income.housingReserve);
 	}
+	
+	$('#year').val(d.getFullYear());
+	$('#month').val(d.getMonth()+1);
+	$('#date').val(d.getDate());
 });
 
 
@@ -84,6 +95,11 @@ function saveOrUpdate() {
 	income.intype = $('#intype').val();
 	
 	income.fullSalary = $('#fullSalary').val();
+	income.endowmentInsurance = $('#endowmentInsurance').val();
+	income.medicalInsurance = $('#medicalInsurance').val();
+	income.jobInsurance = $('#jobInsurance').val();
+	income.personalTax = $('#personalTax').val();
+	income.housingReserve = $('#housingReserve').val();
 	
 	
 	if (incomeid==null) {
@@ -181,7 +197,7 @@ function getFloorTax(A) {
 </div>
 <div class="label">
 	收入类型: 
-	<select name="intype" >
+	<select id="intype" >
 		<option>固定收入</option>
 		<option>奖金及补贴</option>
 		<option>股票与其他投资</option>
