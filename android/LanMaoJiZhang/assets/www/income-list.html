@@ -23,8 +23,9 @@ $(document).ready(function(){
 				$('ul.simple-list').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
 			}
 			
-			$('ul.simple-list').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div><div class="title">' + record.title + '</div>'
-					+ '<div class="infos">来自: ' + category + ', 时间 ' + d.getDate() + '日</div>'
+			$('ul.simple-list').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div>' 
+					+ '<div class="title">' + record.title + '</div>'
+					+ '<div class="infos">来自: ' + record.from + ', 时间 ' + d.getDate() + '日</div>'
 					+ '<div class="big">' + record.total + '</div></li>');
 		}
 	);
@@ -35,13 +36,13 @@ function bindEvent(evt) {
 	$('#btn-new-income').bind(evt, addInCome);
 	
 	$('#btn-remove-outcome').bind(evt, removeSelected);
-	$('ul.simple-list li.detail div.title').live(evt, editOutCome);
-	$('ul.simple-list li.detail div.infos').live(evt, editOutCome);
+	$('ul.simple-list li.detail div.title').live(evt, editInCome);
+	$('ul.simple-list li.detail div.infos').live(evt, editInCome);
 	$('ul.simple-list li.detail div.checkbox').live(evt, toggleChecked);
 }
 
-function editOutCome() {
-	location.href = "outcome-edit.html?id=" + $(this).parent().attr("id"); 
+function editInCome() {
+	location.href = "income-edit.html?id=" + $(this).parent().attr("id"); 
 }
 
 function toggleChecked() {

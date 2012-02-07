@@ -24,6 +24,10 @@ function goOutComeList() {
 	location.href = "outcome-list.html";
 }
 
+function goInComeList() {
+	location.href = "income-list.html";
+}
+
 function addInCome() {
 	location.href = "income-edit.html";
 }
@@ -54,7 +58,6 @@ function loadCategories(db, ary) {
 		fillselect(ary[i], categories);
 	}
 }
-
 
 
 

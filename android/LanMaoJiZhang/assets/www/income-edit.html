@@ -81,6 +81,9 @@ function saveOrUpdate() {
 	income.desc = "";
 	income.from = $('#from').val();
 	income.time_millsecond = income.date.getTime();
+	income.intype = $('#intype').val();
+	
+	income.fullSalary = $('#fullSalary').val();
 	
 	
 	if (incomeid==null) {
@@ -92,6 +95,45 @@ function saveOrUpdate() {
 	
 	goIncomeList();
 }
+
+
+
+
+
+function calculateTax() {
+	if (!isNaN($('input[name="fullSalary"]').val())) {
+		var fullvalue = parseInt($('#fullSalary').val());
+		var housingReserve = Math.floor(fullvalue * 0.12);
+		var endowmentInsurance = Math.floor(fullvalue * 0.08);
+		var medicalInsurance = Math.floor(fullvalue * 0.02);
+		var jobInsurance = Math.floor(fullvalue * 0.002);
+		var remains = fullvalue - housingReserve - endowmentInsurance - medicalInsurance - jobInsurance;
+		var tax = getFloorTax(remains);
+		
+		$('#housingReserve').val(housingReserve);
+		$('#endowmentInsurance').val(endowmentInsurance);
+		$('#medicalInsurance').val(medicalInsurance);
+		$('#jobInsurance').val(jobInsurance);
+		$('#personalTax').val(tax);
+	}
+}
+
+
+function getTax(A) {
+	if((A-3500)<1500) return 0.03*(A-3500);
+	if((A-3500)<4500) return 0.1*(A-3500)-105;
+	if((A-3500)<9000) return 0.2*(A-3500)-555; 
+	if((A-3500)<35000) return 0.25*(A-3500)-1005;
+	if((A-3500)<55000) return 0.3*(A-3500)-2755; 
+	if((A-3500)<80000) return 0.35*(a-3500)-5505;
+	return 0.45*(A-3500)-13505; 
+}
+
+function getFloorTax(A) {
+	return Math.floor(getTax(A));
+}
+
+
 
 </script>
 </head>
@@ -151,14 +193,28 @@ function saveOrUpdate() {
 <div class="label">
 	付款方： <input type="text" id="from" size="10"> 
 </div>
-<div class="label"> 
-	税前工资 <input type="text" name="fullSalary" class="number"><button onclick="calculateTax()">计算</button> <br>
-	住房公积金: <input type="text" name="housingReserve" size="5" class="number">
-	养老保险: <input type="text" name="endowmentInsurance" size="5" class="number">
-	医疗保险: <input type="text" name="medicalInsurance" size="5" class="number">
-	失业保险: <input type="text" name="jobInsurance" size="5" class="number">
-	缴纳个税:  <input type="text" name="personalTax" size="5" class="number">
-</div>
 
+<div class="grouped">
+
+	<div class="label"> 
+		原始工资额  <input type="number" id="fullSalary"  class="number"> 
+		<a onclick="calculateTax()" class="btn">计算</a>
+	</div>
+	<div class="label">
+		住房公积金: <input type="text" id="housingReserve" size="5" class="number">
+	</div>
+	<div class="label">
+		养老保险: <input type="text" id="endowmentInsurance" size="5" class="number">
+	</div>
+	<div class="label">		
+		医疗保险: <input type="text" id="medicalInsurance" size="5" class="number">
+	</div>
+	<div class="label">
+		失业保险: <input type="text" id="jobInsurance" size="5" class="number">
+	</div>
+	<div class="label">
+		缴纳个税:  <input type="text" id="personalTax" size="5" class="number">
+	</div>
+</div>
 </body>
 </html>
