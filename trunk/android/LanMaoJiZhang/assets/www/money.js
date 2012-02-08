@@ -36,6 +36,11 @@ function configCategory() {
 	location.href = "categories.html";
 }
 
+function goBackUp() {
+	location.href = "backup.html";
+}
+
+
 //depend on  jquery or zepto
 function fillselect(select, categories) {
 	for(var i=0; i<categories.length; i++) {

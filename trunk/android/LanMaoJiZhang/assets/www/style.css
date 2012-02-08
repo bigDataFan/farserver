@@ -5,7 +5,7 @@
 }
 
 body {
-	background: url("section_bg.png");
+	background: #F1F1F1;
 }
 
 a {
@@ -208,54 +208,58 @@ span.ui-icon {
 /**-->| top menu buttons */
 
 
-
-/**grid navigation**/
-
-.grey-button {
-	color: #525252 !important;
-	border: 1px solid #A5A5A5 !important;
-	background-color: #B6BBC0;
-	color: #525252 !important;
-	border: 1px solid #A5A5A5 !important;
-	background-image: url('button_bg.png'), url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(197,199,202,1)), to(rgba(197,199,202,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
-}
-
-.touched {
-	-webkit-transition: background-position 1s;
-	transition: background-position 1s;
-	background-color: #B6BBC0;
-	background-position: top left, bottom right, 0 0, 0 0;
-	background-image:  url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(202,205,208,1)), to(rgba(202,205,208,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#d1d3d6), to(#9fa5a9));
-}
-
 div.griditem {
 	white-space: nowrap;
 	display: inline-block;
 	vertical-align: bottom;
 	float:left;
-	width: 80px;
-	height:80px;
-	margin:10px;
 	cursor: pointer;
 	background-repeat: no-repeat;
 	background-position: bottom left, top right, 0 0, 0 0;
-	background-clip: border-box;
-	-webkit-border-radius: 8px;
-	border-radius: 8px;
-	-webkit-box-shadow: 0 1px 4px #fff inset;
-	box-shadow: 0 0 1px #fff inset;
-	-webkit-transition: background-position 1s;
-	transition: background-position 1s;
 }
 
-
 div.griditem span {
-	font-size: 16px;
+	font-size: 1em;
 	font-weight:bold;
 	display:block;
 	text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
-	padding: 60px 5px 8px 5px;
-	background: url("blue_yuan.png") no-repeat 8 0 ;
+	padding: 65px 7px 8px 7px;
+}
+#navgrid {
+	margin:  0 auto;
+}
+
+div.griditem span.add-income {
+	background: url("480/add-income.png") no-repeat 15px 8px;
+}
+	
+div.griditem span.add-outcome {
+	background: url("480/add-outcome.png") no-repeat 15px 8px;
+}
+
+div.griditem span.outcome-list {
+	background: url("480/outcome-list.png") no-repeat 15px 8px;
+}
+
+div.griditem span.income-list {
+	background: url("480/income-list.png") no-repeat 15px 8px;
+}
+
+div.griditem span.an-statics {
+	background: url("480/chart_pie.png") no-repeat 15px 8px;
+}
+
+div.griditem span.config-budget {
+	background: url("480/locked.png") no-repeat 15px 8px;
+}
+
+div.griditem span.config-category {
+	background: url("480/process.png") no-repeat 15px 8px;
+}
+
+
+div.griditem span.config-backup {
+	background: url("480/refresh.png") no-repeat 15px 8px;
 }
 
 
@@ -344,8 +348,6 @@ li.checked div.checkbox {
 	width: 18px;
 	height: 19px;
 }
-
-
 
 
 ul.simple-list li div.title {

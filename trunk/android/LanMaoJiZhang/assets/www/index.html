@@ -26,37 +26,27 @@ function bindEvent(evt) {
 	$('#btn-new-income').bind(evt, addInCome);
 	$('#btn-income-list').bind(evt, goInComeList);
 	$('#btn-config-category').bind(evt, configCategory);
+	$('#btn-back-recovery').bind(evt, goBackUp);
 }
 </script>
 </head>
 <body>
 
 <div id="topmenu">
-<!-- 
-	<ul class="left">
-		<li>
-			<a  class="button" ontouchend="location.href='index.html'" href="javascript:void(0)">
-				<span class="innerspan">
-					<span class="text">主页面</span>
-					<span class="ui-icon icon-home"></span>
-				</span>
-			</a>
-		</li>
-	</ul>
- -->	
 	<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">懒猫记账</h1>
 </div>
 
 <div id="navgrid">
-	<div id="btn-new-outcome" class="griditem grey-button add-outcome">
-		<span>增加支出</span>
+	<div id="btn-new-outcome" class="griditem grey-button">
+		<span class="add-outcome">增加支出</span>
 	</div>
-	<div id="btn-new-income" class="griditem grey-button"><span>增加收入</span></div>
-	<div id="btn-outcome-list" class="griditem grey-button"><span>支出列表</span></div>
-	<div id="btn-income-list" class="griditem grey-button"><span>收入列表</span></div>
-	<div class="griditem grey-button"><span>统计分析</span></div>
-	<div id="btn-config-budget" class="griditem grey-button config-category"><span>预算管理</span></div>
-	<div id="btn-config-category" class="griditem grey-button config-category"><span>分类配置</span></div>
+	<div id="btn-new-income" class="griditem "><span class="add-income">增加收入</span></div>
+	<div id="btn-outcome-list" class="griditem"><span class="outcome-list">支出列表</span></div>
+	<div id="btn-income-list" class="griditem"><span class="income-list">收入列表</span></div>
+	<div id="btn-analyze" class="griditem"><span class="an-statics">统计分析</span></div>
+	<div id="btn-config-budget" class="griditem"><span class="config-budget">预算管理</span></div>
+	<div id="btn-config-category" class="griditem"><span class="config-category">分类配置</span></div>
+	<div id="btn-back-recovery" class="griditem"><span class="config-backup">备份恢复</span></div>	
 </div>
 
 
