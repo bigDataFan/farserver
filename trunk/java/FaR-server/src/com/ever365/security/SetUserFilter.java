@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
+import net.gqu.utils.StringUtils;
+
 import org.scribe.model.Token;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -36,6 +38,7 @@ public class SetUserFilter implements Filter {
 	public static final String GUEST = "guest.";
 	public final static String AUTHENTICATION_USER = "_authTicket";
 	private CookieService cookieService;
+	private UserService userService;
 	
 	public static ThreadLocal<HttpSession> currentSession = new ThreadLocal<HttpSession>();
 	
@@ -61,6 +64,21 @@ public class SetUserFilter implements Filter {
 		
 		String sessionedUser = (String) httpReq.getSession().getAttribute(AUTHENTICATION_USER);
 		
+		/**在请求的url里面如果有用户的话 则再解析这个*/
+		if (sessionedUser == null) {
+			String query = httpReq.getQueryString();
+			if (query!=null) {
+				String user = StringUtils.getQueryString(query, "user");
+				String pass = StringUtils.getQueryString(query, "p");
+				if (user!=null && pass!=null) {
+					User u = userService.getUser(user);
+					if (u!=null && u.getPassword().equals(pass)) {
+						sessionedUser = user;
+					}
+				}
+			}
+		}
+		
 		if (sessionedUser == null) {
 			sessionedUser = cookieService.provideUser(httpReq, httpResp);
         	httpReq.getSession().setAttribute(AUTHENTICATION_USER, sessionedUser);
@@ -84,6 +102,7 @@ public class SetUserFilter implements Filter {
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}
+	
 
 	/**
 	 * @see Filter#init(FilterConfig)
@@ -91,6 +110,7 @@ public class SetUserFilter implements Filter {
 	public void init(FilterConfig fConfig) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(fConfig.getServletContext());
 		cookieService = (CookieService)ctx.getBean("cookieService");
+		userService = (UserService) ctx.getBean("userService");
 	}
 	
 
