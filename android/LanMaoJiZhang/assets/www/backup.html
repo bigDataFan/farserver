@@ -122,6 +122,8 @@ function downloadLocal() {
 								if (data[i].outtype=="特殊支出(预算外)") {
 									data[i].outtype = "expecial";
 								} 
+								
+								delete data[i]["_id"];
 								outcomedb.insert(data[i]);
 							}
 							alert("同步完成，共下载" + data.length + "条记录");
