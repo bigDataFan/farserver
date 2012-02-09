@@ -21,7 +21,6 @@ $(document).ready(function(){
 	loadCategories("categorydb", [$('#category'), $('#multi-category')]);
 
 	var d = new Date();
-	
 	var id = getParam("id");
 	if (id!=0) {
 		outcomeid = id;
@@ -80,13 +79,18 @@ function saveOrUpdate() {
 		alert("支出的数额必须是大于0的数字");
 		return;
 	}
+	outcome.db = "groupdb";
+	outcome.formid = "addOutComeForm";
+	outcome.updated = new Date().getTime();
 	
 	outcome.title = $('#desc').val();
 	outcome.date = new Date($('#year').val(), parseInt($('#month').val())-1, $('#date').val());
+	outcome.time = outcome.date.format("yyyy-mm-dd");
 	outcome.outmethod = $('#outmethod').val();
 	outcome.outtype = $('#outtype').val();
 	outcome.time_millsecond = outcome.date.getTime();
 	outcome.category = null;
+	
 	if (outcome.outtype=="single") {
 		outcome.category = $('#category').val();	
 	} else if (outcome.outtype=="multiple") {

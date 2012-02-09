@@ -6,17 +6,19 @@
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="zepto.js"></script>
 <script type="text/javascript" charset="utf-8" src="money.js"></script>
+<script type="text/javascript" charset="utf-8" src="taffy.js"></script>
+<script type="text/javascript" charset="utf-8" src="awesomechart.js"></script>
 
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
 <script type="text/javascript">
-
 $(document).ready(function(){
 	if ($.os.ios || $.os.android || $.os.iphone || $.os.ipad) {
 		bindEvent('touchend');
 	} else {
 		bindEvent('click');
 	}
+	drawRecentDays(new Date(new Date().getTime()-6*24*60*60*1000), new Date(), 'chartCanvas');
 });
 
 function bindEvent(evt) {
@@ -28,6 +30,47 @@ function bindEvent(evt) {
 	$('#btn-config-category').bind(evt, configCategory);
 	$('#btn-back-recovery').bind(evt, goBackUp);
 }
+
+function drawRecentDays(dateStart, dateEnd, container) {
+	var outcomedb = new TAFFY();
+	outcomedb.store("outcomedb");
+	var totalDays = Math.floor( (dateEnd-dateStart)/(24*60*60*1000));
+	
+	var infos = {};
+	
+	var dstemp = dateStart.getTime();
+	while(dstemp<dateEnd.getTime()) {
+		infos[new Date(dstemp).format("mm-dd")] = 0;
+		dstemp += 24*60*60*1000; 
+	}
+	
+	
+	outcomedb({"time_millsecond":{gt :dateStart, lt: dateEnd}}).each(
+		function(record, recordnumber) {
+			var lebel = new Date(record.time_millsecond).format("mm-dd");
+			
+			if (infos[lebel]==null) {
+				infos[lebel] = record.total;
+			} else {
+				infos[lebel] = parseInt(infos[lebel]) + parseInt(record.total);
+			}
+		}
+	);
+
+	var data = [];
+	var labels = [];
+	
+	for(var key in infos) {
+		labels.push(key);
+		data.push(infos[key]);
+	}
+	var mychart = new AwesomeChart(container);
+    mychart.title = "最近7日支出";
+    mychart.data = data;
+    mychart.labels = labels;
+    mychart.draw();
+}
+
 </script>
 </head>
 <body>
@@ -51,7 +94,7 @@ function bindEvent(evt) {
 
 
 <div id="recent-chart">
-
+		<canvas id="chartCanvas" width="480" height="300" ></canvas>
 </div>
 
 </body>

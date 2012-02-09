@@ -1,0 +1,33 @@
+{
+            "total": 619,
+            "db": "groupdb",
+            "time_millsecond": 1328683850682,
+            "creator": "diy001",
+            "formid": "addOutComeForm",
+            "title": "adfs",
+            "time": "2012-02-08",
+            "_id": "4f321c3942a6e310db71bfb2",
+            "___s": true,
+            "created": 1328683850682,
+            "items": [
+                {
+                    "title": "adfd",
+                    "category": "米面粮油",
+                    "cost": "233"
+                },
+                {
+                    "title": "ssdf",
+                    "category": "米面粮油",
+                    "cost": "43"
+                },
+                {
+                    "title": "sasfsd",
+                    "category": "米面粮油",
+                    "cost": "343"
+                }
+            ],
+            "updated": 1328683850682,
+            "outtype": "多笔(超市购物等)",
+            "___id": "T000003R000003",
+            "outmethod": "现金"
+}

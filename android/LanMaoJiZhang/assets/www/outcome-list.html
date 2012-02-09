@@ -17,8 +17,7 @@ outcomedb.store("outcomedb");
 $(document).ready(function(){
 	outcomedb().order("time_millsecond desc").start(0).limit(10).each(
 		function(record,recordnumber) {
-			var d = new Date(record.date);
-			
+			var d = new Date(record.time_millsecond);
 			if ($('#month-' + d.getMonth()).length==0) {
 				$('ul.simple-list').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
 			}
