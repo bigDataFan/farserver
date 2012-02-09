@@ -62,21 +62,22 @@ public class SetUserFilter implements Filter {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
 		
-		String sessionedUser = (String) httpReq.getSession().getAttribute(AUTHENTICATION_USER);
+		String sessionedUser = null;
+		String query = httpReq.getQueryString();
+		if (query!=null) {
+			String user = StringUtils.getQueryString(query, "user");
+			String pass = StringUtils.getQueryString(query, "p");
+			if (user!=null && pass!=null) {
+				User u = userService.getUser(user);
+				if (u!=null && u.getPassword().equals(pass)) {
+					sessionedUser = user;
+				}
+			}
+		}
 		
 		/**在请求的url里面如果有用户的话 则再解析这个*/
 		if (sessionedUser == null) {
-			String query = httpReq.getQueryString();
-			if (query!=null) {
-				String user = StringUtils.getQueryString(query, "user");
-				String pass = StringUtils.getQueryString(query, "p");
-				if (user!=null && pass!=null) {
-					User u = userService.getUser(user);
-					if (u!=null && u.getPassword().equals(pass)) {
-						sessionedUser = user;
-					}
-				}
-			}
+			sessionedUser = (String) httpReq.getSession().getAttribute(AUTHENTICATION_USER);
 		}
 		
 		if (sessionedUser == null) {

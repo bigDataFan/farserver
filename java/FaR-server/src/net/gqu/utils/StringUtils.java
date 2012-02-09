@@ -980,6 +980,18 @@ public abstract class StringUtils {
 		return userIdPattern.matcher(userId).find();
 	}
 	
+	public static String getQueryString(String src, String key) {
+		int p = src.indexOf(key + "=");
+		if (p==-1) return null;
+		
+		int p2 = src.indexOf("&", p);
+		if (p2==-1) {
+			p2 = src.length();
+		}
+		return src.substring(p+key.length()+1, p2);
+	}
+	
+	
 	private static Pattern spaceNamePattern;
 	public static boolean isSpaceName(String userId) {
 		if (spaceNamePattern==null) {
@@ -1169,6 +1181,11 @@ public abstract class StringUtils {
 			System.out.println(ss[i]);
 		}
 		System.out.println("---");
+		
+		
+		System.out.println(StringUtils.getQueryString("user=username&p=password", "user"));
+		System.out.println(StringUtils.getQueryString("user=username&p=password", "p"));
+		
 		//System.out.println(StringUtils.getParentPath("/abfd/cfdsf/ddeer/", "/"));
 	}
 

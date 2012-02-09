@@ -50,7 +50,6 @@ public class SyncMonggoDBService {
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
 			result.put((String)dbo.get("name"), dbo.toMap());
-			
 		}
 		return result;
 	}
@@ -122,6 +121,64 @@ public class SyncMonggoDBService {
 		result.put("added", added);
 		result.put("full", full);
 		return result;
+	}
+	
+
+	
+	@RestService(method="GET", uri="/db/sync/query")
+	public Map<String, Object> queryUser(@RestParam(value="db") String coll) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		DBCollection dbcoll = getSyncCollection(coll);
+		
+		if (AuthenticationUtil.isCurrentUserGuest()) {
+			result.put("guest", true);
+		} else {
+			result.put("user", AuthenticationUtil.getCurrentUser());
+			//查找自更新时间后的新文档
+			DBObject query = new BasicDBObject("creator", AuthenticationUtil.getCurrentUserName());
+			result.put("count", dbcoll.count(query));
+			
+		}
+		return result;
+	}
+	
+	@RestService(method="POST", uri="/db/sync/getall")
+	public List<Map<String, Object>> fullGet(@RestParam(value="db") String coll) {
+		List<Map<String, Object>> newer = new ArrayList<Map<String,Object>>();
+		DBCollection dbcoll = getSyncCollection(coll);
+		
+		//查找自更新时间后的新文档
+		DBObject query = new BasicDBObject("creator", AuthenticationUtil.getCurrentUserName());
+		DBCursor cur = dbcoll.find(query);
+		
+		while (cur.hasNext()) {
+			Map one = cur.next().toMap();
+			one.put("_id", ((ObjectId)one.get("_id")).toString());
+			newer.add(one);
+		}
+		return newer;
+	}
+	
+	@RestService(method="POST", uri="/db/sync/putall")
+	public void fullPut(@RestParam(value="db") String coll, @RestParam(value="list") String list) {
+		try {
+			JSONArray source = new JSONArray(list);
+			DBCollection dbcoll = getSyncCollection(coll);
+			
+			//查找自更新时间后的新文档
+			DBObject query = new BasicDBObject("creator", AuthenticationUtil.getCurrentUserName());
+			dbcoll.remove(query);
+			
+			for (int i = 0; i < source.length(); i++) {
+				JSONObject jso = source.getJSONObject(i);
+				
+				DBObject dbo = new BasicDBObject(JSONUtils.jsonObjectToMap(jso));
+				dbo.put("creator", AuthenticationUtil.getCurrentUserName());
+				dbcoll.insert(dbo);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
