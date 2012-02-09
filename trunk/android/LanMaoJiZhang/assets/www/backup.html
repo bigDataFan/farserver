@@ -3,9 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
 <title>备份与恢复</title>
-
 <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="zepto.js"></script>
 <script type="text/javascript" charset="utf-8" src="taffy.js"></script>
@@ -14,10 +12,16 @@
 
 
 <script type="text/javascript">
+var logindb = new TAFFY();
+logindb.store("logindb");
 
-var outcomedb = new TAFFY();
-outcomedb.store("outcomedb");
-
+$(document).ready(function(){
+	if (logindb().get().length>0) {
+		var o = logindb().first();
+		$('#userName').val(o.username);
+		$('#password').val(o.password);
+	}
+});
 
 function bindEvent(evt) {
 	$('#to-main').bind(evt, goToMain);
@@ -35,15 +39,21 @@ function backUpToServer() {
 	}
 	
 	$.ajax({
-		  type: 'GET', 
-		  url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
-		  dataType: 'json', 
-		  async: true, 
-		  success: function(body) {
-			  if (body.guest) {
-				  alert("用户名密码不正确");
-			  } else {
-				  if (confirm("服务器端有" + body.count + "条记录， 用本地数据覆盖")) {
+		type: 'GET', 
+		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
+		dataType: 'json', 
+		async: true, 
+		success: function(body) {
+			if (body.guest) {
+				alert("用户名密码不正确");
+			} else {
+				logindb().remove();
+				logindb.insert({'username': user,'password': pass});
+				
+				if (confirm("服务器端有" + body.count + "条记录， 用本地数据覆盖?")) {
+					var outcomedb = new TAFFY();
+					outcomedb.store("outcomedb");
+
 					$.ajax({
 						type : "POST",
 						url: 'http://www.ever365.com/service/db/sync/putall?db=groupdb&user='+user+"&p=" + pass,
@@ -80,14 +90,17 @@ function downloadLocal() {
 	}
 	
 	$.ajax({
-		  type: 'GET', 
-		  url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
-		  dataType: 'json', 
-		  async: true, 
-		  success: function(body) {
-			  if (body.guest) {
-				  alert("用户名密码不正确");
-			  } else {
+		type: 'GET', 
+		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
+		dataType: 'json', 
+		async: true, 
+		success: function(body) {
+			if (body.guest) {
+				alert("用户名密码不正确");
+			} else {
+				logindb().remove();
+				logindb.insert({'username': user,'password': pass});
+				
 				if (confirm("服务器端有" + body.count + "条记录， 是否覆盖本地的数据")) {
 					$.ajax({
 						type : "POST",
@@ -95,9 +108,20 @@ function downloadLocal() {
 						dataType: 'json',
 						async: true,
 						success:function(data) {
+							var outcomedb = new TAFFY();
+							outcomedb.store("outcomedb");
 							outcomedb().remove();
 							for(var i=0; i<data.length; i++) {
 								data[i].date = new Date(data[i].time_millsecond);
+								if (data[i].outtype=="单笔支出") {
+									data[i].outtype = "single";
+								}
+								if (data[i].outtype=="多笔(超市购物等)") {
+									data[i].outtype = "multiple";
+								} 
+								if (data[i].outtype=="特殊支出(预算外)") {
+									data[i].outtype = "expecial";
+								} 
 								outcomedb.insert(data[i]);
 							}
 							alert("同步完成，共下载" + data.length + "条记录");
@@ -136,9 +160,8 @@ function downloadLocal() {
 	</ul>
 </div>
 
-
 <div class="label">
-	与ever365.com服务器同步，使用以下用户名和密码，无用户密码请 注册 
+	与ever365.com服务器同步，使用以下用户名和密码，无用户密码请注册 
 </div>
 
 <div class="label">

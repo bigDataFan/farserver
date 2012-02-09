@@ -40,6 +40,10 @@ function goBackUp() {
 	location.href = "backup.html";
 }
 
+function goAnalyze() {
+	location.href = "analyze-list.html";
+}
+
 
 //depend on  jquery or zepto
 function fillselect(select, categories) {
