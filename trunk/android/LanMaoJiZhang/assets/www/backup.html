@@ -36,16 +36,31 @@ function backUpToServer() {
 	
 	$.ajax({
 		  type: 'GET', 
-		  url: 'http://www.ever365.com/service/db/sync/query?db=outcome&user='+user+"&p=" + pass,
+		  url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
 		  dataType: 'json', 
 		  async: true, 
 		  success: function(body) {
 			  if (body.guest) {
 				  alert("用户名密码不正确");
 			  } else {
-				if (confirm("是否覆盖服务器上的数据")) {
-					
-				}
+				  if (confirm("服务器端有" + body.count + "条记录， 用本地数据覆盖")) {
+					$.ajax({
+						type : "POST",
+						url: 'http://www.ever365.com/service/db/sync/putall?db=groupdb&user='+user+"&p=" + pass,
+						dataType: 'json',
+						async: true,
+						data: {
+							"db": "groupdb",
+							"list": outcomedb().stringify()
+						},
+						success:function(data) {
+							alert("同步完成");
+						},
+						error: function(xhr, type) {
+							alert("未知错误");
+						}
+					});
+				  }
 			  }
 		  }, 
 		  error: function(xhr, type) {
@@ -66,14 +81,14 @@ function downloadLocal() {
 	
 	$.ajax({
 		  type: 'GET', 
-		  url: 'http://www.ever365.com/service/db/sync/query?db=outcome&user='+user+"&p=" + pass,
+		  url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
 		  dataType: 'json', 
 		  async: true, 
 		  success: function(body) {
 			  if (body.guest) {
 				  alert("用户名密码不正确");
 			  } else {
-				if (confirm("是否覆盖本地的数据")) {
+				if (confirm("服务器端有" + body.count + "条记录， 是否覆盖本地的数据")) {
 					$.ajax({
 						type : "POST",
 						url: 'http://www.ever365.com/service/db/sync/getall?db=groupdb&user='+user+"&p=" + pass,
@@ -85,11 +100,10 @@ function downloadLocal() {
 								data[i].date = new Date(data[i].time_millsecond);
 								outcomedb.insert(data[i]);
 							}
-							
 							alert("同步完成，共下载" + data.length + "条记录");
 						},
 						error: function(xhr, type) {
-							alert("未知错误");
+							alert("未知错误:" + type);
 						}
 					});
 				}

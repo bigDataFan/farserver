@@ -136,6 +136,7 @@ function calculateTax() {
 
 
 function getTax(A) {
+	if((A-3500)<0) return 0;
 	if((A-3500)<1500) return 0.03*(A-3500);
 	if((A-3500)<4500) return 0.1*(A-3500)-105;
 	if((A-3500)<9000) return 0.2*(A-3500)-555; 
@@ -148,8 +149,6 @@ function getTax(A) {
 function getFloorTax(A) {
 	return Math.floor(getTax(A));
 }
-
-
 
 </script>
 </head>
