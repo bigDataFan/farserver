@@ -153,7 +153,8 @@ public class SyncMonggoDBService {
 		
 		while (cur.hasNext()) {
 			Map one = cur.next().toMap();
-			one.put("_id", ((ObjectId)one.get("_id")).toString());
+			one.remove("_id");
+			//one.put("_id", ((ObjectId)one.get("_id")).toString());
 			newer.add(one);
 		}
 		return newer;
@@ -173,6 +174,9 @@ public class SyncMonggoDBService {
 				JSONObject jso = source.getJSONObject(i);
 				
 				DBObject dbo = new BasicDBObject(JSONUtils.jsonObjectToMap(jso));
+				if (dbo.containsField("_id")) {
+					dbo.removeField("_id");
+				}
 				dbo.put("creator", AuthenticationUtil.getCurrentUserName());
 				dbcoll.insert(dbo);
 			}
