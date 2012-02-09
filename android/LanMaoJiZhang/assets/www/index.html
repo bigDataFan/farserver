@@ -29,26 +29,23 @@ function bindEvent(evt) {
 	$('#btn-income-list').bind(evt, goInComeList);
 	$('#btn-config-category').bind(evt, configCategory);
 	$('#btn-back-recovery').bind(evt, goBackUp);
+	$('#btn-analyze').bind(evt, goAnalyze);
 }
 
 function drawRecentDays(dateStart, dateEnd, container) {
 	var outcomedb = new TAFFY();
 	outcomedb.store("outcomedb");
 	var totalDays = Math.floor( (dateEnd-dateStart)/(24*60*60*1000));
-	
 	var infos = {};
-	
 	var dstemp = dateStart.getTime();
 	while(dstemp<dateEnd.getTime()) {
 		infos[new Date(dstemp).format("mm-dd")] = 0;
 		dstemp += 24*60*60*1000; 
 	}
 	
-	
 	outcomedb({"time_millsecond":{gt :dateStart, lt: dateEnd}}).each(
 		function(record, recordnumber) {
 			var lebel = new Date(record.time_millsecond).format("mm-dd");
-			
 			if (infos[lebel]==null) {
 				infos[lebel] = record.total;
 			} else {
@@ -94,7 +91,7 @@ function drawRecentDays(dateStart, dateEnd, container) {
 
 
 <div id="recent-chart">
-		<canvas id="chartCanvas" width="480" height="300" ></canvas>
+		<canvas id="chartCanvas" width="320" height="260" ></canvas>
 </div>
 
 </body>
