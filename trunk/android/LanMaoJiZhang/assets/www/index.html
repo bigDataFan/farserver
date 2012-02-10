@@ -56,18 +56,20 @@ function drawRecentDays(dateStart, dateEnd, container) {
 
 	var data = [];
 	var labels = [];
+	var colors = [];
 	
 	for(var key in infos) {
+		colors.push("#5e87b0");
 		labels.push(key);
 		data.push(infos[key]);
 	}
 	var mychart = new AwesomeChart(container);
+	mychart.colors = colors;
     mychart.title = "最近7日支出";
     mychart.data = data;
     mychart.labels = labels;
     mychart.draw();
 }
-
 </script>
 </head>
 <body>
@@ -89,9 +91,8 @@ function drawRecentDays(dateStart, dateEnd, container) {
 	<div id="btn-back-recovery" class="griditem"><span class="config-backup">备份恢复</span></div>	
 </div>
 
-
 <div id="recent-chart">
-		<canvas id="chartCanvas" width="320" height="260" ></canvas>
+	<canvas id="chartCanvas" width="320" height="260" ></canvas>
 </div>
 
 </body>
