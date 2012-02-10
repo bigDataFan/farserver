@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
+<script type="text/javascript" charset="utf-8" src="money.js"></script>
+<script type="text/javascript" charset="utf-8" src="taffy.js"></script>
+<script type="text/javascript" charset="utf-8" src="awesomechart.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css"/>
+
+<title>按月详情</title>
+
+
+<script type="text/javascript">
+var outcomedb = new TAFFY();
+
+$(document).ready(function(){
+	outcomedb.store("outcomedb");
+	var monthd = new Date(); monthd.setDate(1); monthd.setHours(0, 0, 0);
+	var nextmonthd = new Date();nextmonthd.setDate(31); nextmonthd.setHours(23, 59, 59);
+	
+	drawSomeDaysLine(monthd.getTime(),nextmonthd.getTime(), "chartCanvas1", null);
+});
+
+
+function bindEvent(evt) {
+	$('#to-main').bind(evt, goToMain);
+	
+}
+
+
+function drawSomeDaysLine(dateStart, dateEnd, container, size) {
+	var nowTime = dateStart;
+	var totalDays = Math.floor( (dateEnd-dateStart)/(24*60*60*1000));
+	var datas = [];
+	var colors = [];
+	var max = 0;
+	while (nowTime < dateEnd) {
+		var time = new Date(nowTime);
+		var dtext = time.format("yyyy-mm-dd");
+		var total = outcomedb({time:dtext}).sum("total");
+		if (total>max) max = total;
+		datas.push(total);
+		colors.push("#5e87b0");
+		nowTime += 24*60*60*1000;
+	}
+
+	var mychart = new AwesomeChart(container);
+	mychart.colors = colors;
+	//mychart.chartType = "pareto";
+    mychart.data = datas;
+    mychart.draw();
+}
+
+
+
+/*
+
+function drawCategoryPie(dateStart, dateEnd, container, size) {
+	
+	var categories = {};
+	
+	groupdb({"time_millsecond":{gt :dateStart, lt: dateEnd}}).each(
+			function(record, recordnumber) {
+				if (record.category) {
+					if (categories[record.category] == null) {
+						categories[record.category] = parseInt(record.total);
+					} else {
+						categories[record.category] += parseInt(record.total);
+					}
+				} else {
+					if (record.items && record.items.length>0) {
+						for (var i=0; i<record.items.length; i++) {
+							if (categories[record.items[i].category] == null) {
+								categories[record.items[i].category] = parseInt(record.items[i].cost);
+							} else {
+								categories[record.items[i].category] += parseInt(record.items[i].cost);
+							}
+						}
+					} else {
+						if (categories['额外支出']==null) {
+							categories['额外支出'] = parseInt(record.total);
+						} else {
+							categories['额外支出'] += parseInt(record.total);
+						}
+					}
+				}
+			}
+	);
+	var ts = "";
+	var vs = "";
+	for ( var key in categories) {
+		ts += categories[key] + ",";
+		vs += key + "|";
+	}
+	ts = ts.substring(0, ts.length-1);
+	vs = vs.substring(0, vs.length-1);
+	var url = 'http://chart.googleapis.com/chart?cht=p' 
+		+ '&chd=t:' + ts 
+		+ "&chds=a"
+		+ '&chl=' + vs 
+		+ '&chtt=支出按分类比例'
+		+ '&chs=' + size;
+	$('#' + container).attr('src', encodeURI(url)); 
+			//+ '&chdl=10%C2%B0|40%C2%B0|50%C2%B0|80%C2%B0');
+}
+
+*/
+
+</script>
+</head>
+<body>
+
+
+<div id="topmenu">
+	<ul class="left">
+		<li>
+			<span class="button" id="to-main">
+				<span class="innerspan">
+					<span class="text">主页面</span>
+					<span class="ui-icon icon-home"></span>
+				</span>
+			</span>
+		</li>
+	</ul>
+</div>
+
+
+<div id="monthdaylines">
+	<canvas id="chartCanvas1" width="480" height="260" ></canvas>	
+</div>
+
+<div id="monthcategorypie">
+
+</div>
+
+</body>
+</html>
