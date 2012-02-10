@@ -50,7 +50,7 @@ function drawSomeDaysLine(dateStart, dateEnd, container, size) {
 
 	var mychart = new AwesomeChart(container);
 	mychart.colors = colors;
-	//mychart.chartType = "pareto";
+	mychart.chartType = "horizontal bars";
     mychart.data = datas;
     mychart.draw();
 }
@@ -129,8 +129,8 @@ function drawCategoryPie(dateStart, dateEnd, container, size) {
 </div>
 
 
-<div id="monthdaylines">
-	<canvas id="chartCanvas1" width="480" height="260" ></canvas>	
+<div id="monthdaylines" class="margin:0 auto; padding: 3px; width:320px">
+	<canvas id="chartCanvas1" width="320" height="600" ></canvas>	
 </div>
 
 <div id="monthcategorypie">
