@@ -38,7 +38,7 @@ function bindEvent(evt) {
 	$('#btn-remove-outcome').bind(evt, removeSelected);
 	$('ul.simple-list li.detail div.title').live(evt, editInCome);
 	$('ul.simple-list li.detail div.infos').live(evt, editInCome);
-	$('ul.simple-list li.detail div.checkbox').live(evt, toggleChecked);
+	$('ul.simple-list li.detail div.dot').live(evt, toggleChecked);
 }
 
 function editInCome() {
