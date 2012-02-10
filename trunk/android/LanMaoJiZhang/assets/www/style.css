@@ -245,6 +245,7 @@ div.griditem span {
 	margin:  0 auto;
 }
 
+
 div.griditem span.add-income {
 	background: url("480/add-income.png") no-repeat 15px 8px;
 }
@@ -270,14 +271,13 @@ div.griditem span.config-budget {
 }
 
 div.griditem span.config-category {
-	background: url("480/process.png") no-repeat 15px 8px;
+	background: url("480/config-category.png") no-repeat 15px 8px;
 }
 
 
 div.griditem span.config-backup {
 	background: url("480/refresh.png") no-repeat 15px 8px;
 }
-
 
 /**-->|grid navigation**/
 
