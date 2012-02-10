@@ -327,32 +327,26 @@ ul.simple-list li.detail {
 
 ul.simple-list li.detail div.dot {
 	float: left;
-	left: -7px;
-	margin: 2px -9px 0 2px;
-	padding: 1em 0 1em .5em;
 	position: relative;
-	top: -7px;
 }
 
 li.detail div.checkbox {
-	background: url('checkbox.png');
+	background: url('checkbox.png') .2em .8em no-repeat;
 	-webkit-background-size: 18px 19px;
-	width: 18px;
-	height: 19px;
+	width: 2.5em;
+	height: 3em;
 }
 
-
 li.checked div.checkbox {
-	background: url('checked.png');
+	background: url('checked.png') .2em .8em no-repeat;
 	-webkit-background-size: 18px 19px;
-	width: 18px;
-	height: 19px;
+	width: 2.5em;
+	height: 3em;
 }
 
 
 ul.simple-list li div.title {
 	float: left;
-	padding-left:.5em;
 	min-width:10em;
 	color: black;
 	font-weight: bold;
@@ -362,7 +356,7 @@ ul.simple-list li div.title {
 ul.simple-list li div.infos {
 	font-size:.8em;
 	position:fixed;
-	padding-left:2em;
+	padding-left:3em;
 	float: left;
 	margin-top:5px;
 	color: black;

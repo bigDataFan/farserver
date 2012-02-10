@@ -42,8 +42,8 @@ function bindEvent(evt) {
 	$('#btn-new-outcome').bind(evt, addOutCome);
 	$('#btn-remove-outcome').bind(evt, removeSelected);
 	$('ul.simple-list li.detail div.big').live(evt, editOutCome);
-	$('ul.simple-list li.detail div.title').live(evt, editOutCome);
-	$('ul.simple-list li.detail div.checkbox').live(evt, toggleChecked);
+	$('ul.simple-list li.detail div.title').live(evt, toggleChecked);
+	$('ul.simple-list li.detail div.dot').live(evt, toggleChecked);
 }
 
 function editOutCome() {
@@ -51,7 +51,7 @@ function editOutCome() {
 }
 
 function toggleChecked() {
-	var container = $(this).parent().parent();
+	var container = $(this).parent();
 	if (container.hasClass("checked")) {
 		container.removeClass("checked");
 	} else {
