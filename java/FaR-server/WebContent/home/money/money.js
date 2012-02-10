@@ -640,19 +640,16 @@ function synchronize(db, dbname, username) {
 	} else {
 		updated = parseInt(updated);
 	}
+	var currentTime = new Date().getTime();
+	var newerString = db().filter({"updated":{'gt': updated}}).stringify();
+
 	//IE6未同步的情况下
 	if (!dbinit[dbname]) {
 		updated = 0;
+		newerString = "[]";
 	}
-	var currentTime = new Date().getTime();
-	var newer = db().filter({"updated":{'gt': updated}});
 	
-	if (dbinit[dbname] && newer.count()==0) {
-		/*
-		setTimeout(function(){
-    		synchronize(db, dbname, username)
-    	}, 10000);
-    	*/
+	if (dbinit[dbname] && newerString=="[]") {
 		return;
 	}
 	
@@ -660,7 +657,7 @@ function synchronize(db, dbname, username) {
 			{
 				'updated': updated,
 				'db': dbname,
-				'list': newer.stringify()
+				'list': newerString
 		    },  function(data) {
 		    	
 		    	if (!dbinit[dbname]) {
