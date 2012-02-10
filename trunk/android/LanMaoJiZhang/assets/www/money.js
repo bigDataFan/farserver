@@ -56,7 +56,11 @@ function goAnalyze() {
 	location.href = "analyze-list.html";
 }
 
-//depend on  jquery or zepto
+function goRecentSummary() {
+	location.href = "recent-summary.html";
+}
+
+
 function fillselect(select, categories) {
 	for(var i=0; i<categories.length; i++) {
 		select.append('<option>' + categories[i] + "</option>");
@@ -90,10 +94,6 @@ function loadCategories(db, ary) {
 		fillselect(ary[i], categories);
 	}
 }
-
-
-
-
 
 
 var dateFormat = function () {
@@ -208,4 +208,7 @@ Date.prototype.format = function (mask, utc) {
 	return dateFormat(this, mask, utc);
 };
 
+function roundTo(v, n) {
+	return Math.round(v*n)/n;
+};
 

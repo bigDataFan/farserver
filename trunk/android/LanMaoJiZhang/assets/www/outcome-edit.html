@@ -73,7 +73,7 @@ function onOutTypeChange(e) {
 
 function saveOrUpdate() {
 	var outcome = {};
-	outcome.total = $('#total').val();
+	outcome.total = parseInt($('#total').val());
 	
 	if ($('#total').val()=="" || parseInt($('#total').val())==Number.NaN || parseInt($('#total').val())<0) {
 		alert("支出的数额必须是大于0的数字");
