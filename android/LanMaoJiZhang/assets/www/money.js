@@ -56,9 +56,10 @@ function goAnalyze() {
 	location.href = "analyze-list.html";
 }
 
-function goRecentSummary() {
-	location.href = "recent-summary.html";
+function goMonthInfo() {
+	location.href = "month-infos.html";
 }
+
 
 
 function fillselect(select, categories) {
