@@ -330,15 +330,35 @@ ul.simple-list li.head {
 	background-image: linear-gradient(#81a8ce,#5e87b0);
 }
 
+ul.simple-list li {
+	clear: both;
+	overflow: hidden;
+	position: relative;
+}
+
+ul.simple-list li.link {
+	border: 1px solid #CCC;
+	background: #EEE;
+	font-weight: bold;
+	color: #444;
+	text-shadow: 0 1px 1px #F6F6F6;
+	padding:.8em;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#fdfdfd),to(#eee));
+	background-image: -webkit-linear-gradient(#fdfdfd,#eee);
+	background-image: -moz-linear-gradient(#fdfdfd,#eee);
+	background-image: -ms-linear-gradient(#fdfdfd,#eee);
+	background-image: -o-linear-gradient(#fdfdfd,#eee);
+	background-image: linear-gradient(#fdfdfd,#eee);
+}
+
 ul.simple-list li.detail {
 	background: url("index_jb.jpg") repeat-x scroll 0 -40px transparent;
 	border-bottom: 1px solid #CBCBCB;
-	clear: both;
-	overflow: hidden;
 	padding: .4em 1em 0 .4em;
-	position: relative;
 	height: 50px;
 }
+
+
 
 
 ul.simple-list li.detail div.dot {
@@ -442,7 +462,23 @@ ul.multilist li div {
 	max-width:320px;
 }
 
+div.block {
+	float: left;
+	width: 160px;
+	padding: .5em;
+	border: 1px solid #ccc;
+}
 
+div.block span {
+	text-shadow: 0 1px 1px #F6F6F6;
+	font-size: .6em;
+}
+
+
+div.block h3 {
+	margin-top:.4em;
+	color: #EB5847;
+}
 
 
 

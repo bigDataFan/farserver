@@ -85,7 +85,7 @@ function saveOrUpdate() {
 		alert("收入的数额必须是大于0的数字");
 		return;
 	}
-	income.total = $('#total').val();
+	income.total = parseInt($('#total').val());
 	income.title = $('#desc').val();
 	income.date = new Date($('#year').val(), parseInt($('#month').val())-1, $('#date').val());
 	income.created = new Date().getTime();
@@ -100,8 +100,6 @@ function saveOrUpdate() {
 	income.jobInsurance = $('#jobInsurance').val();
 	income.personalTax = $('#personalTax').val();
 	income.housingReserve = $('#housingReserve').val();
-	
-	
 	if (incomeid==null) {
 		//insert
 		incomedb.insert(income);
@@ -110,8 +108,6 @@ function saveOrUpdate() {
 	}
 	goIncomeList();
 }
-
-
 
 function calculateTax() {
 	if (!isNaN($('input[name="fullSalary"]').val())) {
