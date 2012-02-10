@@ -136,6 +136,22 @@ ul.right {
 	--padding: 8px 5px;
 }
 
+#topmenu .button-down {
+	border: 1px solid 		#225377;
+	background: 			#4e89c5;
+	font-weight: bold;
+	color: 					#fff ;
+	text-shadow: 0 -1px 1px #225377; 
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #396b9e /*{b-bdown-background-start}*/), to( #4e89c5 /*{b-bdown-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(#396b9e /*{b-bdown-background-start}*/, #4e89c5 /*{b-bdown-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(#396b9e /*{b-bdown-background-start}*/, #4e89c5 /*{b-bdown-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient(#396b9e /*{b-bdown-background-start}*/, #4e89c5 /*{b-bdown-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient(#396b9e /*{b-bdown-background-start}*/, #4e89c5 /*{b-bdown-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient(#396b9e /*{b-bdown-background-start}*/, #4e89c5 /*{b-bdown-background-end}*/);
+}
+
+
+
 #topmenu .button>span.innerspan {
 	border-top: 1px solid white;
 	border-color: rgba(255, 255, 255, .3);
@@ -333,14 +349,14 @@ ul.simple-list li.detail div.dot {
 li.detail div.checkbox {
 	background: url('checkbox.png') .2em .8em no-repeat;
 	-webkit-background-size: 18px 19px;
-	width: 2.5em;
+	width: 2em;
 	height: 3em;
 }
 
 li.checked div.checkbox {
 	background: url('checked.png') .2em .8em no-repeat;
 	-webkit-background-size: 18px 19px;
-	width: 2.5em;
+	width: 2em;
 	height: 3em;
 }
 
@@ -356,7 +372,7 @@ ul.simple-list li div.title {
 ul.simple-list li div.infos {
 	font-size:.8em;
 	position:fixed;
-	padding-left:3em;
+	margin-left:2.5em;
 	float: left;
 	margin-top:5px;
 	color: black;
@@ -420,15 +436,11 @@ ul.multilist li div {
 	z-index: 5;
 }
 
-
 #recent-chart {
+	border-top:1px solid #FAFAFA;
 	margin: 0 auto;
-	max-width: 480px;
+	max-width:320px;
 }
-
-
-
-
 
 
 

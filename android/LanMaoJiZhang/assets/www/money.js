@@ -1,11 +1,23 @@
 $(document).ready(function(){
 	if ($.os.ios || $.os.android || $.os.iphone || $.os.ipad) {
+		$('.button').bind("touchstart", onTouchedDown);
+		$('.button').bind("touchend", onTouchedUp);
 		bindEvent('touchend');
 	} else {
+		$('.button').bind("mousedown", onTouchedDown);
+		$('.button').bind("mouseup", onTouchedDown);
 		bindEvent('click');
 	}
 });
 
+
+function onTouchedDown() {
+	$(this).addClass("button-down");
+}
+
+function onTouchedUp() {
+	$(this).removeClass("button-down");
+}
 
 function getParam(name) {
 	var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href); 

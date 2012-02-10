@@ -35,7 +35,7 @@ function bindEvent(evt) {
 	$('#to-main').bind(evt, goToMain);
 	$('#btn-new-income').bind(evt, addInCome);
 	
-	$('#btn-remove-outcome').bind(evt, removeSelected);
+	$('#btn-remove-income').bind(evt, removeSelected);
 	$('ul.simple-list li.detail div.title').live(evt, editInCome);
 	$('ul.simple-list li.detail div.infos').live(evt, editInCome);
 	$('ul.simple-list li.detail div.dot').live(evt, toggleChecked);
@@ -46,7 +46,7 @@ function editInCome() {
 }
 
 function toggleChecked() {
-	var container = $(this).parent().parent();
+	var container = $(this).parent();
 	if (container.hasClass("checked")) {
 		container.removeClass("checked");
 	} else {
@@ -64,9 +64,10 @@ function removeSelected() {
 	if (confirm("是否确认删除选择的支出记录？")) {
 		$('li.checked').each(function() {
 			var li = $(this);
-			outcomedb(li.attr("id")).remove();
+			incomedb(li.attr("id")).remove();
 			li.remove();
 		});
+		$('#li-remove-income').hide();
 	}
 }
 
