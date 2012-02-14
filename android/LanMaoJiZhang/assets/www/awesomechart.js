@@ -168,6 +168,7 @@ function AwesomeChart(canvasElementId){
 
 
     this.draw = function(){
+    	this.ctx.canvas.width = this.ctx.canvas.width;
         var context = this.ctx;
         context.lineCap = 'round';
         var minFactor = Math.min(this.widthSizeFactor, this.heightSizeFactor);
