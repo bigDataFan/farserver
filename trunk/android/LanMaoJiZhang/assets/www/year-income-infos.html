@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
+<script type="text/javascript" charset="utf-8" src="money.js"></script>
+<script type="text/javascript" charset="utf-8" src="taffy.js"></script>
+<script type="text/javascript" charset="utf-8" src="awesomechart.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css"/>
+
+<title>年度每月收入详情</title>
+
+<script type="text/javascript">
+var incomedb = new TAFFY();
+var year = null;
+
+$(document).ready(function(){
+	incomedb.store("incomedb");
+	
+	year = getParam("year");
+	if (year ==0) {
+		year = new Date().getFullYear();
+	}
+	
+	$('#to-prev-year span.text').html(parseInt(year)-1);
+	$('#to-next-year span.text').html(parseInt(year)+1);
+	
+	var months = [];
+	
+	for ( var i = 0; i < 12; i++) {
+		months.push(new Date(year, i, 1));
+	}
+	months.push(new Date(year, 11,31));
+	
+	var monthArray = [];
+	var colors = [];
+	var labels = [];
+	var max = 0;
+	for ( var i = 0; i < 12; i++) {
+		var total = incomedb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total");
+		monthArray.push(total);
+		colors.push("#5e87b0");
+		labels.push((i+1) + "月");
+	}
+	var mychart = new AwesomeChart("chartCanvas1");
+	mychart.colors = colors;
+	mychart.labels = labels; 
+	mychart.title = year + "年按月收入情况汇总";
+	mychart.barHGap = 10;
+    mychart.data = monthArray;
+    mychart.draw();
+});
+
+
+function bindEvent(evt) {
+	$('#to-list').bind(evt, goAnalyze);
+	$('#to-prev-year').bind(evt, goPrevYear);
+	$('#to-next-year').bind(evt, goNextYear);
+}
+
+function goPrevYear() {
+	location.href = "year-income-infos.html?year=" + (parseInt(year)-1);
+}
+
+function goNextYear() {
+	location.href = "year-income-infos.html?year=" + (parseInt(year)+1);
+}
+
+</script>
+</head>
+<body>
+
+
+<div id="topmenu">
+	<ul class="left">
+		<li>
+			<span class="button" id="to-list">
+				<span class="innerspan">
+					<span class="text">列表</span>
+					<span class="ui-icon icon-list"></span>
+				</span>
+			</span>
+		</li>
+	</ul>
+	
+	<ul class="right">
+		<li>
+			<span class="button" id="to-prev-year">
+				<span class="innerspan">
+					<span class="text">前年</span>
+					<span class="ui-icon icon-prev"></span>
+				</span>
+			</span>
+		</li>
+		<li>
+			<span class="button" id="to-next-year">
+				<span class="innerspan">
+					<span class="text">后年</span>
+					<span class="ui-icon icon-next"></span>
+				</span>
+			</span>
+		</li>
+	</ul>
+</div>
+
+
+<div id="monthdaylines" class="margin:0 auto; padding: 3px; width:320px">
+	<canvas id="chartCanvas1" width="320" height="320" ></canvas>	
+</div>
+
+<div id="monthcategorypie">
+
+</div>
+
+</body>
+</html>

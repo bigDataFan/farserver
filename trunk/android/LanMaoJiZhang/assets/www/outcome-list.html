@@ -12,37 +12,47 @@
 <script type="text/javascript">
 var outcomedb = new TAFFY();
 outcomedb.store("outcomedb");
-
+var start = 0;
 $(document).ready(function(){
-	outcomedb().order("time_millsecond desc").start(0).limit(10).each(
-		function(record,recordnumber) {
-			var d = new Date(record.time_millsecond);
-			if ($('#month-' + d.getMonth()).length==0) {
-				$('ul.simple-list').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
-			}
-			
-			var category = "无分类";
-			if (record.items && record.items.length>0) {
-				category = record.items[0].category + "等";
-			} else {
-				if (record.category) {
-					category = record.category;
-				}
-			}
-			$('ul.simple-list').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div><div class="title">' + record.title + '</div>'
-					+ '<div class="infos">分类: ' + category + ', 时间 ' + d.getDate() + '日</div>'
-					+ '<div class="big">' + record.total + '</div></li>');
-		}
-	);
+	showRange();
 });
+
+function showRange() {
+	$('#showmore').hide();
+	outcomedb().order("time_millsecond desc").start(start).limit(10).each(
+			function(record,recordnumber) {
+				var d = new Date(record.time_millsecond);
+				if ($('#month-' + d.getMonth()).length==0) {
+					$('#datalist').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
+				}
+				
+				var category = "无分类";
+				if (record.items && record.items.length>0) {
+					category = record.items[0].category + "等";
+				} else {
+					if (record.category) {
+						category = record.category;
+					}
+				}
+				$('#datalist').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div><div class="title">' + record.title + '</div>'
+						+ '<div class="infos">分类: ' + category + ', 时间 ' + d.getDate() + '日</div>'
+						+ '<div class="big">' + record.total + '</div></li>');
+				$('#showmore').show();
+			}
+	);
+	start +=10;
+}
 
 function bindEvent(evt) {
 	$('#to-main').bind(evt, goToMain);
 	$('#btn-new-outcome').bind(evt, addOutCome);
 	$('#btn-remove-outcome').bind(evt, removeSelected);
-	$('ul.simple-list li.detail div.big').live(evt, editOutCome);
-	$('ul.simple-list li.detail div.title').live(evt, editOutCome);
-	$('ul.simple-list li.detail div.dot').live(evt, toggleChecked);
+	$('#datalist li.detail div.big').live(evt, editOutCome);
+	$('#datalist li.detail div.infos').live(evt, editOutCome);
+	$('#datalist li.detail div.title').live(evt, editOutCome);
+	$('#datalist li.detail div.dot').live(evt, toggleChecked);
+	
+	$('#showmore').bind(evt, showRange);
 }
 
 function editOutCome() {
@@ -112,9 +122,15 @@ function removeSelected() {
 </div>
 
 
-<ul class="simple-list">
-	
+
+<ul class="simple-list" id="datalist">
 </ul>
 
+<ul class="simple-list" id="showmore">
+	
+	<li class="detail">
+		<div class="title">显示更多记录</div>
+	</li>	
+</ul>
 </body>
 </html>

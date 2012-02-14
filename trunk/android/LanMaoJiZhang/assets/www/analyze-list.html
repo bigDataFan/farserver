@@ -37,8 +37,9 @@ $(document).ready(function(){
 function bindEvent(evt) {
 	$('#to-main').bind(evt, goToMain);
 	$('#link-everymonth').bind(evt, goMonthInfo);
-	
-	
+	$('#link-outcome-by-month').bind(evt, goYearOutComeBars);
+	$('#link-income-by-month').bind(evt, goYearInComeBars);
+	$('#link-remain-by-month').bind(evt, goYearRemainBars);
 }
 
 
@@ -83,12 +84,12 @@ function bindEvent(evt) {
 
 	<ul class="simple-list" style="margin-top: .5em;">
 		<li class="link" id="link-everymonth">
-			<div class="title">每月支出概要</div>
+			<div class="title">每月支出分析</div>
 		</li>
 		<li class="link" id="link-outcome-by-month">
 			<div class="title">按月支出曲线</div>
 		</li>
-		<li class="link" id="link-outcome-by-month">
+		<li class="link" id="link-income-by-month">
 			<div class="title">按月收入曲线</div>
 		</li>
 		<li class="link" id="link-remain-by-month">

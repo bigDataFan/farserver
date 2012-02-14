@@ -173,6 +173,13 @@ ul.right {
 #topmenu .button>span.innerspan > span.icon-cal {
 	background-position:  -432px 50%; 
 }
+#topmenu .button>span.innerspan > span.icon-prev {
+	background-position:  -180px 50%;
+}
+
+#topmenu .button>span.innerspan > span.icon-next {
+	background-position:  -216px 50%;
+}
 
 #topmenu .button>span.innerspan > span.icon-pie {
 	background-position:  -612px 50%; 
@@ -464,7 +471,7 @@ ul.multilist li div {
 
 div.block {
 	float: left;
-	width: 160px;
+	width: 80px;
 	padding: .5em;
 	border: 1px solid #ccc;
 }
@@ -474,13 +481,10 @@ div.block span {
 	font-size: .6em;
 }
 
-
 div.block h3 {
 	margin-top:.4em;
 	color: #EB5847;
 }
-
-
 
 
 

@@ -21,6 +21,8 @@ $(document).ready(function(){
 		$('#userName').val(o.username);
 		$('#password').val(o.password);
 	}
+	
+	$('#pendding').hide();
 });
 
 function bindEvent(evt) {
@@ -35,9 +37,9 @@ function backUpToServer() {
 	
 	if (user=="" || pass=="") {
 		alert("请输入用户名及密码");
-		return;		
+		return;	
 	}
-	
+	pendding();
 	$.ajax({
 		type: 'GET', 
 		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
@@ -65,16 +67,22 @@ function backUpToServer() {
 						},
 						success:function(data) {
 							alert("同步完成");
+							resume();
 						},
 						error: function(xhr, type) {
 							alert("未知错误");
+							resume();
 						}
 					});
+				  } else {
+					  resume();
 				  }
 			  }
+				
 		  }, 
 		  error: function(xhr, type) {
 				alert("暂时无法连接服务器，请稍后再试");  
+				resume();
 		  }
 		});
 }
@@ -89,6 +97,7 @@ function downloadLocal() {
 		return;		
 	}
 	
+	pendding();
 	$.ajax({
 		type: 'GET', 
 		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
@@ -127,21 +136,35 @@ function downloadLocal() {
 								outcomedb.insert(data[i]);
 							}
 							alert("同步完成，共下载" + data.length + "条记录");
+							resume();
 						},
 						error: function(xhr, type) {
 							alert("未知错误:" + type);
+							resume();
 						}
 					});
+				} else {
+					resume();
 				}
 			  }
 		  }, 
 		  error: function(xhr, type) {
-				alert("暂时无法连接服务器，请稍后再试");  
+				alert("暂时无法连接服务器，请稍后再试");
+				resume();
 		  }
 		});
-	
-	
-	
+}
+
+
+
+function pendding() {
+	$('#pendding').show();
+	$('#opers').hide();
+}
+
+function resume() {
+	$('#pendding').hide();
+	$('#opers').show();
 }
 </script>
 </head>
@@ -173,10 +196,14 @@ function downloadLocal() {
 密码：<input type="password" id="password">
 </div>
 
-<div class="label">
-<a id="link-backup" class="btn">备份到服务器</a>
-<a id="link-restore" class="btn">同步到本地</a>
-  
+<div class="label" id="pendding">
+	<font color="green">请稍侯，正在连接服务器</font>
+</div>
+
+<div class="label" id="opers">
+	<a id="link-backup" class="btn">备份到服务器</a>
+	<a id="link-restore" class="btn">同步到本地</a>
+	  
 </div>
 
 

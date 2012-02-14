@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	if ($.os.ios || $.os.android || $.os.iphone || $.os.ipad) {
 		$('.button').bind("touchstart", onTouchedDown);
-		$('.button').bind("touchend", onTouchedUp);
+		//$('.button').bind("touchend", onTouchedUp);
 		bindEvent('touchend');
 	} else {
 		$('.button').bind("mousedown", onTouchedDown);
@@ -58,6 +58,18 @@ function goAnalyze() {
 
 function goMonthInfo() {
 	location.href = "month-infos.html";
+}
+
+function goYearOutComeBars() {
+	location.href = "year-outcome-infos.html";
+}
+
+function goYearInComeBars() {
+	location.href = "year-income-infos.html";
+}
+
+function goYearRemainBars() {
+	location.href = "year-remain-infos.html";
 }
 
 
@@ -212,4 +224,26 @@ Date.prototype.format = function (mask, utc) {
 function roundTo(v, n) {
 	return Math.round(v*n)/n;
 };
+
+function getMonthStart(d) {
+	d.setDate(1);
+	d.setHours(0, 0, 0);
+	return d;
+}
+
+function getNextMonthStart(d) {
+	d = getMonthStart(d);
+	var m = new Date(d.getTime() + 40*24*60*60*1000);
+	return getMonthStart(m);
+}
+
+function getPreMonthStart(d) {
+	d = getMonthStart(d);
+	var m = new Date(d.getTime() - 10*24*60*60*1000);
+	return getMonthStart(m);
+}
+
+
+
+
 
