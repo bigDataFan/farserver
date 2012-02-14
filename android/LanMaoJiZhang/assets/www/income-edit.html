@@ -85,7 +85,7 @@ function saveOrUpdate() {
 		alert("收入的数额必须是大于0的数字");
 		return;
 	}
-	income.total = parseInt($('#total').val());
+	income.total = parseFloat($('#total').val());
 	income.title = $('#desc').val();
 	income.date = new Date($('#year').val(), parseInt($('#month').val())-1, $('#date').val());
 	income.created = new Date().getTime();

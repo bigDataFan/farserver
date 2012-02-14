@@ -13,31 +13,45 @@
 var incomedb = new TAFFY();
 incomedb.store("incomedb");
 
+var start = 0;
+
 $(document).ready(function(){
-	incomedb().order("time_millsecond desc").start(0).limit(10).each(
+	showRange();
+});
+
+function showRange() {
+	$('#showmore').hide();
+
+	incomedb().order("time_millsecond desc").start(start).limit(10).each(
 		function(record,recordnumber) {
 			var d = new Date(record.date);
 							
 			if ($('#month-' + d.getMonth()).length==0) {
-				$('ul.simple-list').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
+				$('#datalist').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
 			}
 			
-			$('ul.simple-list').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div>' 
+			$('#datalist').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div>' 
 					+ '<div class="title">' + record.intype + '</div>'
 					+ '<div class="infos">' + d.getDate() + '日 ' + record.from + '   ' + record.title  + '</div>'
 					+ '<div class="big">' + record.total + '</div></li>');
+			
+			$('#showmore').show();
 		}
 	);
-});
+	start +=10;
+}
 
 function bindEvent(evt) {
 	$('#to-main').bind(evt, goToMain);
 	$('#btn-new-income').bind(evt, addInCome);
 	
 	$('#btn-remove-income').bind(evt, removeSelected);
-	$('ul.simple-list li.detail div.title').live(evt, editInCome);
-	$('ul.simple-list li.detail div.big').live(evt, editInCome);
-	$('ul.simple-list li.detail div.dot').live(evt, toggleChecked);
+	$('#datalist li.detail div.title').live(evt, editInCome);
+	$('#datalist li.detail div.big').live(evt, editInCome);
+	$('#datalist li.detail div.infos').live(evt, editInCome);
+	$('#datalist li.detail div.dot').live(evt, toggleChecked);
+	
+	$('#showmore').bind(evt, showRange);
 }
 
 function editInCome() {
@@ -108,9 +122,16 @@ function removeSelected() {
 </div>
 
 
-<ul class="simple-list">
-	
+<ul class="simple-list" id="datalist">
 </ul>
+
+<ul class="simple-list" id="showmore">
+	
+	<li class="detail">
+		<div class="title">显示更多记录</div>
+	</li>	
+</ul>
+
 
 </body>
 </html>

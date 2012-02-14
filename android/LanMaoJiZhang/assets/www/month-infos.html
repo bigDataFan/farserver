@@ -17,20 +17,37 @@
 <script type="text/javascript">
 var outcomedb = new TAFFY();
 
+var c_date = null;
+
 $(document).ready(function(){
 	outcomedb.store("outcomedb");
-	var monthd = new Date(); monthd.setDate(1); monthd.setHours(0, 0, 0);
-	var nextmonthd = new Date();nextmonthd.setDate(31); nextmonthd.setHours(23, 59, 59);
 	
-	drawSomeDaysLine(monthd.getTime(),nextmonthd.getTime(), "chartCanvas1", null);
+	var dm = getParam("month");
+	if (dm!=0) {
+		c_date = new Date(dm);
+	} else {
+		c_date = new Date();
+	}
+	var start = getMonthStart(c_date);
+	var end = getNextMonthStart(c_date);
+	drawCategoryPie(start.getTime(),end.getTime(), "chartCanvas1", "monthcategorypie");
+	//drawSomeDaysLine(monthd.getTime(),nextmonthd.getTime(), "chartCanvas1", null);
 });
 
 
 function bindEvent(evt) {
-	$('#to-main').bind(evt, goToMain);
-	
+	$('#to-list').bind(evt, goAnalyze);
+	$('#to-prev-month').bind(evt, goPrevMonth);
+	$('#to-next-month').bind(evt, goNextMonth);
 }
 
+function goPrevMonth() {
+	location.href = "month-infos.html?month=" + getPreMonthStart(c_date).format("yyyy-mm-dd");
+}
+
+function goNextMonth() {
+	location.href = "month-infos.html?month=" + getNextMonthStart(c_date).format("yyyy-mm-dd");
+}
 
 function drawSomeDaysLine(dateStart, dateEnd, container, size) {
 	var nowTime = dateStart;
@@ -55,60 +72,66 @@ function drawSomeDaysLine(dateStart, dateEnd, container, size) {
     mychart.draw();
 }
 
-
-
-/*
-
-function drawCategoryPie(dateStart, dateEnd, container, size) {
-	
+function drawCategoryPie(dateStart, dateEnd, container, divcontainer) {
 	var categories = {};
+	var categoryCounts = {};
+	var total = 0;
 	
-	groupdb({"time_millsecond":{gt :dateStart, lt: dateEnd}}).each(
+	outcomedb({"time_millsecond":{gt :dateStart, lt: dateEnd}}).each(
 			function(record, recordnumber) {
 				if (record.category) {
 					if (categories[record.category] == null) {
 						categories[record.category] = parseInt(record.total);
+						categoryCounts[record.category] = 1;
 					} else {
 						categories[record.category] += parseInt(record.total);
+						categoryCounts[record.category] += 1;
 					}
 				} else {
 					if (record.items && record.items.length>0) {
 						for (var i=0; i<record.items.length; i++) {
 							if (categories[record.items[i].category] == null) {
+								categoryCounts[record.items[i].category] = 1;
 								categories[record.items[i].category] = parseInt(record.items[i].cost);
 							} else {
+								categoryCounts[record.items[i].category] += 1;
 								categories[record.items[i].category] += parseInt(record.items[i].cost);
 							}
 						}
 					} else {
-						if (categories['额外支出']==null) {
-							categories['额外支出'] = parseInt(record.total);
+						if (categories['其他支出']==null) {
+							categoryCounts['其他支出'] = 1;
+							categories['其他支出'] = parseInt(record.total);
 						} else {
-							categories['额外支出'] += parseInt(record.total);
+							categoryCounts['其他支出'] += 1;
+							categories['其他支出'] += parseInt(record.total);
 						}
 					}
 				}
+				total += parseInt(record.total);
 			}
 	);
-	var ts = "";
-	var vs = "";
-	for ( var key in categories) {
-		ts += categories[key] + ",";
-		vs += key + "|";
-	}
-	ts = ts.substring(0, ts.length-1);
-	vs = vs.substring(0, vs.length-1);
-	var url = 'http://chart.googleapis.com/chart?cht=p' 
-		+ '&chd=t:' + ts 
-		+ "&chds=a"
-		+ '&chl=' + vs 
-		+ '&chtt=支出按分类比例'
-		+ '&chs=' + size;
-	$('#' + container).attr('src', encodeURI(url)); 
-			//+ '&chdl=10%C2%B0|40%C2%B0|50%C2%B0|80%C2%B0');
-}
+	
+	 var chart7 = new AwesomeChart(container);
 
-*/
+	var colors = [];
+	var datas = [];
+	for ( var key in categories) {
+		var color = chart7.generateRandomColor();
+		$('#' + divcontainer).append('<div style="margin-top:3px; margin-left:10px; padding-left:5px; font-weight: bold;font-size: 12px;color:' 
+				+ color + '; border-left: 20px solid ' + color + ';">' 
+				+ key + "   -   " + Math.floor((categories[key]/total)*100) + "%, 总计" + categories[key] + "元，支出项" + categoryCounts[key]  + "</font>");
+		datas.push(categories[key]);
+		colors.push(color);
+	}
+	
+   
+    chart7.chartType = "pie";
+    chart7.colors = colors;
+    chart7.title = new Date(dateStart).format("yyyy-mm-dd") + "至" + new Date(dateEnd).format("yyyy-mm-dd");
+    chart7.data = datas;
+    chart7.draw();
+}
 
 </script>
 </head>
@@ -118,10 +141,29 @@ function drawCategoryPie(dateStart, dateEnd, container, size) {
 <div id="topmenu">
 	<ul class="left">
 		<li>
-			<span class="button" id="to-main">
+			<span class="button" id="to-list">
 				<span class="innerspan">
-					<span class="text">主页面</span>
-					<span class="ui-icon icon-home"></span>
+					<span class="text">列表</span>
+					<span class="ui-icon icon-list"></span>
+				</span>
+			</span>
+		</li>
+	</ul>
+	
+	<ul class="right">
+		<li>
+			<span class="button" id="to-prev-month">
+				<span class="innerspan">
+					<span class="text">上月</span>
+					<span class="ui-icon icon-prev"></span>
+				</span>
+			</span>
+		</li>
+		<li>
+			<span class="button" id="to-next-month">
+				<span class="innerspan">
+					<span class="text">下月</span>
+					<span class="ui-icon icon-next"></span>
 				</span>
 			</span>
 		</li>
@@ -130,7 +172,7 @@ function drawCategoryPie(dateStart, dateEnd, container, size) {
 
 
 <div id="monthdaylines" class="margin:0 auto; padding: 3px; width:320px">
-	<canvas id="chartCanvas1" width="320" height="600" ></canvas>	
+	<canvas id="chartCanvas1" width="320" height="320" ></canvas>	
 </div>
 
 <div id="monthcategorypie">

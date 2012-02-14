@@ -12,8 +12,26 @@
 <link rel="stylesheet" type="text/css" href="style.css"/>
 
 <script type="text/javascript">
+
+var currentDate = new Date();
+
 $(document).ready(function(){
-	drawRecentDays(new Date(new Date().getTime()-6*24*60*60*1000), new Date(), 'chartCanvas');
+	drawRecentDays(new Date(currentDate.getTime()-6*24*60*60*1000), currentDate, 'chartCanvas');
+	
+	$('#recent-chart').swipeRight(
+		function() {
+			currentDate = new Date(currentDate.getTime()-6*24*60*60*1000);
+			drawRecentDays(new Date(currentDate.getTime()-6*24*60*60*1000), currentDate, 'chartCanvas');
+		}
+	);
+	
+	$('#recent-chart').swipeLeft(
+			function() {
+				currentDate = new Date(currentDate.getTime()+6*24*60*60*1000);
+				drawRecentDays(new Date(currentDate.getTime()-6*24*60*60*1000), currentDate, 'chartCanvas');
+			}
+		);
+	
 });
 
 function onGridTouchedDown () {
