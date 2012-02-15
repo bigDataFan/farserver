@@ -25,7 +25,7 @@ $(document).ready(function(){
 		incomeid = id;
 		var income = incomedb(id).first();
 
-		d = new Date(income.date);
+		d = new Date(income.time_millsecond);
 		$('#total').val(income.total);
 		$('#desc').val(income.title);
 		$('#from').val(income.from);
@@ -89,7 +89,7 @@ function saveOrUpdate() {
 	
 	income.total = parseFloat($('#total').val());
 	income.title = $('#desc').val();
-	income.date = new Date($('#year').val(), parseInt($('#month').val())-1, $('#date').val());
+	income.date = new Date(parseInt($('#year').val()), parseInt($('#month').val())-1, parseInt($('#date').val()));
 	income.updated = new Date().getTime();
 	income.desc = "";
 	income.time = income.date.format("yyyy-mm-dd");

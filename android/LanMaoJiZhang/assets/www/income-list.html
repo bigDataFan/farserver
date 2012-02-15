@@ -24,8 +24,7 @@ function showRange() {
 
 	incomedb().order("time_millsecond desc").start(start).limit(10).each(
 		function(record,recordnumber) {
-			var d = new Date(record.date);
-							
+			var d = new Date(record.time_millsecond);
 			if ($('#month-' + d.getMonth()).length==0) {
 				$('#datalist').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
 			}
