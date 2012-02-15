@@ -72,6 +72,9 @@ function goYearRemainBars() {
 	location.href = "year-remain-infos.html";
 }
 
+function goAbout() {
+	location.href = "about.html";
+}
 
 
 function fillselect(select, categories) {

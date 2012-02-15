@@ -42,7 +42,7 @@ function backUpToServer() {
 	pendding();
 	$.ajax({
 		type: 'GET', 
-		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
+		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb,incomedb&user='+user+"&p=" + pass,
 		dataType: 'json', 
 		async: true, 
 		success: function(body) {
@@ -51,11 +51,13 @@ function backUpToServer() {
 			} else {
 				logindb().remove();
 				logindb.insert({'username': user,'password': pass});
-				
-				if (confirm("服务器端有" + body.count + "条记录， 用本地数据覆盖?")) {
-					var outcomedb = new TAFFY();
-					outcomedb.store("outcomedb");
 
+				var outcomedb = new TAFFY();
+				outcomedb.store("outcomedb");
+				var incomedb = new TAFFY();
+				incomedb.store("incomedb");
+				
+				if (confirm("用本地数据覆盖?")) {
 					$.ajax({
 						type : "POST",
 						url: 'http://www.ever365.com/service/db/sync/putall?db=groupdb&user='+user+"&p=" + pass,
@@ -66,8 +68,24 @@ function backUpToServer() {
 							"list": outcomedb().stringify()
 						},
 						success:function(data) {
-							alert("同步完成");
-							resume();
+							$.ajax({
+								type : "POST",
+								url: 'http://www.ever365.com/service/db/sync/putall?db=incomedb&user='+user+"&p=" + pass,
+								dataType: 'json',
+								async: true,
+								data : {
+									"db":"incomedb",
+									"list": incomedb().stringify()
+								},
+								sucess:function(data) {
+									alert("同步完成");
+									resume();
+								},
+								error: function(xhr, type) {
+									alert("未知错误");
+									resume();
+								}
+							});							
 						},
 						error: function(xhr, type) {
 							alert("未知错误");
@@ -135,8 +153,29 @@ function downloadLocal() {
 								delete data[i]["_id"];
 								outcomedb.insert(data[i]);
 							}
-							alert("同步完成，共下载" + data.length + "条记录");
-							resume();
+							
+							$.ajax({
+								type : "POST",
+								url: 'http://www.ever365.com/service/db/sync/getall?db=incomedb&user='+user+"&p=" + pass,
+								dataType: 'json',
+								async: true,
+								success:function(data) {
+									var incomedb = new TAFFY();
+									incomedb.store("incomedb");
+									incomedb().remove();
+									for(var i=0; i<data.length; i++) {
+										data[i].date = new Date(data[i].time_millsecond);
+										incomedb.insert(data[i]);
+									}
+									
+									alert("同步完成");
+									resume();
+								},
+								error: function(xhr, type) {
+									alert("未知错误:" + type);
+									resume();
+								}
+							});
 						},
 						error: function(xhr, type) {
 							alert("未知错误:" + type);
