@@ -85,11 +85,14 @@ function saveOrUpdate() {
 		alert("收入的数额必须是大于0的数字");
 		return;
 	}
+	income.formid = "addInComeForm";
+	
 	income.total = parseFloat($('#total').val());
 	income.title = $('#desc').val();
 	income.date = new Date($('#year').val(), parseInt($('#month').val())-1, $('#date').val());
-	income.created = new Date().getTime();
+	income.updated = new Date().getTime();
 	income.desc = "";
+	income.time = income.date.format("yyyy-mm-dd");
 	income.from = $('#from').val();
 	income.time_millsecond = income.date.getTime();
 	income.intype = $('#intype').val();
