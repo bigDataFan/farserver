@@ -45,6 +45,7 @@ function bindEvent(evt) {
 	$('#btn-config-category').bind(evt, configCategory);
 	$('#btn-back-recovery').bind(evt, goBackUp);
 	$('#btn-analyze').bind(evt, goAnalyze);
+	$('#btn-about').bind(evt, goAbout);
 }
 
 function drawRecentDays(dateStart, dateEnd, container) {
@@ -103,7 +104,8 @@ function drawRecentDays(dateStart, dateEnd, container) {
 	<div id="btn-analyze" class="griditem"><span class="an-statics">统计分析</span></div>
 	<!--  <div id="btn-config-budget" class="griditem"><span class="config-budget">预算管理</span></div>  -->
 	<div id="btn-config-category" class="griditem"><span class="config-category">分类配置</span></div>
-	<div id="btn-back-recovery" class="griditem"><span class="config-backup">备份恢复</span></div>	
+	<div id="btn-back-recovery" class="griditem"><span class="config-backup">备份恢复</span></div>
+	<div id="btn-about" class="griditem"><span class="about-me">软件说明</span></div>	
 </div>
 
 <div id="recent-chart">

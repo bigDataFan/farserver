@@ -286,8 +286,11 @@ div.griditem span.config-backup {
 	background: url("480/refresh.png") no-repeat 15px 8px;
 }
 
-/**-->|grid navigation**/
+div.griditem span.about-me {
+	background: url("480/about-me.png") no-repeat 15px 8px;
+}
 
+/**-->|grid navigation**/
 
 div.label {
 	border-bottom: 1px solid #EEE;
