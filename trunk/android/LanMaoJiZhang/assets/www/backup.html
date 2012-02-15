@@ -13,14 +13,22 @@
 
 <script type="text/javascript">
 var logindb = new TAFFY();
-logindb.store("logindb");
+var outcomedb = new TAFFY();
+var incomedb = new TAFFY();
 
 $(document).ready(function(){
+	logindb.store("logindb");
+	
 	if (logindb().get().length>0) {
 		var o = logindb().first();
 		$('#userName').val(o.username);
 		$('#password').val(o.password);
 	}
+	
+	outcomedb.store("outcomedb");
+	incomedb.store("incomedb");
+	
+	$('#infos').html("设备上共" + outcomedb().get().length + "条支出记录，" + incomedb().get().length + "条收入记录");
 	
 	$('#pendding').hide();
 });
@@ -51,13 +59,8 @@ function backUpToServer() {
 			} else {
 				logindb().remove();
 				logindb.insert({'username': user,'password': pass});
-
-				var outcomedb = new TAFFY();
-				outcomedb.store("outcomedb");
-				var incomedb = new TAFFY();
-				incomedb.store("incomedb");
 				
-				if (confirm("用本地数据覆盖?")) {
+				if (confirm("服务器端有" + body.groupdb + "条支出记录，" + body.incomedb + " 条收入记录， 是否覆盖")) {
 					$.ajax({
 						type : "POST",
 						url: 'http://www.ever365.com/service/db/sync/putall?db=groupdb&user='+user+"&p=" + pass,
@@ -77,18 +80,18 @@ function backUpToServer() {
 									"db":"incomedb",
 									"list": incomedb().stringify()
 								},
-								sucess:function(data) {
+								success:function(data) {
 									alert("同步完成");
 									resume();
 								},
 								error: function(xhr, type) {
-									alert("未知错误");
+									alert("未知错误" + type);
 									resume();
 								}
 							});							
 						},
 						error: function(xhr, type) {
-							alert("未知错误");
+							alert("未知错误" + type);
 							resume();
 						}
 					});
@@ -96,7 +99,6 @@ function backUpToServer() {
 					  resume();
 				  }
 			  }
-				
 		  }, 
 		  error: function(xhr, type) {
 				alert("暂时无法连接服务器，请稍后再试");  
@@ -118,7 +120,7 @@ function downloadLocal() {
 	pendding();
 	$.ajax({
 		type: 'GET', 
-		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb&user='+user+"&p=" + pass,
+		url: 'http://www.ever365.com/service/db/sync/query?db=groupdb,incomedb&user='+user+"&p=" + pass,
 		dataType: 'json', 
 		async: true, 
 		success: function(body) {
@@ -128,15 +130,13 @@ function downloadLocal() {
 				logindb().remove();
 				logindb.insert({'username': user,'password': pass});
 				
-				if (confirm("服务器端有" + body.count + "条记录， 是否覆盖本地的数据")) {
+				if (confirm("服务器端有" + body.groupdb + "条支出记录，" + body.incomedb + " 条收入记录， 是否覆盖本地的数据")) {
 					$.ajax({
 						type : "POST",
 						url: 'http://www.ever365.com/service/db/sync/getall?db=groupdb&user='+user+"&p=" + pass,
 						dataType: 'json',
 						async: true,
 						success:function(data) {
-							var outcomedb = new TAFFY();
-							outcomedb.store("outcomedb");
 							outcomedb().remove();
 							for(var i=0; i<data.length; i++) {
 								data[i].date = new Date(data[i].time_millsecond);
@@ -160,8 +160,6 @@ function downloadLocal() {
 								dataType: 'json',
 								async: true,
 								success:function(data) {
-									var incomedb = new TAFFY();
-									incomedb.store("incomedb");
 									incomedb().remove();
 									for(var i=0; i<data.length; i++) {
 										data[i].date = new Date(data[i].time_millsecond);
@@ -243,6 +241,11 @@ function resume() {
 	<a id="link-backup" class="btn">备份到服务器</a>
 	<a id="link-restore" class="btn">同步到本地</a>
 	  
+</div>
+
+
+<div class="label" >
+	<font color="green" id="infos"></font>
 </div>
 
 
