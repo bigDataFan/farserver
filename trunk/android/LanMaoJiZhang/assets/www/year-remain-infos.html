@@ -45,7 +45,7 @@ $(document).ready(function(){
 	for ( var i = 0; i < 12; i++) {
 		var outcome = outcomedb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total");
 		var income = incomedb({"time_millsecond":{gt :months[i].getTime(), lt: months[i+1].getTime()}}).sum("total");
-		monthArray.push(income-outcome);
+		monthArray.push(getFloatFormat(income-outcome));
 		colors.push("#5e87b0");
 		labels.push((i+1) + "月");
 	}
