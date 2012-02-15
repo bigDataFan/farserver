@@ -38,15 +38,8 @@ public class LanMaoJiZhangActivity extends DroidGap {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		 if (keyCode == KeyEvent.KEYCODE_BACK) { // go back home
 			 if (super.appView.getUrl().endsWith("index.html")) {
-				 if (System.currentTimeMillis()-lastClick<300) {
-					 this.finish();
-					 return true;
-				 }
-				 lastClick = System.currentTimeMillis();
+				 this.finish();
 				 return true;
-			 } else {
-				 super.loadUrl("file:///android_asset/www/index.html"); 
-	             return true;
 			 }
 		 }
 	     if (keyCode == KeyEvent.KEYCODE_MENU) {  
