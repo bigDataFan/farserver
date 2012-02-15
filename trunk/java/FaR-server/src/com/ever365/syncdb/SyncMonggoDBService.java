@@ -128,16 +128,18 @@ public class SyncMonggoDBService {
 	@RestService(method="GET", uri="/db/sync/query")
 	public Map<String, Object> queryUser(@RestParam(value="db") String coll) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		DBCollection dbcoll = getSyncCollection(coll);
 		
 		if (AuthenticationUtil.isCurrentUserGuest()) {
 			result.put("guest", true);
 		} else {
 			result.put("user", AuthenticationUtil.getCurrentUser());
-			//查找自更新时间后的新文档
-			DBObject query = new BasicDBObject("creator", AuthenticationUtil.getCurrentUserName());
-			result.put("count", dbcoll.count(query));
-			
+			String[] dbnames = coll.split(",");
+			for (String name : dbnames) {
+				DBCollection dbcoll = getSyncCollection(name);
+				//查找自更新时间后的新文档
+				DBObject query = new BasicDBObject("creator", AuthenticationUtil.getCurrentUserName());
+				result.put(name, dbcoll.count(query));
+			}
 		}
 		return result;
 	}
