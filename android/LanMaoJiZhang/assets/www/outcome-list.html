@@ -19,11 +19,14 @@ $(document).ready(function(){
 
 function showRange() {
 	$('#showmore').hide();
-	outcomedb().order("time_millsecond desc").start(start).limit(10).each(
+	outcomedb().order("time_millsecond desc").start(start).limit(50).each(
 			function(record,recordnumber) {
 				var d = new Date(record.time_millsecond);
-				if ($('#month-' + d.getMonth()).length==0) {
-					$('#datalist').append('<li id="' + 'month-' + d.getMonth() + '" class="head">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月</li>')
+				var formatedDate = d.format("yyyy-mm-dd");
+				
+				
+				if ($('#date-' + formatedDate).length==0) {
+					$('#datalist').append('<li id="' + 'date-' + formatedDate + '" class="head">' + formatedDate + '</li>')
 				}
 				
 				var category = "无分类";
@@ -35,12 +38,12 @@ function showRange() {
 					}
 				}
 				$('#datalist').append('<li class="detail" id="' + record.___id + '"><div class="dot"><div class="checkbox"></div></div><div class="title">' + record.title + '</div>'
-						+ '<div class="infos">分类: ' + category + ', 时间 ' + d.getDate() + '日</div>'
+						+ '<div class="infos">分类: ' + category + '</div>'
 						+ '<div class="big">' + record.total + '</div></li>');
 				$('#showmore').show();
 			}
 	);
-	start +=10;
+	start +=50;
 }
 
 function bindEvent(evt) {

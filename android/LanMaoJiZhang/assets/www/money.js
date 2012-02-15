@@ -243,7 +243,9 @@ function getPreMonthStart(d) {
 	return getMonthStart(m);
 }
 
-
+function getFloatFormat(f) {
+	return Math.round(f * 10)/10;
+}
 
 
 

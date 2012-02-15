@@ -29,8 +29,8 @@ $(document).ready(function(){
 	var day3qry = outcomedb({"time_millsecond":{gt :day3.getTime(), lt: todayend.getTime()}});
 	$('#recent3daytotal').html(roundTo(day3qry.sum("total"), 10));
 	
-	$('#totaloutcome').html(outcomedb().sum("total"));
-	$('#totalincome').html(incomedb().sum("total"));
+	$('#totaloutcome').html(getFloatFormat(outcomedb().sum("total")));
+	$('#totalincome').html(getFloatFormat(incomedb().sum("total")));
 	
 });
 
