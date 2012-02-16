@@ -17,22 +17,21 @@ categorydb.store("categorydb");
 
 
 $(document).ready(function(){
-	/*
+	
 	if (categorydb().get().length==0) {
 		//init categories 
-		if (confirm("分类为空，是否初始化为默认分类")) {
-			categorydb.insert({category: "米面粮油"});
-			categorydb.insert({category: "蔬菜水果"});
-			categorydb.insert({category: "衣服鞋帽"});
-			categorydb.insert({category: "交通通讯"});
-			categorydb.insert({category: "家居用品"});
-			categorydb.insert({category: "外出就餐"});
-			categorydb.insert({category: "运动健身"});
-			categorydb.insert({category: "固定支出"});
-			categorydb.insert({category: "礼品应酬"});
-		}
+		categorydb.insert({category: "米面粮油"});
+		categorydb.insert({category: "蔬菜水果"});
+		categorydb.insert({category: "衣服鞋帽"});
+		categorydb.insert({category: "交通通讯"});
+		categorydb.insert({category: "家居用品"});
+		categorydb.insert({category: "外出就餐"});
+		categorydb.insert({category: "运动健身"});
+		categorydb.insert({category: "固定支出"});
+		categorydb.insert({category: "礼品应酬"});
+		categorydb.insert({category: "其他支出"});
 	}
-	*/
+	
 	categorydb().each(
 		function(record, recordnumber) {
 			addUICategory(record);
@@ -86,19 +85,6 @@ function cleanAll() {
 			</span>
 		</li>
 	</ul>
-	
-	<ul class="right">
-		<li>	
-			<span class="button" id="btn-clean-all">
-				<span class="innerspan">
-					<span class="text">全部清除</span>
-					<span class="ui-icon icon-remove"></span>
-				</span>
-			</span>
-		</li>
-	</ul>
-	
-	<h1 class="ui-title" tabindex="0" role="heading" aria-level="1">编辑分类</h1>
 </div>
 
 <div class="label">

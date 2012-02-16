@@ -119,7 +119,7 @@ function addsubItemClick() {
 	t.cost = $('#multi-count').val();
 	t.title = $('#multi-desc').val();
 	t.category = $('#multi-category').val();
-	$('#multi-count').val(0);
+	$('#multi-count').val("");
 	$('#multi-desc').val("");
 	uiAddSubItem(t);
 }
@@ -184,7 +184,7 @@ function calculateTotal() {
 </div>
 
 <div class="label">
-	金额*  <input id="total" type="number" size="4" value="0"> 
+	金额*  <input id="total" type="number" size="4"> 
 </div>
 <div class="label">
 	描述*  <input type="text" id="desc"  size="10"> 
@@ -222,7 +222,7 @@ function calculateTotal() {
 		<select id="multi-category"></select> : <input type="text" id="multi-desc" size="10">
 	</div>
 	<div class="label multiedit hidden">
-		金额 :<input type="number" id="multi-count" size="4" value="0" class="number">
+		金额 :<input type="number" id="multi-count" size="4" class="number">
 	</div>
 	<div class="label multiedit hidden">
 		<a id="link-addsubitem" class="btn">增加子项</a>  

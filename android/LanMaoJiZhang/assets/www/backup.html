@@ -61,6 +61,7 @@ function backUpToServer() {
 				logindb.insert({'username': user,'password': pass});
 				
 				if (confirm("服务器端有" + body.groupdb + "条支出记录，" + body.incomedb + " 条收入记录， 是否覆盖")) {
+					$('#backinfos').html('正在本地的数据备份(覆盖)到服务器上');
 					$.ajax({
 						type : "POST",
 						url: 'http://www.ever365.com/service/db/sync/putall?db=groupdb&user='+user+"&p=" + pass,
@@ -131,6 +132,7 @@ function downloadLocal() {
 				logindb.insert({'username': user,'password': pass});
 				
 				if (confirm("服务器端有" + body.groupdb + "条支出记录，" + body.incomedb + " 条收入记录， 是否覆盖本地的数据")) {
+					$('#backinfos').html('正在将服务器上的数据覆盖到本地');
 					$.ajax({
 						type : "POST",
 						url: 'http://www.ever365.com/service/db/sync/getall?db=groupdb&user='+user+"&p=" + pass,
@@ -165,8 +167,8 @@ function downloadLocal() {
 										data[i].date = new Date(data[i].time_millsecond);
 										incomedb.insert(data[i]);
 									}
-									
 									alert("同步完成");
+									$('#infos').html("设备上共" + outcomedb().get().length + "条支出记录，" + incomedb().get().length + "条收入记录");
 									resume();
 								},
 								error: function(xhr, type) {
@@ -234,7 +236,7 @@ function resume() {
 </div>
 
 <div class="label" id="pendding">
-	<font color="green">请稍侯，正在连接服务器</font>
+	<font color="green" id="backinfos">请稍侯，正在连接服务器</font>
 </div>
 
 <div class="label" id="opers">

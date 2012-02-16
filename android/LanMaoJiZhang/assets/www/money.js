@@ -98,6 +98,7 @@ function loadCategories(db, ary) {
 		categorydb.insert({category: "运动健身"});
 		categorydb.insert({category: "固定支出"});
 		categorydb.insert({category: "礼品应酬"});
+		categorydb.insert({category: "其他支出"});
 	}
 	
 	categorydb().each(
