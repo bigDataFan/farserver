@@ -1,62 +1,199 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ever365</title>
-<link rel="stylesheet" type="text/css" href="main.css"/>
-
-</head>
-<body>
-
-<div class="wrapper" id="header_main">
-	
-	<div class="logged_out" id="nav_cont">
-		<span id="currentUserInfo"></span>
-		<span id="loginNav">
-		用以下网站的账号登陆：
-		<img src="http://static.youku.com/v1.0.0687/partner/img/ico_sina_16x16.png" alt="新浪微博"> <a href="/login/sina.jsp">新浪微博</a>
-		</span>
- 		<!-- <span id="custom_join_button" class="awesome blue medium register_button link" style="margin-left: 12px;" > <a href="register.html">免费加入</a></span>-->
-	</div>
-</div>
-	
-<div id="logo"><img alt="Ever365 个人信息服务 " src="images/logo.gif"></div>
-
-
-	<div id="terminal">
-		<div>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="description" content="Ever365 web site" />
+		<meta name="author" content="yaomy" />
+		<title>ever365网络应用实验室</title>
+		<link rel="stylesheet" href="new.css" type="text/css" />
+		<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+		<link rel="shortcut icon" href="favicon.ico" />
+		<!-- <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script> -->
 		
-				<ul class="promos">
-					<li  class="time">
-					<a href="/office/365time/main.html"><h3>天天时间管理</h3>
-					<p>一个帮助您掌握和管理每天时间安排的应用。通过它，您会更清楚每天是时间都花在了哪儿
-					并且您也可以把您的即时动态共享给朋友们 </p></a><!--  <img  src="images/clock72.png" width="72" height="72">  -->
+		<script type="text/javascript">
+		$(document).ready(function() {
+			var queryhash = window.location.hash
+			switch (queryhash) {
+				case "#about":
+					initialShowAbout();
+					break;
+				case "#contact":
+					initialShowContact();
+					break;
+				case "#networks":
+					initialShowNetworks();
+					break;
+				default:
+					initialShowNetworks();
+					break;
+			}
+			$("h2").hide();
+			$("#nav-about a").click(showAbout);
+			$("#nav-networks a").click(showNetworks);
+			$("#nav-contact a").click(showContact);
+		});
+
+		function initialShowNetworks() {
+			$("#content").hide();
+			$("#timvandamme").removeClass();
+			$("#timvandamme").addClass("networks");
+			$(".node").hide();
+			$("#networks").show();
+			setTimeout("$('#content').slideDown('slow');", 700);
+		}
+
+		function initialShowAbout() {
+			$("#content").hide();
+			$("#timvandamme").removeClass();
+			$("#timvandamme").addClass("about");
+			$(".node").hide();
+			$("#about").show();
+			setTimeout("$('#content').slideDown('slow');", 700);
+		}
+
+		function initialShowContact() {
+			$("#content").hide();
+			$("#timvandamme").removeClass();
+			$("#timvandamme").addClass("contact");
+			$(".node").hide();
+			$("#contact").show();
+			setTimeout("$('#content').slideDown('slow');", 700);
+		}
+
+		function showAbout() {
+			if ($("#timvandamme").hasClass("about")){ }
+			else {
+				document.title = "Tim Van Damme - About";
+				$("#content").slideUp(500);
+				$(".node").fadeOut(500);
+				setTimeout("$('.node').hide();", 500);
+				setTimeout("$('#about').show();", 500);
+				$("#content").slideDown(500);
+				$("#timvandamme").removeClass();
+				$("#timvandamme").addClass("about");
+			}
+		}
+
+		function showNetworks() {
+			document.title = "Tim Van Damme - Networks";
+			if ($("#timvandamme").hasClass("networks")){ }
+			else {
+				$("#content").slideUp(500);
+				$(".node").fadeOut(500);
+				setTimeout("$('.node').hide();", 500);
+				setTimeout("$('#networks').show();", 500);
+				$("#content").slideDown(500);
+				$("#timvandamme").removeClass();
+				$("#timvandamme").addClass("networks");
+			}
+		}
+
+		function showContact() {
+			if ($("#timvandamme").hasClass("contact")){ }
+			else {
+				document.title = "Tim Van Damme - Contact";
+				$("#content").slideUp(500);
+				$(".node").fadeOut(500);
+				setTimeout("$('.node').hide();", 500);
+				setTimeout("$('#contact').show();", 500);
+				$("#content").slideDown(500);
+				$("#timvandamme").removeClass();
+				$("#timvandamme").addClass("contact");
+			}
+		}
+		</script>
+	</head>
+	<body>
+		<div id="timvandamme">
+			<div id="header">
+				<h1>Ever365网络应用实验室</h1>
+				<p id="jobtitle">由懒猫工作室开发</p>
+			</div><!-- header -->
+			<ul id="navigation">
+				<li id="nav-networks"><a href="#networks"><span>在线应用</span></a></li>
+				<li id="nav-about"><a href="#about"><span>手机应用</span></a></li>
+				<li id="nav-contact"><a href="#contact"><span>联系</span></a></li>
+			</ul><!-- navigation -->
+			<div id="content">
+				<h2>在线应用</h2>
+				<ul class="node" id="networks">
+					<li>
+						<a href="/office/365time/index.jsp" rel="me">
+							<img src="images/time.png" width="40" height="41"  />
+							<strong>时间记录小助手</strong>
+							记录和优化您的时间
+						</a>
 					</li>
-					<li  class="xytodos">
-					<h3>XY待办事项</h3>
-					<p> 把您的待办事宜按重要性和紧急性放到坐标轴中，帮助您更直观的分类和查看您的事务 </p>
+					<li>
+						<a href="/office/project/index.html" rel="me">
+							<img src="images/project.png" width="40" height="41"/>
+							<strong>进度计划小助手</strong>
+							一款简单好用的项目管理工具
+						</a>
+					</li>
+					<li>
+						<a href="/home/money/index.html" rel="me">
+							<img src="images/cat.png" width="40" height="41" />
+							<strong>懒猫记账</strong>
+							记录个人的支出和收入
+						</a>
 					</li>
 				</ul>
+				<h2>手机应用</h2>
+					<ul class="node" id="about">
+						<li id="about-work">
+							<h3>
+								<a href="http://static.apk.hiapk.com/html/2012/01/403195.html" target="black">
+									<img src="images/time.png" width="40" height="41" />
+									<small>New</small>
+									<strong>时间管理小助手(1.0)</strong>
+									android 手机应用
+								</a>
+							</h3>
+							<p id="i">I&hellip;</p>
+							<ul>
+								<li>时间管理的一个重要途径就是记录你的时间：你花了多少时间在哪些事情，把它详细地，记录下来，每天从刷牙开始，洗澡，早上穿衣花了多少时间，早上搭车的时间，平上出去拜访客户的时间，把每天花的时间一一记录下来，做了哪些事，你会发现浪费了哪些时间。当你找到浪费时间的根源，你才有办法改变。</li>
+							</ul>
+						</li>
+						<li id="about-blog">
+							<h3>
+								<a href="http://static.apk.hiapk.com/html/2012/02/412500.html" rel="me">
+									<img src="images/cat.png" width="40" height="41" alt="Maxvoltar" />
+									<small>New</small>
+									<strong>懒猫记账</strong>
+									android 手机应用
+								</a>
+							</h3>
+							<p id="i">I&hellip;</p>
+							<ul>
+								<li>懒猫记账是一款简单、免费的日常收入支出记录软件。</li>
+								<li>它在传统个人财务管理的的基础上，着重提供支出记录、收入记录、支出分类、子项记录等功能，同时简化了一些繁琐的选项。</li>
+								<li>结合懒猫记账web版使用，可以进行数据的备份，保证数据的持久保存</li>
+							</ul>
+						</li>
+					</ul><!-- about -->
+					<h2>联系</h2>
+					<ul class="node vcard" id="contact">
+						<li id="contact-personal">
+							<h3>
+								<strong>小豆</strong>
+								文案、设计
+							</h3>
+							<ul>
+								<li class="email"><a href="mailto:yaomy@ever365.com" rel="me">yaomy@ever365.com</a></li>
+							</ul>
+						</li><!-- contact-personal -->
+						<li id="contact-work">
+							<h3>
+								<strong>寒流</strong>
+								Java、HTML5开发
+							</h3>
+							<ul>
+								<li class="tel"><span class="type">邮件</span> <a href="mailto:liuhan@ever365.com" rel="me">liuhan@ever365.com</a></li>
+								<li class="url"><a href="http://weibo.com/liuhann" rel="me">http://weibo.com/liuhann</a></li>
+							</ul>
+						</li>
+					</ul>
+			</div>
 		</div>
-		
-	</div>
-
-<div style="z-index:10000;" id="toolbar_container">
-	<div id="minus_toolbar" style="z-index: 10000;">
-  
-		<div style="float: left;" class="content" id="toolbar_left">
-			<a href="http://www.ever365.com/">Ever365</a> &copy; 2009-2011
-			•  
-			<a href="http://blog.minus.com/category/updates/">v1.07</a>
-			<span id="toolbar_links">
-			• <a href="/pages/about">关于</a>
-			• <a href="/pages/api">API</a>
-			• <a href="/pages/tos">Terms</a>
-			</span>
-		</div>
-
-
-	</div>
-</div>
-</body>
+	</body>
 </html>
