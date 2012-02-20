@@ -9,7 +9,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" href="js-min/app.css" />
-
+	<script type="text/javascript">
+		if (isIE()) {
+			alert("使用火狐、google或苹果浏览器正常访问本应用");
+		}
+	
+		function isIE() {
+			return navigator.userAgent.indexOf("MSIE")>-1;
+		}
+	</script>
 </head>
 
 <body>
