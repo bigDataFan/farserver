@@ -97,26 +97,24 @@
 		<servlet-class>com.ever365.console.ConsoleCommandExecuter</servlet-class>
 	</servlet>
 	<servlet>
-		<description>
-		</description>
 		<display-name>DownloadServlet</display-name>
 		<servlet-name>DownloadServlet</servlet-name>
 		<servlet-class>com.ever365.rest.DownloadServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<description>
-		</description>
 		<display-name>SinaAuthUrlServlet</display-name>
 		<servlet-name>SinaAuthUrlServlet</servlet-name>
-		<servlet-class>
-		com.ever365.oauth.sina.SinaAuthUrlServlet</servlet-class>
+		<servlet-class>com.ever365.oauth.sina.SinaAuthUrlServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<description>
-		</description>
 		<display-name>BaiduCallBackServlet</display-name>
 		<servlet-name>BaiduCallBackServlet</servlet-name>
 		<servlet-class>com.ever365.oauth.baidu.BaiduCallBackServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<display-name>Dt360OAuthServlet</display-name>
+		<servlet-name>Dt360OAuthServlet</servlet-name>
+		<servlet-class>com.ever365.oauth.dt360.Dt360OAuthServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
@@ -133,13 +131,11 @@
 		<servlet-name>WebDAVServlet</servlet-name>
 		<url-pattern>/webdav/*</url-pattern>
 	</servlet-mapping>
-	
 		
 	<servlet-mapping>
 		<servlet-name>RestServiceServlet</servlet-name>
 		<url-pattern>/service/*</url-pattern>
 	</servlet-mapping>
-	
 	
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
@@ -164,6 +160,10 @@
 	<servlet-mapping>
 		<servlet-name>BaiduCallBackServlet</servlet-name>
 		<url-pattern>/oauth/baidu</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Dt360OAuthServlet</servlet-name>
+		<url-pattern>/oauth/dt360</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>
