@@ -33,6 +33,7 @@ function go360() {
 
 
 function loginedby360(info) {
+	alert(info);
 	if (info==null || info=="") {
 		return;
 	}
@@ -75,7 +76,7 @@ function loginedby360(info) {
 				</div>
 				
 				<div class="label">
-					  没有账号？请 <a href="/office/register.jsp">注册</a>  <a href="javascript:go360()">使用360账号登录</a>
+					  没有账号？请 <a href="/office/register.jsp">注册</a>
 				</div>
 				
 				<!-- 
