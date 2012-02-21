@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="common.css"/>
 
+<script type="text/javascript" src="http://openapi.360.cn/js/o360_connect.js"></script>
+<script type="text/javascript" src="/js/json2.js"></script>
+
 <%
 	if (request.getParameter("redirectTo")!=null) {
 	session.setAttribute("redirectTo", request.getParameter("redirectTo"));
@@ -19,6 +22,29 @@
 	}
 
 %>
+
+<script type="text/javascript">
+
+O360.Connect.init("34cb3c964f6be83d7bf1867f15512b93");
+
+function go360() {
+	O360.Connect.login(loginedby360);
+}
+
+
+function loginedby360(info) {
+	if (info==null || info=="") {
+		return;
+	}
+	
+	var userInfo = JSON.parse(info);
+	if (userInfo.name=="") {
+		alert("360用户为自动生成，无法登录");
+		return;
+	}
+	location.href = "/oauth/dt360?name=" + userInfo.name + "&id=" + userInfo.id + "&signature=" + userInfo.signature + "&avatar=" + userInfo.avatar;
+}
+</script>
 <title>请登陆以进一步使用</title>
 
 </head>
@@ -49,7 +75,7 @@
 				</div>
 				
 				<div class="label">
-					  没有账号？请 <a href="/office/register.jsp">注册</a> 
+					  没有账号？请 <a href="/office/register.jsp">注册</a>  <a href="javascript:go360()">使用360账号登录</a>
 				</div>
 				
 				<!-- 
