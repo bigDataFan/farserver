@@ -6,61 +6,125 @@ var ary = wrapArray(generateFromTemplate(generateRandomArray(10,10), 10));
 
 var director;
 var scene;
+var splashScene;
 var superClickActor;
 
-function start() {
-	director = new CAAT.Director().initialize(
-	        700,700,
-	        document.getElementById('_c1'));
+var width = 600;
+var height = 600;
+
+
+var imageRes =  [
+	{id:'d0',     url:'resource/0.png'} 
+	,{id:'d1',     url:'resource/1.png'} 
+	,{id:'d2',     url:'resource/2.png'}
+	,{id:'d3',     url:'resource/3.png'} 
+	,{id:'d4',     url:'resource/4.png'} 
+	,{id:'d5',     url:'resource/5.png'} 
+	,{id:'d6',     url:'resource/6.png'} 
+	,{id:'d7',     url:'resource/7.png'} 
+	,{id:'d8',     url:'resource/8.png'}
+	,{id:'d9',     url:'resource/9.png'} 
+	,{id:'d10',     url:'resource/10.png'}
+];
+
+function loadSplashScene() {
+	splashScene = director.createScene();
+	var acontainer = new CAAT.ActorContainer().
+		setBounds(0, 0, director.width, director.height);
+	
+	splashScene.addChild(acontainer);
+	
+	acontainer.addBehavior(
+			new CAAT.PathBehavior()
+		 	.setFrameTime(splashScene.time, 1000 )
+		 	.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
+		 	.setValues(
+		 			new CAAT.Path().setLinear(
+		 					0,
+		 					-200,
+		 					0,
+		 					0)
+		 			 )
+	);
+	
+	new CAAT.ImagePreloader().loadImages(
+			 [
+			  {id:'splash', url:'logo.png'},
+			  {id:'buttons', url:'botones.png'}
+			 ],
+			function(counter, images) {
+				 if (counter==2) {
+					 director.setImagesCache(images);
+					 var starsImage = new CAAT.SpriteImage().initialize(director.getImage('splash'), 1,1);
+					 
+					 var actorStar = new CAAT.Actor().setBackgroundImage(starsImage.getRef(), true);
+					 
+					 var pathBehavior = new CAAT.PathBehavior()
+					 	.setFrameTime( actorStar.time, 1000 )
+					 	.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
+					 	.setValues(
+					 			new CAAT.Path().setLinear(
+					 					width/2-50,
+					 					-100,
+					 					width/2-50,
+					 					50)
+					 			 );
+					 actorStar.addBehavior(pathBehavior);
+					 acontainer.addChild(actorStar);
+					 
+					 
+
+					 // an image of 7 rows by 3 columns
+					 var btnImage= new CAAT.SpriteImage().initialize(
+							 director.getImage('buttons'), 7, 3 );
+					 
+					 var b1= new CAAT.Actor()
+					 			.setAsButton(
+							                 btnImage.getRef(), 0, 1, 2, 0, function(button) {
+												 director.switchToNextScene(
+									                        1000,
+									                        true,
+									                        true
+									                );
+							                 }
+							     ).setLocation(width/2,height/2-120);
+					 var b2= new CAAT.Actor()
+			 			.setAsButton(
+					                 btnImage.getRef(), 3, 4, 5, 3, function(button) {
+										 director.switchToNextScene(
+							                        1000,
+							                        true,
+							                        true
+							                );
+					                 }
+					     ).setLocation(width/2,height/2-60);
+			
+					 acontainer.addChild(b1);
+					 acontainer.addChild(b2);
+					 
+					 loadResources();
+				 }
+			}
+	);
+}
+
+function loadResources() {
 	
 	scene= director.createScene();
 	
+	//loadSplashScene();
+	
 	var acontainer = new CAAT.ActorContainer().
-    	setBounds(0,0,director.width,director.height).
-    	setFillStyle('#fff');
+    	setBounds(0, 0, director.width, director.height);
+    	//.setFillStyle('#fff')
+    	//.setAlpha(0.5);
 	
 	scene.addChild(acontainer);
-	 
-	new CAAT.ImagePreloader().loadImages(
-			 imageRes,
-			function(counter, images) {
-				if (counter==11) {
-					director.setImagesCache(images);
-					
-					for(var i=0; i<ary.length; i++) {
-						for(var j=0; j<ary[i].length; j++) {
-							if (ary[i][j]=='') continue;
-							
-							var v = 'd' + ary[i][j];
-							var starsImage = new CAAT.SpriteImage().initialize(director.getImage(v), 1,1);
-							
-							var pathBehavior = new CAAT.PathBehavior()
-							 	.setFrameTime( 500, 1000 )
-							 	.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
-							 	.setValues(
-							 			new CAAT.Path()
-							 			.setLinear(
-                                            //Math.random()<.5 ? scene.width+Math.random() * 50 : -50-Math.random()*scene.width,
-                                            i*50,
-                                            Math.random()<.5 ? scene.width+Math.random() * 50 : -50-Math.random()*scene.height,
-                                            i*50,
-                                            j*50
-                                        ));
-							var actorStar = new CAAT.Actor().setBackgroundImage(starsImage.getRef(), true);
-							//.setBounds(i*50, j*50 , 48,48)
-							actorStar.addBehavior(pathBehavior);
-							acontainer.addChild(actorStar);
-							actorStar.mouseDown = spriteMouseDown;
-						}
-					}
-				}
-			}
-	);
 	
-   var gradient= director.crc.createLinearGradient(0,0,0,50);
-   gradient.addColorStop(0,'green');
-   gradient.addColorStop(0.5,'red');
-   gradient.addColorStop(1,'yellow');
+	var gradient= director.crc.createLinearGradient(0,0,0,50);
+	   gradient.addColorStop(0,'green');
+	   gradient.addColorStop(0.5,'red');
+	   gradient.addColorStop(1,'yellow');
 
    superClickActor = new CAAT.TextActor().
     	setFont("20px sans-serif").
@@ -70,12 +134,55 @@ function start() {
     	setTextFillStyle(gradient).
     	setOutline(true);
     	//.cacheAsBitmap();
-   acontainer.addChild(superClickActor.setLocation((acontainer.width-200),20));
-   CAAT.loop(60);
+   acontainer.addChild(superClickActor.setLocation((acontainer.width-300),20));
+   
+   new CAAT.ImagePreloader().loadImages(
+				 imageRes,
+				function(counter, images) {
+					if (counter==11) {
+						director.setImagesCache(images);
+						
+						for(var i=0; i<ary.length; i++) {
+							for(var j=0; j<ary[i].length; j++) {
+								if (ary[i][j]=='') continue;
+								
+								var v = 'd' + ary[i][j];
+								var starsImage = new CAAT.SpriteImage().initialize(director.getImage(v), 1,1);
+								
+								var pathBehavior = new CAAT.PathBehavior()
+								 	.setFrameTime( 500, 1000 )
+								 	.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
+								 	.setValues(
+								 			new CAAT.Path()
+								 			.setLinear(
+	                                            //Math.random()<.5 ? scene.width+Math.random() * 50 : -50-Math.random()*scene.width,
+	                                            i*50,
+	                                            Math.random()<.5 ? scene.width+Math.random() * 50 : -50-Math.random()*scene.height,
+	                                            i*50,
+	                                            j*50
+	                                        ));
+								var actorStar = new CAAT.Actor().setBackgroundImage(starsImage.getRef(), true);
+								//.setBounds(i*50, j*50 , 48,48)
+								actorStar.addBehavior(pathBehavior);
+								acontainer.addChild(actorStar);
+								actorStar.mouseDown = spriteMouseDown;
+							}
+						}
+					}
+				}
+		);
+	  
+	  
 }
 
-
-
+function start() {
+	director = new CAAT.Director().initialize(
+	        width, height,
+	        document.getElementById('_c1'));
+	
+	loadSplashScene();
+   CAAT.loop(60);
+}
 
 function generateRandomArray(w, h) {
 	var array = [];
@@ -176,7 +283,6 @@ function matchTarget(source, target, array) {
 	return false;
 }
 
-//����
 function checkVerticals(source, target, array) {
 	if (source.x==target.x) return false;
 	
@@ -190,7 +296,6 @@ function checkVerticals(source, target, array) {
 	return false;
 }
 
-//����
 function checkHorizontals(source, target, array) {
 	
 	if (source.y==target.y) return false;
@@ -206,7 +311,6 @@ function checkHorizontals(source, target, array) {
 }
 
 
-//���λ��1��ֱ���ϵ�2�����Ƿ�����ͨ
 function checkConnective(source, target, array) {
 	if (source.x==target.x) {
 		if (source.y==target.y) return true;
