@@ -10,19 +10,6 @@
 
 <script type="text/javascript">
 
-var imageRes =  [
-	{id:'d0',     url:'resource/0.png'} 
-	,{id:'d1',     url:'resource/1.png'} 
-	,{id:'d2',     url:'resource/2.png'}
-	,{id:'d3',     url:'resource/3.png'} 
-	,{id:'d4',     url:'resource/4.png'} 
-	,{id:'d5',     url:'resource/5.png'} 
-	,{id:'d6',     url:'resource/6.png'} 
-	,{id:'d7',     url:'resource/7.png'} 
-	,{id:'d8',     url:'resource/8.png'}
-	,{id:'d9',     url:'resource/9.png'} 
-	,{id:'d10',     url:'resource/10.png'}
-];
 
 
 var rotateLeft= new CAAT.RotateBehavior().
@@ -30,13 +17,9 @@ var rotateLeft= new CAAT.RotateBehavior().
 	setPingPong().
 	setFrameTime( 0, 1000 ).
 	setValues(0, 0.03*Math.PI, 1,1);
-
-
-
-
 </script>
 </head>
-<body onload="start()">
+<body style="background: #65ACDE;" onload="start()">
  <div style="margin: 0 auto; width: 700px;"><canvas id="_c1"></canvas> </div>
 </body>
 </html>
