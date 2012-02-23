@@ -9,6 +9,9 @@ var scene;
 var splashScene;
 var superClickActor;
 
+var lifeProgressActor;
+
+
 var width = 600;
 var height = 600;
 
@@ -168,6 +171,16 @@ function loadResources() {
 								actorStar.mouseDown = spriteMouseDown;
 							}
 						}
+						
+						var progressbg = new CAAT.Actor()
+								.setBounds(20, 10, 200,20)
+								.setFillStyle('#fff').setAlpha(0.5);
+						acontainer.addChild(progressbg);
+						
+						lifeProgressActor = new CAAT.Actor()
+							.setBounds(20, 10, 100,20)
+							.setFillStyle('#ccc');
+						acontainer.addChild(lifeProgressActor);
 					}
 				}
 		);
@@ -450,5 +463,11 @@ function showClicked(n) {
 
 
 
+
+var rotateLeft= new CAAT.RotateBehavior().
+	//setCycle(true).
+	setPingPong().
+	setFrameTime( 0, 1000 ).
+	setValues(0, 0.03*Math.PI, 1,1);
 
 
