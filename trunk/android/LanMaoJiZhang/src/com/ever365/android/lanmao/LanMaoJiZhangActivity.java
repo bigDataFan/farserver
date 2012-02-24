@@ -15,10 +15,7 @@ public class LanMaoJiZhangActivity extends DroidGap {
         super.loadUrl("file:///android_asset/www/index.html");
     }
     
-    
     /*
-	
-	
 	@Override
 	public void onUserInteraction() {
 		System.out.println("user interaction");
