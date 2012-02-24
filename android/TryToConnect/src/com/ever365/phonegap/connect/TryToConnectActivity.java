@@ -9,6 +9,6 @@ public class TryToConnectActivity extends DroidGap {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.loadUrl("file:///android_asset/www/caat/index.html");
+        super.loadUrl("file:///android_asset/www/320x480/index.html");
     }
 }
