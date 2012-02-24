@@ -11,11 +11,6 @@ var superClickActor;
 
 var lifeProgressActor;
 
-
-var width = 600;
-var height = 600;
-
-
 var imageRes =  [
 	{id:'d0',     url:'resource/0.png'} 
 	,{id:'d1',     url:'resource/1.png'} 
@@ -184,8 +179,6 @@ function loadResources() {
 					}
 				}
 		);
-	  
-	  
 }
 
 function start() {
