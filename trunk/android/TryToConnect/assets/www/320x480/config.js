@@ -9,7 +9,7 @@ var life_height = 30;
 var bar_height = 20;
 var bar_width = width/2;
 
-var icon_width = 32;
+var icon_width = 48;
 
 var imageRes =  [
 	{id:'blocks',     url:'blocks.jpg'} 
