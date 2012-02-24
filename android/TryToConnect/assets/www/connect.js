@@ -210,7 +210,7 @@ function startGame() {
 					 director.setScene(director.getSceneIndex(failScene));
 					 resetAll();
 				 } else {
-					 time_remains -= 50 * level;
+					 time_remains -= 10 * level;
 					 lifeProgressActor.setBounds(5, 5, bar_width*time_remains/10000,bar_height);
 					 timertask_instance.reset(scene_time);
 				 }
