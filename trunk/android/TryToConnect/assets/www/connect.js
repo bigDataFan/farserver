@@ -2,7 +2,7 @@
  * 
  */
 
-var ary = wrapArray(generateFromTemplate(generateRandomArray(10,10), 10));
+var ary = wrapArray(generateFromTemplate(generateRandomArray(count_x,count_y), 10));
 
 var director;
 var scene;
@@ -60,7 +60,7 @@ function loadSplashScene() {
 					 director.setImagesCache(images);
 					 // an image of 7 rows by 3 columns
 					 btnImage= new CAAT.SpriteImage().initialize(
-							 director.getImage('buttons'), 7, 3 );
+							 director.getImage('buttons'), 6, 1 );
 					 
 					 var splashImage = new CAAT.SpriteImage().initialize(director.getImage('splash'), 1,1);
 					 
@@ -81,13 +81,24 @@ function loadSplashScene() {
 					
 					 var b1= new CAAT.Actor()
 					 			.setAsButton(
-							                 btnImage.getRef(), 6, 7, 8, 6, function(button) {
+							                 btnImage.getRef(), 0, 0, 0, 0, function(button) {
+								 				 level = 1;
 												 director.setScene(director.getSceneIndex(scene));
 												 startGame();
 							                 }
-							     ).setLocation(width/2-80,height/2-80);
+							     ).setLocation(width/2-60,height/2-60);
 					 acontainer.addChild(b1);
 			 
+
+					 var b2= new CAAT.Actor()
+					 			.setAsButton(
+							                 btnImage.getRef(), 5, 5, 5, 5, function(button) {
+												 window.open("http://www.ever365.com");
+							                 }
+							     ).setLocation(width/2-60,height/2);
+					 acontainer.addChild(b2);
+			 
+					 
 					 initGameScene();
 					 initFailScene();
 					 initNextLevelScene();
@@ -114,19 +125,19 @@ function initFailScene() {
 	
 	 var b1= new CAAT.Actor()
 		.setAsButton(
-                 btnImage.getRef(), 15, 16, 17, 15, function(button) {
-	 				director.setScene(director.getSceneIndex(splashScene));
+                 btnImage.getRef(), 3, 3, 3, 3, function(button) {
+	 				director.setScene(director.getSceneIndex(scene));
+	 				startGame();
                  }
-	     ).setLocation(width/2-80, 200);
+	     ).setLocation(width/2-60, 200);
 	 acontainer.addChild(b1);
 	 
 	 var b2= new CAAT.Actor()
 		.setAsButton(
-                 btnImage.getRef(), 12, 13, 14, 12, function(button) {
-					 director.setScene(director.getSceneIndex(scene));
-					 startGame();
+                 btnImage.getRef(), 2, 2, 2, 2, function(button) {
+					 director.setScene(director.getSceneIndex(splashScene));
                  }
-	     ).setLocation(width/2-80, 250);
+	     ).setLocation(width/2-60, 250);
 	 acontainer.addChild(b2);
 }
 
@@ -149,19 +160,19 @@ function initNextLevelScene() {
 	
 	 var b1= new CAAT.Actor()
 		.setAsButton(
-                btnImage.getRef(), 6, 7, 8, 6, function(button) {
+                btnImage.getRef(), 1, 1, 1, 1, function(button) {
 					director.setScene(director.getSceneIndex(scene));
 					goNextLevel();
                 }
-	     ).setLocation(width/2-80, 200);
+	     ).setLocation(width/2-60, 200);
 	 acontainer.addChild(b1);
 	 
 	 var b2= new CAAT.Actor()
 		.setAsButton(
-                btnImage.getRef(), 12, 13, 14, 12, function(button) {
+                btnImage.getRef(), 2, 2, 2, 2, function(button) {
 					director.setScene(director.getSceneIndex(splashScene));
 	            }
-	     ).setLocation(width/2-80, 250);
+	     ).setLocation(width/2-60, 250);
 	 acontainer.addChild(b2);
 }
 
@@ -183,8 +194,15 @@ function resetAll() {
 	time_remains = 10000;
 	superClickInfo.setText("");
 	scoreInfo.setText("");
-	levelInfo.setText("lev:" + level);
+	levelInfo.setText("等级:" + level);
 	score = 0;
+}
+
+function incrTimeRemains(ddclick) {
+	time_remains += 200 * ddclick;
+	if(time_remains>=10000) {
+		time_remains=10000;
+	}
 }
 
 function goNextLevel() {
@@ -196,9 +214,9 @@ function startGame() {
 	resetAll();
 	
 	var diff = 10 + Math.floor(level/4);
-	if (diff>15) diff=15;
+	if (diff>12) diff=12;
 	
-	ary = wrapArray(generateFromTemplate(generateRandomArray(10,10), diff));
+	ary = wrapArray(generateFromTemplate(generateRandomArray(count_x,count_y), diff));
 	initBlocks(ary);
 	
 	lifeTimer = scene.createTimer(
@@ -210,7 +228,7 @@ function startGame() {
 					 director.setScene(director.getSceneIndex(failScene));
 					 resetAll();
 				 } else {
-					 time_remains -= 10 * level;
+					 time_remains -= 10 + level;
 					 lifeProgressActor.setBounds(5, 5, bar_width*time_remains/10000,bar_height);
 					 timertask_instance.reset(scene_time);
 				 }
@@ -267,8 +285,10 @@ function initGameScene() {
 	
 	
 	var scoreContainer = new CAAT.ActorContainer().
-		setBounds(0, life_height + director.width, director.width, life_height);
+		setBounds(0, life_height + icon_width * count_y , director.width, life_height);
 
+	scene.addChild(scoreContainer);
+	
 	superClickInfo = new CAAT.TextActor().
 		   setFont("24px sans-serif").
 			setText("分数").
@@ -279,7 +299,15 @@ function initGameScene() {
 			setLocation(10,10).
 			setOutline(true);
 	scoreContainer.addChild(superClickInfo);
-	scene.addChild(scoreContainer);
+	
+	 var b2= new CAAT.Actor()
+		.setAsButton(
+                btnImage.getRef(), 2, 2, 2, 2, function(button) {
+					director.setScene(director.getSceneIndex(splashScene));
+	            }
+	     ).setLocation(width-110, 10);
+	 scoreContainer.addChild(b2);
+	
 	
 	/*
 	var b1= new CAAT.Actor()
@@ -301,13 +329,13 @@ function initGameScene() {
 
 function initBlocks(ary) {
 	total_remains = 0;
-	var blockImages = new CAAT.SpriteImage().initialize(director.getImage('blocks'), 1,16);
+	var blockImages = new CAAT.SpriteImage().initialize(director.getImage('blocks'), 2,6);
 
 	if (gamecontainer!=null) {
 		scene.removeChild(gamecontainer);
 	}
 	gamecontainer = new CAAT.ActorContainer().
-	setBounds(0, life_height, director.width, director.width);
+	setBounds(0, life_height, icon_width * count_x, icon_width * count_y);
 	//.setFillStyle('#fff')
 	//.setAlpha(0.5);
 	scene.addChild(gamecontainer);
@@ -381,12 +409,15 @@ function spriteMouseDown(me) {
 			
 			var ddclick = getClicked(5000);
 			
-			score += 10 + ddclick * 5;
+			score += 10 + level + ddclick * 2;
 			scoreInfo.setText(score);
 			
 			showClicked(ddclick);
 			
 			total_remains -=2;
+			
+			incrTimeRemains(ddclick);
+			
 			
 			if (total_remains<=0) {
 				showNextLevelScreen();
