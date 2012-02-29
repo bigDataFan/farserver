@@ -11,7 +11,7 @@
 		
 		<script type="text/javascript">
 		$(document).ready(function() {
-			var queryhash = window.location.hash
+			var queryhash = window.location.hash;
 			switch (queryhash) {
 				case "#about":
 					initialShowAbout();
@@ -55,7 +55,7 @@
 			$("#timvandamme").removeClass();
 			$("#timvandamme").addClass("contact");
 			$(".node").hide();
-			$("#contact").show();
+			$("#contact").slideDown();
 			setTimeout("$('#content').slideDown('slow');", 700);
 		}
 
@@ -99,11 +99,10 @@
 		}
 		</script>
 	</head>
-	<body>
-		<div id="timvandamme">
+	<body style="TEXT-ALIGN: center;">
+		<div id="timvandamme" style="text-align: left;">
 			<div id="header">
-				<h1>Ever365网络应用实验室</h1>
-				<p id="jobtitle">由懒猫工作室开发</p>
+				<h1>Ever365懒猫工作室</h1>
 			</div><!-- header -->
 			<ul id="navigation">
 				<li id="nav-networks"><a href="#networks"><span>在线应用</span></a></li>
@@ -189,7 +188,7 @@
 							</ul>
 						</li><!-- contact-personal -->
 						<li id="contact-work">
-							<h3>
+							<h3 style="background: url('images/hanliu.jpg') 5 5 no-repeat;">
 								<strong>寒流</strong>
 								Java、HTML5开发
 							</h3>

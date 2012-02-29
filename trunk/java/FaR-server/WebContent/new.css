@@ -216,7 +216,9 @@ h1 {
 #content {
 	padding: 0 20px; 
 	background: url(images/content.png) repeat-y 50% 0;
+	height:400px;
 	overflow: hidden;
+	
 }
 
 
@@ -254,7 +256,7 @@ h1 {
 
 #contact h3 {
 	height: 51px;
-	padding: 10px 0 0 25px;
+	padding: 10px 0 0 65px;
 	font-weight: normal; 
 	background: url(images/about-h3.png) repeat-x 0 0;
 	color: #666;
@@ -284,7 +286,7 @@ h1 {
 }
 
 #contact li li {
-	padding: 5px 0 0 15px;
+	padding: 5px 0 0 0px;
 	font: 12px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: #666;
 }
@@ -299,7 +301,7 @@ h1 {
 
 #contact li li a {
 	display: block;
-	padding-left: 23px;
+	padding-left: 10px;
 	background-position: 0 1px;
 	background-repeat: no-repeat;
 }
