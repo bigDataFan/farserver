@@ -168,7 +168,6 @@ function mapSceneMouseDown(me) {
 }
 
 function checkMove(actor) {
-	return;
 	if (mouseDown_x==0 && mouseDown_y==0) {
 		actor.setAnimationImageIndex([default_Indexes[actorDirections[actor.getId()]][0]]);
 		moving = false;
