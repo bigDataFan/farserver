@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+var blockx = 0;
+var blocky = 0;
+
+$(document).ready(function(){
+	$('#sucai').click(function(evt) {
+		blockx = Math.floor(evt.pageX/32);
+		blocky = Math.floor(evt.pageY/32);
+	});
+	
+	
+	$('#map').click(function(evt) {
+		var left = $('#map').position().left;
+		var top = $('#map').position().top;
+		
+				
+		var vx = Math.floor((evt.pageX-left)/32);
+		var vy = Math.floor((evt.pageY-top)/32);
+		
+		$('#div-' + vx + "-" + vy).remove();
+
+		var div = $('<div style="width:32px;height:32px; position:absolute" id="div-' + vx + "-" + vy +'"></div>');
+		
+		div.css("left", left + vx*32);
+		div.css("top", top + vy*32);
+		
+		div.css("background", "url('GoP_1.png') -" + blockx*32 + "px -" + blocky*32 + "px");
+		
+		$('#map').append(div);
+		
+	});
+	
+});
+
+</script>
+
+<style type="text/css">
+* {
+	margin: 0px;
+	padding: 0px;
+}
+</style>
+</head>
+<body>
+
+
+<div id="sucai" style="float:left; width: 256px; height: 512px;  background: url('GoP_1.png');"></div>
+
+<div id="map" style="float:left; width: 1024px; height:512px; border:1px solid #bbb; "></div>
+
+
+</body>
+</html>
