@@ -190,6 +190,7 @@ function checkMonsterAction(id) {
 	
 	switch (action) {
 		case 1: //follow other actor
+			
 			break;
 		case 2: //move to some position
 			moveToXY(id);
@@ -202,11 +203,12 @@ function checkMonsterAction(id) {
 		case 0: //do nothing and make a random move;
 		default:
 			var d = Math.floor(Math.random() * 4);
+			moveActorInMap(id, d);
+			/*
 			if (checkPositionInMap(id, d)) {
-				moveActorInMap(id, d);
 			} else {
 				moveActorInMap(id, 4);
-			}
+			}*/
 			break;
 	}
 }
@@ -246,49 +248,47 @@ function checkPositionInMap(id, d) {
  * */
 function moveActorInMap(id, d) {
 	var actor = monsters[id].actor;
-	ma[monsters[id].x][monsters[id].y] = 0;
-	var inc_x;
-	var inc_y;
+	var new_x;
+	var new_y;
+	
 	switch (d) {
 	case 0:
-		monsters[id].y ++;
-		//ma[monsters[id].x+1][monsters[id].y] =  monsters[id].type;
-		inc_x = 0;
-		inc_y = BWIDTH;
+		new_y = monsters[id].y + 1;
+		new_x = monsters[id].x;
 		break;
 	case 1:
-		monsters[id].x --;
-		//ma[monsters[id].x][monsters[id].y-1] =  monsters[id].type;
-		inc_x = -BWIDTH;
-		inc_y = 0;
+		new_y = monsters[id].y;
+		new_x = monsters[id].x -1;
 		break;
 	case 2:
-		monsters[id].x ++;
-		//ma[monsters[id].x][monsters[id].y+1] =  monsters[id].type;
-		inc_x = BWIDTH;
-		inc_y = 0;
+		new_y = monsters[id].y;
+		new_x = monsters[id].x + 1;
 		break;
 	case 3:
-		monsters[id].y --;
-		//ma[monsters[id].x-1][monsters[id].y] =  monsters[id].type;
-		inc_x = 0;
-		inc_y = -BWIDTH;
+		new_y = monsters[id].y - 1;
+		new_x = monsters[id].x;
 		break;
 	default:
-		inc_x = 0;
-		inc_y = 0;
+		new_y = monsters[id].y;
+		new_x = monsters[id].x;
 		break;
 	}
-	
-	ma[monsters[id].x][monsters[id].y] =  monsters[id].type;
-	
-	if (d<4) {
+	if (d<4 && new_x>=0 && new_x<ma.length && new_y>=0 && new_y<ma[0].length
+			&& ma[new_x][new_y]==0) {
+		//you can move !
+		ma[monsters[id].x][monsters[id].y] = 0;
+		monsters[id].x = new_x;
+		monsters[id].y = new_y;
+		ma[monsters[id].x][monsters[id].y] = monsters[id].type;
 		actor.setAnimationImageIndex(IMAGE_INDEXES[d]).setChangeFPS(250);
+	} else {
+		new_y = monsters[id].y;
+		new_x = monsters[id].x;
 	}
 	
 	var path= new CAAT.LinearPath()
     .setInitialPosition(actor.x,actor.y)
-    .setFinalPosition(actor.x + inc_x, actor.y + inc_y);
+    .setFinalPosition(new_x*BWIDTH, new_y*BWIDTH);
 	
     var pb = new CAAT.PathBehavior()
             .setPath(path)
@@ -303,7 +303,7 @@ function moveActorInMap(id, d) {
     if (monsters[id].infoactor!=null) {
     	var infoPath= new CAAT.LinearPath()
         .setInitialPosition(monsters[id].infoactor.x,monsters[id].infoactor.y)
-        .setFinalPosition(monsters[id].infoactor.x + inc_x, monsters[id].infoactor.y + inc_y);
+        .setFinalPosition(new_x*BWIDTH , new_x*BWIDTH - 20);
     	var infoBh = new CAAT.PathBehavior()
         .setPath(path)
         .setFrameTime(actor.time, monsters[id].speed);
