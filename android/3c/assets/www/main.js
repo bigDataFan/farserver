@@ -66,10 +66,6 @@ function boot() {
 	CAAT.loop(60);
 }
 
-function mapSceneMouseDown(mc) {
-	monsters[PLAYER_ID].action = 0;
-}
-
 
 
 
