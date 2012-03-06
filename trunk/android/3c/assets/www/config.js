@@ -9,7 +9,7 @@ var block_width = 32;
 
 var worknfightImages = [
     {id:"police", url: 'images/001.png'},
-    {id:"map", url:"images/5.jpg"},
+    {id:"map", url:"images/GoP_1.png"},
     {id:"a1", url:"images/002-brendan.png"},
     {id:"a2", url:"images/003-may.png"},
     {id:"a3", url:"images/008.png"},
