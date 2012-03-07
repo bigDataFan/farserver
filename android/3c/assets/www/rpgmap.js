@@ -89,9 +89,15 @@ function mapSceneMouseDown(me) {
 	//alert(monsters[PLAYER_ID].tox + " " + monsters[PLAYER_ID].toy);
 }
 
+function monsterMouseDown(me) {
+	monsters[PLAYER_ID].action = 3;
+	monsters[PLAYER_ID].enemyId = me.source.getId(); 
+}
+
 function loadMap() {
 	var mapImage = new CAAT.SpriteImage().initialize(director.getImage('map'), 1,1);
 	mapContainer.setBackgroundImage(mapImage.getRef(),  true);
+	mapContainer.mouseDown = mapSceneMouseDown;
 }
 
 function loadMonsters() {
@@ -108,8 +114,10 @@ function loadPlayer(p) {
 	 	.setPosition(p.x*BWIDTH, p.y*BWIDTH);
 	 	//.centerOn(p.x * BWIDTH + BWIDTH/2,  p.y*BWIDTH + BWIDTH/2);
 	 mapContainer.addChild(policeMan);
-	 //mapContainer.setPosition(width/2 -p.x * BWIDTH, -p.y*BWIDTH + height/2);
-
+	 
+	 /*
+	 mapContainer.setPosition(width/2 -p.x * BWIDTH, -p.y*BWIDTH + height/2);
+	  */
 	 
 	 var monsterInfo = new CAAT.Actor().centerOn(p.y * BWIDTH + BWIDTH/2 - BWIDTH,  p.x*BWIDTH + BWIDTH/2);
 	 monsterInfo.paint = function(director, time) {
@@ -130,7 +138,11 @@ function loadPlayer(p) {
 			  infoactor: monsterInfo,
 			  action: 4,
 			  speed: p.speed,
-			  type : PLAYER_ID
+			  attackSpeed: 1000,
+			  type : PLAYER_ID,
+			  attackRange: 1,
+			  life: 1000,
+			  damage: 31
 	 };
 	 checkMonsterAction(PLAYER_ID);
 }
@@ -169,7 +181,7 @@ function loadMonster(mc) {
 	 */
 	 monster_inc ++;
 	 var id = "monster-" + monster_inc;
-	 
+	 monster.setId(id);
 	 monsters[id] = 
 	 		{
 			  x : mc.x,
@@ -178,26 +190,55 @@ function loadMonster(mc) {
 			  //infoactor: monsterInfo,
 			  action: 0,
 			  speed: mc.speed,
-			  type : mc.type
+			  type : mc.type,
+			  attackSpeed: 1500,
+			  attackRange: 1,
+			  life: 120,
+			  damage: 12
 	 		};
 	 ma[monsters[id].x][monsters[id].y] = 1;
 	 checkMonsterAction(id);
+	 
+
+	 monster.mouseDown = monsterMouseDown;
+	 
 }
 
+var ACTION_FOLLOW = 1;
+var ACTION_ATTACK = 3;
 
 function checkMonsterAction(id) {
+	if (monsters[id]==null) return;
 	var action = monsters[id].action;
 	
 	switch (action) {
-		case 1: //follow other actor
-			
+		case ACTION_FOLLOW: //follow other actor
+			var fid = monsters[id].followId;
+			if (Math.abs(monsters[fid].x - monsters[id].x) + Math.abs(monsters[fid].y - monsters[id].y)>1) {
+				moveToXY(id, monsters[fid].x, monsters[fid].y);
+			} else {
+				moveActorInMap(id,4);
+			}
 			break;
-		case 2: //move to some position
-			moveToXY(id);
+		case 2: //move to some position\
+			moveToXY(id, monsters[id].tox, monsters[id].toy);
 			break;
-		case 3: //attack some actor
+		case ACTION_ATTACK: //attack some actor
+			var hid = monsters[id].enemyId;
+			if (hid!=null) {
+				if ((Math.abs(monsters[id].x-monsters[hid].x) 
+						+ Math.abs(monsters[id].y-monsters[hid].y))<=monsters[id].attackRange) {
+					// in range  do attack;
+					doAttackTo(id, hid);
+				} else {
+					moveToXY(id, monsters[hid].x, monsters[hid].y);
+				}
+				break;
+			} 
+			moveActorInMap(id,4);
 			break;
 		case 4: //do nothing and stand alone
+			
 			moveActorInMap(id,4);
 			break;
 		case 0: //do nothing and make a random move;
@@ -273,22 +314,28 @@ function moveActorInMap(id, d) {
 		new_x = monsters[id].x;
 		break;
 	}
+	
+	var delta_x = 0;
+	var delta_y = 0;
 	if (d<4 && new_x>=0 && new_x<ma.length && new_y>=0 && new_y<ma[0].length
 			&& ma[new_x][new_y]==0) {
 		//you can move !
 		ma[monsters[id].x][monsters[id].y] = 0;
+		delta_x = (new_x - monsters[id].x) * BWIDTH;
+		delta_y = (new_y - monsters[id].y) * BWIDTH;
 		monsters[id].x = new_x;
 		monsters[id].y = new_y;
-		ma[monsters[id].x][monsters[id].y] = monsters[id].type;
+		ma[monsters[id].x][monsters[id].y] = id;
 		actor.setAnimationImageIndex(IMAGE_INDEXES[d]).setChangeFPS(250);
 	} else {
 		new_y = monsters[id].y;
 		new_x = monsters[id].x;
 	}
+	//mapContainer.setZOrder(actor, new_y);
 	
 	var path= new CAAT.LinearPath()
     .setInitialPosition(actor.x,actor.y)
-    .setFinalPosition(new_x*BWIDTH, new_y*BWIDTH);
+    .setFinalPosition(actor.x + delta_x, actor.y + delta_y);
 	
     var pb = new CAAT.PathBehavior()
             .setPath(path)
@@ -310,30 +357,30 @@ function moveActorInMap(id, d) {
     	monsters[id].infoactor.addBehavior(infoBh);
     }
     
-    /*
+    
     if (id=='player') {
-    	var path2= new CAAT.LinearPath()
-    	.setInitialPosition(mapContainer.x,mapContainer.y)
-    	.setFinalPosition(mapContainer.x - inc_x, mapContainer.y - inc_y);
-    	var pb2 = new CAAT.PathBehavior()
-    	.setPath(path2)
-    	.setFrameTime(mapContainer.time, 300);
-    	
-    	mapContainer.addBehavior(pb2);
+    	if ((delta_x>0 && new_x*BWIDTH+128>width-mapContainer.x)
+    		|| (delta_x<0 && new_x*BWIDTH-128<-mapContainer.x)
+    		|| (delta_y>0 && new_y*BWIDTH+64>height-mapContainer.y)
+    		|| (delta_y<0 && new_y*BWIDTH-64<-mapContainer.y)) {
+    		var path2= new CAAT.LinearPath()
+    		.setInitialPosition(mapContainer.x,mapContainer.y)
+    		.setFinalPosition(mapContainer.x - delta_x, mapContainer.y - delta_y);
+    		var pb2 = new CAAT.PathBehavior()
+    		.setPath(path2)
+    		.setFrameTime(mapContainer.time, player.speed);
+    		
+    		mapContainer.addBehavior(pb2);
+    	}
     }
-    */
 }
 
-
-
-function moveToXY(id) {
+function moveToXY(id, x, y) {
 	var info = monsters[id];
-	var deltax = info.tox - info.x;
-	var deltay = info.toy - info.y;
+	var deltax = x - info.x;
+	var deltay = y - info.y;
 	
 	if (deltax==0 && deltay==0) {
-		info.tox = null;
-		info.toy = null;
 		info.action  = 4;
 		checkMonsterAction(id);
 		return;
@@ -356,6 +403,43 @@ function moveToXY(id) {
 		moveActorInMap(id, 2);
 		return;
 	}
-	
 }
 
+function doAttackTo(srcid, targetid) {
+	monsters[targetid].life -= monsters[srcid].damage;
+	
+	var targetActor = monsters[targetid].actor;
+	if (monsters[targetid].life>0) {
+		var path= new CAAT.LinearPath()
+	    .setInitialPosition(targetActor.x,targetActor.y-30)
+	    .setFinalPosition(targetActor.x,targetActor.y-10);
+		
+	    var textActor = new CAAT.TextActor()
+	    	.setFont("10px sans-serif")
+	    	.setText("-" + monsters[srcid].damage);
+	    
+	    mapContainer.addChild(textActor);
+	    
+	    var pb = new CAAT.PathBehavior()
+	    .setPath(path)
+	    .setFrameTime(targetActor.time, monsters[srcid].attackSpeed)
+	    .addListener({
+	    	behaviorExpired : function(behavior, time, actor) {
+	    		actor.setExpired(0);
+	    		checkMonsterAction(srcid);
+	    	}
+	    });
+	    textActor.addBehavior(pb);
+	    monsters[targetid].action = ACTION_ATTACK;
+	    monsters[targetid].enemyId = srcid;
+	} else {
+		monsters[srcid].action = 4;
+		monsters[srcid].enemyId = null;
+		targetActor.setExpired(0);
+		ma[monsters[targetid].x][monsters[targetid].y] = 0;
+		monsters[targetid] = null;
+		checkMonsterAction(srcid);
+	}
+	
+	
+}
