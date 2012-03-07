@@ -32,7 +32,7 @@ function boot() {
 					director.setImagesCache(images);
 					loadMap();
 					var image1 = new CAAT.SpriteImage().initialize(director.getImage('a1'), 4,4);
-					 var image2 = new CAAT.SpriteImage().initialize(director.getImage('a2'), 4,4);
+					var image2 = new CAAT.SpriteImage().initialize(director.getImage('a2'), 4,4);
 					var image3 = new CAAT.SpriteImage().initialize(director.getImage('a3'), 4,4);
 					var image4 = new CAAT.SpriteImage().initialize(director.getImage('a4'), 4,4);
 				
@@ -43,7 +43,6 @@ function boot() {
 					loadPlayer(player);
 					loadMonsters();
 					
-					mapContainer.mouseDown = mapSceneMouseDown;
 					 //mapContainer.mouseUp = mapSceneMouseUp;
 					 //mapContainer.mouseDrag = mapSceneMouseDrag;
 					 /*
@@ -63,7 +62,7 @@ function boot() {
 				 }
 			}
 	);
-	CAAT.loop(60);
+	CAAT.loop(30);
 }
 
 
