@@ -27,14 +27,14 @@ $(document).ready(function(){
 		var vx = Math.floor((evt.pageX-left)/32);
 		var vy = Math.floor((evt.pageY-top)/32);
 		
-		$('#div-' + vy + "-" + vx).remove();
+		$('#div-' + vx + "-" + vy).remove();
 
-		var div = $('<div style="width:32px;height:32px; position:absolute" id="div-' + vy + "-" + vx +'"></div>');
+		var div = $('<div style="width:32px;height:32px; position:absolute" id="div-' + vx + "-" + vy +'"></div>');
 		
 		div.css("left", left + vx*32);
 		div.css("top", top + vy*32);
 		
-		div.css("background", "url('GoP_1.png') -" + blockx*32 + "px -" + blocky*32 + "px");
+		div.css("background", "url('1.png') -" + blockx*32 + "px -" + blocky*32 + "px");
 		$('#map').append(div);
 	});
 });
@@ -43,17 +43,15 @@ function printArray() {
 	var result = [];
 	var map = $('#map');
 	
-	for(var i=0;i<512/32; i++) {
+	for(var i=0;i<1024/32; i++) {
 		var line =  [];
-		line.push(1);
-		for(var j=0; j<1024/32; j++) {
+		for(var j=0; j<512/32; j++) {
 			if ($('#div-' + i + '-' + j).length==0) {
 				line.push(0);
 			}  else {
 				line.push(1);
 			}
 		}
-		line.push(1);
 		result.push(line);
 	}
 	
@@ -71,9 +69,9 @@ function printArray() {
 <body>
 
 
-<div id="sucai" style="float:left; width: 256px; height: 512px;  background: url('GoP_1.png');"></div>
+<div id="sucai" style="float:left; width: 256px; height: 6176px;  background: url('1.png');"></div>
 
-<div id="map" style="float:left; width: 1024px; height:512px; border:1px solid #bbb; "></div>
+<div id="map" style="background: repeat url('bg-1.png') ; float:left; width: 1024px; height:512px; border:1px solid #bbb; "></div>
 
 <a href="#" onclick="printArray()">fill</a>
 
