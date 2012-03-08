@@ -33,7 +33,6 @@ function go360() {
 
 
 function loginedby360(info) {
-	alert(info);
 	if (info==null || info=="") {
 		return;
 	}
