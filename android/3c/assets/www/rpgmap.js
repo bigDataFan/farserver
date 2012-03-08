@@ -1,6 +1,17 @@
 var IMAGE_INDEXES = [[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15]];
 
-//var IMAGE_INDEXES = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+/**
+ * 0:下
+ * 1：左
+ * 2：右
+ * 3:上
+ * */
+var DIR_DOWN = 0;
+var DIR_RIGHT = 1;
+var DIR_LEFT = 2;
+var DIR_UP = 3;
+var DIR_NONE = 4;
+
 var BWIDTH = 32;
 var PLAYER_ID = 'player';
 
@@ -12,8 +23,8 @@ var monsters = {};   //the monster inforamtions;
 
 var npcs = [];      //npc information
 
-var ma = [[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]];
-
+//var ma = [[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]];
+var ma = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
 var player = {
 		x: 1,
 		y: 1,
@@ -84,8 +95,22 @@ var monsterList = [ {
 
 function mapSceneMouseDown(me) {
 	monsters[PLAYER_ID].action = 2;
-	monsters[PLAYER_ID].tox = Math.floor((me.x-mapScene.x)/BWIDTH);
-	monsters[PLAYER_ID].toy = Math.floor((me.y-mapScene.y)/BWIDTH);
+	
+	var tox = Math.floor((me.x-mapScene.x)/BWIDTH);
+	var toy = Math.floor((me.y-mapScene.y)/BWIDTH);
+	
+	
+	var bubble = new CAAT.ShapeActor().
+      setLocation(tox * BWIDTH, toy * BWIDTH).
+      setSize(24, 24).
+      enableEvents(false).
+      setFillStyle('red').
+      setCompositeOp('lighter');
+	
+	mapContainer.addChild(bubble);
+	
+	monsters[PLAYER_ID].tox = tox;
+	monsters[PLAYER_ID].toy = toy;
 	//alert(monsters[PLAYER_ID].tox + " " + monsters[PLAYER_ID].toy);
 }
 
@@ -111,7 +136,7 @@ function loadPlayer(p) {
 	var policeMan = new CAAT.Actor().setBackgroundImage(policeImage.getRef(), true)
 	 	.setAnimationImageIndex([0,1,2,3])
 	 	.setChangeFPS(200)
-	 	.setPosition(p.x*BWIDTH, p.y*BWIDTH);
+	 	.setPosition(p.x*BWIDTH, p.y*BWIDTH - BWIDTH/2);
 	 	//.centerOn(p.x * BWIDTH + BWIDTH/2,  p.y*BWIDTH + BWIDTH/2);
 	 mapContainer.addChild(policeMan);
 	 
@@ -140,45 +165,22 @@ function loadPlayer(p) {
 			  speed: p.speed,
 			  attackSpeed: 1000,
 			  type : PLAYER_ID,
-			  attackRange: 1,
+			  attackRange: 3,
 			  life: 1000,
 			  damage: 31
 	 };
 	 checkMonsterAction(PLAYER_ID);
 }
 
-/*
-  {
-    x:2,
-    y:2,
-    type:32
-  }
- */
 var monster_inc = 0;
 
 function loadMonster(mc) {
 	 var monster = new CAAT.Actor().setBackgroundImage(monstersImages[mc.type].getRef(), true)
 	 	.setAnimationImageIndex([0,1,2,3])
 	 	.setChangeFPS(200)
-	 	.setPosition(mc.x * BWIDTH,  mc.y*BWIDTH);
+	 	.setPosition(mc.x * BWIDTH,  mc.y*BWIDTH - BWIDTH/2);
 	 mapContainer.addChild(monster);
 	 
-	 
-	 /*
-	 var monsterInfo = new CAAT.Actor().setPosition(mc.x * BWIDTH + BWIDTH/2 - BWIDTH,  mc.y*BWIDTH + BWIDTH/2);
-	 monsterInfo.paint = function(director, time) {
-		 var ctx= director.ctx;
-		 ctx.fillStyle = "#fff";
-		 ctx.font="8px Arial";
-		 
-		 var x = Math.floor((this.x )/BWIDTH);
-		 var y = Math.floor((this.y )/BWIDTH);
-		 ctx.fillText("Hi (" + x + "," + y + ")",0,0);
-	 }
-	 
-	 
-	 mapContainer.addChild(monsterInfo);
-	 */
 	 monster_inc ++;
 	 var id = "monster-" + monster_inc;
 	 monster.setId(id);
@@ -187,7 +189,6 @@ function loadMonster(mc) {
 			  x : mc.x,
 			  y : mc.y,
 			  actor: monster,
-			  //infoactor: monsterInfo,
 			  action: 0,
 			  speed: mc.speed,
 			  type : mc.type,
@@ -280,13 +281,6 @@ function checkPositionInMap(id, d) {
 }
 
 
-
-/**
- * 0:下
- * 1：左
- * 2：右
- * 3:上
- * */
 function moveActorInMap(id, d) {
 	var actor = monsters[id].actor;
 	var new_x;
@@ -347,22 +341,11 @@ function moveActorInMap(id, d) {
             });
     actor.addBehavior(pb);
     
-    if (monsters[id].infoactor!=null) {
-    	var infoPath= new CAAT.LinearPath()
-        .setInitialPosition(monsters[id].infoactor.x,monsters[id].infoactor.y)
-        .setFinalPosition(new_x*BWIDTH , new_x*BWIDTH - 20);
-    	var infoBh = new CAAT.PathBehavior()
-        .setPath(path)
-        .setFrameTime(actor.time, monsters[id].speed);
-    	monsters[id].infoactor.addBehavior(infoBh);
-    }
-    
-    
     if (id=='player') {
-    	if ((delta_x>0 && new_x*BWIDTH+128>width-mapContainer.x)
-    		|| (delta_x<0 && new_x*BWIDTH-128<-mapContainer.x)
-    		|| (delta_y>0 && new_y*BWIDTH+64>height-mapContainer.y)
-    		|| (delta_y<0 && new_y*BWIDTH-64<-mapContainer.y)) {
+    	if ((delta_x>0 && new_x*BWIDTH+128>width-mapContainer.x && width - mapContainer.x <=mapContainer.width-BWIDTH)
+    		|| (delta_x<0 && new_x*BWIDTH-128<-mapContainer.x && mapContainer.x<=-BWIDTH)
+    		|| (delta_y>0 && new_y*BWIDTH+128>height-mapContainer.y && height - mapContainer.y <=mapContainer.height-BWIDTH)
+    		|| (delta_y<0 && new_y*BWIDTH-128<-mapContainer.y && mapContainer.y<=-BWIDTH)) {
     		var path2= new CAAT.LinearPath()
     		.setInitialPosition(mapContainer.x,mapContainer.y)
     		.setFinalPosition(mapContainer.x - delta_x, mapContainer.y - delta_y);
@@ -409,6 +392,17 @@ function doAttackTo(srcid, targetid) {
 	monsters[targetid].life -= monsters[srcid].damage;
 	
 	var targetActor = monsters[targetid].actor;
+	
+	if (monsters[targetid].x > monsters[srcid].x) {
+		monsters[srcid].actor.setAnimationImageIndex(IMAGE_INDEXES[DIR_LEFT]);
+	} else if (monsters[targetid].x < monsters[srcid].x ) {
+		monsters[srcid].actor.setAnimationImageIndex(IMAGE_INDEXES[DIR_RIGHT]);
+	} else if (monsters[targetid].y > monsters[srcid].y ) {
+		monsters[srcid].actor.setAnimationImageIndex(IMAGE_INDEXES[DIR_DOWN]);
+	} else if (monsters[targetid].y < monsters[srcid].y ) {
+		monsters[srcid].actor.setAnimationImageIndex(IMAGE_INDEXES[DIR_UP]);
+	}
+	
 	if (monsters[targetid].life>0) {
 		var path= new CAAT.LinearPath()
 	    .setInitialPosition(targetActor.x,targetActor.y-30)
