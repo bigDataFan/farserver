@@ -4,8 +4,6 @@
 
 var policeMan;
 
-var hash;
-
 var playerActorId = null;
 
 var monstersImages = {};
@@ -15,9 +13,6 @@ function boot() {
 	director = new CAAT.Director().initialize(
 	        width, height,
 	        document.getElementById('container'));
-	
-	hash= new CAAT.SpatialHash().initialize( director.width, director.height, 10, 16);
-	
 	
 	mapScene = director.createScene();
 	mapContainer = new CAAT.ActorContainer().
