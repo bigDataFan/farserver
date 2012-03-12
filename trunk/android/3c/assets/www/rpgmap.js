@@ -107,6 +107,19 @@ function mapSceneMouseDown(me) {
       setFillStyle('red').
       setCompositeOp('lighter');
 	
+	var scaleBehavior = new CAAT.ScaleBehavior();
+    //scaleBehavior.anchor = CAAT.Actor.prototype.ANCHOR_CENTER;
+    scaleBehavior.startScaleX = scaleBehavior.startScaleY = 1;
+    scaleBehavior.endScaleX = scaleBehavior.endScaleY = 0.5;
+    scaleBehavior.setFrameTime(bubble.time,1000);
+    scaleBehavior.setCycle(false);
+    scaleBehavior.addListener({
+    		behaviorExpired : function(behavior, time, actor) {
+    			actor.setExpired(0);
+    	    }
+    });
+    bubble.addBehavior(scaleBehavior);
+	
 	mapContainer.addChild(bubble);
 	
 	monsters[PLAYER_ID].tox = tox;
@@ -132,8 +145,7 @@ function loadMonsters() {
 }
 
 function loadPlayer(p) {
-	var policeImage = new CAAT.SpriteImage().initialize(director.getImage('police'), 4,4);
-	var policeMan = new CAAT.Actor().setBackgroundImage(policeImage.getRef(), true)
+	var policeMan = new CAAT.Actor().setBackgroundImage(monstersImages[PLAYER_ID].getRef(), true)
 	 	.setAnimationImageIndex([0,1,2,3])
 	 	.setChangeFPS(200)
 	 	.setPosition(p.x*BWIDTH, p.y*BWIDTH - BWIDTH/2);
@@ -199,10 +211,7 @@ function loadMonster(mc) {
 	 		};
 	 ma[monsters[id].x][monsters[id].y] = 1;
 	 checkMonsterAction(id);
-	 
-
 	 monster.mouseDown = monsterMouseDown;
-	 
 }
 
 var ACTION_FOLLOW = 1;
@@ -221,7 +230,7 @@ function checkMonsterAction(id) {
 				moveActorInMap(id,4);
 			}
 			break;
-		case 2: //move to some position\
+		case 2: //move to some position
 			moveToXY(id, monsters[id].tox, monsters[id].toy);
 			break;
 		case ACTION_ATTACK: //attack some actor
@@ -285,6 +294,12 @@ function moveActorInMap(id, d) {
 	var actor = monsters[id].actor;
 	var new_x;
 	var new_y;
+	
+	if (monsters[id].backgroundImage == "attack") {
+		actor.setBackgroundImage(monstersImages[monsters[id].type].getRef(), true);
+		actor.setPosition(actor.x + 19, actor.y + 11);
+		monsters[id].backgroundImage = "normal";
+	}
 	
 	switch (d) {
 	case 0:
@@ -392,6 +407,13 @@ function doAttackTo(srcid, targetid) {
 	monsters[targetid].life -= monsters[srcid].damage;
 	
 	var targetActor = monsters[targetid].actor;
+	var srcActor = monsters[srcid].actor;
+	srcActor.setBackgroundImage(monstersImages[monsters[srcid].type + "-f"].getRef(), true);
+	
+	if (monsters[srcid].backgroundImage!= "attack") {
+		srcActor.setPosition(srcActor.x - 19, srcActor.y - 11);
+		monsters[srcid].backgroundImage = "attack";
+	}
 	
 	if (monsters[targetid].x > monsters[srcid].x) {
 		monsters[srcid].actor.setAnimationImageIndex(IMAGE_INDEXES[DIR_LEFT]);
@@ -404,6 +426,7 @@ function doAttackTo(srcid, targetid) {
 	}
 	
 	if (monsters[targetid].life>0) {
+		srcActor.setChangeFPS(200);
 		var path= new CAAT.LinearPath()
 	    .setInitialPosition(targetActor.x,targetActor.y-30)
 	    .setFinalPosition(targetActor.x,targetActor.y-10);
