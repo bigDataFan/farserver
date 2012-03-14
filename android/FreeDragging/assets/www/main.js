@@ -67,6 +67,9 @@ function boot() {
 		            
 		            
 		            squareContainer.mouseDown = placeNumber;
+		            
+		            
+		            
 		            /*
 					var level = levels[0];
 					
@@ -146,13 +149,14 @@ function placeRandomNumber() {
 	.setPosition(ax * numberImages.singleWidth , ay * numberImages.singleHeight);
 	
 	var scaling= new CAAT.ScaleBehavior().
-    setFrameTime(actor.time, 800).
-    setValues( .5, 1, .2, 1, .5, .5);
+    setFrameTime(squareContainer.time, 300).
+    setValues( .2, 1, .2, 1, .5, .5);
 	
 	actor.emptyBehaviorList();
 	actor.addBehavior(scaling);
-	
 	squareContainer.addChild(actor);
+	
+	
 	calarrays[ax][ay] = vx + "-" + vy;
 	actorsPlaced[ax][ay] = actor;
 }
