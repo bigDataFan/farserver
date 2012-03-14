@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -69,7 +70,7 @@ public class Dt360OAuthServlet extends HttpServlet {
 			String userName = "360." + name;
 			User eUser = userService.getUser(userName);
 			if (eUser==null) {
-				boolean random = userService.createUser(userName, "", null, userName, false);
+				boolean random = userService.createUser(userName, UUID.randomUUID().toString(), null, userName, false);
 			}
 			
 			request.getSession().setAttribute(SetUserFilter.AUTHENTICATION_USER, userName);
