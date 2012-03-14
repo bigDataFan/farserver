@@ -1,6 +1,7 @@
 package com.ever365.oauth.dt360;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -51,8 +52,6 @@ public class Dt360OAuthServlet extends HttpServlet {
 		cookieService = (CookieService)ctx.getBean("cookieService");
 	}
 
-
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -63,7 +62,7 @@ public class Dt360OAuthServlet extends HttpServlet {
 		String avatar = request.getParameter("avatar");
 		
 		
-		String md5Result = md5(name + id + avatar + "34cb3c964f6be83d7bf1867f15512b93" + "6c0395ad4fba6ec75574022acc893676");
+		String md5Result = getMD5Str(name + id + avatar + "34cb3c964f6be83d7bf1867f15512b93" + "6c0395ad4fba6ec75574022acc893676");
 		
 		if (md5Result.equals(signature)) {
 			//登录成功
@@ -106,11 +105,42 @@ public class Dt360OAuthServlet extends HttpServlet {
 			}
 			sun.misc.BASE64Encoder baseEncoder = new sun.misc.BASE64Encoder();
 			try {
-				value = baseEncoder.encode(md5.digest(s.getBytes("utf-8")));
+				//value = baseEncoder.encode(md5.digest(s.getBytes("utf-8")));
+				return new String(md5.digest(s.getBytes()), "ascii");
 			} catch (Exception ex) {
 			}
 			return value;
 		}
 	}
 
+	 private String getMD5Str(String str) {  
+         MessageDigest messageDigest = null;  
+  
+        try {  
+             messageDigest = MessageDigest.getInstance("MD5");  
+  
+             messageDigest.reset();  
+  
+             messageDigest.update(str.getBytes("UTF-8"));  
+         } catch (NoSuchAlgorithmException e) {  
+             System.out.println("NoSuchAlgorithmException caught!");  
+             System.exit(-1);  
+         } catch (UnsupportedEncodingException e) {  
+             e.printStackTrace();  
+         }  
+  
+        byte[] byteArray = messageDigest.digest();  
+  
+         StringBuffer md5StrBuff = new StringBuffer();  
+  
+        for (int i = 0; i < byteArray.length; i++) {              
+            if (Integer.toHexString(0xFF & byteArray[i]).length() == 1)  
+                 md5StrBuff.append("0").append(Integer.toHexString(0xFF & byteArray[i]));  
+            else  
+                 md5StrBuff.append(Integer.toHexString(0xFF & byteArray[i]));  
+         }  
+  
+        return md5StrBuff.toString();  
+     }  
+	 
 }

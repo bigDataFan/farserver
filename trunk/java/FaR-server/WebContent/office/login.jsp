@@ -25,24 +25,44 @@
 
 <script type="text/javascript">
 
-O360.Connect.init("34cb3c964f6be83d7bf1867f15512b93");
+//O360.Connect.init();
 
 function go360() {
-	O360.Connect.login(loginedby360);
+	
+	   //初始化O360.Connect
+    if (O360.Connect.init("34cb3c964f6be83d7bf1867f15512b93", '0.5')) {
+        O360.Connect.getUser('dealWithUser');
+    } else {
+		alert("请在360桌面上进行登录");
+    	//由于桌面的版本问题，老版本的桌面不支持用户使用应用时登陆（当需要从浏览器登录的时候，请走这一步）
+    }
+	   
 }
 
+function dealWithUser(info) {
+	if (info=="") {
+		O360.Connect.login(loginedby360);
+	} else {
+		doCheck(info);
+	}
+}
+
+function doCheck(info) {
+	var userInfo = info; //JSON.parse(info);
+	if (userInfo.name=="") {
+		alert("360用户为自动生成，无法登录");
+		return;
+	}
+	location.href = "/oauth/dt360?name=" + userInfo.name + "&id=" + userInfo.id + "&signature=" + userInfo.signature + "&avatar=" + userInfo.avatar;
+}
 
 function loginedby360(info) {
 	if (info==null || info=="") {
 		return;
 	}
 	
-	var userInfo = JSON.parse(info);
-	if (userInfo.name=="") {
-		alert("360用户为自动生成，无法登录");
-		return;
-	}
-	location.href = "/oauth/dt360?name=" + userInfo.name + "&id=" + userInfo.id + "&signature=" + userInfo.signature + "&avatar=" + userInfo.avatar;
+	doCheck(info);
+	
 }
 </script>
 <title>请登陆以进一步使用</title>
@@ -76,6 +96,11 @@ function loginedby360(info) {
 				
 				<div class="label">
 					  没有账号？请 <a href="/office/register.jsp">注册</a>
+				</div>
+				
+				
+				<div class="label other">
+					 &nbsp;<a href="javascript:go360()"> <img src="image/login360.png" alt="360账号登录" border="0"> </a>
 				</div>
 				
 				<!-- 
