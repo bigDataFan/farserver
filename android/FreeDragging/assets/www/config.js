@@ -1,8 +1,8 @@
 /**
  * 
  */
-var width = 460;//window.innerWidth;
-var height = 560;//window.innerHeight;
+var width = 320;//window.innerWidth;
+var height =503;// window.innerHeight;
 
 var block_width = 32;
 
@@ -30,6 +30,6 @@ levels.push(
 ); 
 
 var worknfightImages = [
-    {id:"numbers", url: 'images/numbers.png'},
+    {id:"numbers", url: 'images/x40.png'},
     {id:"background", url: 'images/fondo.jpg'}
 ];
