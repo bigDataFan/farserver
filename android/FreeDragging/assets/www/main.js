@@ -3,7 +3,7 @@ var director;
 var mapScene;
 var mapContainer;
 var squareContainer;
-var numbers = ['1-7','4-7','5-8','3-8','a-3'];
+var numbers = ['1-7','4-7','5-8','3-8','a-1','a-2', 'a-3'];
 
 var calarrays = [
 [0,0,0,0,0,0,0,0,0,0],
@@ -63,12 +63,10 @@ function initLevelsScene() {
 	setBounds(0, director.height-400, 320, 400);
 	mapScene.addChild(squareContainer);
 
-
 	var progressbg = new CAAT.Actor()
    	.setBounds(100, -50, 500, 50)
    	.setFillStyle('#fff').setAlpha(0.2);
 	squareContainer.addChild(progressbg);
-	
 	
 	numberImages= new CAAT.SpriteImage().
 	initialize(director.getImage('numbers'), 9, 9);
@@ -77,8 +75,6 @@ function initLevelsScene() {
 	
 	var bgimage= new CAAT.SpriteImage().
 	initialize(director.getImage('background'), 1, 1);
-
-	
 	
 	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-200,-1000);
 	
@@ -100,7 +96,7 @@ function initLevelsScene() {
 	var numberH= numberImages.singleHeight;
 
 	_pushInNumber();
-	squareContainer.mouseDown = placeNumber;
+	squareContainer.mouseDown = onBoadClicked;
 	
 	
 	if (scoreActors.length==0) {
@@ -120,6 +116,8 @@ function initLevelsScene() {
 	flyNearCloud('cloudnear', 1);
 }
 
+
+/**为背景增加一个浮动的云彩 第二个参数为速度 */
 function flyNearCloud(image, speed) {
 	var cloudnear= new CAAT.SpriteImage().
 	initialize(director.getImage(image), 1, 1);
@@ -145,6 +143,8 @@ function flyNearCloud(image, speed) {
 	mapContainer.addChild(cloudNearActor);
 }
 
+
+/**设置当前的分数*/
 var scoreActors = [];
 var score = 0;
 function setScore(n) {
@@ -178,46 +178,147 @@ function setScore(n) {
 	score = n;
 }
 
-function placeNumber(me) {
-	var ax = Math.floor(me.x / numberImages.singleWidth);
-	var ay = Math.floor(me.y / numberImages.singleHeight);
-	
-	var info = numbers[0];
-	if (info.split("-")[0]=="a") {
-		var number = numbers.shift();
-		var actor = numberActors.shift();
-		actor.setExpired(0);
-	} else {
-		if (calarrays[ax][ay]!=0) return;
-		var number = numbers.shift();
-		var actor = numberActors.shift();
+
+/**处理一个棋子移动*/
+var moving = null;
+function doMoving(me) {
+	if (moving) {
+		var ax = Math.floor(me.x / numberImages.singleWidth);
+		var ay = Math.floor(me.y / numberImages.singleHeight);
+
+		actorsPlaced[ax][ay] = moving.actor;
+		calarrays[ax][ay] = moving.value;
 		
-		calarrays[ax][ay] = number;
-		actorsPlaced[ax][ay] = actor;
+		calarrays[moving.posx][moving.posy] = 0;
+		actorsPlaced[moving.posx][moving.posy] = null;
 		
 		var path= new CAAT.LinearPath()
-		.setInitialPosition(actor.x, actor.y)
+		.setInitialPosition(moving.actor.x, moving.actor.y)
 		.setFinalPosition(ax * numberImages.singleWidth , ay * numberImages.singleHeight);
 
 		var pb = new CAAT.PathBehavior()
 		  .setPath(path)
-		  .setFrameTime(actor.time, 300)
-		  .setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
+		  .setFrameTime(moving.actor.time, 300)
 		  .addListener( {
-	          behaviorExpired : function() {
-	        		checkAndRemove(ax,ay);
+	          behaviorExpired : function(behavior, time, actor) {
+	        	  actor.setScale(1,1);
+	        	  checkAndRemove(ax,ay);
 	          }
-	      } );
-		actor.addBehavior(pb);
-		
-		placeRandomNumber();
+	      });
+		moving.actor.addBehavior(pb);
+		moving = null;
 	}
-	
-	numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
-	_pushInNumber();
-	
 }
 
+
+/**用于移动处理 当鼠标点击方块时选择移动的源*/
+function actorMouseDown(me) {
+	var info = numbers[0].split("-");
+	var type = info[0];
+	var n = info[1]
+	if (type=="a") {
+		var ax = Math.floor((me.screenPoint.x-squareContainer.x) / numberImages.singleWidth);
+		var ay = Math.floor((me.screenPoint.y-squareContainer.y) / numberImages.singleHeight);
+		
+		if (n=="1") {
+			//先
+			moving = {
+					actor: me.source,
+					posx: ax,
+					posy: ay,
+					value: calarrays[ax][ay]
+			};
+			var number = numbers.shift();
+			var actor = numberActors.shift();
+			
+			actor.setExpired(0);
+			actorsPlaced[ax][ay].setScale(.8, .8);
+			generateNextBlock();
+		}
+		
+		if (n=="2") {
+			var number = numbers.shift();
+			var actor = numberActors.shift();
+			actor.setExpired(0);
+			
+			removeBlock(ax, ay, "zoomout");
+			generateNextBlock();
+		}
+	}
+}
+
+
+/**道具被放置到棋盘后的效果处理*/
+function doExtras(number, actor, x, y) {
+	
+	var extraNumber = number.split("-")[1];
+	
+	if (extraNumber=="1") {  //移动到目的地的处理事件  放弃操作
+		calarrays[x][y] = 0;
+		actorsPlaced[x][y] = null;
+		actor.setExpired(0);
+	}
+	
+	if (extraNumber=="2") {  //抠掉一个方块。  放弃
+		calarrays[x][y] = 0;
+		actorsPlaced[x][y] = null;
+		actor.setExpired(0);
+	}
+	
+	if (extraNumber=="3") { //炸掉四周的方块
+		removeBlock(x,y, "burst");
+		removeBlock(x-1,y, "burst");
+		removeBlock(x+1,y, "burst");
+		removeBlock(x,y-1, "burst");
+		removeBlock(x,y+1, "burst");
+	}
+}
+
+
+/** 棋盘的点击事件 */
+function onBoadClicked(me) {
+	if (moving!=null) {
+		doMoving(me);
+		return;
+	}
+	var ax = Math.floor(me.x / numberImages.singleWidth);
+	var ay = Math.floor(me.y / numberImages.singleHeight);
+	if (calarrays[ax][ay]!=0) return;
+	
+	var number = numbers.shift();
+	var actor = numberActors.shift();
+	calarrays[ax][ay] = number;
+	actorsPlaced[ax][ay] = actor;
+
+	var path= new CAAT.LinearPath()
+	.setInitialPosition(actor.x, actor.y)
+	.setFinalPosition(ax * numberImages.singleWidth , ay * numberImages.singleHeight);
+
+	var pb = new CAAT.PathBehavior()
+	  .setPath(path)
+	  .setFrameTime(actor.time, 300)
+	  //.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
+	  .addListener( {
+          behaviorExpired : function() {
+        	  if (number.split("-")[0]=="a") {
+        		  doExtras(number, actor, ax, ay);
+        	  } else {
+        		  checkAndRemove(ax, ay);
+        	  }
+          }
+      } );
+	actor.addBehavior(pb);
+	generateNextBlock();
+}
+
+/**根据等级等信息 随机生成下一个方块*/
+function generateNextBlock() {
+	placeRandomNumber();
+	numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
+	_pushInNumber();
+}
+
+/**随机在棋盘上放置一个数字方块*/
 function placeRandomNumber() {
 	var ax = Math.floor(Math.random()*calarrays.length);
 	var ay = Math.floor(Math.random()*calarrays[0].length);
@@ -248,10 +349,12 @@ function placeRandomNumber() {
     });
 	actor.emptyBehaviorList();
 	actor.addBehavior(scaling);
+	
+	actor.mouseDown = actorMouseDown;
 	squareContainer.addChild(actor);
 }
 
-
+/**核心：检查方块是否能够消除*/
 function checkAndRemove(x,y) {
 	//6  list for x 
 	var xa = getPosNumber(x-2, y);
@@ -340,26 +443,6 @@ function checkAndRemove(x,y) {
 }
 
 
-function removeBlock(x, y) {
-	if (x>=0 && x<calarrays.length && y>=0 && y<calarrays[0].length) {
-		var actor = actorsPlaced[x][y];
-		if (actor!=null) {
-			 var rotating= new CAAT.RotateBehavior().
-	            setCycle(false).
-	            setFrameTime(actor.time, 500).
-	            setValues(0, 2*Math.PI, 0.5, 0.5).
-	            addListener( {
-	                behaviorExpired : function() {
-	                	actor.setExpired(0);
-	                	calarrays[x][y] = 0;
-	                	actorsPlaced[x][y] = null;
-	                }
-	            } );
-			 actor.addBehavior(rotating);
-		}
-	}
-}
-
 function getPosNumber(x, y) {
 	if (x<0 || x>=calarrays.length) {
 		return  -5;
@@ -372,10 +455,63 @@ function getPosNumber(x, y) {
 	if (calarrays[x][y]==0) {
 		return -5;
 	}
-	
 	return parseInt(calarrays[x][y].split("-")[1]);
 }
 
+/**删除指定位置的方块,可以指定多种效果 包括淡出、旋转退出， 掉落等*/
+function removeBlock(x, y, effect) {
+	if (x>=0 && x<calarrays.length && y>=0 && y<calarrays[0].length) {
+		var actor = actorsPlaced[x][y];
+		if (calarrays[x][y]!=0) {
+			calarrays[x][y] = 0;
+        	actorsPlaced[x][y] = null;
+        	
+        	if (effect=="zoomout") {
+        		var zoomout= new CAAT.ScaleBehavior().
+                  setFrameTime(actor.time, 500).
+                  setValues( 1, .1, 1, .1, .5, .5).
+                  addListener( {
+                      behaviorExpired : function(behavior, time, actor) {
+                    	  actor.setExpired(0);
+                      }
+                  });
+        		actor.addBehavior(zoomout);
+        		
+        	} else if (effect=="burst") {
+        		var rz = Math.random() * 10 -5; 
+        		var throwBehavior = new CAAT.PathBehavior().
+                 	setFrameTime( actor.time, 800).
+                 	setPath(
+                         new CAAT.Path().
+                                 beginPath( actor.x, actor.y).
+                                 addQuadricTo( actor.x + rz * 20, actor.y-100, actor.x+ rz*50, actor.y+500).
+                                 endPath()
+                 	).
+                 	addListener( {
+                         behaviorExpired : function(behavior, time, actor) {
+                             actor.setExpired(0);
+                         }
+                 	});
+        		 actor.addBehavior(throwBehavior);
+        	} else {
+        		var rotating= new CAAT.RotateBehavior().
+        		setCycle(false).
+        		setFrameTime(actor.time, 500).
+        		setValues(0, 2*Math.PI, 0.5, 0.5).
+        		addListener( {
+        			behaviorExpired : function() {
+        				actor.setExpired(0);
+        			}
+        		} );
+        		actor.addBehavior(rotating);
+        	}
+		}
+	}
+}
+
+
+
+/**为候选的一个位置增加一个方块，并将其飞行到指定位置*/
 function _pushInNumber() {
 	for ( var i = 0; i < numbers.length; i++) {
 		if (numberActors.length<i+1) {
@@ -412,9 +548,8 @@ function _createAndFly(actor, pos) {
 		.setFrameTime(squareContainer.time, 500)
 		.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator());
 		actor.addBehavior(pb);
-		
 		squareContainer.addChild(actor);
-		
+		actor.mouseDown = actorMouseDown;
 	} else {
 		var path= new CAAT.LinearPath()
 	    .setInitialPosition(actor.x,-45)
