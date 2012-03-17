@@ -417,6 +417,9 @@ function initCategory() {
 	
 	$('select.category').each(
 			function(){
+				//删除现有的
+				$(this).find('optgroup').remove();
+				$(this).find('option').remove();
 				category.fillSelect($(this), categories);
 			}
 	);
@@ -486,6 +489,7 @@ uiSaveCategory = function() {
 		window.localStorage.setItem(currentUser+".category", JSON.stringify(categories));
 	} 
 	http.saveConfig( JSON.stringify(categories));
+	initCategory();
 };
 
 var category = {
