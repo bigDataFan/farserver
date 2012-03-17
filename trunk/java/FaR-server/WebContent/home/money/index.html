@@ -195,16 +195,15 @@
 		<div class="content form" id="addOutComeForm" style="display:none" db="groupdb" btns="btn-save-form,btn-add-form">
 			<div class="title" style="width:450px"><h3>编辑支出</h3> </div>
 			<div class="label">
+				金额 * ：  <input type="text" name="total" size="5" class="number" > <span style="color: green;" id="calculateTotalProcess"></span>
+			</div> 
+			<div class="label">
 				支出描述： <input type="text" name="title" size="36"> 
 			</div>
 			<div class="label">
 				日期 * ： 
 				<input type="text" class="choosedate" name="time" size="16" width="200"> 
 			</div>
-			<div class="label">
-				金额 * ：  <input type="text" name="total" size="5" class="number" > <span style="color: green;" id="calculateTotalProcess"></span>
-			</div> 
-			
 			<div class="label">
 				支出方式 * ：  
 				<select name="outmethod">

@@ -5,9 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="common.css"/>
-
 <script type="text/javascript" src="http://openapi.360.cn/js/o360_connect.js"></script>
-<script type="text/javascript" src="/js/json2.js"></script>
 
 <%
 	if (request.getParameter("redirectTo")!=null) {
@@ -64,6 +62,10 @@ function loginedby360(info) {
 	doCheck(info);
 	
 }
+
+function login() {
+	location.href = "/login?username=" + document.getElementById("userName").value + "&password=" + document.getElementById("password").value + "&from=/office/login.jsp";
+}
 </script>
 <title>请登陆以进一步使用</title>
 
@@ -78,15 +80,15 @@ function loginedby360(info) {
 			<div class="details views" >
 				<form action="/login" method="POST">
 				<div class="label">
-					账号：  <input type="text" name="username" size="16" width="200"> 
+					账号：  <input type="text" name="username" id="userName" size="16" width="200"> 
 				</div>
 				<div class="label">
-					密码：  <input type="password"" name="password" size="16" width="200">
+					密码：  <input type="password" name="password" size="16" id="password" width="200">
 				</div>
 				<input type="hidden"  name="from" value="/office/login.jsp">
 				
 				<div class="label">
-					<a class="operations" href="javascript:document.forms[0].submit()">登陆</a> 
+					<a class="operations" href="javascript:login()">登陆</a> 
 					<%
 						if (session.getAttribute("loginError")!=null) {
 							out.print("<font color='red'>" + session.getAttribute("loginError") + "</font>");
