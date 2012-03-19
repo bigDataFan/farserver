@@ -5,6 +5,8 @@ var startScene;
 var mapContainer;
 var squareContainer;
 
+
+var levelInfo;
 var numbers = ['1-1','4-2','5-3','1-8','4-9'];
 
 var calarrays = [
@@ -71,6 +73,7 @@ function initGameCtx(leveled) {
 }
 
 function goNextLevel() {
+	levelInfo.setText(gamectx.level + "级");
 	gamectx.level ++;
 	gamectx.remains = getLevelBlocks(gamectx.level);
 }
@@ -161,6 +164,20 @@ function initLevelsScene() {
 	initialize(director.getImage('background'), 1, 1);
 	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-200,-1000);
 	
+	
+	levelInfo = new CAAT.TextActor().
+	setFont("20px sans-serif").
+	setText("1级").
+	setOutlineColor('white').
+	calcTextSize(director).
+	setTextAlign("center").
+	//setTextFillStyle(gradient).
+	setLocation(10, 80).
+	setOutline(true);
+	//.cacheAsBitmap();
+	mapContainer.addChild(levelInfo);
+
+
 	/*
 	var levelImage = new CAAT.SpriteImage().
 		initialize(director.getImage('levelbg'), 1, 1);
@@ -406,7 +423,9 @@ function generateNextBlock() {
 	}
 	
 	if (Math.random()<0.1) {
-		numbers.push("a-" + ((Math.floor(Math.random()*gamectx.level) + 1)));
+		pp  = gamectx.level;
+		if (pp>3) pp=3;
+		numbers.push("a-" + (Math.floor(Math.random()*pp) + 1));
 	} else {
 		numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
 	}
