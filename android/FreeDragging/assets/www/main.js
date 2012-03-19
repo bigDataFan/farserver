@@ -5,7 +5,7 @@ var startScene;
 var mapContainer;
 var squareContainer;
 
-var numbers = ['1-7','4-7','5-8','3-8','a-1','a-2', 'a-3'];
+var numbers = ['1-1','4-2','5-3','1-8','4-9'];
 
 var calarrays = [
 [0,0,0,0,0,0,0,0,0,0],
@@ -30,10 +30,50 @@ var actorsPlaced =
 [0,0,0,0,0,0,0,0,0,0]
 ];
 
-
 var numberActors = [];
 var numberImages = null;
 var extraImages =  null;
+
+
+var gamectx = {};
+
+function initGameCtx(leveled) {
+	calarrays = [
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0]
+	];
+
+	actorsPlaced =
+	[
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0]
+	];
+
+	if (leveled) {
+		gamectx.level = 1;
+		gamectx.remains = getLevelBlocks(gamectx.level);
+	} else {
+		gamectx.level = 100;
+		gamectx.remains = Number.MAX_VALUE;
+	}
+}
+
+function goNextLevel() {
+	gamectx.level ++;
+	gamectx.remains = getLevelBlocks(gamectx.level);
+}
 
 
 function boot() {
@@ -42,20 +82,18 @@ function boot() {
 	        document.getElementById('container'));
 	startScene = director.createScene();
 	mapScene = director.createScene();
-	
 	new CAAT.ImagePreloader().loadImages(
 			worknfightImages,
 			function(counter, images) {
 				 if (counter==worknfightImages.length) {
 					director.setImagesCache(images);
 					initStartScene();
+					//director.setScene(director.getSceneIndex(mapScene));
 				 }
 			}
 	);
 	CAAT.loop(30);
 }
-
-
 
 /**
  * 初始化开始屏幕。 主要是几个操作按钮
@@ -69,7 +107,6 @@ function initStartScene() {
 	initialize(director.getImage('background'), 1, 1);
 	
 	startContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,-1200);
-
 	
 	var btnStartLevelImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnstartLevel'), 1, 1);
@@ -80,13 +117,9 @@ function initStartScene() {
 	var b1= new CAAT.Actor()
 		.setAsButton(
 					btnStartLevelImg.getRef(), 0, 0, 0, 0, function(button) {
-							initLevelsScene();
-							 director.switchToNextScene(
-					                    500,
-					                    false,
-					                    true
-					            )
-		 					//director.setScene(director.getSceneIndex(mapScene));
+						initLevelsScene();
+						initGameCtx(true);
+						director.setScene(director.getSceneIndex(mapScene));
 	                 }
 	     ).setLocation(width/2-80,height/2-60);
 	startContainer.addChild(b1);
@@ -97,7 +130,7 @@ function initStartScene() {
 						initLevelsScene();
 	 					director.setScene(director.getSceneIndex(mapScene));
                  }
-     ).setLocation(width/2-80,height/2+60);
+     ).setLocation(width/2-80, height/2+60);
 	startContainer.addChild(b2);
 }
 
@@ -126,47 +159,23 @@ function initLevelsScene() {
 	
 	var bgimage= new CAAT.SpriteImage().
 	initialize(director.getImage('background'), 1, 1);
-	
 	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-200,-1000);
 	
+	/*
 	var levelImage = new CAAT.SpriteImage().
 		initialize(director.getImage('levelbg'), 1, 1);
 	var levelContainer = new CAAT.ActorContainer()
 		.setBackgroundImage(levelImage.getRef(), true)
 		.setBounds(5, 5, levelImage.singleWidth, levelImage.singleHeight);
 	mapScene.addChild(levelContainer);
-
-	var scoreImage = new CAAT.SpriteImage().
-	initialize(director.getImage('scorebg'), 1, 1);
-	var scoreContainer = new CAAT.ActorContainer()
-	.setBackgroundImage(scoreImage.getRef(), true)
-	.setBounds(director.width - scoreImage.singleWidth, 0, scoreImage.singleWidth, scoreImage.singleHeight);
-	mapScene.addChild(scoreContainer);
-	
-	var numberW= numberImages.singleWidth;
-	var numberH= numberImages.singleHeight;
-
+	*/
 	_pushInNumber();
 	squareContainer.mouseDown = onBoadClicked;
 	
-	
-	if (scoreActors.length==0) {
-		for ( var i = 0; i < 6; i++) {
-			var numImages= new CAAT.SpriteImage().
-			initialize(director.getImage('nums'), 1, 10);
-			
-			var actor= new CAAT.Actor()
-			.setBackgroundImage(numImages.getRef(),true)
-			.setSpriteIndex(0)
-			.setPosition(i*numImages.singleWidth + 8, 20);
-			scoreContainer.addChild(actor);
-			scoreActors.push(actor);
-		}
-	}
+	initScore();
 	flyNearCloud('cloudfar', 2, mapContainer);
 	flyNearCloud('cloudnear', 1, mapContainer);
 }
-
 
 /**为背景增加一个浮动的云彩 第二个参数为速度 */
 function flyNearCloud(image, speed, container) {
@@ -198,6 +207,30 @@ function flyNearCloud(image, speed, container) {
 /**设置当前的分数*/
 var scoreActors = [];
 var score = 0;
+
+/**初始化分数栏*/
+function initScore() {
+	var scoreImage = new CAAT.SpriteImage().
+	initialize(director.getImage('scorebg'), 1, 1);
+	var scoreContainer = new CAAT.ActorContainer()
+	.setBackgroundImage(scoreImage.getRef(), true)
+	.setBounds(director.width - scoreImage.singleWidth, 0, scoreImage.singleWidth, scoreImage.singleHeight);
+	mapScene.addChild(scoreContainer);
+	if (scoreActors.length==0) {
+		for ( var i = 0; i < 6; i++) {
+			var numImages= new CAAT.SpriteImage().
+			initialize(director.getImage('nums'), 1, 10);
+			
+			var actor= new CAAT.Actor()
+			.setBackgroundImage(numImages.getRef(),true)
+			.setSpriteIndex(0)
+			.setPosition(i*numImages.singleWidth + 8, 20);
+			scoreContainer.addChild(actor);
+			scoreActors.push(actor);
+		}
+	}
+}
+
 function setScore(n) {
 	var str = String(n);
 	var la = str.length;
@@ -325,19 +358,19 @@ function doExtras(number, actor, x, y) {
 	}
 }
 
-
 /** 棋盘的点击事件 */
 function onBoadClicked(me) {
 	if (moving!=null) {
 		doMoving(me);
 		return;
 	}
+	
 	var ax = Math.floor(me.x / numberImages.singleWidth);
 	var ay = Math.floor(me.y / numberImages.singleHeight);
 	if (calarrays[ax][ay]!=0) return;
 	
 	var number = numbers.shift();
-	var actor = numberActors.shift();
+	var actor  = numberActors.shift();
 	calarrays[ax][ay] = number;
 	actorsPlaced[ax][ay] = actor;
 
@@ -347,7 +380,7 @@ function onBoadClicked(me) {
 
 	var pb = new CAAT.PathBehavior()
 	  .setPath(path)
-	  .setFrameTime(actor.time, 300)
+	  .setFrameTime(mapScene.time, 300)
 	  //.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
 	  .addListener( {
           behaviorExpired : function() {
@@ -364,8 +397,19 @@ function onBoadClicked(me) {
 
 /**根据等级等信息 随机生成下一个方块*/
 function generateNextBlock() {
-	placeRandomNumber();
-	numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
+	gamectx.remains --;
+	if (gamectx.remains==0) {
+		goNextLevel();
+	} 
+	if (Math.random() < getLevelRand(gamectx.level)) {
+		placeRandomNumber();
+	}
+	
+	if (Math.random()<0.1) {
+		numbers.push("a-" + ((Math.floor(Math.random()*gamectx.level) + 1)));
+	} else {
+		numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
+	}
 	_pushInNumber();
 }
 
@@ -560,8 +604,6 @@ function removeBlock(x, y, effect) {
 	}
 }
 
-
-
 /**为候选的一个位置增加一个方块，并将其飞行到指定位置*/
 function _pushInNumber() {
 	for ( var i = 0; i < numbers.length; i++) {
@@ -589,7 +631,6 @@ function _createAndFly(actor, pos) {
 			.setBackgroundImage(numberImages.getRef(),true)
 			.setSpriteIndex((parseInt(vs[0])-1)*9 + parseInt(vs[1])-1);
 		}
-		
 		var path= new CAAT.LinearPath()
 		.setInitialPosition(width, -45)
 		.setFinalPosition(110 + pos*(numberImages.singleWidth), -45);
@@ -599,9 +640,12 @@ function _createAndFly(actor, pos) {
 		.setFrameTime(squareContainer.time, 500)
 		.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator());
 		actor.addBehavior(pb);
+		
+		actor.setPosition(110 + pos*(numberImages.singleWidth), -45);
 		squareContainer.addChild(actor);
 		actor.mouseDown = actorMouseDown;
 	} else {
+		
 		var path= new CAAT.LinearPath()
 	    .setInitialPosition(actor.x,-45)
 	    .setFinalPosition(110 + pos*(numberImages.singleWidth), -45);
@@ -610,6 +654,8 @@ function _createAndFly(actor, pos) {
         .setFrameTime(squareContainer.time, 500)
         .setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator());
 		actor.addBehavior(pb);
+		
+		actor.setPosition(110 + pos*(numberImages.singleWidth), -45);
 	}
 	return actor;
 }
