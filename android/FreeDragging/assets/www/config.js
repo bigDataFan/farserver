@@ -12,5 +12,20 @@ var worknfightImages = [
     {id:"scorebg", url: 'images/score.png'},
     {id:"cloudnear", url:'images/nube1.png'},
     {id:"cloudfar", url:'images/nubefondo2.png'},
-    {id:"extras", url:'images/extras.png'}
+    {id:"extras", url:'images/extras.png'},
+    {id:"btnstartLevel", url:'images/startLevel.png'},
+    {id:"btnEmpty", url:'images/btnEmpty.png'}
 ];
+
+
+function getLevelRand(level) {
+	return level * 0.2;
+}
+
+function getLevelBlocks(level) {
+	return level * 50;
+}
+
+function getLevelExtras(level) {
+	
+}
