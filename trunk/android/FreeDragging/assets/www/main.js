@@ -73,8 +73,8 @@ function initGameCtx(leveled) {
 }
 
 function goNextLevel() {
-	levelInfo.setText(gamectx.level + "级");
 	gamectx.level ++;
+	levelInfo.setText(gamectx.level + "级");
 	gamectx.remains = getLevelBlocks(gamectx.level);
 }
 
@@ -159,11 +159,13 @@ function initLevelsScene() {
 	initialize(director.getImage('numbers'), 9, 9);
 	extraImages =  new CAAT.SpriteImage().
 	initialize(director.getImage('extras'), 1, 9);
-	
+	var chessbgImages =  new CAAT.SpriteImage().
+	initialize(director.getImage('chessbg'), 1, 1);
 	var bgimage= new CAAT.SpriteImage().
 	initialize(director.getImage('background'), 1, 1);
-	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-200,-1000);
 	
+	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-200,-1000);
+	squareContainer.setBackgroundImage(chessbgImages.getRef(), true).setBackgroundImageOffset(0,0);
 	
 	levelInfo = new CAAT.TextActor().
 	setFont("20px sans-serif").
@@ -643,7 +645,7 @@ function _createAndFly(actor, pos) {
 				//move 
 			actor= new CAAT.Actor()
 			.setBackgroundImage(extraImages.getRef(),true)
-			.setSpriteIndex(parseInt(vs[1]))
+			.setSpriteIndex(parseInt(vs[1])-1)
 			.setScale(.9, .9);
 		} else {
 			actor= new CAAT.Actor()

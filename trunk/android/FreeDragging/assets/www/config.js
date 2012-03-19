@@ -14,7 +14,9 @@ var worknfightImages = [
     {id:"cloudfar", url:'images/nubefondo2.png'},
     {id:"extras", url:'images/extras.png'},
     {id:"btnstartLevel", url:'images/startLevel.png'},
-    {id:"btnEmpty", url:'images/btnEmpty.png'}
+    {id:"btnEmpty", url:'images/btnEmpty.png'},
+    {id:"chessbg", url:'images/chessbg320.png'}
+   
 ];
 
 
