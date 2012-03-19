@@ -1,8 +1,10 @@
 
 var director;
 var mapScene;
+var startScene;
 var mapContainer;
 var squareContainer;
+
 var numbers = ['1-7','4-7','5-8','3-8','a-1','a-2', 'a-3'];
 
 var calarrays = [
@@ -33,11 +35,12 @@ var numberActors = [];
 var numberImages = null;
 var extraImages =  null;
 
+
 function boot() {
 	director = new CAAT.Director().initialize(
 	        width, height,
 	        document.getElementById('container'));
-	
+	startScene = director.createScene();
 	mapScene = director.createScene();
 	
 	new CAAT.ImagePreloader().loadImages(
@@ -45,7 +48,7 @@ function boot() {
 			function(counter, images) {
 				 if (counter==worknfightImages.length) {
 					director.setImagesCache(images);
-					initLevelsScene();
+					initStartScene();
 				 }
 			}
 	);
@@ -53,6 +56,54 @@ function boot() {
 }
 
 
+
+/**
+ * åˆå§‹åŒ–å¼€å§‹å±å¹•ã€‚ ä¸»è¦æ˜¯å‡ ä¸ªæ“ä½œæŒ‰é’®
+ */
+function initStartScene() {
+	var startContainer = new CAAT.ActorContainer().
+	setBounds(0, 0, director.width, director.height);
+	startScene.addChild(startContainer);
+	
+	var bgimage= new CAAT.SpriteImage().
+	initialize(director.getImage('background'), 1, 1);
+	
+	startContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,-1200);
+
+	
+	var btnStartLevelImg = new CAAT.SpriteImage().
+	initialize(director.getImage('btnstartLevel'), 1, 1);
+	
+	var btnEmptyImg = new CAAT.SpriteImage().
+	initialize(director.getImage('btnEmpty'), 1, 1);
+	
+	var b1= new CAAT.Actor()
+		.setAsButton(
+					btnStartLevelImg.getRef(), 0, 0, 0, 0, function(button) {
+							initLevelsScene();
+							 director.switchToNextScene(
+					                    500,
+					                    false,
+					                    true
+					            )
+		 					//director.setScene(director.getSceneIndex(mapScene));
+	 Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â }
+	 Â Â Â Â ).setLocation(width/2-80,height/2-60);
+	startContainer.addChild(b1);
+	
+	var b2= new CAAT.Actor()
+	.setAsButton(
+					btnEmptyImg.getRef(), 0, 0, 0, 0, function(button) {
+						initLevelsScene();
+	 					director.setScene(director.getSceneIndex(mapScene));
+ Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â }
+ Â Â Â Â ).setLocation(width/2-80,height/2+60);
+	startContainer.addChild(b2);
+}
+
+/**
+ * åˆå§‹åŒ–æ¸¸æˆå±å¹•
+ */
 function initLevelsScene() {
 	
 	mapContainer = new CAAT.ActorContainer().
@@ -112,13 +163,13 @@ function initLevelsScene() {
 			scoreActors.push(actor);
 		}
 	}
-	flyNearCloud('cloudfar', 2);
-	flyNearCloud('cloudnear', 1);
+	flyNearCloud('cloudfar', 2, mapContainer);
+	flyNearCloud('cloudnear', 1, mapContainer);
 }
 
 
-/**Îª±³¾°Ôö¼ÓÒ»¸ö¸¡¶¯µÄÔÆ²Ê µÚ¶þ¸ö²ÎÊýÎªËÙ¶È */
-function flyNearCloud(image, speed) {
+/**ä¸ºèƒŒæ™¯å¢žåŠ ä¸€ä¸ªæµ®åŠ¨çš„äº‘å½© ç¬¬äºŒä¸ªå‚æ•°ä¸ºé€Ÿåº¦ */
+function flyNearCloud(image, speed, container) {
 	var cloudnear= new CAAT.SpriteImage().
 	initialize(director.getImage(image), 1, 1);
 	var cloudNearActor= new CAAT.Actor()
@@ -136,15 +187,15 @@ function flyNearCloud(image, speed) {
 	  .addListener( {
         behaviorExpired : function(behavior, time, actor) {
         	actor.setExpired(0);
-      	  	flyNearCloud(image, speed);
+      	  	flyNearCloud(image, speed, container);
         }
     } );
 	cloudNearActor.addBehavior(pb);
-	mapContainer.addChild(cloudNearActor);
+	container.addChild(cloudNearActor);
 }
 
 
-/**ÉèÖÃµ±Ç°µÄ·ÖÊý*/
+/**è®¾ç½®å½“å‰çš„åˆ†æ•°*/
 var scoreActors = [];
 var score = 0;
 function setScore(n) {
@@ -179,7 +230,7 @@ function setScore(n) {
 }
 
 
-/**´¦ÀíÒ»¸öÆå×ÓÒÆ¶¯*/
+/**å¤„ç†ä¸€ä¸ªæ£‹å­ç§»åŠ¨*/
 var moving = null;
 function doMoving(me) {
 	if (moving) {
@@ -211,7 +262,7 @@ function doMoving(me) {
 }
 
 
-/**ÓÃÓÚÒÆ¶¯´¦Àí µ±Êó±êµã»÷·½¿éÊ±Ñ¡ÔñÒÆ¶¯µÄÔ´*/
+/**ç”¨äºŽç§»åŠ¨å¤„ç† å½“é¼ æ ‡ç‚¹å‡»æ–¹å—æ—¶é€‰æ‹©ç§»åŠ¨çš„æº*/
 function actorMouseDown(me) {
 	var info = numbers[0].split("-");
 	var type = info[0];
@@ -221,7 +272,7 @@ function actorMouseDown(me) {
 		var ay = Math.floor((me.screenPoint.y-squareContainer.y) / numberImages.singleHeight);
 		
 		if (n=="1") {
-			//ÏÈ
+			//å…ˆ
 			moving = {
 					actor: me.source,
 					posx: ax,
@@ -248,24 +299,24 @@ function actorMouseDown(me) {
 }
 
 
-/**µÀ¾ß±»·ÅÖÃµ½ÆåÅÌºóµÄÐ§¹û´¦Àí*/
+/**é“å…·è¢«æ”¾ç½®åˆ°æ£‹ç›˜åŽçš„æ•ˆæžœå¤„ç†*/
 function doExtras(number, actor, x, y) {
 	
 	var extraNumber = number.split("-")[1];
 	
-	if (extraNumber=="1") {  //ÒÆ¶¯µ½Ä¿µÄµØµÄ´¦ÀíÊÂ¼þ  ·ÅÆú²Ù×÷
+	if (extraNumber=="1") {  //ç§»åŠ¨åˆ°ç›®çš„åœ°çš„å¤„ç†äº‹ä»¶  æ”¾å¼ƒæ“ä½œ
 		calarrays[x][y] = 0;
 		actorsPlaced[x][y] = null;
 		actor.setExpired(0);
 	}
 	
-	if (extraNumber=="2") {  //¿ÙµôÒ»¸ö·½¿é¡£  ·ÅÆú
+	if (extraNumber=="2") {  //æŠ æŽ‰ä¸€ä¸ªæ–¹å—ã€‚  æ”¾å¼ƒ
 		calarrays[x][y] = 0;
 		actorsPlaced[x][y] = null;
 		actor.setExpired(0);
 	}
 	
-	if (extraNumber=="3") { //Õ¨µôËÄÖÜµÄ·½¿é
+	if (extraNumber=="3") { //ç‚¸æŽ‰å››å‘¨çš„æ–¹å—
 		removeBlock(x,y, "burst");
 		removeBlock(x-1,y, "burst");
 		removeBlock(x+1,y, "burst");
@@ -275,7 +326,7 @@ function doExtras(number, actor, x, y) {
 }
 
 
-/** ÆåÅÌµÄµã»÷ÊÂ¼þ */
+/** æ£‹ç›˜çš„ç‚¹å‡»äº‹ä»¶ */
 function onBoadClicked(me) {
 	if (moving!=null) {
 		doMoving(me);
@@ -311,14 +362,14 @@ function onBoadClicked(me) {
 	generateNextBlock();
 }
 
-/**¸ù¾ÝµÈ¼¶µÈÐÅÏ¢ Ëæ»úÉú³ÉÏÂÒ»¸ö·½¿é*/
+/**æ ¹æ®ç­‰çº§ç­‰ä¿¡æ¯ éšæœºç”Ÿæˆä¸‹ä¸€ä¸ªæ–¹å—*/
 function generateNextBlock() {
 	placeRandomNumber();
 	numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
 	_pushInNumber();
 }
 
-/**Ëæ»úÔÚÆåÅÌÉÏ·ÅÖÃÒ»¸öÊý×Ö·½¿é*/
+/**éšæœºåœ¨æ£‹ç›˜ä¸Šæ”¾ç½®ä¸€ä¸ªæ•°å­—æ–¹å—*/
 function placeRandomNumber() {
 	var ax = Math.floor(Math.random()*calarrays.length);
 	var ay = Math.floor(Math.random()*calarrays[0].length);
@@ -354,7 +405,7 @@ function placeRandomNumber() {
 	squareContainer.addChild(actor);
 }
 
-/**ºËÐÄ£º¼ì²é·½¿éÊÇ·ñÄÜ¹»Ïû³ý*/
+/**æ ¸å¿ƒï¼šæ£€æŸ¥æ–¹å—æ˜¯å¦èƒ½å¤Ÿæ¶ˆé™¤*/
 function checkAndRemove(x,y) {
 	//6  list for x 
 	var xa = getPosNumber(x-2, y);
@@ -458,7 +509,7 @@ function getPosNumber(x, y) {
 	return parseInt(calarrays[x][y].split("-")[1]);
 }
 
-/**É¾³ýÖ¸¶¨Î»ÖÃµÄ·½¿é,¿ÉÒÔÖ¸¶¨¶àÖÖÐ§¹û °üÀ¨µ­³ö¡¢Ðý×ªÍË³ö£¬ µôÂäµÈ*/
+/**åˆ é™¤æŒ‡å®šä½ç½®çš„æ–¹å—,å¯ä»¥æŒ‡å®šå¤šç§æ•ˆæžœ åŒ…æ‹¬æ·¡å‡ºã€æ—‹è½¬é€€å‡ºï¼Œ æŽ‰è½ç­‰*/
 function removeBlock(x, y, effect) {
 	if (x>=0 && x<calarrays.length && y>=0 && y<calarrays[0].length) {
 		var actor = actorsPlaced[x][y];
@@ -511,7 +562,7 @@ function removeBlock(x, y, effect) {
 
 
 
-/**ÎªºòÑ¡µÄÒ»¸öÎ»ÖÃÔö¼ÓÒ»¸ö·½¿é£¬²¢½«Æä·ÉÐÐµ½Ö¸¶¨Î»ÖÃ*/
+/**ä¸ºå€™é€‰çš„ä¸€ä¸ªä½ç½®å¢žåŠ ä¸€ä¸ªæ–¹å—ï¼Œå¹¶å°†å…¶é£žè¡Œåˆ°æŒ‡å®šä½ç½®*/
 function _pushInNumber() {
 	for ( var i = 0; i < numbers.length; i++) {
 		if (numberActors.length<i+1) {
