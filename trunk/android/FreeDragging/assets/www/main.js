@@ -5,9 +5,9 @@ var startScene;
 var mapContainer;
 var squareContainer;
 
-
+var placed = 0;
 var levelInfo;
-var numbers = ['1-1','4-2','5-3','1-8','4-9'];
+var numbers = ['1-1','4-2','5-3','1-8','4-8','3-8'];
 
 var calarrays = [
 [0,0,0,0,0,0,0,0,0,0],
@@ -63,6 +63,7 @@ function initGameCtx(leveled) {
 	[0,0,0,0,0,0,0,0,0,0]
 	];
 
+	placed = 0;
 	if (leveled) {
 		gamectx.level = 1;
 		gamectx.remains = getLevelBlocks(gamectx.level);
@@ -150,11 +151,12 @@ function initLevelsScene() {
 	setBounds(0, director.height-400, 320, 400);
 	mapScene.addChild(squareContainer);
 
+	/*
 	var progressbg = new CAAT.Actor()
    	.setBounds(100, -50, 500, 50)
    	.setFillStyle('#fff').setAlpha(0.2);
 	squareContainer.addChild(progressbg);
-	
+	*/
 	numberImages= new CAAT.SpriteImage().
 	initialize(director.getImage('numbers'), 9, 9);
 	extraImages =  new CAAT.SpriteImage().
@@ -168,15 +170,13 @@ function initLevelsScene() {
 	squareContainer.setBackgroundImage(chessbgImages.getRef(), true).setBackgroundImageOffset(0,0);
 	
 	levelInfo = new CAAT.TextActor().
-	setFont("20px sans-serif").
+	setFont("24px sans-serif").
 	setText("1级").
 	setOutlineColor('white').
 	calcTextSize(director).
 	setTextAlign("center").
-	//setTextFillStyle(gradient).
-	setLocation(10, 80).
+	setLocation(10, 70).
 	setOutline(true);
-	//.cacheAsBitmap();
 	mapContainer.addChild(levelInfo);
 
 
@@ -324,7 +324,6 @@ function actorMouseDown(me) {
 		var ay = Math.floor((me.screenPoint.y-squareContainer.y) / numberImages.singleHeight);
 		
 		if (n=="1") {
-			//先
 			moving = {
 					actor: me.source,
 					posx: ax,
@@ -360,12 +359,16 @@ function doExtras(number, actor, x, y) {
 		calarrays[x][y] = 0;
 		actorsPlaced[x][y] = null;
 		actor.setExpired(0);
+		placed --;
+		console.log("placed=" + placed);
 	}
 	
 	if (extraNumber=="2") {  //抠掉一个方块。  放弃
 		calarrays[x][y] = 0;
 		actorsPlaced[x][y] = null;
 		actor.setExpired(0);
+		placed --;
+		console.log("placed=" + placed);
 	}
 	
 	if (extraNumber=="3") { //炸掉四周的方块
@@ -392,7 +395,9 @@ function onBoadClicked(me) {
 	var actor  = numberActors.shift();
 	calarrays[ax][ay] = number;
 	actorsPlaced[ax][ay] = actor;
-
+	placed ++;
+	console.log("placed=" + placed);
+	
 	var path= new CAAT.LinearPath()
 	.setInitialPosition(actor.x, actor.y)
 	.setFinalPosition(ax * numberImages.singleWidth , ay * numberImages.singleHeight);
@@ -419,9 +424,13 @@ function generateNextBlock() {
 	gamectx.remains --;
 	if (gamectx.remains==0) {
 		goNextLevel();
-	} 
+	}
+	
 	if (Math.random() < getLevelRand(gamectx.level)) {
-		placeRandomNumber();
+		var n = getLevelNumber(gamectx.level);
+		for ( var i = 0; i < n; i++) {
+			placeRandomNumber();
+		}
 	}
 	
 	if (Math.random()<0.1) {
@@ -436,6 +445,8 @@ function generateNextBlock() {
 
 /**随机在棋盘上放置一个数字方块*/
 function placeRandomNumber() {
+	if (80 - placed < 10) return;
+	
 	var ax = Math.floor(Math.random()*calarrays.length);
 	var ay = Math.floor(Math.random()*calarrays[0].length);
 	
@@ -453,6 +464,8 @@ function placeRandomNumber() {
 	.setPosition(ax * numberImages.singleWidth , ay * numberImages.singleHeight);
 	
 	calarrays[ax][ay] = vx + "-" + vy;
+	placed ++;
+	console.log("placed=" + placed);
 	
 	var scaling= new CAAT.ScaleBehavior().
     setFrameTime(squareContainer.time, 300).
@@ -556,6 +569,10 @@ function checkAndRemove(x,y) {
 		removeBlock(x,y);
 		setScore(score + totalInc);
 	}
+	
+	if (placed>=80) {
+		alert("失败 ");
+	}
 }
 
 
@@ -581,6 +598,8 @@ function removeBlock(x, y, effect) {
 		if (calarrays[x][y]!=0) {
 			calarrays[x][y] = 0;
         	actorsPlaced[x][y] = null;
+        	placed --;
+        	console.log("placed=" + placed);
         	
         	if (effect=="zoomout") {
         		var zoomout= new CAAT.ScaleBehavior().
