@@ -15,13 +15,16 @@ var worknfightImages = [
     {id:"extras", url:'images/extras.png'},
     {id:"btnstartLevel", url:'images/startLevel.png'},
     {id:"btnEmpty", url:'images/btnEmpty.png'},
-    {id:"chessbg", url:'images/chessbg320.png'}
-   
+    {id:"chessbg", url:'images/chessbg320.png'},
+    {id:"returnmenu", url:'images/progresive.png'}
 ];
-
 
 function getLevelRand(level) {
 	return level * 0.2;
+}
+
+function getLevelNumber(level) {
+	return Math.floor(Math.random() * 4) + 1;
 }
 
 function getLevelBlocks(level) {
@@ -31,3 +34,5 @@ function getLevelBlocks(level) {
 function getLevelExtras(level) {
 	
 }
+
+
