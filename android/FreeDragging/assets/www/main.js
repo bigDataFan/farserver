@@ -7,29 +7,28 @@ var squareContainer;
 
 var placed = 0;
 var levelInfo;
-var numbers = ['1-1','4-2','5-3','1-8','4-8','3-8'];
+var numbers = [];
 
 var calarrays = [
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0]
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0]
 ];
 
-var actorsPlaced =
-[
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0]
+var actorsPlaced = [
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0]
 ];
 
 var numberActors = [];
@@ -65,10 +64,11 @@ function initGameCtx(leveled) {
 
 	placed = 0;
 	if (leveled) {
-		gamectx.level = 1;
-		gamectx.remains = getLevelBlocks(gamectx.level);
+		gamectx.level = 0;
+		goNextLevel();
 	} else {
 		gamectx.level = 100;
+		goNextLevel();
 		gamectx.remains = Number.MAX_VALUE;
 	}
 }
@@ -77,8 +77,12 @@ function goNextLevel() {
 	gamectx.level ++;
 	levelInfo.setText(gamectx.level + "级");
 	gamectx.remains = getLevelBlocks(gamectx.level);
+	
+	for ( var i = 0; i < 6; i++) {
+		putInQueue();
+	}
+	_pushInNumber();
 }
-
 
 function boot() {
 	director = new CAAT.Director().initialize(
@@ -169,8 +173,20 @@ function initLevelsScene() {
 	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-200,-1000);
 	squareContainer.setBackgroundImage(chessbgImages.getRef(), true).setBackgroundImageOffset(0,0);
 	
+	flyNearCloud('cloudfar', 2, mapContainer);
+	flyNearCloud('cloudnear', 1, mapContainer);
+	
+	
+	var animalsImg= new CAAT.SpriteImage().
+	initialize(director.getImage('animals'), 1, 1);
+	
+	var animals= new CAAT.Actor().
+	setBackgroundImage(animalsImg.getRef(), true).
+	setLocation(55, 50);
+	mapContainer.addChild(animals);
+	
 	levelInfo = new CAAT.TextActor().
-	setFont("24px sans-serif").
+	setFont("20px sans-serif").
 	setText("1级").
 	setOutlineColor('white').
 	calcTextSize(director).
@@ -178,7 +194,6 @@ function initLevelsScene() {
 	setLocation(10, 70).
 	setOutline(true);
 	mapContainer.addChild(levelInfo);
-
 
 	/*
 	var levelImage = new CAAT.SpriteImage().
@@ -188,13 +203,11 @@ function initLevelsScene() {
 		.setBounds(5, 5, levelImage.singleWidth, levelImage.singleHeight);
 	mapScene.addChild(levelContainer);
 	*/
-	_pushInNumber();
-	squareContainer.mouseDown = onBoadClicked;
 	
+	squareContainer.mouseDown = onBoadClicked;
 	initScore();
-	flyNearCloud('cloudfar', 2, mapContainer);
-	flyNearCloud('cloudnear', 1, mapContainer);
 }
+
 
 /**为背景增加一个浮动的云彩 第二个参数为速度 */
 function flyNearCloud(image, speed, container) {
@@ -221,6 +234,7 @@ function flyNearCloud(image, speed, container) {
 	cloudNearActor.addBehavior(pb);
 	container.addChild(cloudNearActor);
 }
+
 
 
 /**设置当前的分数*/
@@ -360,7 +374,7 @@ function doExtras(number, actor, x, y) {
 		actorsPlaced[x][y] = null;
 		actor.setExpired(0);
 		placed --;
-		console.log("placed=" + placed);
+		return;
 	}
 	
 	if (extraNumber=="2") {  //抠掉一个方块。  放弃
@@ -368,16 +382,21 @@ function doExtras(number, actor, x, y) {
 		actorsPlaced[x][y] = null;
 		actor.setExpired(0);
 		placed --;
-		console.log("placed=" + placed);
+		return;
 	}
 	
-	if (extraNumber=="3") { //炸掉四周的方块
+	if (extraNumber=="3") {
+		
+	}
+	
+	if (extraNumber=="4") { //炸掉四周的方块
 		removeBlock(x,y, "burst");
 		removeBlock(x-1,y, "burst");
 		removeBlock(x+1,y, "burst");
 		removeBlock(x,y-1, "burst");
 		removeBlock(x,y+1, "burst");
 	}
+	
 }
 
 /** 棋盘的点击事件 */
@@ -396,7 +415,6 @@ function onBoadClicked(me) {
 	calarrays[ax][ay] = number;
 	actorsPlaced[ax][ay] = actor;
 	placed ++;
-	console.log("placed=" + placed);
 	
 	var path= new CAAT.LinearPath()
 	.setInitialPosition(actor.x, actor.y)
@@ -413,18 +431,19 @@ function onBoadClicked(me) {
         	  } else {
         		  checkAndRemove(ax, ay);
         	  }
+        	  if (numbers.length==0) {
+        		  goNextLevel();
+        	  } else {
+        		  generateNextBlock();
+        	  }
           }
       } );
 	actor.addBehavior(pb);
-	generateNextBlock();
 }
 
 /**根据等级等信息 随机生成下一个方块*/
 function generateNextBlock() {
 	gamectx.remains --;
-	if (gamectx.remains==0) {
-		goNextLevel();
-	}
 	
 	if (Math.random() < getLevelRand(gamectx.level)) {
 		var n = getLevelNumber(gamectx.level);
@@ -433,15 +452,25 @@ function generateNextBlock() {
 		}
 	}
 	
+	if (gamectx.remains<=6) {
+		
+	} else {
+		putInQueue();
+	}
+	
+	_pushInNumber();
+}
+
+function putInQueue() {
+	
 	if (Math.random()<0.1) {
 		pp  = gamectx.level;
-		if (pp>3) pp=3;
+		if (pp>4) pp=4;
 		numbers.push("a-" + (Math.floor(Math.random()*pp) + 1));
 	} else {
 		numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
 	}
-	_pushInNumber();
-}
+} 
 
 /**随机在棋盘上放置一个数字方块*/
 function placeRandomNumber() {
@@ -465,7 +494,6 @@ function placeRandomNumber() {
 	
 	calarrays[ax][ay] = vx + "-" + vy;
 	placed ++;
-	console.log("placed=" + placed);
 	
 	var scaling= new CAAT.ScaleBehavior().
     setFrameTime(squareContainer.time, 300).
@@ -599,7 +627,6 @@ function removeBlock(x, y, effect) {
 			calarrays[x][y] = 0;
         	actorsPlaced[x][y] = null;
         	placed --;
-        	console.log("placed=" + placed);
         	
         	if (effect=="zoomout") {
         		var zoomout= new CAAT.ScaleBehavior().
@@ -658,6 +685,8 @@ function _pushInNumber() {
 function _createAndFly(actor, pos) {
 	if (actor==null) {
 		var value = numbers[pos];
+		if (value==null) return;
+		
 		var vs = value.split("-");
 		
 		if (vs[0]=='a') {
