@@ -4,6 +4,7 @@ var mapScene;
 var startScene;
 var mapContainer;
 var squareContainer;
+var ready = false; 
 
 var placed = 0;
 var levelInfo;
@@ -121,26 +122,29 @@ function initStartScene() {
 	
 	var btnEmptyImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnEmpty'), 1, 1);
-	
 	var b1= new CAAT.Actor()
 		.setAsButton(
-					btnStartLevelImg.getRef(), 0, 0, 0, 0, function(button) {
-						initLevelsScene();
-						initGameCtx(true);
-						director.setScene(director.getSceneIndex(mapScene));
-	                 }
+					btnStartLevelImg.getRef(), 0, 0, 0, 0, onGameStartClicked
 	     ).setLocation(width/2-80,height/2-60);
 	startContainer.addChild(b1);
 	
 	var b2= new CAAT.Actor()
-	.setAsButton(
-					btnEmptyImg.getRef(), 0, 0, 0, 0, function(button) {
-						initLevelsScene();
-	 					director.setScene(director.getSceneIndex(mapScene));
-                 }
-     ).setLocation(width/2-80, height/2+60);
+		.setAsButton(btnEmptyImg.getRef(), 0, 0, 0, 0, onCrazyStartClicked
+			).setLocation(width/2-80, height/2+60);
 	startContainer.addChild(b2);
 }
+
+function onGameStartClicked(button) {
+	initLevelsScene();
+	initGameCtx(true);
+	director.setScene(director.getSceneIndex(mapScene));
+}
+
+function onCrazyStartClicked(button) {
+	initLevelsScene();
+	director.setScene(director.getSceneIndex(mapScene));
+}
+
 
 /**
  * 初始化游戏屏幕
@@ -396,7 +400,6 @@ function doExtras(number, actor, x, y) {
 		removeBlock(x,y-1, "burst");
 		removeBlock(x,y+1, "burst");
 	}
-	
 }
 
 /** 棋盘的点击事件 */
@@ -405,6 +408,8 @@ function onBoadClicked(me) {
 		doMoving(me);
 		return;
 	}
+	
+	if (!ready) return;
 	
 	var ax = Math.floor(me.x / numberImages.singleWidth);
 	var ay = Math.floor(me.y / numberImages.singleHeight);
@@ -419,7 +424,7 @@ function onBoadClicked(me) {
 	var path= new CAAT.LinearPath()
 	.setInitialPosition(actor.x, actor.y)
 	.setFinalPosition(ax * numberImages.singleWidth , ay * numberImages.singleHeight);
-
+	ready = false;
 	var pb = new CAAT.PathBehavior()
 	  .setPath(path)
 	  .setFrameTime(mapScene.time, 300)
@@ -439,6 +444,7 @@ function onBoadClicked(me) {
           }
       } );
 	actor.addBehavior(pb);
+	
 }
 
 /**根据等级等信息 随机生成下一个方块*/
@@ -707,21 +713,35 @@ function _createAndFly(actor, pos) {
 		var pb = new CAAT.PathBehavior()
 		.setPath(path)
 		.setFrameTime(squareContainer.time, 500)
-		.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator());
-		actor.addBehavior(pb);
+		.setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
+		.addListener( {
+                         behaviorExpired : function(behavior, time, actor) {
+                        	 if (numberActors[numberActors.length-1]==actor) {
+                        		 ready = true;
+                        	 }
+                         }
+                 	});
 		
+		actor.addBehavior(pb);
 		actor.setPosition(110 + pos*(numberImages.singleWidth), -45);
 		squareContainer.addChild(actor);
 		actor.mouseDown = actorMouseDown;
 	} else {
-		
 		var path= new CAAT.LinearPath()
 	    .setInitialPosition(actor.x,-45)
 	    .setFinalPosition(110 + pos*(numberImages.singleWidth), -45);
 		var pb = new CAAT.PathBehavior()
         .setPath(path)
         .setFrameTime(squareContainer.time, 500)
-        .setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator());
+        .setInterpolator(new CAAT.Interpolator().createBounceOutInterpolator())
+		.addListener( {
+            behaviorExpired : function(behavior, time, actor) {
+           	 if (numberActors[numberActors.length-1]==actor) {
+           		 ready = true;
+           	 }
+            }
+    	});
+
 		actor.addBehavior(pb);
 		
 		actor.setPosition(110 + pos*(numberImages.singleWidth), -45);
