@@ -72,6 +72,8 @@ function initGameCtx(leveled) {
 		goNextLevel();
 		gamectx.remains = Number.MAX_VALUE;
 	}
+	//showPenddingInfo();
+	
 }
 
 function goNextLevel() {
@@ -115,7 +117,7 @@ function initStartScene() {
 	var bgimage= new CAAT.SpriteImage().
 	initialize(director.getImage('background'), 1, 1);
 	
-	startContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,-1200);
+	startContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,0);
 	
 	var btnStartLevelImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnstartLevel'), 1, 1);
@@ -174,7 +176,7 @@ function initLevelsScene() {
 	var bgimage= new CAAT.SpriteImage().
 	initialize(director.getImage('background'), 1, 1);
 	
-	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-200,-1000);
+	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,-1300);
 	squareContainer.setBackgroundImage(chessbgImages.getRef(), true).setBackgroundImageOffset(0,0);
 	
 	flyNearCloud('cloudfar', 2, mapContainer);
@@ -211,6 +213,37 @@ function initLevelsScene() {
 	squareContainer.mouseDown = onBoadClicked;
 	initScore();
 }
+
+/**
+ * 显示信息栏，  并提供返回等按钮。
+ */
+var penddingContainer = null;
+function showPenddingInfo() {
+	ready = false;
+	
+	if (penddingContainer==null) {
+		//初始化
+		penddingContainer = new CAAT.ActorContainer();
+		mapScene.addChild(penddingContainer);
+
+		var numberImages= new CAAT.SpriteImage().
+		initialize(director.getImage('penddingbg'), 1, 1);
+		penddingContainer.setBackgroundImage(numberImages.getRef(), true);
+	}
+	
+	var path= new CAAT.LinearPath()
+	.setInitialPosition(director.width/2 - 120, -200)
+	.setFinalPosition(director.width/2 - 120 , 100);
+	
+	var pb = new CAAT.PathBehavior()
+	  .setPath(path)
+	  .setFrameTime(mapScene.time, 500);
+	var alpha = new CAAT.AlphaBehavior().setValues(.2, 1).setFrameTime(mapScene.time, 500);
+	
+	penddingContainer.addBehavior(pb).addBehavior(alpha);
+}
+
+
 
 
 /**为背景增加一个浮动的云彩 第二个参数为速度 */
