@@ -5,6 +5,7 @@ var width = 320;//window.innerWidth;
 var height = 510;//window.innerHeight;
 
 var worknfightImages = [
+    {id:"logo", url: "images/logo.png"},
     {id:"numbers", url: 'images/x40.png'},
     {id:"nums", url: 'images/nums.png'},
     {id:"background", url: 'images/fondo.jpg'},
