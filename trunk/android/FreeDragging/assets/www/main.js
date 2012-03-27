@@ -117,13 +117,22 @@ function initStartScene() {
 	var bgimage= new CAAT.SpriteImage().
 	initialize(director.getImage('background'), 1, 1);
 	
-	startContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,0);
+	startContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,-1200);
 	
 	var btnStartLevelImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnstartLevel'), 1, 1);
+
+	var logoImg = new CAAT.SpriteImage().
+	initialize(director.getImage('logo'), 1, 1);
 	
 	var btnEmptyImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnEmpty'), 1, 1);
+	
+	
+	var logoActor= new CAAT.Actor().setBackgroundImage(logoImg.getRef(), true)
+		.setLocation(width/2-120,50);
+	startContainer.addChild(logoActor);
+	
 	var b1= new CAAT.Actor()
 		.setAsButton(
 					btnStartLevelImg.getRef(), 0, 0, 0, 0, onGameStartClicked
@@ -361,6 +370,10 @@ function doMoving(me) {
 	      });
 		moving.actor.addBehavior(pb);
 		moving = null;
+		
+		if (numbers.length==0) {
+   		  goNextLevel();
+		}
 	}
 }
 
@@ -501,7 +514,6 @@ function generateNextBlock() {
 }
 
 function putInQueue() {
-	
 	if (Math.random()<0.1) {
 		pp  = gamectx.level;
 		if (pp>4) pp=4;
