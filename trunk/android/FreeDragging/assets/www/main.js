@@ -115,9 +115,9 @@ function initStartScene() {
 	startScene.addChild(startContainer);
 	
 	var bgimage= new CAAT.SpriteImage().
-	initialize(director.getImage('background'), 1, 1);
+	initialize(director.getImage('bgstart'), 1, 1);
 	
-	startContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,-1200);
+	startContainer.setBackgroundImage(bgimage.getRef(), true);//.setBackgroundImageOffset(-300,-1200);
 	
 	var btnStartLevelImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnstartLevel'), 1, 1);
