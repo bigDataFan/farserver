@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hi</title>
+
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="code.js"></script>
+</head>
+<body >
+	<div id="header-wrapper">
+		<div id="header">
+			<a href="http://www.lumosity.com/brain-training" id="lumosity-logo" rel="nofollow"><img alt="Lumosity" height="46" src="http://static.sl.lumosity.com/images/trainer/lumosity.png?1332802246" width="128"></a>
+			<ul id="nav">
+			<li><a href="http://www.lumosity.com/app/v4/dashboard" class="lumos-button utility small current" rel="nofollow">工作计划表</a></li>
+			<li><a href="http://www.lumosity.com/app/v4/brain_profile" class="lumos-button utility small" rel="nofollow">活动清单</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="content-wrapper">
+		<div id="timer">
+
+			<div class="running-activity">
+				<h3>整理手页面</h3>
+			</div>
+			
+			<div id="time-remains">
+				22:30 
+			</div>
+			
+			<div id="operations">
+				<a class="btn-a">停止</a>
+			</div>
+		</div>
+		
+		<div id="task-list">
+			<div class="title" onclick="showList('todos')">今日待办 <div id="todos-add" onclick="alert(1)" class="add"><a></a></div> </div>
+			
+			<ul id="todos">
+				<li class="task">
+					<div style="float: left">整理手工的页面</div>
+					<div style="float: right;">
+						<p class="tomatoes"></p>
+						<p class="quotes"></p>
+					</div>
+				</li>
+				
+				<li class="task">
+					<div style="float: left">整理手工的页面</div>
+					<div style="float: right;">
+						<p class="tomatoes"></p>
+						<p class="quotes"></p>
+					</div>
+				</li>
+				
+			</ul>
+						
+			<div class="title" onclick="showList('breaks')">计划外的事件 <div id="breaks-add" class="add"><a></a></div> </div>
+			
+			<ul id="breaks">
+				<li class="task">
+					<div  style="float: left">整理手工的页面</div>
+				</li>
+			</ul>
+			
+			<div class="title" onclick="showList('plans')">未来计划列表 <div id="plans-add" class="add"><a></a></div> </div>
+			
+			
+			<ul id="plans"> 
+				<li class="task">
+					<div  style="float: left">整理手工的页面</div>
+				</li>
+				<li class="task">
+					<div  style="float: left">整理手工的页面</div>
+					
+				</li>
+				<li class="task">
+					<div  style="float: left">整理手工的页面</div>
+				</li>
+				
+			</ul>
+		</div>
+		
+	</div>
+
+</body>
+</html>
