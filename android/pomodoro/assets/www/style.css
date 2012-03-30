@@ -29,7 +29,7 @@ a, a:link, a:visited, a:hover {
 	float: left;
 }
 .right {
-	float:right;
+	float: right;
 }
 
 li {
@@ -237,22 +237,6 @@ div.center-dialog {
 	padding: 5px;
 	border-bottom: 1px solid #D6E3E8;
 }
-#task-list .pomodoros {
-	background-image: url(images/bluecircle.png);
-	color: white;
-	text-align: center;
-	width: 48px;
-	height: 48px;
-	float: left;
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-#task-list .pomodoros .number {
-	font-size: 32px;
-	line-height: 30px;
-	margin-top: 6px;
-	font-weight: bold;
-}
 
 #task-list .task {
 	margin-left: 6px;
@@ -263,15 +247,13 @@ div.center-dialog {
 	margin-top:5px;
 	background: url("images/quote.png");
 	height:16px;
-	width: 32px;
+	width: 0px;
 }
-
-
 
 #task-list .task p.tomatoes {
 	margin-top:5px;
 	background: url("images/tomato.png");
 	height:16px;
-	width: 32px;
+	width: 0px;
 }
 

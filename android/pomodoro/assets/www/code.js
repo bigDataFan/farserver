@@ -79,7 +79,8 @@ function saveOrUpdate() {
 		var cloned = $('#todos li.hidden').clone();
 		cloned.removeClass("hidden");
 		cloned.hide();
-		$('#todos').append(cloned);
+		$('#' + type).find('li.intr').hide();
+		$('#' + type).append(cloned);
 		cloned.slideDown();
 		cloned.find('div.left').html(object.title);
 		cloned.find('div.left').attr("id", object.___id);
