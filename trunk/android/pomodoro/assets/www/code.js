@@ -1,8 +1,18 @@
 /**
  * 
  */
+var tasksdb;
+var breaksdb;
+var plansdb;
+
 
 $(document).ready(function(){
+	
+	tasksdb = new TAFFY();
+	breaksdb = new TAFFY();
+	plansdb = new TAFFY();
+	
+	
 	$('#breaks').slideUp();
 	$('#plans').slideUp();
 	$('#breaks-add').hide();
@@ -32,11 +42,12 @@ function showList(name) {
 }
 
 var addClicked = false;
-var adding;
+var type;
+var editingId;
 function showAdd(name) {
 	addClicked = true;
-	adding = name;
-	//$('#new-dialog').slideDown();
+	type = name;
+	
 	$('#txtinput').focus()
 	$('#new-dialog').animate({
 	    top: 90
@@ -49,7 +60,23 @@ function showAdd(name) {
 	}
 }
 
+function showEdit(name) {
+	
+}
+
 function saveOrUpdate() {
+	var object = {};
+	if (editingId!=null) {
+		object = $('#new-dialog').data('info');
+	}
+	
+	
+	if (type=="todos") {
+		object.title = $('#txtinput').val();
+		object.created = new Date().getTime();
+	} else if (type=="")
+	
+	
 	
 }
 
