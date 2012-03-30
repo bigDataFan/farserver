@@ -5,7 +5,9 @@
 <title>Hi</title>
 
 <link href="style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+
 <script type="text/javascript" src="code.js"></script>
 </head>
 <body >
@@ -44,7 +46,7 @@
 			</div>
 			
 			<div class="operations">
-				<a class="btn-a">保存</a> <a class="btn-a" onclick="closeEdit()">关闭</a>
+				<a class="btn-a" onclick="saveOrUpdate()">保存</a> <a class="btn-a" onclick="closeEdit()">关闭</a>
 			</div>
 		</div>
 		
@@ -66,7 +68,7 @@
 				</li>
 			</ul>
 						
-			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" class="add"><a></a></div> </div>
+			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')" class="add"><a></a></div> </div>
 			
 			<ul id="breaks">
 				<li class="task intr">
@@ -74,7 +76,7 @@
 				</li>
 			</ul>
 			
-			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add"><a></a></div> </div>
+			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add" onclick="showAdd('plans')"><a></a></div> </div>
 			
 			
 			<ul id="plans"> 
