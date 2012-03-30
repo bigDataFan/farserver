@@ -1,17 +1,20 @@
 /**
  * 
  */
-var tasksdb;
-var breaksdb;
-var plansdb;
-
+var dbs = {};
 
 $(document).ready(function(){
 	
-	tasksdb = new TAFFY();
-	breaksdb = new TAFFY();
-	plansdb = new TAFFY();
+	var tasksdb = new TAFFY();
+	var breaksdb = new TAFFY();
+	var plansdb = new TAFFY();
+	tasksdb.store("tasks");
+	breaksdb.store("breaks");
+	plansdb.store("plans");
 	
+	dbs["todos"] = tasksdb;
+	dbs["breaks"] = breaksdb;
+	dbs["plans"] = plansdb;
 	
 	$('#breaks').slideUp();
 	$('#plans').slideUp();
@@ -24,13 +27,10 @@ $(document).ready(function(){
 	  });
 });
 
-
 function showList(name) {
-	if(addClicked) {
-		addClicked = false;
+	if ($('#' + name).filter(":visible").length==1) {
 		return;
-	} 
-	
+	}
 	var src = $(this);
 	$('#task-list div.title div.add').hide();
 	$('#task-list ul').slideUp('fast');
@@ -41,23 +41,17 @@ function showList(name) {
 	);
 }
 
-var addClicked = false;
-var type;
 var editingId;
 function showAdd(name) {
-	addClicked = true;
 	type = name;
-	
-	$('#txtinput').focus()
+
+	$('#new-dialog .upper-title').hide();
+	$('#' + name + "-title").show();
+	 
 	$('#new-dialog').animate({
 	    top: 90
 	  }, 500, function() {
-	    // Animation complete.
 	  });
-	
-	if (name=="todos") {
-		$('#new-dialog .upper-title h3').html('增加本日的计划');
-	}
 }
 
 function showEdit(name) {
@@ -68,26 +62,46 @@ function saveOrUpdate() {
 	var object = {};
 	if (editingId!=null) {
 		object = $('#new-dialog').data('info');
+		object.updated = new Date().getTime();
+	} else {
+		object.created = new Date().getTime();
 	}
 	
+	object.title = $('#txtinput').val();
+
+	var type = $('#task-list ul:visible').attr("id");
+
+	if (editingId!=null) { 
+		$('#' + editingId).html(object.title);
+		dbs[type](editingId).update(object);
+	} else {
+		dbs[type].insert(object);
+		var cloned = $('#todos li.hidden').clone();
+		cloned.removeClass("hidden");
+		cloned.hide();
+		$('#todos').append(cloned);
+		cloned.slideDown();
+		cloned.find('div.left').html(object.title);
+		cloned.find('div.left').attr("id", object.___id);
+	}
 	
-	if (type=="todos") {
-		object.title = $('#txtinput').val();
-		object.created = new Date().getTime();
-	} else if (type=="")
-	
-	
-	
+	closeEdit();
 }
 
 function removeCurrent() {
-	
+	if (editingId!=null) {
+		var type = $('#task-list ul:visible').attr("id");
+		dbs[type](editingId).remove();
+	}
 }
 
 function closeEdit() {
 	$('#new-dialog').animate({
 	    top: -140
 	  }, 500, function() {
+		  $('#txtinput').val('');
+		  //$('#task-list').focus();
+		  //$('#txtinput').hide();
 	    // Animation complete.
 	  });
 }
