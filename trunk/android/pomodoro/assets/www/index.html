@@ -24,7 +24,7 @@
 	<div id="content-wrapper">
 		<div id="timer" >
 			<div class="upper-title">
-				<h3>整理手页面</h3>
+				整理手页面
 			</div>
 			
 			<div id="time-remains" class="big-infos">
@@ -37,8 +37,20 @@
 		</div>
 		
 		<div class="center-dialog" id="new-dialog">
-			<div class="upper-title">
-				<h3>新增本日计划</h3>
+			<div class="upper-title hidden" id="todos-title">
+				新增本日计划
+			</div>
+			
+			<div class="upper-title hidden" id="breaks-title">
+				打断事件
+				<select id="breaks-from">
+					<option value="out">外来因素</option>
+					<option value="self">自身因素</option>
+				</select>
+			</div>
+			
+			<div class="upper-title hidden" id="plans-title">
+				接下来几天的计划
 			</div>
 			
 			<div class="big-infos">
@@ -50,18 +62,16 @@
 			</div>
 		</div>
 		
-		
-		
 		<div id="task-list">
-			<div class="title" onclick="showList('todos')">今日任务 <div id="todos-add" onclick="showAdd('todos')" class="add"><a></a></div> </div>
+			<div class="title" onclick="showList('todos')">今日任务 <div id="todos-add" class="add" onclick="showAdd('todos')"><a></a></div> </div>
 			
 			<ul id="todos">
 				<li class="task intr">
 					您今日还没有工作任务，您可以通过双击未来计划项加为今日任务，或者直接创建一个
 				</li>
-				<li class="task">
-					<div style="float: left">整理手工的页面</div>
-					<div style="float: right;">
+				<li class="task hidden">
+					<div class="left">整理手工的页面</div>
+					<div class="right">
 						<p class="tomatoes"></p>
 						<p class="quotes"></p>
 					</div>
