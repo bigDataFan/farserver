@@ -17,6 +17,9 @@ select {
 	font-size: 1em;
 }
 
+small {
+	font-size: .7em;
+}
 a, a:link, a:visited, a:hover {
 	color: #2181A9;
 	text-decoration: none;
@@ -143,6 +146,11 @@ div.center-dialog {
 	margin-top: 8px;
 }
 
+.operations a {
+	cursor: pointer;
+	margin-left: 5px;	
+}
+
 .new-input {
 	width: 280px;
 	font-size: 1em;
@@ -170,7 +178,8 @@ div.center-dialog {
 	margin-top: 10px;
 }
 
-.btn-a, .btn-a:hover{
+
+.btn-a, .btn-a:hover {
 	font-weight:bold;
 	border: 1px solid  #62AC44;
 	background: #62AC44;

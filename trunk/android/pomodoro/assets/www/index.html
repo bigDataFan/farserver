@@ -24,15 +24,19 @@
 	<div id="content-wrapper">
 		<div id="timer" >
 			<div class="upper-title">
-				整理手页面
+				欢迎使用番茄工作法
 			</div>
 			
 			<div id="time-remains" class="big-infos">
-				22:30 
+				25+5 <small>分钟</small>
 			</div>
 			
 			<div class="operations">
-				<a class="btn-a">停止</a>  
+				<a id="btn-knowabout">了解什么是番茄工作法</a>
+				<a id="btn-stop" class="btn-a">停止</a>  
+				<a id="btn-start" onclick="start()" class="btn-a">启动</a> 
+				<a id="btn-rename" onclick="openRename()">修改名称</a>
+				<a id="btn-remove" href="#" onclick="removeCurrent()">删除</a>
 			</div>
 		</div>
 		
@@ -43,15 +47,16 @@
 			
 			<div class="upper-title hidden" id="breaks-title">
 				打断事件
-				<select id="breaks-from">
-					<option value="out">外来因素</option>
-					<option value="self">自身因素</option>
-				</select>
 			</div>
 			
 			<div class="upper-title hidden" id="plans-title">
 				接下来几天的计划
 			</div>
+			
+			<div class="upper-title hidden" id="rename-title">
+				修改名称
+			</div>
+			
 			
 			<div class="big-infos">
 				<input class="new-input" id="txtinput" type="text">
@@ -66,9 +71,11 @@
 			<div class="title" onclick="showList('todos')">今日任务 <div id="todos-add" class="add" onclick="showAdd('todos')"><a></a></div> </div>
 			
 			<ul id="todos">
+			<!-- 
 				<li class="task intr">
 					您今日还没有工作任务，您可以通过双击未来计划项加为今日任务，或者直接创建一个
 				</li>
+			 -->				
 				<li class="task hidden">
 					<div class="left">整理手工的页面</div>
 					<div class="right">
@@ -81,18 +88,22 @@
 			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')" class="add"><a></a></div> </div>
 			
 			<ul id="breaks">
+			<!-- 
 				<li class="task intr">
 					当出现<font color="red">打断</font>时，无论是自身还是外部因素，请记录下它并且<font color="red">继续</font>您的番茄时间直到结束
 				</li>
+			-->
 			</ul>
 			
 			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add" onclick="showAdd('plans')"><a></a></div> </div>
 			
 			
 			<ul id="plans"> 
+			<!-- 
 				<li class="task intr">
 					当您想起将来要做的事情，请不要马上开始。请记录起来并继续您的番茄时间直到结束
 				</li>
+			-->
 			</ul>
 		</div>
 		
