@@ -38,7 +38,7 @@ function displayAll() {
 	
 	var d = new Date();
 	
-	db({type:"breaks"},date:d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate()}).each(
+	db({type:"breaks", date:d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate()}).each(
 			function (record,recordnumber) {
 				drawBreaks(record);
 			}	
