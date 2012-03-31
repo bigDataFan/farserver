@@ -68,8 +68,8 @@ body {
 #header {
 	width: 320px;
 	margin: 0 auto;
-	overflow: hidden;
-	padding: 20px 0 10px 0;
+	overflow: hidden;  
+	padding: 5px 0;
 }
 #header #lumosity-logo {
 	position: relative;
@@ -95,7 +95,7 @@ ul.header-nav-ul li {
 }
 
 .header-btn {
-	padding: 10px 15px;
+	padding: 8px 12px;
 	font-size: 14px;
 	border:1px solid #D6E3E8; 
 	background: #F6F7F8;
