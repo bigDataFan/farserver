@@ -83,7 +83,7 @@ function showList(name) {
 
 function uiShowEdit() {
 	$('#new-dialog').animate({
-	    top: 90
+	    top: 60
 	  }, 500, function() {
 	 });
 }
