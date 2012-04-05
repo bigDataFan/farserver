@@ -17,6 +17,9 @@
 			<ul class="header-nav-ul">
 				<li><a  class="header-btn" rel="nofollow">工作计划表</a></li>
 				<li><a  class="header-btn" rel="nofollow">活动清单</a></li>
+				
+				<li><a id="btn-rename" onclick="openRename()">修改名称</a></li>
+				<li><a id="btn-remove" href="#" onclick="removeCurrent()">删除</a><li>
 			</ul>
 		</div>
 		
@@ -36,21 +39,20 @@
 			</div>
 			
 			<div id="time-remains" class="big-infos">
-				25+5 <small>分钟</small>
 			</div>
 			
 			<div class="operations">
 				<a id="btn-knowabout">了解什么是番茄工作法</a>
-				<a id="btn-stop" class="btn-a">停止</a>  
-				<a id="btn-start" onclick="start()" class="btn-a">启动</a> 
-				<a id="btn-rename" onclick="openRename()">修改名称</a>
-				<a id="btn-remove" href="#" onclick="removeCurrent()">删除</a>
+				<a id="btn-stop" onclick="stop()" class="btn-a">停止</a>  
+				<a id="btn-start" onclick="start()" class="btn-a">启动</a>
+				<a id="btn-break" onclick="breaks()" class="btn-a">休息</a>
+				<a id="btn-break-stop" onclick="finishBreak()" class="btn-a">结束休息</a>  
 			</div>
 		</div>
 		
 		<div class="center-dialog" id="new-dialog">
 			<div class="upper-title hidden" id="todos-title">
-				新增本日计划
+				新增今日任务
 			</div>
 			
 			<div class="upper-title hidden" id="breaks-title">
@@ -67,7 +69,7 @@
 			
 			
 			<div class="big-infos">
-				<input class="new-input" id="txtinput" type="text">
+				<input class="new-input" id="txtinput" size="18" type="text">
 			</div>
 			
 			<div class="operations">
@@ -87,15 +89,15 @@
 				<li class="task hidden">
 					<div class="left">整理手工的页面</div>
 					<div class="right">
-						<p class="tomatoes"></p>
-						<p class="quotes"></p>
+						<p class="tomatoes">0</p>
+						<p class="quotes">0</p>
 					</div>
 				</li>
 			</ul>
 						
-			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')" class="add"><a></a></div> </div>
+			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')" class="add hidden"><a></a></div> </div>
 			
-			<ul id="breaks">
+			<ul id="breaks" class="hidden">
 			<!-- 
 				<li class="task intr">
 					当出现<font color="red">打断</font>时，无论是自身还是外部因素，请记录下它并且<font color="red">继续</font>您的番茄时间直到结束
@@ -103,10 +105,10 @@
 			-->
 			</ul>
 			
-			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add" onclick="showAdd('plans')"><a></a></div> </div>
+			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add hidden" onclick="showAdd('plans')"><a></a></div> </div>
 			
 			
-			<ul id="plans"> 
+			<ul id="plans" class="hidden"> 
 			<!-- 
 				<li class="task intr">
 					当您想起将来要做的事情，请不要马上开始。请记录起来并继续您的番茄时间直到结束

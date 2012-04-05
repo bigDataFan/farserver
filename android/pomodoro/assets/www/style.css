@@ -17,6 +17,10 @@ select {
 	font-size: 1em;
 }
 
+.green {
+	color: green;
+}
+
 small {
 	font-size: .7em;
 }
@@ -161,7 +165,6 @@ div.center-dialog {
 }
 
 .new-input {
-	width: 280px;
 	font-size: 1em;
 }
 
@@ -262,17 +265,15 @@ div.center-dialog {
 }
 
 #task-list .task p.quotes { 
-	margin-top:5px;
-	background: url("images/quote.png");
-	height:16px;
-	width: 0px;
+	background: url("images/breaks.png") no-repeat 0px 3px;
+	height:20px;
+	padding-left:20px;
 }
 
 #task-list .task p.tomatoes {
-	margin-top:5px;
-	background: url("images/tomato.png");
-	height:16px;
-	width: 0px;
+	background: url("images/tomato.png") no-repeat 0px 3px;
+	height:20px;
+	padding-left:20px;
 }
 
 
