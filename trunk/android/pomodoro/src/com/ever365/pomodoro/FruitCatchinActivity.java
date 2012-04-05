@@ -1,4 +1,4 @@
-package com.ever365.fruitcatch;
+package com.ever365.pomodoro;
 
 
 import org.apache.cordova.*;
