@@ -30,7 +30,7 @@ import com.mongodb.MongoException;
 public class ReportGenerator {
 	
 	public static Mongo mongo = null;
-	public static String basePath = "E:\\2012-1-email\\";
+	public static String basePath = "E:\\2012-3-email\\";
      
 
     
@@ -57,7 +57,7 @@ public class ReportGenerator {
 		
 		if (c>0) {
 			Document document = new Document();
-			PdfWriter.getInstance(document, new FileOutputStream(basePath + userName +"(" + (1900+year) + "-" + (month+1) + ").pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream(basePath + userName + ".pdf"));
 			document.open();
 			
 			BaseFont bfChinese = BaseFont.createFont("c:/windows/fonts/STSONG.TTF",  BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
@@ -106,7 +106,12 @@ public class ReportGenerator {
 							DBObject subitem = (DBObject) object;
 							subtable.addCell(new Paragraph((String)subitem.get("title") 
 									+ "(" + (String)subitem.get("category") + "):" +subitem.get("cost") + "Ԫ", font));
-							putCategory(categoryMap, subitem.get("category").toString(),Double.parseDouble(subitem.get("cost").toString()));
+							try {
+								Double.parseDouble(subitem.get("cost").toString());
+								putCategory(categoryMap, subitem.get("category").toString(),Double.parseDouble(subitem.get("cost").toString()));
+							} catch (Exception e) {
+								continue;
+							}
 						}
 						table.addCell(new PdfPCell(subtable));
 					} else {
@@ -131,7 +136,7 @@ public class ReportGenerator {
 				
 				for (String  key : categoryMap.keySet()) {
 					summaryTable.addCell(new Paragraph(key, font));
-					summaryTable.addCell(new Paragraph(categoryMap.get(key).toString()));
+					summaryTable.addCell(new Paragraph(String.valueOf((Math.floor(new Double(categoryMap.get(key)))))));
 				}
 				
 				document.add(summaryTable);
@@ -155,7 +160,7 @@ public class ReportGenerator {
 					document.add(image);
 				}
 				document.close();
-				System.out.println("user " + user + " OK");
+				System.out.println(userName);
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
@@ -194,7 +199,7 @@ public class ReportGenerator {
 			while(cursor.hasNext()) {
 				DBObject dbo = cursor.next();
 				try {
-					ReportGenerator.generateForUser((String)dbo.get("name"), 2012-1900, 0, (String)dbo.get("email"));
+					ReportGenerator.generateForUser((String)dbo.get("name"), 2012-1900, 2, (String)dbo.get("email"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
