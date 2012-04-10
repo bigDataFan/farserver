@@ -77,6 +77,7 @@ function viewRunning() {
 	}
 }
 
+
 function viewRunOver() {
 	var startItem = db({start:{isNumber:true}});
 	$('#timer .btn-a').hide();
@@ -372,7 +373,7 @@ function drawBreaks(object) {
 		var li = $('<li class="task info"><div class="left">' + object.title + '</div></li>');
 		li.attr("id", object.___id);
 		li.data("data", object);
-		li.click(function(){
+		li.bind(BIND, function(){
 			$('li.checked').removeClass('checked');
 			$(this).addClass('checked');
 			$('#btn-rename, #btn-remove').show();
@@ -390,7 +391,8 @@ function drawPlans(object) {
 		var li = $('<li class="task info"><div class="left">' + object.title + '</div></li>');
 		li.attr("id", object.___id);
 		li.data("data", object);
-		li.click(function(){
+		
+		li.bind(BIND, function(){
 			$('li.checked').removeClass('checked');
 			$(this).addClass('checked');
 			$('#btn-rename, #btn-remove, #btn-setTodo').show();
@@ -421,31 +423,33 @@ function drawTodos(object) {
 	
 	cloned.data("data", object);
 	
-	cloned.click(function(){
-		
-		var todo = $(this).data("data");
-		$('li.checked').removeClass('checked');
-		$(this).addClass('checked');
-		
-		$('#header .header-btn').hide();
-
-		if (todo.finishDate) return;
-		
-		if (currentView==VIEW_FREE) {
-			$('#btn-rename').show();
-			$('#btn-remove').show();
-			$('#btn-finished').show();
-			$('#timer').data("data", todo);
-			$('#timer .upper-title').html(todo.title);
-			$('#btn-knowabout').hide();
-			$('#btn-start').show();
-		} else {
-			showMessage("您需要在任务完成后才能进行修改", 3000);
-		}
-	});
+	
+	cloned.bind(BIND, onTodoItemClick);
+	
+	//cloned.click();
 }
 
+function onTodoItemClick() {
+	var todo = $(this).data("data");
+	$('li.checked').removeClass('checked');
+	$(this).addClass('checked');
+	
+	$('#header .header-btn').hide();
 
+	if (todo.finishDate) return;
+	
+	if (currentView==VIEW_FREE) {
+		$('#btn-rename').show();
+		$('#btn-remove').show();
+		$('#btn-finished').show();
+		$('#timer').data("data", todo);
+		$('#timer .upper-title').html(todo.title);
+		$('#btn-knowabout').hide();
+		$('#btn-start').show();
+	} else {
+		showMessage("您需要在任务完成后才能进行修改", 3000);
+	}
+}
 
 /**
  * 获取正在运行的任务已经执行时间  
@@ -526,7 +530,7 @@ function showAdd(name) {
 
 function uiShowEdit() {
 	$('#new-dialog').animate({
-	    top: 60
+	    top: 51
 	  }, 500, function() {
 	 });
 }
