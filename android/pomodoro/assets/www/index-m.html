@@ -2,12 +2,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Hi</title>
+<title>欢迎使用番茄工作管理软件</title>
 
 <link href="style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/taffy-min.js"></script>
 
+<script type="text/javascript">
+
+var BIND="touchstart";
+</script>
 <script type="text/javascript" src="code.js"></script>
 </head>
 <body >
@@ -15,8 +19,10 @@
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" class="header-btn" ontouchstart="openRename()">修改名称</a></li>
+				<li><a id="btn-rename" class="header-btn" href="#" ontouchstart="openRename()">修改名称</a></li>
 				<li><a id="btn-remove" class="header-btn"  href="#" ontouchstart="removeCurrent()">删除</a><li>
+				<li><a id="btn-finished" class="header-btn"  href="#" ontouchstart="finishCurrent()">完成</a><li>
+				<li><a id="btn-setTodo" class="header-btn"  href="#" ontouchstart="setAsTodo()">设置为任务</a><li>
 			</ul>
 		</div>
 		
