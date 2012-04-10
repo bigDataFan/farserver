@@ -4,39 +4,110 @@
 var db;
 var keys = ['todos', 'breaks', 'plans'];
 
-var WORK_TIME = 25 * 60 * 1000;
+var WORK_TIME = 1 * 60 * 1000;
+var BREAK_TIME = 0.5 * 60 * 1000;
+var CLICK_TIME = 10 * 60 * 1000;
+
+var VIEW_RUNNING = 0;
+var VIEW_FREE = 1;
+var VIEW_BREAKING = 2;
+var VIEW_RUNOVER = 3;
+
+var currentView;
 
 $(document).ready(function(){
-	
+	$('.btn-a,.add').bind("touchstart", onTouchedDown);
+	$('.btn-a,.add').bind("touchend", onTouchedUp);
 	db = new TAFFY();
 	db.store("ever365.pomodoro");
 	
-	initWelcome();
-	
-	$('#timer').css('top', 90);
 	displayAll();
+	var running = getRunningDuration();
 	
+	$('#btn-rename, #btn-remove').hide();
+	
+	if (running>0) {
+		if (running>WORK_TIME && running <CLICK_TIME + WORK_TIME) {
+			currentView = VIEW_RUNOVER;
+			viewRunOver();
+		} else if (running<WORK_TIME) {
+			currentView = VIEW_RUNNING;
+			viewRunning();
+		} else {
+			var startItem = db({start:{isNumber:true}});
+			if (startItem.count()==1) {
+				var data = startItem.first();
+				data.start = null;
+				db(data.___id).update(data);
+			}
+			currentView = VIEW_FREE;
+			viewFree();
+		}
+	} else if (getBreakDuration()>-1 && getBreakDuration()<BREAK_TIME) {
+		currentView = VIEW_BREAKING;
+		viewBreaking();
+	} else {
+		currentView = VIEW_FREE;
+		//free view
+		viewFree();
+	}
+	
+	alert(currentView);
+});
+
+function onTouchedDown() {
+	$(this).addClass("button-down");
+}
+
+function onTouchedUp() {
+	$(this).removeClass("button-down");
+}
+
+function viewRunning() {
 	var startItem = db({start:{isNumber:true}});
-	
 	if (startItem.count()==1) {
 		var data = startItem.first();
-		switchTodo(data);
+		$('#timer .btn-a').hide();
+		$('#timer .upper-title').html(data.title);
 		$('#timer').data("running", data);
+		$('#btn-start').hide();
+		$('#btn-stop').show();
+		$('#btn-knowabout').hide();
 		uiUpdateTime();
 		return;
 	}
-	
-	if (getBreakDuration()>-1) {
-		switchBreaks();
-		uiUpdateTime();
-	}
-});
+}
 
-function initWelcome() {
-	//$('#timer div.upper-title').html('请选择要执行的任务');
+function viewRunOver() {
+	var startItem = db({start:{isNumber:true}});
+	$('#timer .btn-a').hide();
+	$('#btn-break').show();
+	
+	if (startItem.count()==1) {
+		var data = startItem.first();
+		$('#timer').data("running", data);
+		$('#timer .upper-title').html(data.title);
+		$('#btn-knowabout').hide();
+		$('#time-remains').html("00:00");
+		return;
+	}
+}
+
+function viewFree() {
+	$('#timer .upper-title').html("请选择任务");
 	$('#time-remains').html(formatDura(WORK_TIME));
 	$('#timer div.operations a').hide();
+	$('.header-btn').hide();
 	$('#btn-knowabout').show();
+}
+
+function viewBreaking() {
+	$('#timer').data('running', null);
+	$('#timer .btn-a').hide();
+	$('#timer div.upper-title').html("休息中");
+	$('#btn-break-stop').show();
+	$('#btn-knowabout').hide();
+	uiUpdateTime();
 }
 
 function displayAll() {
@@ -52,6 +123,14 @@ function displayAll() {
 				drawBreaks(record);
 			}	
 	);
+	
+	
+	db({type:"plans"}).each(
+			function (record,recordnumber) {
+				drawPlans(record);
+			}	
+	);
+	
 	checkAndFill();
 }
 
@@ -70,33 +149,52 @@ function checkAndFill() {
 }
 
 function start() {
+	$('#btn-rename, #btn-remove').hide();
 	var data = $('#timer').data('data');
 	$('#timer').data("running", data);
+	$('#btn-start').hide();
+	$('#btn-stop').show();
 	data.start = new Date().getTime();
 	db(data.___id).update(data);
+	currentView = VIEW_RUNNING;
 	uiUpdateTime();
 }
 
 function stop() {
 	if (confirm("您将无法为任务获取番茄， 如无特别紧急的中断， 请集中精力完成一个番茄时间。是否继续？")) {
-		var data = $('#timer').data('data');
+		var data = $('#timer').data('running');
 		$('#timer').data('running', null);
 		data.start = null;
 		db(data.___id).update(data);
+		$('#timer .upper-title').html('请选择任务');
 		$('#btn-start').show();
 		$('#btn-stop').hide();
+		currentView = VIEW_FREE;
+		viewFree();
 	}
 }
 
 //开始休息按钮点击事件
 function breaks() {
 	getPomodoro();
-	switchBreaks();
+	currentView = VIEW_BREAKING;
+	viewBreaking();
+}
+
+function finishBreak() {
+	if (confirm("建议您休息必要的时间以更好的工作。确认中断休息？")) {
+		setBreakStart(0);
+		currentView = VIEW_FREE;
+		$('#timer .upper-title').html('请选择任务');
+		viewFree();
+	}
 }
 
 function getPomodoro() {
-	var data = $('#timer').data('data');
-	if (data && data.start) {
+	var startItem = db({start:{isNumber:true}});
+	
+	if (startItem.count()==1) {
+		var data = startItem.first();
 		var now = new Date().getTime();
 		
 		var remains = WORK_TIME - (now - data.start);
@@ -106,50 +204,52 @@ function getPomodoro() {
 				data.pomodoroes = [];
 			}
 			data.pomodoroes.push(data.start + "-" + now);
-			
 			data.start = null;
-			running = false;
 			setBreakStart(now);
 			saveObject(data);
 		}
+		
+		$('#' + data.___id).find("p.tomatoes").html(data.pomodoroes.length);
 	}
 }
 
-function switchBreaks() {
-	running = false;
-	$('#timer div.upper-title').html("休息中");
-}
 
+/**
+ * 更新页面上的读秒
+ * */
 function uiUpdateTime() {
-	var data = $('#timer').data('running');
-	if (data && data.start) {
-		var now = new Date().getTime();
-		
-		var remains = WORK_TIME - (now - data.start);
-		$('#btn-start').hide();
-		
-		if (remains<0) {
-			$('#time-remains').html("00:00");
-			$('#btn-stop').hide();
-			$('#btn-break').show();
-		}  else {
-			$('#btn-stop').show();
-			if (remains<5*60*1000) {
-				$('#time-remains').addClass("green");
-			}
-			$('#time-remains').html(formatDura(remains));
-		}
-		setTimeout('uiUpdateTime()', 1000);
-		return;
-	}
-	var breakDuration = getBreakDuration();
-	if (breakDuration>-1) {
-		$('#time-remains').html(formatDura(remains));
-		setTimeout('uiUpdateTime()', 1000);
-		return;
-	}
+	if(currentView==VIEW_FREE) return;
 	
-	$('#time-remains').html(formatDura(WORK_TIME));
+	if(currentView==VIEW_RUNNING) {
+		var data = $('#timer').data('running');
+		if (data && data.start) {
+			var now = new Date().getTime();
+			var remains = WORK_TIME - (now - data.start);
+			
+			if (remains<0) {
+				currentView = VIEW_RUNOVER;
+				viewRunOver();
+			}  else {
+				if (remains<5*60*1000) {
+					$('#time-remains').addClass("green");
+				}
+				$('#time-remains').html(formatDura(remains));
+			}
+			setTimeout('uiUpdateTime()', 1000);
+			return;
+		}
+	} else if (currentView==VIEW_BREAKING) {
+		var breakDuration = getBreakDuration();
+		if (breakDuration==-1 || breakDuration>BREAK_TIME) {
+			setBreakStart(0);
+			currentView=VIEW_FREE;
+			viewFree();
+		} else {
+			$('#time-remains').addClass("green");
+			$('#time-remains').html(formatDura(BREAK_TIME-breakDuration));
+			setTimeout('uiUpdateTime()', 1000);
+		}
+	} 
 }
 
 
@@ -160,6 +260,9 @@ function showList(name) {
 	if ($('#' + name).filter(":visible").length==1) {
 		return;
 	}
+	$('li.checked').removeClass('checked');
+	$('#btn-rename, #btn-remove').hide();
+	
 	$('#task-list div.title div.add').hide();
 	$('#task-list ul').slideUp('fast');
 	$('#' + name).slideDown('fast',
@@ -169,21 +272,17 @@ function showList(name) {
 	);
 }
 
-var editingId;
-function showAdd(name) {
-	$('#new-dialog .upper-title').hide();
-	$('#' + name + "-title").show();
-	uiShowEdit();
-}
-
 function openRename() {
 	$('#new-dialog .upper-title').hide();
-	var data = $('#timer').data("data");
-	$('#rename-title').show();
 	
-	$('#txtinput').val(data.title);
-	$('#new-dialog').data("data", data);
-	uiShowEdit();
+	var data = $('li.checked').data('data');
+	
+	if (data!=null) {
+		$('#rename-title').show();
+		$('#txtinput').val(data.title);
+		$('#new-dialog').data("data", data);
+		uiShowEdit();
+	}
 }
 
 function saveOrUpdate() {
@@ -197,32 +296,30 @@ function saveOrUpdate() {
 	var type = $('#task-list ul:visible').attr("id");
 	object.type = type;
 	
-	if (object.___id) {
-		$('#' + object.___id + " div.left").html(object.title);
-		$('#timer div.upper-title').html(object.title);
-	} else {
-		if (type=="todos") {
+	if (type=="todos") {
+		saveObject(object);
+		if ($('#' + object.___id).length==1) {
+			$('#' + object.___id + " div.left").html(object.title);
+			$('#timer div.upper-title').html(object.title);
+		} else {
 			drawTodos(object);
-			saveObject(object);
-		} else if (type=="breaks") {
-			object.todo = $('#timer').data('running').___id;
-			var d = new Date();
-			object.date = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
-			saveObject(object);
-			
-			var runningData = $('#timer').data('running');
-			
-			if (runningData.quotes==null) {
-				runningData.quotes = [];
-			}
-			runningData.quotes.push(object);
-			saveObject(runningData);
-			drawBreaks(object);
-		} else if (type=="plans") {
-			
 		}
+	} else if (type=="breaks") {
+		object.todo = $('#timer').data('running').___id;
+		var d = new Date();
+		object.date = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+		saveObject(object);
+		var runningData = $('#timer').data('running');
+		if (runningData.quotes==null) {
+			runningData.quotes = [];
+		}
+		runningData.quotes.push(object);
+		saveObject(runningData);
+		drawBreaks(object);
+	} else if (type=="plans") {
+		saveObject(object);
+		drawPlans(object);
 	}
-	
 	closeEdit();
 	checkAndFill();
 }
@@ -230,24 +327,63 @@ function saveOrUpdate() {
 
 
 function removeCurrent() {
-	var data = $('#timer').data("data");
+	var data = $('li.checked').data("data");
+	//var data = $('#timer').data("data");
+	
+	if (data.type=="todos") {
+		viewFree();
+	}
+	$('.header-btn').hide();
 	if (data!=null) {
 		db(data.___id).remove(true);
 		$('#' + data.___id).remove();
-		initWelcome();
 	}
+
+	
 	checkAndFill();
 }
 
 function drawBreaks(object) {
-	$('#breaks').append('<li class="task info"><div class="left">' + object.title + '</div></li>');
+	if ($('#' + object.___id).length==1) {
+		$('#' + object.___id).find('div.left').html(object.title);
+		$('#' + object.___id).data("data", object);
+	} else {
+		var li = $('<li class="task info"><div class="left">' + object.title + '</div></li>');
+		li.attr("id", object.___id);
+		li.data("data", object);
+		li.click(function(){
+			$('li.checked').removeClass('checked');
+			$(this).addClass('checked');
+			$('#btn-rename, #btn-remove').show();
+		});
+		
+		$('#breaks').append(li);
+	}
 }
+
+function drawPlans(object) {
+	if ($('#' + object.___id).length==1) {
+		$('#' + object.___id).find('div.left').html(object.title);
+		$('#' + object.___id).data("data", object);
+	} else {
+		var li = $('<li class="task info"><div class="left">' + object.title + '</div></li>');
+		li.attr("id", object.___id);
+		li.data("data", object);
+		li.click(function(){
+			$('li.checked').removeClass('checked');
+			$(this).addClass('checked');
+			$('#btn-rename, #btn-remove').show();
+		});
+		
+		$('#plans').append(li);
+	}
+}
+
 
 function drawTodos(object) {
 	var cloned = $('#todos li.hidden').clone();
 	cloned.removeClass("hidden");
 	cloned.addClass("info");
-	//$('#todos').find('li.intr').hide();
 	$('#todos').append(cloned);
 	cloned.find('div.left').html(object.title);
 	cloned.attr("id", object.___id);
@@ -262,26 +398,54 @@ function drawTodos(object) {
 	
 	cloned.click(function(){
 		var todo = $(this).data("data");
-		switchTodo(todo);
+		$('li.checked').removeClass('checked');
+		$(this).addClass('checked');
+		
+		if (currentView==VIEW_FREE) {
+			$('#btn-rename').show();
+			$('#btn-remove').show();
+			$('#timer').data("data", todo);
+			$('#timer .upper-title').html(todo.title);
+			$('#btn-knowabout').hide();
+			$('#btn-start').show();
+		}
 	});
 }
 
 
+
+/**
+ * 获取正在运行的任务已经执行时间  
+ * 如果没有 返回-1
+ * */
+function getRunningDuration() {
+	var startItem = db({start:{isNumber:true}});
+	if (startItem.count()==1) {
+		var data = startItem.first();
+		return new Date().getTime() - data.start;
+	} else {
+		return -1;
+	}
+}
+
+/**
+ * 获取中断的已经执行时间
+ * @returns {Number}
+ */
 function getBreakDuration() {
 	var breakStart = 0;
 	
 	if(localStorage) {
-		breakStart = localStorage.getItem("breakStart");
+		breakStart = parseFloat(localStorage.getItem("breakStart"));
 	}
-	if (breakStart ==null) {
+	
+	if (breakStart ==null || breakStart==0 ) {
 		return -1;
 	}
 	var now = new Date().getTime();
-		
-	if (now - breakStart>60*60*1000) {
+	if (now - breakStart>BREAK_TIME) {
 		return -1;
 	}
-		
 	return now - breakStart;
 }
 
@@ -291,20 +455,11 @@ function setBreakStart(now) {
 	}
 }
 
-
-function switchTodo(data) {
-	if (isRunning()) return;
-	$('#timer').data('data',data);
-	$('#timer div.upper-title').html(data.title);
-	$('#time-remains').html(formatDura(WORK_TIME));
-	$('#timer div.operations a').hide();
-	$('#btn-start').show();
-	$('#btn-rename').show();
-	$('#btn-remove').show();
-}
-
-
-function isRunning() {
+function isInLine() {
+	if (getBreakDuration()==-1 || getBreakDuration()>BREAK_TIME) {
+		return false;
+	}
+	
 	return !($('#timer').data('running')==null);
 }
 
@@ -319,14 +474,20 @@ function saveObject(data) {
 }
 
 function showAdd(name) {
-	if (name=="breaks" && !isRunning()) {
-		alert("当您开始番茄时间后，才能记录中断");
-		return;
-	}
 	
-	$('#new-dialog .upper-title').hide();
-	$('#' + name + "-title").show();
-	uiShowEdit();
+	if (name=="breaks") {
+		if (currentView==VIEW_RUNNING) {
+			$('#new-dialog .upper-title').hide();
+			$('#' + name + "-title").show();
+			uiShowEdit();
+		} else {
+			showMessage("当您开始番茄时间后，才能记录中断", 3000);
+		}
+	} else {
+		$('#new-dialog .upper-title').hide();
+		$('#' + name + "-title").show();
+		uiShowEdit();
+	}
 }
 
 
@@ -349,8 +510,21 @@ function closeEdit() {
 	  });
 }
 
+function showMessage(msg, hideMill) {
+	$('#message').slideDown();
+	$('#message').html(msg);
+	$('#header').slideUp();
+	
+	setTimeout('headerResume()', hideMill);
+}
+
+function headerResume() {
+	$('#message').slideUp();
+	$('#header').slideDown();
+}
 
 function formatDura(mill) {
 	var d3 = new Date(parseInt(mill));
 	return ((d3.getMinutes()<10)?("0"+d3.getMinutes()):d3.getMinutes()) + ":" + ((d3.getSeconds()<10)?("0" + d3.getSeconds()):d3.getSeconds()); 
 }
+

@@ -15,27 +15,19 @@
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a  class="header-btn" rel="nofollow">工作计划表</a></li>
-				<li><a  class="header-btn" rel="nofollow">活动清单</a></li>
-				
-				<li><a id="btn-rename" onclick="openRename()">修改名称</a></li>
-				<li><a id="btn-remove" href="#" onclick="removeCurrent()">删除</a><li>
+				<li><a id="btn-rename" class="header-btn" onclick="openRename()">修改名称</a></li>
+				<li><a id="btn-remove" class="header-btn"  href="#" onclick="removeCurrent()">删除</a><li>
 			</ul>
 		</div>
 		
 		<div id="message">
-			
-		</div>
-		
-		<div id="header-operations">
-			
 		</div>
 	</div>
 	
 	<div id="content-wrapper">
 		<div id="timer" >
 			<div class="upper-title">
-				欢迎使用番茄工作法
+				请选择任务
 			</div>
 			
 			<div id="time-remains" class="big-infos">
@@ -73,12 +65,12 @@
 			</div>
 			
 			<div class="operations">
-				<a class="btn-a" onclick="saveOrUpdate()">保存</a> <a class="btn-a" onclick="closeEdit()">关闭</a>
+				<a class="btn-a"  onclick="saveOrUpdate()">保存</a> <a class="btn-a" href="#" onclick="closeEdit()">关闭</a>
 			</div>
 		</div>
 		
 		<div id="task-list">
-			<div class="title" onclick="showList('todos')">今日任务 <div id="todos-add" class="add" onclick="showAdd('todos')"><a></a></div> </div>
+			<div class="title" onclick="showList('todos')">今日任务 <div id="todos-add" class="add" onclick="showAdd('todos')"><a href="#"></a></div> </div>
 			
 			<ul id="todos">
 			<!-- 
@@ -95,7 +87,7 @@
 				</li>
 			</ul>
 						
-			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')" class="add hidden"><a></a></div> </div>
+			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')"  class="add hidden"><a href="#"></a></div> </div>
 			
 			<ul id="breaks" class="hidden">
 			<!-- 
@@ -105,7 +97,7 @@
 			-->
 			</ul>
 			
-			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add hidden" onclick="showAdd('plans')"><a></a></div> </div>
+			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add hidden" onclick="showAdd('plans')"><a href="#"></a></div> </div>
 			
 			
 			<ul id="plans" class="hidden"> 

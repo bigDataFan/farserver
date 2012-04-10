@@ -66,6 +66,7 @@ body {
 	background: white;
 	border-bottom: 1px solid #8BB8D2;
 	position:relative;
+	height:40px;
 	z-index: 10;
 }
 
@@ -73,8 +74,17 @@ body {
 	width: 320px;
 	margin: 0 auto;
 	overflow: hidden;  
-	padding: 5px 0;
 }
+
+#message {
+	width: 300px;
+	margin: 0 auto;
+	background: #FFF5C2;
+	display: none;
+	height:30px;
+	padding: 5px;
+}
+
 #header #lumosity-logo {
 	position: relative;
 	top: -5px;
@@ -128,6 +138,7 @@ div.center-dialog {
 }
 
 #timer {
+	top: 90px;
 	text-align: center;
 	background: #EDF4F7;
 	border: 1px solid #CCC;
@@ -206,10 +217,9 @@ div.center-dialog {
 	box-shadow: 0 2px 1px #73B844;
 	color: white;
 	margin-right: 10px;
-	text-shadow: 0 -1px 0  #62AC44;
+	text-shadow: 0 -1px 0 #62AC44;
 	cursor: pointer;
 }
-
 
 #task-list {
 	margin-top: 10px;
@@ -259,8 +269,12 @@ div.center-dialog {
 	border-bottom: 1px solid #D6E3E8;
 }
 
+#task-list ul li.checked {
+	background: #FFF5C2;
+}
+
 #task-list .task {
-	margin-left: 6px;
+	font-size:1.2em;
 	min-height: 40px;
 }
 
