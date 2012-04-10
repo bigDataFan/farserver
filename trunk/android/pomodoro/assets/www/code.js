@@ -4,8 +4,8 @@
 var db;
 var keys = ['todos', 'breaks', 'plans'];
 
-var WORK_TIME = 1 * 60 * 1000;
-var BREAK_TIME = 0.5 * 60 * 1000;
+var WORK_TIME = 25 * 60 * 1000;
+var BREAK_TIME = 5 * 60 * 1000;
 var CLICK_TIME = 10 * 60 * 1000;
 
 var VIEW_RUNNING = 0;
@@ -24,7 +24,7 @@ $(document).ready(function(){
 	displayAll();
 	var running = getRunningDuration();
 	
-	$('#btn-rename, #btn-remove').hide();
+	$('#header .header-btn').hide();
 	
 	if (running>0) {
 		if (running>WORK_TIME && running <CLICK_TIME + WORK_TIME) {
@@ -48,11 +48,10 @@ $(document).ready(function(){
 		viewBreaking();
 	} else {
 		currentView = VIEW_FREE;
-		//free view
 		viewFree();
 	}
 	
-	alert(currentView);
+	//alert(currentView);
 });
 
 function onTouchedDown() {
@@ -111,8 +110,13 @@ function viewBreaking() {
 }
 
 function displayAll() {
+	var d = new Date();
+	var todayFormat = formateDate(d);
 	db({type:"todos",finished:{"!is":true}}).each(
 			function (record,recordnumber) {
+				if(record.finishDate && record.finishDate!=todayFormat) {
+					return;
+				}
 				drawTodos(record);
 			}
 	);
@@ -149,7 +153,7 @@ function checkAndFill() {
 }
 
 function start() {
-	$('#btn-rename, #btn-remove').hide();
+	$('#header .header-btn').hide();
 	var data = $('#timer').data('data');
 	$('#timer').data("running", data);
 	$('#btn-start').hide();
@@ -261,7 +265,7 @@ function showList(name) {
 		return;
 	}
 	$('li.checked').removeClass('checked');
-	$('#btn-rename, #btn-remove').hide();
+	$('#header .header-btn').hide();
 	
 	$('#task-list div.title div.add').hide();
 	$('#task-list ul').slideUp('fast');
@@ -270,19 +274,6 @@ function showList(name) {
 				$("#" + name + "-add").fadeIn();	
 			}
 	);
-}
-
-function openRename() {
-	$('#new-dialog .upper-title').hide();
-	
-	var data = $('li.checked').data('data');
-	
-	if (data!=null) {
-		$('#rename-title').show();
-		$('#txtinput').val(data.title);
-		$('#new-dialog').data("data", data);
-		uiShowEdit();
-	}
 }
 
 function saveOrUpdate() {
@@ -325,6 +316,18 @@ function saveOrUpdate() {
 }
 
 
+function openRename() {
+	$('#new-dialog .upper-title').hide();
+	
+	var data = $('li.checked').data('data');
+	
+	if (data!=null) {
+		$('#rename-title').show();
+		$('#txtinput').val(data.title);
+		$('#new-dialog').data("data", data);
+		uiShowEdit();
+	}
+}
 
 function removeCurrent() {
 	var data = $('li.checked').data("data");
@@ -338,9 +341,27 @@ function removeCurrent() {
 		db(data.___id).remove(true);
 		$('#' + data.___id).remove();
 	}
-
-	
 	checkAndFill();
+}
+
+function setAsTodo() {
+	var data = $('li.checked').data("data");
+	if (data.type=="plans") {
+		data.type = "todos";
+		saveObject(data);
+		drawTodos(data);
+		$('li.checked').remove();
+	}
+}
+
+function finishCurrent() {
+	var data = $('li.checked').data("data");
+	if (data.type=="todos") {
+		data.finishDate = formateDate(new Date());
+		saveObject(data);
+		$('#header .header-btn').hide();
+		$('li.checked').addClass('finished');
+	}
 }
 
 function drawBreaks(object) {
@@ -372,7 +393,7 @@ function drawPlans(object) {
 		li.click(function(){
 			$('li.checked').removeClass('checked');
 			$(this).addClass('checked');
-			$('#btn-rename, #btn-remove').show();
+			$('#btn-rename, #btn-remove, #btn-setTodo').show();
 		});
 		
 		$('#plans').append(li);
@@ -394,20 +415,32 @@ function drawTodos(object) {
 		cloned.find("p.quotes").html(object.quotes.length);
 	}
 	
+	if (object.finishDate) {
+		cloned.addClass("finished");
+	}
+	
 	cloned.data("data", object);
 	
 	cloned.click(function(){
+		
 		var todo = $(this).data("data");
 		$('li.checked').removeClass('checked');
 		$(this).addClass('checked');
 		
+		$('#header .header-btn').hide();
+
+		if (todo.finishDate) return;
+		
 		if (currentView==VIEW_FREE) {
 			$('#btn-rename').show();
 			$('#btn-remove').show();
+			$('#btn-finished').show();
 			$('#timer').data("data", todo);
 			$('#timer .upper-title').html(todo.title);
 			$('#btn-knowabout').hide();
 			$('#btn-start').show();
+		} else {
+			showMessage("您需要在任务完成后才能进行修改", 3000);
 		}
 	});
 }
@@ -527,4 +560,7 @@ function formatDura(mill) {
 	var d3 = new Date(parseInt(mill));
 	return ((d3.getMinutes()<10)?("0"+d3.getMinutes()):d3.getMinutes()) + ":" + ((d3.getSeconds()<10)?("0" + d3.getSeconds()):d3.getSeconds()); 
 }
-
+function formateDate(date) {
+	return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+	
+}

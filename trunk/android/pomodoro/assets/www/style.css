@@ -63,7 +63,7 @@ body {
 
 
 #header-wrapper {
-	background: white;
+	background: #e4e7ea;
 	border-bottom: 1px solid #8BB8D2;
 	position:relative;
 	height:40px;
@@ -106,16 +106,16 @@ ul.header-nav-ul li {
 	padding-left: 4px;
 	padding-right: 4px;
 	line-height: 40px;
+	color: white;
 }
 
 .header-btn {
-	padding: 8px 12px;
-	font-size: 14px;
+	padding: 4px 12px;
+	font-size: 1.2em;
 	border:1px solid #D6E3E8; 
 	background: #F6F7F8;
-	border-radius: 10px;
+	border-radius: 5px;
 }
-
 
 #content-wrapper {
 	width: 310px;
@@ -123,7 +123,6 @@ ul.header-nav-ul li {
 	overflow: hidden;
 	bottom: 0px;
 }
-
 
 div.center-dialog {
 	position:absolute;
@@ -271,6 +270,11 @@ div.center-dialog {
 
 #task-list ul li.checked {
 	background: #FFF5C2;
+}
+
+
+#task-list ul li.finished div.left {
+	text-decoration: line-through;
 }
 
 #task-list .task {
