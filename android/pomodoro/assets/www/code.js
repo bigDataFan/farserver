@@ -348,6 +348,7 @@ function removeCurrent() {
 function setAsTodo() {
 	var data = $('li.checked').data("data");
 	if (data.type=="plans") {
+		$('#header .header-btn').hide();
 		data.type = "todos";
 		saveObject(data);
 		drawTodos(data);
@@ -359,9 +360,28 @@ function finishCurrent() {
 	var data = $('li.checked').data("data");
 	if (data.type=="todos") {
 		data.finishDate = formateDate(new Date());
+		data.finishTime = new Date().getTime();
 		saveObject(data);
 		$('#header .header-btn').hide();
+		$('#btn-unfinished').show();
 		$('li.checked').addClass('finished');
+	}
+}
+
+function unfinishCurrent() {
+	var data = $('li.checked').data("data");
+	if (data.type=="todos") {
+		data.finishDate = null;
+		data.finishTime = null;
+		saveObject(data);
+		$('#header .header-btn').hide();
+		$('li.checked').removeClass('finished');
+		
+		if (currentView==VIEW_FREE) {
+			$('#btn-rename').show();
+			$('#btn-remove').show();
+			$('#btn-finished').show();
+		}
 	}
 }
 
@@ -436,7 +456,10 @@ function onTodoItemClick() {
 	
 	$('#header .header-btn').hide();
 
-	if (todo.finishDate) return;
+	if (todo.finishDate) {
+		$('#btn-unfinished').show();
+		return;
+	}
 	
 	if (currentView==VIEW_FREE) {
 		$('#btn-rename').show();

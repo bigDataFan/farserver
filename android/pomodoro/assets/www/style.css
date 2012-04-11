@@ -34,6 +34,7 @@ a, a:link, a:visited, a:hover {
 }
 .left {
 	float: left;
+	position: fixed;
 }
 .right {
 	float: right;
@@ -281,6 +282,16 @@ div.center-dialog {
 	font-size:1.2em;
 	min-height: 40px;
 }
+
+#task-list .task div.info{
+	padding: 20px 0px 0px 0px;
+	min-width: 80px;
+	color: #7D7D7D;
+	font-size: 12px;
+	position: fixed;
+	text-shadow: 0 1px 0 white;
+}
+
 
 #task-list .task p.quotes { 
 	background: url("images/breaks.png") no-repeat 0px 3px;

@@ -9,7 +9,6 @@
 <script type="text/javascript" src="js/taffy-min.js"></script>
 
 <script type="text/javascript">
-
 var BIND="click";
 </script>
 <script type="text/javascript" src="code.js"></script>
@@ -22,7 +21,9 @@ var BIND="click";
 				<li><a id="btn-rename" class="header-btn" href="#" onclick="openRename()">修改名称</a></li>
 				<li><a id="btn-remove" class="header-btn"  href="#" onclick="removeCurrent()">删除</a><li>
 				<li><a id="btn-finished" class="header-btn"  href="#" onclick="finishCurrent()">完成</a><li>
+				<li><a id="btn-unfinished" class="header-btn"  href="#" onclick="unfinishCurrent()">设为未完成</a><li>
 				<li><a id="btn-setTodo" class="header-btn"  href="#" onclick="setAsTodo()">设置为任务</a><li>
+				<li><a ><img src="images/config.png"></a></li>
 			</ul>
 		</div>
 		
@@ -44,7 +45,7 @@ var BIND="click";
 				<a id="btn-stop" onclick="stop()" class="btn-a">停止</a>  
 				<a id="btn-start" onclick="start()" class="btn-a">启动</a>
 				<a id="btn-break" onclick="breaks()" class="btn-a">休息</a>
-				<a id="btn-break-stop" onclick="finishBreak()" class="btn-a">结束休息</a>  
+				<a id="btn-break-stop" onclick="finishBreak()" class="btn-a">结束休息</a>
 			</div>
 		</div>
 		

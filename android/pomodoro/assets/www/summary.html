@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>时间统计</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var db = new TAFFY();
+	db.store("ever365.pomodoro");
+	
+	db({type:"todos"}).order("created").each(
+			function (record,recordnumber) {
+				var cloned = $('#todos li.hidden').clone();
+				cloned.removeClass("hidden");
+				
+				cloned.find('div.titlemsg').html(record.title);
+				
+				if (record.finishTime) {
+					cloned.find('div.info').html(formateTime(new Date(record.finishTime)));
+				} else {
+					cloned.find('div.info').html("unfinished");
+				}
+				
+				if (record.pomodoroes) {
+					cloned.find("p.tomatoes").html(record.pomodoroes.length);
+				}
+				if (record.quotes) {
+					cloned.find("p.quotes").html(record.quotes.length);
+				}
+				
+				$('#todos').prepend(cloned);
+			}
+	);
+});
+
+function formateTime(date) {
+	return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+}
+
+</script>
+
+</head>
+<body>
+	<div id="header-wrapper">
+		<div id="header">
+			<!--  <a id="lumosity-logo">a</a>-->
+			<ul class="header-nav-ul">
+				<li><a id="btn-rename" class="header-btn" href="index.html">返回</a></li>
+				
+			</ul>
+		</div>
+		
+		<div id="message">
+		</div>
+	</div>
+
+	<div id="content-wrapper">
+		<div id="task-list">
+				<div class="title">任务列表</div>
+				
+				<ul id="todos">
+					<li class="task hidden" >
+						<div class="left titlemsg"></div>
+						<div class="left info"></div>
+						<div class="right">
+							<p class="tomatoes">0</p>
+							<p class="quotes">0</p>
+						</div>
+					</li>
+				</ul>
+		</div>
+	</div>
+</body>
+</html>
