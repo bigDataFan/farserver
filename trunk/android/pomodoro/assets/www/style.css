@@ -283,6 +283,12 @@ div.center-dialog {
 	min-height: 40px;
 }
 
+#task-list .task input{
+	font-size:1.2em;
+	min-height: 40px;
+}
+
+
 #task-list .task div.info{
 	padding: 20px 0px 0px 0px;
 	min-width: 80px;

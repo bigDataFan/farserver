@@ -268,14 +268,14 @@ function showList(name) {
 	}
 	$('li.checked').removeClass('checked');
 	$('#header .header-btn').hide();
+	$('#btn-config').show();
 	
 	$('#task-list div.title div.add').hide();
-	$('#task-list ul').slideUp('fast');
-	$('#' + name).slideDown('fast',
+	$('#task-list ul').slideUp(500);
+	$('#' + name).slideDown(300,
 			function() {
 				$("#" + name + "-add").fadeIn();	
-			}
-	);
+	});
 }
 
 function saveOrUpdate() {
@@ -455,6 +455,7 @@ function drawTodos(object) {
 }
 
 function onTodoItemClick() {
+	$('#btn-config').hide();
 	var todo = $(this).data("data");
 	$('li.checked').removeClass('checked');
 	$(this).addClass('checked');
@@ -467,7 +468,6 @@ function onTodoItemClick() {
 	}
 	
 	if (currentView==VIEW_FREE) {
-		$('#btn-config').hide();
 		$('#btn-rename').show();
 		$('#btn-remove').show();
 		$('#btn-finished').show();

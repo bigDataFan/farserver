@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>配置菜单</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+<body>
+	<div id="header-wrapper">
+		<div id="header">
+			<!--  <a id="lumosity-logo">a</a>-->
+			<ul class="header-nav-ul">
+				<li><a id="btn-rename" class="header-btn" href="index.html">返回</a></li>
+			</ul>
+		</div>
+		
+		<div id="message">
+		</div>
+	</div>
+
+
+
+
+	<div id="content-wrapper">
+
+		<div id="task-list">
+				<div class="title">统计</div>
+				
+				<ul id="todos">
+					<li class="task" >
+						<div class="left titlemsg"><a href="summary.html">任务情况及获得的番茄</a></div>
+						<div class="left info"></div>
+					</li>
+					<li class="task" >
+						<div class="left titlemsg">每日番茄情况</div>
+						<div class="left info"></div>
+					</li>
+				</ul>
+				
+				
+				<div class="title">应用配置</div>
+				
+				<ul id="todos">
+					<li class="task" >
+						工作时间： <input id="time25" type="number">分钟
+					</li>
+					<li class="task" >
+						休息时间： <input id="time25" type="number">分钟
+					</li>
+					<li><a class="btn-a"  onclick="saveOrUpdate()">保存</a></li>
+				</ul>
+				
+		</div>
+	</div>
+
+
+</body>
+</html>
