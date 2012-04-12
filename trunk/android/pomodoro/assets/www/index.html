@@ -24,7 +24,7 @@ var BIND="click";
 				<li><a id="btn-unfinished" class="header-btn"  href="#" onclick="unfinishCurrent()">设为未完成</a><li>
 				<li><a id="btn-setTodo" class="header-btn"  href="#" onclick="setAsTodo()">设置为任务</a><li>
 			</ul>
-			<div class="right" style="padding-right: 5px;padding-top: 4px;"><a href="summary.html"><img src="images/info.png"></a></div>
+			<div id="btn-config" class="right" style="padding-right: 8px;padding-top: 4px;"><a href="summary.html"><img src="images/info.png"></a></div>
 		</div>
 		
 		<div id="message">
@@ -72,7 +72,7 @@ var BIND="click";
 			</div>
 			
 			<div class="operations">
-				<a class="btn-a"  onclick="saveOrUpdate()">保存</a> <a class="btn-a" href="#" onclick="closeEdit()">关闭</a>
+				<a class="btn-a"  onclick="saveOrUpdate()">保存</a> <a class="btn-a" onclick="closeEdit()">关闭</a>
 			</div>
 		</div>
 		

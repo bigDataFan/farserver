@@ -155,6 +155,7 @@ function checkAndFill() {
 
 function start() {
 	$('#header .header-btn').hide();
+	$('#btn-config').show();
 	var data = $('#timer').data('data');
 	$('#timer').data("running", data);
 	$('#btn-start').hide();
@@ -339,6 +340,7 @@ function removeCurrent() {
 		viewFree();
 	}
 	$('.header-btn').hide();
+	$('#btn-config').show();
 	if (data!=null) {
 		db(data.___id).remove(true);
 		$('#' + data.___id).remove();
@@ -395,6 +397,7 @@ function drawBreaks(object) {
 		li.attr("id", object.___id);
 		li.data("data", object);
 		li.bind(BIND, function(){
+			$('#btn-config').hide();
 			$('li.checked').removeClass('checked');
 			$(this).addClass('checked');
 			$('#btn-rename, #btn-remove').show();
@@ -416,6 +419,7 @@ function drawPlans(object) {
 		li.bind(BIND, function(){
 			$('li.checked').removeClass('checked');
 			$(this).addClass('checked');
+			$('#btn-config').hide();
 			$('#btn-rename, #btn-remove, #btn-setTodo').show();
 		});
 		
@@ -463,6 +467,7 @@ function onTodoItemClick() {
 	}
 	
 	if (currentView==VIEW_FREE) {
+		$('#btn-config').hide();
 		$('#btn-rename').show();
 		$('#btn-remove').show();
 		$('#btn-finished').show();
