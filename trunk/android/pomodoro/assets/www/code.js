@@ -306,6 +306,7 @@ function saveOrUpdate() {
 			runningData.quotes = [];
 		}
 		runningData.quotes.push(object);
+		$('#' + runningData.___id).find("p.quotes").html(runningData.quotes.length);
 		saveObject(runningData);
 		drawBreaks(object);
 	} else if (type=="plans") {
