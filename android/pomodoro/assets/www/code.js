@@ -16,8 +16,8 @@ var VIEW_RUNOVER = 3;
 var currentView;
 
 $(document).ready(function(){
-	$('.btn-a,.add').bind("touchstart", onTouchedDown);
-	$('.btn-a,.add').bind("touchend", onTouchedUp);
+	//$('.btn-a,.add').bind("touchstart", onTouchedDown);
+	//$('.btn-a,.add').bind("touchend", onTouchedUp);
 	db = new TAFFY();
 	db.store("ever365.pomodoro");
 	
@@ -53,14 +53,6 @@ $(document).ready(function(){
 	
 	//alert(currentView);
 });
-
-function onTouchedDown() {
-	$(this).addClass("button-down");
-}
-
-function onTouchedUp() {
-	$(this).removeClass("button-down");
-}
 
 function viewRunning() {
 	var startItem = db({start:{isNumber:true}});
