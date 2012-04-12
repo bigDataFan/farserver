@@ -21,9 +21,9 @@ $(document).ready(function(){
 				cloned.find('div.titlemsg').html(record.title);
 				
 				if (record.finishTime) {
-					cloned.find('div.info').html(formateTime(new Date(record.finishTime)));
+					cloned.find('div.info').html(formateTime(new Date(record.finishTime)) + "完成");
 				} else {
-					cloned.find('div.info').html("unfinished");
+					cloned.find('div.info').html(formateTime(new Date(record.created)) +  "开始,未完成");
 				}
 				
 				if (record.pomodoroes) {
@@ -39,7 +39,7 @@ $(document).ready(function(){
 });
 
 function formateTime(date) {
-	return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+	return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + ((date.getMinutes()<10)?("0"+date.getMinutes()):date.getMinutes());
 }
 
 </script>
