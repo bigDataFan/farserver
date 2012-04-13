@@ -2,41 +2,74 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>时间统计</title>
+<title>每日统计</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/taffy-min.js"></script>
 
 
 <script type="text/javascript">
+
+var weekday=new Array();
+weekday[0]="周日";
+weekday[1]="周一";
+weekday[2]="周二";
+weekday[3]="周三";
+weekday[4]="周四";
+weekday[5]="周五";
+weekday[6]="周六";
+
+var n = weekday[d.getUTCDay()];
+
+
 $(document).ready(function(){
 	var db = new TAFFY();
 	db.store("ever365.pomodoro");
-	db({type:"todos"}).order("created").each(
+	
+	var pomodoroByDate = {};
+	
+	db({type:"todos"}).each(
 			function (record,recordnumber) {
-				var cloned = $('#todos li.hidden').clone();
-				cloned.removeClass("hidden");
-				
-				cloned.find('div.title-info').html(record.title);
-				cloned.find('span.star').html(formateDate(new Date(record.created)) );
-				
-				if (record.finishTime) {
-					cloned.find('span.ok').html(formateDate(new Date(record.finishTime)));
-					cloned.find('span.onway').hide();
-				} else {
-					cloned.find('span.ok').hide();
-				}
 				
 				if (record.pomodoroes) {
-					cloned.find("span.tomatoes").html(record.pomodoroes.length);
+					for(var i=0; i<record.pomodoroes.length; i++) {
+						var t = new Date(parseInt(record.pomodoroes[i].split("-")[1]));
+						var f = formateDate(t);
+						if (pomodoroByDate[f]==null) {
+							pomodoroByDate[f] = 1;
+						} else {
+							pomodoroByDate[f]++;
+						}
+					}
 				}
-				if (record.quotes) {
-					cloned.find("span.quotes").html(record.quotes.length);
-				}
-				
-				$('#todos').prepend(cloned);
 			}
 	);
+	
+	
+	var i = 0;
+	var now = new Date().getTime();
+	while(i<30) {
+		var dd = new Date(now - i*24*60*60*1000);
+		var dx = formateDate(dd); 
+		
+		var cloned = $('#todos').find('li.hidden').clone();
+		cloned.removeClass('hidden');
+		
+		if (dd.getUTCDay()==0 || dd.getUTCDay()==6) {
+			cloned.addClass('checked');
+		}
+		
+		cloned.find('div.title-info').html(dx);
+		
+		
+		if (pomodoroByDate[dx]==null) {
+		} else {
+			cloned.find('span.tomatoes').html(pomodoroByDate[dx]);
+		}
+		$('#todos').append(cloned);
+		i ++;
+	}
+	
 });
 
 function formateTime(date) {
@@ -71,9 +104,6 @@ function formateDate(date) {
 					<li class="task hidden" >
 						<div class="title-info"></div>
 						<div class="icon-info" >
-							<span class="ok"></span>
-							<span class="onway"></span>
-							<span class="star"></span>
 							<span class="tomatoes">0</span>
 							<span class="quotes">0</span>
 						</div>

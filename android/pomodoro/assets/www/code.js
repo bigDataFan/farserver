@@ -16,8 +16,6 @@ var VIEW_RUNOVER = 3;
 var currentView;
 
 $(document).ready(function(){
-	//$('.btn-a,.add').bind("touchstart", onTouchedDown);
-	//$('.btn-a,.add').bind("touchend", onTouchedUp);
 	db = new TAFFY();
 	db.store("ever365.pomodoro");
 	
@@ -284,23 +282,28 @@ function saveOrUpdate() {
 	if (type=="todos") {
 		saveObject(object);
 		if ($('#' + object.___id).length==1) {
-			$('#' + object.___id + " div.left").html(object.title);
+			$('#' + object.___id + " div.title-info").html(object.title);
 			$('#timer div.upper-title').html(object.title);
 		} else {
 			drawTodos(object);
 		}
 	} else if (type=="breaks") {
-		object.todo = $('#timer').data('running').___id;
-		var d = new Date();
-		object.date = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
-		saveObject(object);
-		var runningData = $('#timer').data('running');
-		if (runningData.quotes==null) {
-			runningData.quotes = [];
+		if (object.todo==null) { 
+			object.todo = $('#timer').data('running').___id;
+			var runningData = $('#timer').data('running');
+			if (runningData) {
+				if (runningData.quotes==null) {
+					runningData.quotes = [];
+				}
+				runningData.quotes.push(object);
+				$('#' + runningData.___id).find("span.quotes").html(runningData.quotes.length);
+			}
+			saveObject(runningData);
 		}
-		runningData.quotes.push(object);
-		$('#' + runningData.___id).find("p.quotes").html(runningData.quotes.length);
-		saveObject(runningData);
+		var d = new Date();
+		object.date = formateDate(d);
+		saveObject(object);
+		
 		drawBreaks(object);
 	} else if (type=="plans") {
 		saveObject(object);
@@ -382,10 +385,10 @@ function unfinishCurrent() {
 
 function drawBreaks(object) {
 	if ($('#' + object.___id).length==1) {
-		$('#' + object.___id).find('div.left').html(object.title);
+		$('#' + object.___id).html(object.title);
 		$('#' + object.___id).data("data", object);
 	} else {
-		var li = $('<li class="task info"><div class="left">' + object.title + '</div></li>');
+		var li = $('<li class="task info">' + object.title + '</li>');
 		li.attr("id", object.___id);
 		li.data("data", object);
 		li.bind(BIND, function(){
@@ -401,10 +404,10 @@ function drawBreaks(object) {
 
 function drawPlans(object) {
 	if ($('#' + object.___id).length==1) {
-		$('#' + object.___id).find('div.left').html(object.title);
+		$('#' + object.___id).html(object.title);
 		$('#' + object.___id).data("data", object);
 	} else {
-		var li = $('<li class="task info"><div class="left">' + object.title + '</div></li>');
+		var li = $('<li class="task info">' + object.title + '</li>');
 		li.attr("id", object.___id);
 		li.data("data", object);
 		
@@ -425,13 +428,13 @@ function drawTodos(object) {
 	cloned.removeClass("hidden");
 	cloned.addClass("info");
 	$('#todos').append(cloned);
-	cloned.find('div.left').html(object.title);
+	cloned.find('div.title-info').html(object.title);
 	cloned.attr("id", object.___id);
 	if (object.pomodoroes) {
-		cloned.find("p.tomatoes").html(object.pomodoroes.length);
+		cloned.find("span.tomatoes").html(object.pomodoroes.length);
 	}
 	if (object.quotes) {
-		cloned.find("p.quotes").html(object.quotes.length);
+		cloned.find("span.quotes").html(object.quotes.length);
 	}
 	
 	if (object.finishDate) {
