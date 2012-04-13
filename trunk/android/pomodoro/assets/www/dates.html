@@ -4,9 +4,13 @@
 <meta charset="UTF-8">
 <title>每日统计</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
+<link href="js/datepicker.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/taffy-min.js"></script>
 
+
+<script type="text/javascript" src="js/lang/cn.js"></script>
+<script type="text/javascript" src="js/datepicker.js"></script>
 
 <script type="text/javascript">
 
@@ -19,35 +23,15 @@ weekday[4]="周四";
 weekday[5]="周五";
 weekday[6]="周六";
 
-var n = weekday[d.getUTCDay()];
-
+var db = new TAFFY();
 
 $(document).ready(function(){
-	var db = new TAFFY();
 	db.store("ever365.pomodoro");
-	
-	var pomodoroByDate = {};
-	
-	db({type:"todos"}).each(
-			function (record,recordnumber) {
-				
-				if (record.pomodoroes) {
-					for(var i=0; i<record.pomodoroes.length; i++) {
-						var t = new Date(parseInt(record.pomodoroes[i].split("-")[1]));
-						var f = formateDate(t);
-						if (pomodoroByDate[f]==null) {
-							pomodoroByDate[f] = 1;
-						} else {
-							pomodoroByDate[f]++;
-						}
-					}
-				}
-			}
-	);
+	var now = new Date();
 	
 	
+	/*
 	var i = 0;
-	var now = new Date().getTime();
 	while(i<30) {
 		var dd = new Date(now - i*24*60*60*1000);
 		var dx = formateDate(dd); 
@@ -70,6 +54,23 @@ $(document).ready(function(){
 		i ++;
 	}
 	
+	*/
+	   var opts = {                            
+               formElements:{"dp-de2":"d-sl-m-sl-Y"},
+               showWeeks:true,
+               //statusFormat:"l-cc-sp-d-sp-F-sp-Y",
+               staticPos:true,
+               
+               //callbacks:{"dateset":[onMonthChange]},
+               //highlightDays:[1,1,0,0,0,0,0],
+               finalOpacity:90                  
+               };           
+
+       datePickerController.createDatePicker(opts);
+
+       //$('td.cd-20120409').addClass('number-1');
+       displayForMonth(now.getFullYear(), now.getMonth());
+       
 });
 
 function formateTime(date) {
@@ -77,8 +78,36 @@ function formateTime(date) {
 }
 
 function formateDate(date) {
-	return (date.getMonth()+1) + "-" + ((date.getDate()<10)?('0'+date.getDate()):date.getDate());
+	return date.getFullYear() + ((date.getMonth()+1<10)?('0'+(date.getMonth()+1)):(date.getMonth()+1)) + ((date.getDate()<10)?('0'+date.getDate()):date.getDate());
 }
+
+function displayForMonth(year, month) {
+	var pomodoroByDate = {};
+	
+	var month1 = new Date(year,month,1,0,0,0);
+	var month2 = new Date(year,month,31,23,59,59);
+	
+	db({type:"todos",created:{gte:month1.getTime(),lt:month2.getTime()}}).each(
+			function (record,recordnumber) {
+				if (record.pomodoroes) {
+					for(var i=0; i<record.pomodoroes.length; i++) {
+						var t = new Date(parseInt(record.pomodoroes[i].split("-")[1]));
+						var f = formateDate(t);
+						if (pomodoroByDate[f]==null) {
+							pomodoroByDate[f] = 1;
+						} else {
+							pomodoroByDate[f]++;
+						}
+					}
+				}
+			}
+	);
+	
+	for(var d in pomodoroByDate) {
+		 $('td.cd-' + d).addClass('number-' + pomodoroByDate[d]);
+	}
+}
+
 </script>
 
 </head>
@@ -87,8 +116,7 @@ function formateDate(date) {
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" class="header-btn" href="config.html">返回</a></li>
-				
+				<li><a id="btn-rename" ontouchstart="javascript:location.href='config.html'"  class="header-btn" href="config.html">返回</a></li>
 			</ul>
 		</div>
 		
@@ -97,20 +125,8 @@ function formateDate(date) {
 	</div>
 
 	<div id="content-wrapper">
-		<div id="task-list">
-				<div class="title">任务列表</div>
-				
-				<ul id="todos">
-					<li class="task hidden" >
-						<div class="title-info"></div>
-						<div class="icon-info" >
-							<span class="tomatoes">0</span>
-							<span class="quotes">0</span>
-						</div>
-						
-					</li>
-				</ul>
-		</div>
+		<input type="text" id="dp-de2" name="dt" style="display:none" class="dateformat-d-sl-m-sl-Y display-inline cb_dateselect_showEnglishDate" value="" />
 	</div>
+	
 </body>
 </html>
