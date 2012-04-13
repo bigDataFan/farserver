@@ -4,7 +4,7 @@
 var db;
 var keys = ['todos', 'breaks', 'plans'];
 
-var WORK_TIME = 25 * 60 * 1000;
+var WORK_TIME = .1 * 60 * 1000;
 var BREAK_TIME = 5 * 60 * 1000;
 var CLICK_TIME = 10 * 60 * 1000;
 
@@ -205,7 +205,7 @@ function getPomodoro() {
 			saveObject(data);
 		}
 		
-		$('#' + data.___id).find("p.tomatoes").html(data.pomodoroes.length);
+		$('#' + data.___id).find("span.tomatoes").html(data.pomodoroes.length);
 	}
 }
 

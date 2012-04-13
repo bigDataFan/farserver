@@ -347,5 +347,60 @@ div.center-dialog {
 	box-shadow: inset 0 2px 6px white,0 3px 3px rgba(0, 0, 0, 0.6);
 }
 
+.cal-hint {
+	position:relative;
+}
+
+.number-1 {
+	background: url("images/red01.png") no-repeat 12px -4px;
+}
+.number-2 {
+	background: url("images/red02.png") no-repeat 12px -4px;
+}
+.number-3 {
+	background: url("images/red03.png") no-repeat 12px -4px;
+}
+.number-4 {
+	background: url("images/red04.png") no-repeat 12px -4px;
+}
+.number-5 {
+	background: url("images/red05.png") no-repeat 12px -4px;
+}
+.number-6 {
+	background: url("images/red06.png") no-repeat 12px -4px;
+}
+.number-7 {
+	background: url("images/red07.png") no-repeat 12px -4px;
+}
+.number-8 {
+	background: url("images/red08.png") no-repeat 12px -4px;
+}
+.number-9 {
+	background: url("images/red09.png") no-repeat 12px -4px;
+}
+
+.hint-info {
+	display: inline-block;
+	position: relative;
+	padding: 7px 15px;
+	-moz-border-radius: 18px;
+	-webkit-border-radius: 18px;
+	border-radius: 18px;
+	background-color: #B6D3F4;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#B6D3F4), to(#5483B8));
+	background-image: -webkit-linear-gradient(top,#B6D3F4,#5483B8);
+	background-image: -moz-linear-gradient(top,#B6D3F4,#5483B8);
+	background-image: -ms-linear-gradient(top,#B6D3F4,#5483B8);
+	background-image: -o-linear-gradient(top,#B6D3F4,#5483B8);
+	color: white !important;
+	-webkit-box-shadow: inset 0 1px 1px white,0 3px 3px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: inset 0 1px 1px #fff,0 3px 3px rgba(0,0,0,0.6);
+	box-shadow: inset 0 1px 1px white,0 3px 3px rgba(0, 0, 0, 0.6);
+	border: 1px solid #9AC9FF !important;
+	font-weight: 600;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+
 
 

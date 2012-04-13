@@ -7,13 +7,13 @@
         
         You are free:
         
-        * to Share — to copy, distribute and transmit the work
-        * to Remix — to adapt the work
+        * to Share ï¿½ to copy, distribute and transmit the work
+        * to Remix ï¿½ to adapt the work
             
         Under the following conditions:
 
-        * Attribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).      
-        * Share Alike — If you alter, transform, or build upon this work, you may distribute the resulting work only under the same, similar or a compatible license.
+        * Attribution ï¿½ You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).      
+        * Share Alike ï¿½ If you alter, transform, or build upon this work, you may distribute the resulting work only under the same, similar or a compatible license.
 */
 
 var datePickerController = (function datePickerController() {
@@ -243,7 +243,7 @@ var datePickerController = (function datePickerController() {
                         } else if(/lang|buttontabindex|mousewheel|cellformat|titleformat|nodrag|describedby/.test(str.toLowerCase())) {                                               
                                 var f = Function(['var document,top,self,window,parent,Number,Date,Object,Function,',
                                         'Array,String,Math,RegExp,Image,ActiveXObject;',
-                                        'return (' , str.replace(/<\!--.+-->/gim,'').replace(/\bfunction\b/g,'function­') , ');'].join(''));
+                                        'return (' , str.replace(/<\!--.+-->/gim,'').replace(/\bfunction\b/g,'functionï¿½') , ');'].join(''));
                                 return f();                          
                         };
                 } catch (e) { };
@@ -739,9 +739,9 @@ var datePickerController = (function datePickerController() {
 
                         this.table             = document.createElement('table');
                         this.table.className   = "datePickerTable";                         
-                        this.table.onmouseover = this.onmouseover;
-                        this.table.onmouseout  = this.onmouseout;
-                        this.table.onclick     = this.onclick;
+                        //this.table.onmouseover = this.onmouseover;
+                        //this.table.onmouseout  = this.onmouseout;
+                        //this.table.onclick     = this.onclick;
                         
                         if(this.staticPos) {
                                 this.table.onmousedown  = this.onmousedown;
@@ -1015,6 +1015,7 @@ var datePickerController = (function datePickerController() {
                         removeEvent(document,'mouseup',o.stopDrag, false);
                         o.div.style.zIndex = 9999;
                 }; 
+                
                 this.onmousedown = function(e) {
                         e = e || document.parentWindow.event;
                         var el     = e.target != null ? e.target : e.srcElement,
@@ -1075,8 +1076,8 @@ var datePickerController = (function datePickerController() {
                                         };  
                                 };
                                 
-                                o.updateTable();    
-                                
+                                o.updateTable();   
+                                displayForMonth(o.date.getFullYear(), o.date.getMonth());
                                 return stopEvent(e);
                                                             
                         } else if(el.className.search("drag-enabled") != -1) {                                  
