@@ -274,13 +274,13 @@ div.center-dialog {
 }
 
 
-#task-list ul li.finished div.left {
+#task-list ul li.finished {
 	text-decoration: line-through;
 }
 
 #task-list .task {
 	font-size:1.2em;
-	min-height: 40px;
+	min-height: 32px;
 }
 
 #task-list .task input{
@@ -298,15 +298,41 @@ div.center-dialog {
 	text-shadow: 0 1px 0 white;
 }
 
+#task-list .task div.icon-info {
+	color: #7D7D7D;
+	text-align: right;
+	margin-top: -5px;
+	font-size: .8em;
+}
 
-#task-list .task p.quotes { 
-	background: url("images/breaks.png") no-repeat 0px 3px;
+
+#task-list .task span.star { 
+	background: url("images/star.png") no-repeat 0px 0px;
 	height:20px;
 	padding-left:20px;
 }
 
-#task-list .task p.tomatoes {
-	background: url("images/tomato.png") no-repeat 0px 3px;
+#task-list .task span.ok {
+	background: url("images/ok.png") no-repeat 0px 0px;
+	height:20px;
+	padding-left:20px;
+}
+
+#task-list .task span.onway {
+	background: url("images/onway.png") no-repeat 0px 0px;
+	height:20px;
+	padding-left:20px;
+}
+
+
+#task-list .task span.quotes { 
+	background: url("images/breaks.png") no-repeat 0px 0px;
+	height:20px;
+	padding-left:20px;
+}
+
+#task-list .task span.tomatoes {
+	background: url("images/tomato.png") no-repeat 0px 0px;
 	height:20px;
 	padding-left:20px;
 }
