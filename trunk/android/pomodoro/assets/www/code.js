@@ -4,7 +4,7 @@
 var db;
 var keys = ['todos', 'breaks', 'plans'];
 
-var WORK_TIME = .1 * 60 * 1000;
+var WORK_TIME = 25 * 60 * 1000;
 var BREAK_TIME = 5 * 60 * 1000;
 var CLICK_TIME = 10 * 60 * 1000;
 
@@ -18,6 +18,16 @@ var currentView;
 $(document).ready(function(){
 	db = new TAFFY();
 	db.store("ever365.pomodoro");
+	
+	if(localStorage) {
+		if (localStorage.getItem("workTime")!=null) {
+			WORK_TIME = parseInt(localStorage.getItem("workTime")) * 60 * 1000;
+		}
+		if (localStorage.getItem("breakTime")!=null) {
+			BREAK_TIME = parseInt(localStorage.getItem("breakTime")) * 60 * 1000;
+		}
+	}
+	
 	
 	displayAll();
 	var running = getRunningDuration();
