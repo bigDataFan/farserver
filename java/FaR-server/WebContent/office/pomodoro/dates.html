@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>每日统计</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="js/datepicker.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+
+
+<script type="text/javascript" src="js/lang/cn.js"></script>
+<script type="text/javascript" src="js/datepicker.js"></script>
+
+<script type="text/javascript">
+
+var weekday=new Array();
+weekday[0]="周日";
+weekday[1]="周一";
+weekday[2]="周二";
+weekday[3]="周三";
+weekday[4]="周四";
+weekday[5]="周五";
+weekday[6]="周六";
+
+var db = new TAFFY();
+
+$(document).ready(function(){
+	db.store("ever365.pomodoro");
+	var now = new Date();
+	
+	
+	/*
+	var i = 0;
+	while(i<30) {
+		var dd = new Date(now - i*24*60*60*1000);
+		var dx = formateDate(dd); 
+		
+		var cloned = $('#todos').find('li.hidden').clone();
+		cloned.removeClass('hidden');
+		
+		if (dd.getUTCDay()==0 || dd.getUTCDay()==6) {
+			cloned.addClass('checked');
+		}
+		
+		cloned.find('div.title-info').html(dx);
+		
+		
+		if (pomodoroByDate[dx]==null) {
+		} else {
+			cloned.find('span.tomatoes').html(pomodoroByDate[dx]);
+		}
+		$('#todos').append(cloned);
+		i ++;
+	}
+	
+	*/
+	   var opts = {                            
+               formElements:{"dp-de2":"d-sl-m-sl-Y"},
+               showWeeks:true,
+               //statusFormat:"l-cc-sp-d-sp-F-sp-Y",
+               staticPos:true,
+               
+               //callbacks:{"dateset":[onMonthChange]},
+               //highlightDays:[1,1,0,0,0,0,0],
+               finalOpacity:90                  
+               };           
+
+       datePickerController.createDatePicker(opts);
+
+       //$('td.cd-20120409').addClass('number-1');
+       displayForMonth(now.getFullYear(), now.getMonth());
+       
+});
+
+function formateTime(date) {
+	return (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + ((date.getMinutes()<10)?("0"+date.getMinutes()):date.getMinutes());
+}
+
+function formateDate(date) {
+	return date.getFullYear() + ((date.getMonth()+1<10)?('0'+(date.getMonth()+1)):(date.getMonth()+1)) + ((date.getDate()<10)?('0'+date.getDate()):date.getDate());
+}
+
+function displayForMonth(year, month) {
+	var pomodoroByDate = {};
+	
+	var month1 = new Date(year,month,1,0,0,0);
+	var month2 = new Date(year,month,31,23,59,59);
+	
+	db({type:"todos",created:{gte:month1.getTime(),lt:month2.getTime()}}).each(
+			function (record,recordnumber) {
+				if (record.pomodoroes) {
+					for(var i=0; i<record.pomodoroes.length; i++) {
+						var t = new Date(parseInt(record.pomodoroes[i].split("-")[1]));
+						var f = formateDate(t);
+						if (pomodoroByDate[f]==null) {
+							pomodoroByDate[f] = 1;
+						} else {
+							pomodoroByDate[f]++;
+						}
+					}
+				}
+			}
+	);
+	
+	for(var d in pomodoroByDate) {
+		 $('td.cd-' + d).addClass('number-' + pomodoroByDate[d]);
+	}
+}
+
+</script>
+
+</head>
+<body>
+	<div id="header-wrapper">
+		<div id="header">
+			<!--  <a id="lumosity-logo">a</a>-->
+			<ul class="header-nav-ul">
+				<li><a id="btn-rename" href="config.html"  class="header-btn" >返回</a></li>
+			</ul>
+		</div>
+		
+		<div id="message">
+		</div>
+	</div>
+
+	<div id="content-wrapper">
+		<input type="text" id="dp-de2" name="dt" style="display:none" class="dateformat-d-sl-m-sl-Y display-inline cb_dateselect_showEnglishDate" value="" />
+	</div>
+	
+</body>
+</html>

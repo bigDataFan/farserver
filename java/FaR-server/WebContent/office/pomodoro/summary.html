@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>时间统计</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var db = new TAFFY();
+	db.store("ever365.pomodoro");
+	db({type:"todos"}).order("created").each(
+			function (record,recordnumber) {
+				var cloned = $('#todos li.hidden').clone();
+				cloned.removeClass("hidden");
+				
+				cloned.find('div.title-info').html(record.title);
+				cloned.find('span.star').html(formateDate(new Date(record.created)) );
+				
+				if (record.finishTime) {
+					cloned.find('span.ok').html(formateDate(new Date(record.finishTime)));
+					cloned.find('span.onway').hide();
+				} else {
+					cloned.find('span.ok').hide();
+				}
+				
+				if (record.pomodoroes) {
+					cloned.find("span.tomatoes").html(record.pomodoroes.length);
+				}
+				if (record.quotes) {
+					cloned.find("span.quotes").html(record.quotes.length);
+				}
+				
+				$('#todos').prepend(cloned);
+			}
+	);
+});
+
+function formateTime(date) {
+	return (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + ((date.getMinutes()<10)?("0"+date.getMinutes()):date.getMinutes());
+}
+
+function formateDate(date) {
+	return (date.getMonth()+1) + "-" + ((date.getDate()<10)?('0'+date.getDate()):date.getDate());
+}
+</script>
+
+</head>
+<body>
+	<div id="header-wrapper">
+		<div id="header">
+			<!--  <a id="lumosity-logo">a</a>-->
+			<ul class="header-nav-ul">
+				<li><a id="btn-rename" class="header-btn" href="config.html">返回</a></li>
+				
+			</ul>
+		</div>
+		
+		<div id="message">
+		</div>
+	</div>
+
+	<div id="content-wrapper">
+		<div id="task-list">
+				<div class="title">任务列表</div>
+				
+				<ul id="todos">
+					<li class="task hidden" >
+						<div class="title-info"></div>
+						<div class="icon-info" >
+							<span class="ok"></span>
+							<span class="onway"></span>
+							<span class="star"></span>
+							<span class="tomatoes">0</span>
+							<span class="quotes">0</span>
+						</div>
+						
+					</li>
+				</ul>
+		</div>
+	</div>
+</body>
+</html>
