@@ -9,7 +9,7 @@
 <script type="text/javascript" src="js/taffy-min.js"></script>
 
 <script type="text/javascript">
-var BIND="touchstart";
+var BIND="click";
 </script>
 <script type="text/javascript" src="code.js"></script>
 </head>
@@ -18,13 +18,13 @@ var BIND="touchstart";
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" class="header-btn" href="#" ontouchstart="openRename()">修改名称</a></li>
-				<li><a id="btn-remove" class="header-btn"  href="#" ontouchstart="removeCurrent()">删除</a><li>
-				<li><a id="btn-finished" class="header-btn"  href="#" ontouchstart="finishCurrent()">完成</a><li>
-				<li><a id="btn-unfinished" class="header-btn"  href="#" ontouchstart="unfinishCurrent()">设为未完成</a><li>
-				<li><a id="btn-setTodo" class="header-btn"  href="#" ontouchstart="setAsTodo()">设置为任务</a><li>
+				<li><a id="btn-rename" class="header-btn" href="#" onclick="openRename()">修改</a></li>
+				<li><a id="btn-remove" class="header-btn"  href="#" onclick="removeCurrent()">删除</a><li>
+				<li><a id="btn-finished" class="header-btn"  href="#" onclick="finishCurrent()">完成</a><li>
+				<li><a id="btn-unfinished" class="header-btn"  href="#" onclick="unfinishCurrent()">未完成</a><li>
+				<li><a id="btn-setTodo" class="header-btn"  href="#" onclick="setAsTodo()">添到任务</a><li>
 			</ul>
-			<div id="btn-config" class="right" style="padding-right: 8px;padding-top: 4px;"><a ontouchstart="location.href='config.html'" ><img src="images/info.png"></a></div>
+			<div id="btn-config" class="right" style="padding-right: 8px;padding-top: 4px;"><a onclick="location.href='config.html'" ><img src="images/info.png"></a></div>
 		</div>
 		
 		<div id="message">
@@ -42,10 +42,10 @@ var BIND="touchstart";
 			
 			<div class="operations">
 				<a id="btn-knowabout" href="about.html">了解什么是番茄工作法</a>
-				<a id="btn-stop" ontouchstart="stop()" class="btn-a">停止</a>  
-				<a id="btn-start" ontouchstart="start()" class="btn-a">启动</a>
-				<a id="btn-break" ontouchstart="breaks()" class="btn-a">休息</a>
-				<a id="btn-break-stop" ontouchstart="finishBreak()" class="btn-a">结束休息</a>
+				<a id="btn-stop" onclick="stop()" class="btn-a">停止</a>  
+				<a id="btn-start" onclick="start()" class="btn-a">启动</a>
+				<a id="btn-break" onclick="breaks()" class="btn-a">休息</a>
+				<a id="btn-break-stop" onclick="finishBreak()" class="btn-a">结束休息</a>
 			</div>
 		</div>
 		
@@ -55,7 +55,7 @@ var BIND="touchstart";
 			</div>
 			
 			<div class="upper-title hidden" id="breaks-title">
-				打断事件
+				打断事件 
 			</div>
 			
 			<div class="upper-title hidden" id="plans-title">
@@ -66,18 +66,28 @@ var BIND="touchstart";
 				修改名称
 			</div>
 			
-			
 			<div class="big-infos">
 				<input class="new-input" id="txtinput" size="18" type="text">
 			</div>
+			<div class="extras" id="todos-extra">
+				预计番茄 <input type="number" id="predicted" size="4" value="8" style="width: 4em;">个
+			</div>
 			
+			<div class="extras" id="breaks-extra">
+				<select id="breaks-opts">
+					<option value="out">来自外部打断</option>
+					<option value="inner">自身因素中断</option>
+				</select>
+			</div>
+			
+
 			<div class="operations">
-				<a class="btn-a"  ontouchstart="saveOrUpdate()">保存</a> <a class="btn-a" ontouchstart="closeEdit()">关闭</a>
+				<a class="btn-a"  onclick="saveOrUpdate()">保存</a> <a class="btn-a" onclick="closeEdit()">关闭</a>
 			</div>
 		</div>
 		
 		<div id="task-list">
-			<div class="title" ontouchstart="showList('todos')">今日任务 <div id="todos-add" class="add" ontouchstart="showAdd('todos')"><a href="#"></a></div> </div>
+			<div class="title" onclick="showList('todos')">今日任务 <div id="todos-add" class="add" onclick="showAdd('todos')"><a href="#"></a></div> </div>
 			
 			<ul id="todos">
 			<!-- 
@@ -88,13 +98,13 @@ var BIND="touchstart";
 				<li class="task hidden">
 					<div class="title-info">整理手工的页面</div>
 					<div class="icon-info">
-						<span class="tomatoes">0</span>
+						<span class="tomatoes">0</span>/<span class="predicttomatoes">8</span>
 						<span class="quotes">0</span>
 					</div>
 				</li>
 			</ul>
 						
-			<div class="title" ontouchstart="showList('breaks')">被打断列表 <div id="breaks-add" ontouchstart="showAdd('breaks')"  class="add hidden"><a href="#"></a></div> </div>
+			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')"  class="add hidden"><a href="#"></a></div> </div>
 			
 			<ul id="breaks" class="hidden">
 			<!-- 
@@ -104,7 +114,7 @@ var BIND="touchstart";
 			-->
 			</ul>
 			
-			<div class="title" ontouchstart="showList('plans')">未来计划 <div id="plans-add" class="add hidden" ontouchstart="showAdd('plans')"><a href="#"></a></div> </div>
+			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add hidden" onclick="showAdd('plans')"><a href="#"></a></div> </div>
 			
 			
 			<ul id="plans" class="hidden"> 
