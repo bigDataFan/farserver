@@ -133,8 +133,8 @@ div.center-dialog {
 	padding: 0 !important;
 	border-radius: 5px;
 	width:310px;
-	top:-155px;
-	height: 155px;
+	top:-180px;
+	height: 225px;
 }
 
 #timer {
@@ -166,6 +166,23 @@ div.center-dialog {
 	border-bottom: 1px solid #CCC;
 }
 
+.extras {
+	display:none;
+	text-align: left;
+	padding: 1em;
+	font-size: 1.2em;
+	background-color: #EDF6F9;
+	border-top: 0;
+	border-bottom: 1px solid #CCC;
+}
+
+.extras input {
+	font-size:1em;
+	border-radius: 5px;
+	border:1px solid #ccc;
+}
+
+
 .operations {
 	margin-top: 8px;
 }
@@ -177,6 +194,8 @@ div.center-dialog {
 
 .new-input {
 	font-size: 1em;
+	border-radius: 5px;
+	border:1px solid #ccc;
 }
 
 
@@ -201,8 +220,7 @@ div.center-dialog {
 	margin-top: 10px;
 }
 
-
-.btn-a, .btn-a:hover {
+.btn-a {
 	font-weight:bold;
 	border: 1px solid  #62AC44;
 	background: #62AC44;
@@ -219,6 +237,9 @@ div.center-dialog {
 	margin-right: 10px;
 	text-shadow: 0 -1px 0 #62AC44;
 	cursor: pointer;
+}
+.btn-a:hover {
+	color: white;
 }
 
 #task-list {

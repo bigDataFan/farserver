@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>每日概括</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+
+<style type="text/css">
+
+
+div.grid {
+	margin-top:5px;
+	float: left;
+	width: 20px;
+	background: white;
+}
+
+div.grid div {
+	
+}
+
+div.yesterday {
+	margin-top:5px;
+	float: left;
+	width: 140px;
+	background: white;
+}
+
+div.today {
+	margin-top:5px;
+	float: left;
+	margin-left:10px;
+	width: 140px;
+	background: white;
+}
+
+div.date {
+	border: 1px solid #E0E4CC;
+	border-left: 5px solid #FA6900;
+	text-transform: uppercase;
+	padding: 5px;
+	font-weight: bold;
+	font-size: 1.2em;
+	color: #2181A9;
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+	<div id="header-wrapper">
+		<div id="header">
+			<!--  <a id="lumosity-logo">a</a>-->
+			<ul class="header-nav-ul">
+				<li><a id="btn-rename" class="header-btn" onclick='location.href="index.html"'>返回</a></li>
+				<li><a id="btn-rename" class="header-btn" onclick='location.href="index.html"'>前一日</a></li>
+				<li><a id="btn-rename" class="header-btn" onclick='location.href="index.html"'>后一日</a></li>
+			</ul>
+		</div>
+		
+		<div id="message">
+		</div>
+	</div>
+
+	<div id="content-wrapper">
+		
+		<div class="grid">
+			<div>0</div>
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+		</div>
+		
+		<div class="yesterday">
+			<div class="date">2011-2-2</div>
+			<div>
+				
+			</div>
+		</div>
+		
+		<div class="today">
+			<div class="date">2011-2-3</div>
+		</div>
+		
+	</div>
+
+
+
+</body>
+</html>
