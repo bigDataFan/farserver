@@ -32,6 +32,8 @@ $(document).ready(function(){
 	displayAll();
 	var running = getRunningDuration();
 	
+	
+	//$('#new-dialog').hide();
 	$('#header .header-btn').hide();
 	
 	if (running>0) {
@@ -155,7 +157,7 @@ function checkAndFill() {
 
 function start() {
 	$('#header .header-btn').hide();
-	$('#btn-config').show();
+	//$('#btn-config').show();
 	var data = $('#timer').data('data');
 	$('#timer').data("running", data);
 	$('#btn-start').hide();
@@ -214,7 +216,6 @@ function getPomodoro() {
 			setBreakStart(now);
 			saveObject(data);
 		}
-		
 		$('#' + data.___id).find("span.tomatoes").html(data.pomodoroes.length);
 	}
 }
@@ -268,7 +269,7 @@ function showList(name) {
 	}
 	$('li.checked').removeClass('checked');
 	$('#header .header-btn').hide();
-	$('#btn-config').show();
+	//$('#btn-config').show();
 	
 	$('#task-list div.title div.add').hide();
 	$('#task-list ul').slideUp(500);
@@ -279,6 +280,10 @@ function showList(name) {
 }
 
 function saveOrUpdate() {
+	if ($('#txtinput').val()=="") {
+		showMessage("请输入一些内容", 4000);
+		return;
+	}
 	var object = $('#new-dialog').data('data');
 	if (object==null) {
 		object = {};
@@ -290,10 +295,19 @@ function saveOrUpdate() {
 	object.type = type;
 	
 	if (type=="todos") {
+		object.predicted = $('#predicted').val();
 		saveObject(object);
 		if ($('#' + object.___id).length==1) {
 			$('#' + object.___id + " div.title-info").html(object.title);
 			$('#timer div.upper-title').html(object.title);
+			
+			$('#' + object.___id).find('span.predicttomatoes').html(object.predicted);
+			
+			if (object.pomodoroes) {
+				$('#' + object.___id).find("span.tomatoes").html(object.pomodoroes.length);
+			} else {
+				$('#' + object.___id).find("span.tomatoes").html("0");
+			}
 		} else {
 			drawTodos(object);
 		}
@@ -311,6 +325,7 @@ function saveOrUpdate() {
 			saveObject(runningData);
 		}
 		var d = new Date();
+		object.from = $('#breaks-opts').val();
 		object.date = formateDate(d);
 		saveObject(object);
 		
@@ -326,12 +341,23 @@ function saveOrUpdate() {
 
 function openRename() {
 	$('#new-dialog .upper-title').hide();
+	$('#new-dialog .extras').hide();
 	
 	var data = $('li.checked').data('data');
 	
 	if (data!=null) {
 		$('#rename-title').show();
+		
+		$('#' + data.type + "-extra").show();
+		
 		$('#txtinput').val(data.title);
+		
+		if (data.type=="todos") {
+			if (!isNaN(data.predicted)) {
+				$('#predicted').val(data.predicted);
+			}
+		}
+		
 		$('#new-dialog').data("data", data);
 		uiShowEdit();
 	}
@@ -345,7 +371,7 @@ function removeCurrent() {
 		viewFree();
 	}
 	$('.header-btn').hide();
-	$('#btn-config').show();
+	//$('#btn-config').show();
 	if (data!=null) {
 		db(data.___id).remove(true);
 		$('#' + data.___id).remove();
@@ -402,7 +428,7 @@ function drawBreaks(object) {
 		li.attr("id", object.___id);
 		li.data("data", object);
 		li.bind(BIND, function(){
-			$('#btn-config').hide();
+			//$('#btn-config').hide();
 			$('li.checked').removeClass('checked');
 			$(this).addClass('checked');
 			$('#btn-rename, #btn-remove').show();
@@ -424,7 +450,7 @@ function drawPlans(object) {
 		li.bind(BIND, function(){
 			$('li.checked').removeClass('checked');
 			$(this).addClass('checked');
-			$('#btn-config').hide();
+			//$('#btn-config').hide();
 			$('#btn-rename, #btn-remove, #btn-setTodo').show();
 		});
 		
@@ -440,8 +466,11 @@ function drawTodos(object) {
 	$('#todos').append(cloned);
 	cloned.find('div.title-info').html(object.title);
 	cloned.attr("id", object.___id);
+	cloned.find('span.predicttomatoes').html(object.predicted?object.predicted:"8");
 	if (object.pomodoroes) {
 		cloned.find("span.tomatoes").html(object.pomodoroes.length);
+	} else {
+		cloned.find("span.tomatoes").html("0");
 	}
 	if (object.quotes) {
 		cloned.find("span.quotes").html(object.quotes.length);
@@ -453,14 +482,12 @@ function drawTodos(object) {
 	
 	cloned.data("data", object);
 	
-	
 	cloned.bind(BIND, onTodoItemClick);
-	
 	//cloned.click();
 }
 
 function onTodoItemClick() {
-	$('#btn-config').hide();
+	//$('#btn-config').hide();
 	var todo = $(this).data("data");
 	$('li.checked').removeClass('checked');
 	$(this).addClass('checked');
@@ -545,24 +572,26 @@ function saveObject(data) {
 }
 
 function showAdd(name) {
-	
+	$('#new-dialog .upper-title').hide();
+	$('#new-dialog .extras').hide();
 	if (name=="breaks") {
 		if (currentView==VIEW_RUNNING) {
-			$('#new-dialog .upper-title').hide();
 			$('#' + name + "-title").show();
+			$('#' + name + "-extra").show();
 			uiShowEdit();
 		} else {
 			showMessage("当您开始番茄时间后，才能记录中断", 3000);
 		}
 	} else {
-		$('#new-dialog .upper-title').hide();
 		$('#' + name + "-title").show();
+		$('#' + name + "-extra").show();
 		uiShowEdit();
 	}
 }
 
 
 function uiShowEdit() {
+	$('#new-dialog').show();
 	$('#new-dialog').animate({
 	    top: 51
 	  }, 500, function() {
@@ -573,7 +602,7 @@ function closeEdit() {
 	$('#new-dialog').data('data', null);
 	
 	$('#new-dialog').animate({
-	    top: -140
+	    top: -180
 	  }, 500, function() {
 		  $('#txtinput').val('');
 		  //$('#txtinput').hide();

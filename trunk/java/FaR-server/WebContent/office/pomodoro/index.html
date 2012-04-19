@@ -5,7 +5,7 @@
 <title>番茄工作法</title>
 
 <link href="style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/taffy-min.js"></script>
 
 <script type="text/javascript">
@@ -18,11 +18,11 @@ var BIND="click";
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" class="header-btn" href="#" onclick="openRename()">修改名称</a></li>
+				<li><a id="btn-rename" class="header-btn" href="#" onclick="openRename()">修改</a></li>
 				<li><a id="btn-remove" class="header-btn"  href="#" onclick="removeCurrent()">删除</a><li>
 				<li><a id="btn-finished" class="header-btn"  href="#" onclick="finishCurrent()">完成</a><li>
-				<li><a id="btn-unfinished" class="header-btn"  href="#" onclick="unfinishCurrent()">设为未完成</a><li>
-				<li><a id="btn-setTodo" class="header-btn"  href="#" onclick="setAsTodo()">设置为任务</a><li>
+				<li><a id="btn-unfinished" class="header-btn"  href="#" onclick="unfinishCurrent()">未完成</a><li>
+				<li><a id="btn-setTodo" class="header-btn"  href="#" onclick="setAsTodo()">添到任务</a><li>
 			</ul>
 			<div id="btn-config" class="right" style="padding-right: 8px;padding-top: 4px;"><a onclick="location.href='config.html'" ><img src="images/info.png"></a></div>
 		</div>
@@ -55,7 +55,7 @@ var BIND="click";
 			</div>
 			
 			<div class="upper-title hidden" id="breaks-title">
-				打断事件
+				打断事件 
 			</div>
 			
 			<div class="upper-title hidden" id="plans-title">
@@ -66,11 +66,21 @@ var BIND="click";
 				修改名称
 			</div>
 			
-			
 			<div class="big-infos">
 				<input class="new-input" id="txtinput" size="18" type="text">
 			</div>
+			<div class="extras" id="todos-extra">
+				预计番茄 <input type="number" id="predicted" size="4" value="8" style="width: 4em;">个
+			</div>
 			
+			<div class="extras" id="breaks-extra">
+				<select id="breaks-opts">
+					<option value="out">来自外部打断</option>
+					<option value="inner">自身因素中断</option>
+				</select>
+			</div>
+			
+
 			<div class="operations">
 				<a class="btn-a"  onclick="saveOrUpdate()">保存</a> <a class="btn-a" onclick="closeEdit()">关闭</a>
 			</div>
@@ -88,7 +98,7 @@ var BIND="click";
 				<li class="task hidden">
 					<div class="title-info">整理手工的页面</div>
 					<div class="icon-info">
-						<span class="tomatoes">0</span>
+						<span class="tomatoes">0</span>/<span class="predicttomatoes">8</span>
 						<span class="quotes">0</span>
 					</div>
 				</li>
