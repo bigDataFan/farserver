@@ -5,7 +5,7 @@
 <title>每日统计</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link href="js/datepicker.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/taffy-min.js"></script>
 
 
@@ -108,6 +108,9 @@ function displayForMonth(year, month) {
 	}
 }
 
+function goConfig() {
+	location.href = "config.html";
+}
 </script>
 
 </head>
@@ -116,7 +119,7 @@ function displayForMonth(year, month) {
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" href="config.html"  class="header-btn" >返回</a></li>
+				<li><a id="btn-rename" href="#" onclick="goConfig()" class="header-btn" >返回</a></li>
 			</ul>
 		</div>
 		
