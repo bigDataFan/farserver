@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>每日情况概要</title>
+
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+
+
+<style type="text/css">
+
+table {
+	border-collapse: collapse;
+	margin-top:8px;
+	border: 1px solid #CCC;
+	border-radius: 8px 8px 0 0;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	overflow: hidden;
+	padding: 0px;
+}
+
+td,th {
+	padding: 4px 0px 4px 0px;
+}
+
+th {
+	background:url("images/th.png") repeat-x;
+	border-bottom: 1px solid #ccc;
+	
+}
+
+td.date {
+	border-right: 1px solid #ccc;
+}
+
+tr.info td {
+	text-align: center;
+	background:white;
+	border-bottom: 1px solid #ccc;
+}
+
+</style>
+<script type="text/javascript">
+
+$(document).ready(function(){
+	var db = new TAFFY();
+	db.store("ever365.pomodoro");
+	
+	var pomodoroByDate = {};
+	var breaksByDate = {};
+	var todosByDate = {};
+	
+	db().order("created desc").each(
+		function (record,recordnumber) {
+			var date = formateDate(new Date(record.created));
+			
+			if ($('#tr-'+date).length==0) {
+				$('#content-table').append(
+					'<tr id="tr-' + date + '" class="info"><td class="date">' + date + '</td><td class="tasks">0</td><td class="porodomo">0</td><td class="breaks">0</td></tr>'		
+				);
+			}
+			
+			if (record.type=="todos") {
+				if (todosByDate[date]==null) {
+					todosByDate[date] = 1;
+				} else {
+					todosByDate[date] ++;
+				}
+			}
+			
+			if (record.pomodoroes) {
+				for(var i=0; i<record.pomodoroes.length; i++) {
+					var t = new Date(parseInt(record.pomodoroes[i].split("-")[1]));
+					var f = formateDate(t);
+					if (pomodoroByDate[f]==null) {
+						pomodoroByDate[f] = 1;
+					} else {
+						pomodoroByDate[f]++;
+					}
+				}
+			}
+			
+			if (record.type=="breaks") {
+				if (breaksByDate[date]==null) {
+					breaksByDate[date] = 1;
+				} else {
+					breaksByDate[date] ++;
+				}
+			}
+		}
+	);
+	
+	for(var d in pomodoroByDate) {
+		 $('#tr-' + d).find('td.porodomo').html(pomodoroByDate[d]);
+	}
+	
+	for(var d in todosByDate) {
+		 $('#tr-' + d).find('td.tasks').html(todosByDate[d]);
+	}
+	
+	for(var d in breaksByDate) {
+		 $('#tr-' + d).find('td.breaks').html(breaksByDate[d]);
+	}
+});
+
+
+function formateDate(date) {
+	return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + ((date.getDate()<10)?('0'+date.getDate()):date.getDate());
+}
+
+
+</script>
+
+</head>
+<body>
+
+
+<div id="header-wrapper">
+		<div id="header">
+			<!--  <a id="lumosity-logo">a</a>-->
+			<ul class="header-nav-ul">
+				<li><a id="btn-rename" ontouchstart="javascript:location.href='config.html'"  class="header-btn" >返回</a></li>
+			</ul>
+		</div>
+		
+		<div id="message">
+		</div>
+	</div>
+
+	<div id="content-wrapper">
+		<table  id="content-table" width="100%">
+			<tr>
+				<th width="40%">日期</th>
+				<th width="20%">任务</th>
+				<th width="20%">番茄</th>
+				<th width="20%">中断</th>
+			</tr>
+		</table>
+	</div>
+	
+	
+</body>
+</html>
