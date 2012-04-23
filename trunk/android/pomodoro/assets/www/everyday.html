@@ -111,6 +111,9 @@ function formateDate(date) {
 	return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + ((date.getDate()<10)?('0'+date.getDate()):date.getDate());
 }
 
+function goConfig() {
+	location.href = "config.html";
+}
 
 </script>
 
@@ -122,7 +125,7 @@ function formateDate(date) {
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" ontouchstart="javascript:location.href='config.html'"  class="header-btn" >返回</a></li>
+				<li><a id="btn-rename" href="#" ontouchstart="goConfig()" class="header-btn" >返回</a></li>
 			</ul>
 		</div>
 		

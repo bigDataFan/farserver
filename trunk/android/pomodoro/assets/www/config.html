@@ -34,6 +34,22 @@ function saveTimeConfig() {
 	
 	alert("配置已经保存");
 }
+
+function goHome() {
+	location.href='index.html';
+}
+
+function goDates() {
+	location.href = "dates.html";
+}
+
+function goEveryday() {
+	location.href = "everyday.html";
+}
+
+function goSummary() {
+	location.href = "summary.html";
+}
 </script>
 
 </head>
@@ -42,7 +58,7 @@ function saveTimeConfig() {
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" class="header-btn" onclick='location.href="index.html"'>返回</a></li>
+				<li><a id="btn-rename" class="header-btn" href="#" ontouchstart="goHome()">返回</a></li>
 			</ul>
 		</div>
 		
@@ -57,14 +73,14 @@ function saveTimeConfig() {
 				
 				<ul id="todos">
 					<li class="task" >
-						<a href="dates.html">番茄日历</a>
+						<a href="" ontouchstart="goDates()">番茄日历</a>
 					</li>
 					<li class="task" >
-						<a href="everyday.html">概要表格</a>
+						<a href="#" ontouchstart="goEveryday()">概要表格</a>
 					</li>
 					
 					<li class="task" >
-						<a href="summary.html">任务情况及获得的番茄</a>
+						<a href="#" ontouchstart="goSummary()">任务情况及获得的番茄</a>
 					</li>
 				</ul>
 				
