@@ -15,7 +15,7 @@ var worknfightImages = [
     {id:"cloudnear", url:'images/nube1.png'},
     {id:"cloudfar", url:'images/nubefondo2.png'},
     {id:"extras", url:'images/nums40-bg.png'},
-    {id:"btnstartLevel", url:'images/startLevel.png'},
+    {id:"btnstartLevel", url:'images/start.png'},
     {id:"btnEmpty", url:'images/btnEmpty.png'},
     {id:"chessbg", url:'images/chessbg320.png'},
     {id:"returnmenu", url:'images/progresive.png'},
