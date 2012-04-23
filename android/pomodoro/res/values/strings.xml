@@ -2,6 +2,6 @@
 <resources>
 
     <string name="hello">Hello World, FruitCatchinActivity!</string>
-    <string name="app_name">番茄时间管理</string>
+    <string name="app_name">番茄工作法</string>
 
 </resources>

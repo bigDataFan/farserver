@@ -108,6 +108,9 @@ function displayForMonth(year, month) {
 	}
 }
 
+function goConfig() {
+	location.href = "config.html";
+}
 </script>
 
 </head>
@@ -116,7 +119,7 @@ function displayForMonth(year, month) {
 		<div id="header">
 			<!--  <a id="lumosity-logo">a</a>-->
 			<ul class="header-nav-ul">
-				<li><a id="btn-rename" ontouchstart="javascript:location.href='config.html'"  class="header-btn" >返回</a></li>
+				<li><a id="btn-rename" href="#" ontouchstart="goConfig()" class="header-btn" >返回</a></li>
 			</ul>
 		</div>
 		
