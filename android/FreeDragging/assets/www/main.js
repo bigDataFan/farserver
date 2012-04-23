@@ -36,32 +36,86 @@ var numberActors = [];
 var numberImages = null;
 var extraImages =  null;
 
+var MODEL_RIDDLE = 0;
+var MODEL_LEVEL = 1
 
 var gamectx = {};
 
-function initGameCtx(leveled) {
+var gameModel;
+
+function initRiddle(t) {
+	
 	calarrays = [
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0]
-	];
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0]
+	     		];
+
+	     	actorsPlaced =
+	     		[
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0],
+	     		[0,0,0,0,0,0,0,0,0,0]
+	     		];
+	gameModel = MODEL_RIDDLE;
+	calarrays = riddles[t];
+	for ( var i = 0; i < calarrays.length; i++) {
+		for ( var j = 0; j < calarrays[i].length; j++) {
+			if (calarrays[i][j]!=0) {
+				var vy = calarrays[i][j];
+				var vx = Math.floor(Math.random()*9);
+				var actor= new CAAT.Actor()
+				.setBackgroundImage(numberImages.getRef(),true)
+				.setSpriteIndex((vx*9) + (vy-1))
+				.setPosition(i * numberImages.singleWidth , j * numberImages.singleHeight);
+				calarrays[i][j] = vx + "-" + vy;
+				actor.mouseDown = actorMouseDown;
+				squareContainer.addChild(actor);
+				actorsPlaced[i][j] = actor;
+			} 
+		}
+	}
+	
+	numbers = riddlesRemains[t];
+	_pushInNumber();
+}
+
+
+
+function initGameCtx(leveled) {
+	gameModel = MODEL_LEVEL;
+	calarrays = [
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0]
+		];
 
 	actorsPlaced =
-	[
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0],
-	[0,0,0,0,0,0,0,0,0,0]
-	];
+		[
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0]
+		];
 
 	placed = 0;
 	if (leveled) {
@@ -77,14 +131,43 @@ function initGameCtx(leveled) {
 }
 
 function goNextLevel() {
-	gamectx.level ++;
-	levelInfo.setText(gamectx.level + "级");
-	gamectx.remains = getLevelBlocks(gamectx.level);
 	
-	for ( var i = 0; i < 6; i++) {
-		putInQueue();
+	if (gameModel==MODEL_LEVEL) {
+		gamectx.level ++;
+		levelInfo.setText(gamectx.level + "级");
+		gamectx.remains = getLevelBlocks(gamectx.level);
+		
+		for ( var i = 0; i < 7; i++) {
+			putInQueue();
+		}
+		
+		
+		if (gamectx.level>1) {
+			for ( var i = 0; i < gamectx.level; i++) {
+				placeRandomNumber();
+			}
+		}
+		_pushInNumber();
 	}
-	_pushInNumber();
+	
+	if (gameModel==MODEL_RIDDLE) {
+		var finished = true;
+		for ( var i = 0; i < calarrays.length; i++) {
+			for ( var j = 0; j < calarrays[i].length; j++) {
+				if (calarrays[i][j]!=0) {
+					finished = false;
+					break;
+				} 
+			}
+		}
+		
+		if(finished) {
+			alert("finished");
+			initRiddle(1);
+		} else {
+			alert("remains");
+		}
+	}
 }
 
 function boot() {
@@ -120,7 +203,7 @@ function initStartScene() {
 	startContainer.setBackgroundImage(bgimage.getRef(), true);//.setBackgroundImageOffset(-300,-1200);
 	
 	var btnStartLevelImg = new CAAT.SpriteImage().
-	initialize(director.getImage('btnstartLevel'), 1, 1);
+	initialize(director.getImage('btnstartLevel'), 4, 2);
 
 	var logoImg = new CAAT.SpriteImage().
 	initialize(director.getImage('logo'), 1, 1);
@@ -130,17 +213,17 @@ function initStartScene() {
 	
 	
 	var logoActor= new CAAT.Actor().setBackgroundImage(logoImg.getRef(), true)
-		.setLocation(width/2-120,50);
+		.setLocation(width/2-145,50);
 	startContainer.addChild(logoActor);
 	
 	var b1= new CAAT.Actor()
 		.setAsButton(
-					btnStartLevelImg.getRef(), 0, 0, 0, 0, onGameStartClicked
-	     ).setLocation(width/2-80,height/2-60);
+					btnStartLevelImg.getRef(), 0, 0, 1, 1, onGameStartClicked
+	     ).setLocation(width/2-85,height/2);
 	startContainer.addChild(b1);
 	
 	var b2= new CAAT.Actor()
-		.setAsButton(btnEmptyImg.getRef(), 0, 0, 0, 0, onCrazyStartClicked
+		.setAsButton(btnStartLevelImg.getRef(), 2, 2, 3, 3, onCrazyStartClicked
 			).setLocation(width/2-80, height/2+60);
 	startContainer.addChild(b2);
 }
@@ -153,6 +236,8 @@ function onGameStartClicked(button) {
 
 function onCrazyStartClicked(button) {
 	initLevelsScene();
+	
+	initRiddle(0);
 	director.setScene(director.getSceneIndex(mapScene));
 }
 
@@ -192,6 +277,7 @@ function initLevelsScene() {
 	flyNearCloud('cloudnear', 1, mapContainer);
 	
 	
+	/*
 	var animalsImg= new CAAT.SpriteImage().
 	initialize(director.getImage('animals'), 1, 1);
 	
@@ -199,6 +285,8 @@ function initLevelsScene() {
 	setBackgroundImage(animalsImg.getRef(), true).
 	setLocation(55, 50);
 	mapContainer.addChild(animals);
+	*/
+	
 	
 	levelInfo = new CAAT.TextActor().
 	setFont("20px sans-serif").
@@ -495,22 +583,22 @@ function onBoadClicked(me) {
 
 /**根据等级等信息 随机生成下一个方块*/
 function generateNextBlock() {
-	gamectx.remains --;
 	
-	if (Math.random() < getLevelRand(gamectx.level)) {
-		var n = getLevelNumber(gamectx.level);
-		for ( var i = 0; i < n; i++) {
-			placeRandomNumber();
-		}
-	}
-	
-	if (gamectx.remains<=6) {
+	if (gameModel==MODEL_LEVEL) {
+		gamectx.remains --;
 		
-	} else {
-		putInQueue();
+		if (gamectx.remains<=7) {
+			
+		} else {
+			putInQueue();
+		}
+		_pushInNumber();
 	}
 	
-	_pushInNumber();
+	if (gameModel==MODEL_RIDDLE) {
+		_pushInNumber();
+	}
+	
 }
 
 function putInQueue() {
@@ -753,7 +841,7 @@ function _createAndFly(actor, pos) {
 		}
 		var path= new CAAT.LinearPath()
 		.setInitialPosition(width, -45)
-		.setFinalPosition(110 + pos*(numberImages.singleWidth), -45);
+		.setFinalPosition(60 + pos*(numberImages.singleWidth), -45);
 		
 		var pb = new CAAT.PathBehavior()
 		.setPath(path)
@@ -768,13 +856,13 @@ function _createAndFly(actor, pos) {
                  	});
 		
 		actor.addBehavior(pb);
-		actor.setPosition(110 + pos*(numberImages.singleWidth), -45);
+		actor.setPosition(60 + pos*(numberImages.singleWidth), -45);
 		squareContainer.addChild(actor);
 		actor.mouseDown = actorMouseDown;
 	} else {
 		var path= new CAAT.LinearPath()
 	    .setInitialPosition(actor.x,-45)
-	    .setFinalPosition(110 + pos*(numberImages.singleWidth), -45);
+	    .setFinalPosition(60 + pos*(numberImages.singleWidth), -45);
 		var pb = new CAAT.PathBehavior()
         .setPath(path)
         .setFrameTime(squareContainer.time, 500)
@@ -789,7 +877,7 @@ function _createAndFly(actor, pos) {
 
 		actor.addBehavior(pb);
 		
-		actor.setPosition(110 + pos*(numberImages.singleWidth), -45);
+		actor.setPosition(60 + pos*(numberImages.singleWidth), -45);
 	}
 	return actor;
 }
