@@ -73,15 +73,28 @@ function initRiddle(t) {
 		for ( var j = 0; j < calarrays[i].length; j++) {
 			if (calarrays[i][j]!=0) {
 				var vy = calarrays[i][j];
-				var vx = Math.floor(Math.random()*9);
-				var actor= new CAAT.Actor()
-				.setBackgroundImage(numberImages.getRef(),true)
-				.setSpriteIndex((vx*9) + (vy-1))
-				.setPosition(i * numberImages.singleWidth , j * numberImages.singleHeight);
-				calarrays[i][j] = vx + "-" + vy;
-				actor.mouseDown = actorMouseDown;
-				squareContainer.addChild(actor);
-				actorsPlaced[i][j] = actor;
+				
+				if (vy>0) {
+					var vx = Math.floor(Math.random()*9);
+					var actor= new CAAT.Actor()
+					.setBackgroundImage(numberImages.getRef(),true)
+					.setSpriteIndex((vx*9) + (vy-1))
+					.setPosition(i * numberImages.singleWidth , j * numberImages.singleHeight);
+					calarrays[i][j] = vx + "-" + vy;
+					actor.mouseDown = actorMouseDown;
+					squareContainer.addChild(actor);
+					actorsPlaced[i][j] = actor;
+				} else {
+					var actor= new CAAT.Actor()
+					.setBackgroundImage(extraImages.getRef(),true)
+					.setSpriteIndex(2)
+					.setScale(.9, .9)
+					.setPosition(i * numberImages.singleWidth , j * numberImages.singleHeight);
+					actor.mouseDown = actorMouseDown;
+					squareContainer.addChild(actor);
+					calarrays[i][j] = "a-3";
+					actorsPlaced[i][j] = actor;
+				}
 			} 
 		}
 	}
@@ -104,7 +117,6 @@ function initGameCtx(leveled) {
 		[0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0]
 		];
-
 	actorsPlaced =
 		[
 		[0,0,0,0,0,0,0,0,0,0],
@@ -140,8 +152,6 @@ function goNextLevel() {
 		for ( var i = 0; i < 7; i++) {
 			putInQueue();
 		}
-		
-		
 		if (gamectx.level>1) {
 			for ( var i = 0; i < gamectx.level; i++) {
 				placeRandomNumber();
@@ -157,13 +167,12 @@ function goNextLevel() {
 				if (calarrays[i][j]!=0) {
 					finished = false;
 					break;
-				} 
+				}
 			}
 		}
-		
 		if(finished) {
 			alert("finished");
-			initRiddle(1);
+			initRiddle(16);
 		} else {
 			alert("remains");
 		}
@@ -210,7 +219,6 @@ function initStartScene() {
 	
 	var btnEmptyImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnEmpty'), 1, 1);
-	
 	
 	var logoActor= new CAAT.Actor().setBackgroundImage(logoImg.getRef(), true)
 		.setLocation(width/2-145,50);
@@ -454,14 +462,14 @@ function doMoving(me) {
 	          behaviorExpired : function(behavior, time, actor) {
 	        	  actor.setScale(1,1);
 	        	  checkAndRemove(ax,ay);
+	        	  //当移动发生并且执行完检查后，不剩余方块则跳到下一关
+	        	  if (numbers.length==0) {
+	         		  	goNextLevel();
+	      		  }
 	          }
 	      });
 		moving.actor.addBehavior(pb);
 		moving = null;
-		
-		if (numbers.length==0) {
-   		  goNextLevel();
-		}
 	}
 }
 
@@ -753,6 +761,9 @@ function getPosNumber(x, y) {
 	}
 	
 	if (calarrays[x][y]==0) {
+		return -5;
+	}
+	if (calarrays[x][y].charAt(0)=='a') {
 		return -5;
 	}
 	return parseInt(calarrays[x][y].split("-")[1]);
