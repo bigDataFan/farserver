@@ -108,6 +108,7 @@ function initRiddle(t) {
 		}
 	}
 	
+	levelInfo.setText(gamectx.level + "级");
 	numbers = riddlesRemains[t].clone();
 	_pushInNumber();
 }
@@ -183,7 +184,6 @@ function goNextLevel() {
 			showPenddingInfo(true);
 			//initRiddle(30);
 		} else {
-			gamectx.level --;
 			showPenddingInfo(false);
 		}
 	}
@@ -193,9 +193,9 @@ function goNextLevel() {
 function makeUpNextLevel() {
 	if (gameModel==MODEL_LEVEL) {
 		gamectx.level ++;
-		levelInfo.setText(gamectx.level + "级");
-		gamectx.remains = getLevelBlocks(gamectx.level);
 		
+		gamectx.remains = getLevelBlocks(gamectx.level);
+		levelInfo.setText(gamectx.level + "级");
 		for ( var i = 0; i < 7; i++) {
 			putInQueue();
 		}
@@ -209,6 +209,7 @@ function makeUpNextLevel() {
 	
 	if (gameModel==MODEL_RIDDLE) {
 		gamectx.level ++;
+		localStorage.setItem("riddle.level", gamectx.level);
 		initRiddle(gamectx.level);
 	}
 	hidePenddingContainer();
@@ -284,8 +285,12 @@ function onGameStartClicked(button) {
 
 function onCrazyStartClicked(button) {
 	initLevelsScene();
-	gamectx.level = 0;
-	initRiddle(0);
+	if (localStorage.getItem("riddle.level")!=null) {
+		gamectx.level = parseInt(localStorage.getItem("riddle.level"));
+	} else {
+		gamectx.level = 0;
+	}
+	initRiddle(gamectx.level);
 	director.setScene(director.getSceneIndex(mapScene));
 }
 
@@ -403,7 +408,7 @@ function showPenddingInfo(next) {
 	var refreshBtn= new CAAT.Actor()
 	.setAsButton(
 				txtinfoImages.getRef(),
-				2, 2, 3, 3, makeUpNextLevel
+				2, 2, 3, 3, refreshLevel
      ).setLocation(penddingContainer.width-240,penddingContainer.height-60);
 	penddingContainer.addChild(refreshBtn);
 	
@@ -419,6 +424,11 @@ function showPenddingInfo(next) {
 	penddingContainer.addBehavior(pb);//.addBehavior(alpha);
 }
 
+function refreshLevel() {
+	gamectx.level --;
+	makeUpNextLevel();
+}
+
 function hidePenddingContainer() {
 	if (penddingContainer!=null) {
 		var path= new CAAT.LinearPath()
@@ -429,6 +439,7 @@ function hidePenddingContainer() {
 		  .setFrameTime(mapScene.time, 400);
 		penddingContainer.addBehavior(pb).addListener( {
 			behaviorExpired : function() {
+				penddingContainer.emptyChildren();
 				penddingContainer.setExpired(0);
 				penddingContainer = null;
 			}
