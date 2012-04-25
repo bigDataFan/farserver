@@ -20,7 +20,9 @@ var worknfightImages = [
     {id:"chessbg", url:'images/chessbg320.png'},
     {id:"returnmenu", url:'images/progresive.png'},
     {id:"animals", url:"images/animals.png"},
-    {id:"penddingbg", url:"images/pendding.jpg"}
+    {id:"penddingbg", url:"images/dialog.png"},
+    {id:"passinfo", url:"images/passinfo.png"},
+    {id:"txtinfo", url:"images/txtInfo.png"}
 ];
 
 function getLevelRand(level) {

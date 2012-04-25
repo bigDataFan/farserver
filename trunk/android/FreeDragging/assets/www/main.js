@@ -35,6 +35,7 @@ var actorsPlaced = [
 var numberActors = [];
 var numberImages = null;
 var extraImages =  null;
+var txtinfoImages = null;
 
 var MODEL_RIDDLE = 0;
 var MODEL_LEVEL = 1
@@ -56,7 +57,15 @@ function initRiddle(t) {
 	     		[0,0,0,0,0,0,0,0,0,0]
 	     		];
 
-	     	actorsPlaced =
+	for ( var i = 0; i < actorsPlaced.length; i++) {
+		for ( var j = 0; j < actorsPlaced[i].length; j++) {
+			if (actorsPlaced[i][j]!=0 && actorsPlaced[i][j]!=null) {
+				actorsPlaced[i][j].setExpired(0);
+			}
+		}
+	}
+	
+	actorsPlaced =
 	     		[
 	     		[0,0,0,0,0,0,0,0,0,0],
 	     		[0,0,0,0,0,0,0,0,0,0],
@@ -68,7 +77,7 @@ function initRiddle(t) {
 	     		[0,0,0,0,0,0,0,0,0,0]
 	     		];
 	gameModel = MODEL_RIDDLE;
-	calarrays = riddles[t];
+	calarrays = riddles[t].clone();
 	for ( var i = 0; i < calarrays.length; i++) {
 		for ( var j = 0; j < calarrays[i].length; j++) {
 			if (calarrays[i][j]!=0) {
@@ -99,7 +108,7 @@ function initRiddle(t) {
 		}
 	}
 	
-	numbers = riddlesRemains[t];
+	numbers = riddlesRemains[t].clone();
 	_pushInNumber();
 }
 
@@ -171,13 +180,41 @@ function goNextLevel() {
 			}
 		}
 		if(finished) {
-			alert("finished");
-			initRiddle(16);
+			showPenddingInfo(true);
+			//initRiddle(30);
 		} else {
-			alert("remains");
+			gamectx.level --;
+			showPenddingInfo(false);
 		}
 	}
 }
+
+
+function makeUpNextLevel() {
+	if (gameModel==MODEL_LEVEL) {
+		gamectx.level ++;
+		levelInfo.setText(gamectx.level + "级");
+		gamectx.remains = getLevelBlocks(gamectx.level);
+		
+		for ( var i = 0; i < 7; i++) {
+			putInQueue();
+		}
+		if (gamectx.level>1) {
+			for ( var i = 0; i < gamectx.level; i++) {
+				placeRandomNumber();
+			}
+		}
+		_pushInNumber();
+	}
+	
+	if (gameModel==MODEL_RIDDLE) {
+		gamectx.level ++;
+		initRiddle(gamectx.level);
+	}
+	hidePenddingContainer();
+	
+}
+
 
 function boot() {
 	director = new CAAT.Director().initialize(
@@ -220,6 +257,9 @@ function initStartScene() {
 	var btnEmptyImg = new CAAT.SpriteImage().
 	initialize(director.getImage('btnEmpty'), 1, 1);
 	
+	txtinfoImages = new CAAT.SpriteImage().
+	initialize(director.getImage('txtinfo'), 3, 2);
+	
 	var logoActor= new CAAT.Actor().setBackgroundImage(logoImg.getRef(), true)
 		.setLocation(width/2-145,50);
 	startContainer.addChild(logoActor);
@@ -244,7 +284,7 @@ function onGameStartClicked(button) {
 
 function onCrazyStartClicked(button) {
 	initLevelsScene();
-	
+	gamectx.level = 0;
 	initRiddle(0);
 	director.setScene(director.getSceneIndex(mapScene));
 }
@@ -323,7 +363,7 @@ function initLevelsScene() {
  * 显示信息栏，  并提供返回等按钮。
  */
 var penddingContainer = null;
-function showPenddingInfo() {
+function showPenddingInfo(next) {
 	ready = false;
 	
 	if (penddingContainer==null) {
@@ -336,18 +376,67 @@ function showPenddingInfo() {
 		penddingContainer.setBackgroundImage(numberImages.getRef(), true);
 	}
 	
+	if (next) {
+		var infoImage= new CAAT.SpriteImage().
+		initialize(director.getImage('passinfo'), 2, 1);
+		
+		var iactor= new CAAT.Actor()
+		.setBackgroundImage(infoImage.getRef(), true).setSpriteIndex(0)
+		.setPosition(60,30);
+		penddingContainer.addChild(iactor);
+		
+		var nextBtn= new CAAT.Actor()
+		.setAsButton(
+					txtinfoImages.getRef(),
+					0, 0, 1, 1, makeUpNextLevel
+	     ).setLocation(penddingContainer.width-120,penddingContainer.height-60);
+		penddingContainer.addChild(nextBtn);
+	} else {
+		var infoImage= new CAAT.SpriteImage().
+		initialize(director.getImage('passinfo'), 2, 1);
+		
+		var iactor= new CAAT.Actor()
+		.setBackgroundImage(infoImage.getRef(), true).setSpriteIndex(1)
+		.setPosition(60,30);
+		penddingContainer.addChild(iactor);
+	}
+	var refreshBtn= new CAAT.Actor()
+	.setAsButton(
+				txtinfoImages.getRef(),
+				2, 2, 3, 3, makeUpNextLevel
+     ).setLocation(penddingContainer.width-240,penddingContainer.height-60);
+	penddingContainer.addChild(refreshBtn);
+	
+	
 	var path= new CAAT.LinearPath()
-	.setInitialPosition(director.width/2 - 120, -200)
-	.setFinalPosition(director.width/2 - 120 , 100);
+	.setInitialPosition(director.width/2 - 140, -200)
+	.setFinalPosition(director.width/2 - 140 , 100);
 	
 	var pb = new CAAT.PathBehavior()
 	  .setPath(path)
-	  .setFrameTime(mapScene.time, 500);
-	var alpha = new CAAT.AlphaBehavior().setValues(.2, 1).setFrameTime(mapScene.time, 500);
-	
-	penddingContainer.addBehavior(pb).addBehavior(alpha);
+	  .setFrameTime(mapScene.time, 400);
+	//var alpha = new CAAT.AlphaBehavior().setValues(.2, 1).setFrameTime(mapScene.time, 500);
+	penddingContainer.addBehavior(pb);//.addBehavior(alpha);
 }
 
+function hidePenddingContainer() {
+	if (penddingContainer!=null) {
+		var path= new CAAT.LinearPath()
+		.setFinalPosition(director.width/2 - 140, -200)
+		.setInitialPosition(director.width/2 - 140 , 100);
+		var pb = new CAAT.PathBehavior()
+		  .setPath(path)
+		  .setFrameTime(mapScene.time, 400);
+		penddingContainer.addBehavior(pb).addListener( {
+			behaviorExpired : function() {
+				penddingContainer.setExpired(0);
+				penddingContainer = null;
+			}
+		} );
+	}
+	
+	ready = true;
+}
 
 
 
@@ -476,6 +565,9 @@ function doMoving(me) {
 
 /**用于移动处理 当鼠标点击方块时选择移动的源*/
 function actorMouseDown(me) {
+	
+	if (numbers.length==0) return;
+	
 	var info = numbers[0].split("-");
 	var type = info[0];
 	var n = info[1]
@@ -483,7 +575,7 @@ function actorMouseDown(me) {
 		var ax = Math.floor((me.screenPoint.x-squareContainer.x) / numberImages.singleWidth);
 		var ay = Math.floor((me.screenPoint.y-squareContainer.y) / numberImages.singleHeight);
 		
-		if (n=="1") {
+		if (n=="1") { //mark as move
 			moving = {
 					actor: me.source,
 					posx: ax,
@@ -498,13 +590,39 @@ function actorMouseDown(me) {
 			generateNextBlock();
 		}
 		
-		if (n=="2") {
+		if (n=="2") { //remove one
 			var number = numbers.shift();
 			var actor = numberActors.shift();
 			actor.setExpired(0);
 			
 			removeBlock(ax, ay, "zoomout");
+			if (numbers.length==0) {
+				goNextLevel();
+			} else {
+				generateNextBlock();
+			}
+		}
+		
+		if (n=="5") {  //+1
+			var number = numbers.shift();
+			var actor = numberActors.shift();
+			actor.setExpired(0);
+			incBlock(ax, ay, 1);
+
 			generateNextBlock();
+			
+			//checkAndRemove(ax, ay);
+		}
+		
+		if (n=="6") {  //+1
+			var number = numbers.shift();
+			var actor = numberActors.shift();
+			actor.setExpired(0);
+			incBlock(ax, ay, -1);
+
+			generateNextBlock();
+			
+			//checkAndRemove(ax, ay);
 		}
 	}
 }
@@ -515,13 +633,14 @@ function doExtras(number, actor, x, y) {
 	
 	var extraNumber = number.split("-")[1];
 	
-	if (extraNumber=="1") {  //移动到目的地的处理事件  放弃操作
+	if (extraNumber=="1" || extraNumber=="2" || extraNumber=="5") {  //放弃操作
 		calarrays[x][y] = 0;
 		actorsPlaced[x][y] = null;
 		actor.setExpired(0);
 		placed --;
 		return;
 	}
+	/*
 	
 	if (extraNumber=="2") {  //抠掉一个方块。  放弃
 		calarrays[x][y] = 0;
@@ -530,7 +649,14 @@ function doExtras(number, actor, x, y) {
 		placed --;
 		return;
 	}
-	
+		if (extraNumber=="5") { // +1
+		calarrays[x][y] = 0;
+		actorsPlaced[x][y] = null;
+		actor.setExpired(0);
+		placed --;
+		return;
+	}
+	*/
 	if (extraNumber=="3") {
 		
 	}
@@ -542,6 +668,8 @@ function doExtras(number, actor, x, y) {
 		removeBlock(x,y-1, "burst");
 		removeBlock(x,y+1, "burst");
 	}
+	
+
 }
 
 /** 棋盘的点击事件 */
@@ -821,6 +949,36 @@ function removeBlock(x, y, effect) {
 	}
 }
 
+function incBlock(x, y,inc) {
+	var n = getPosNumber(x, y);
+
+	var new_n = n + inc;
+	if(new_n==10) new_n = 1;
+	if(new_n==0) new_n = 9;
+
+	var color = Math.floor(Math.random()*9);
+	var new_value = color  + "-" + new_n;
+	
+	var actor = actorsPlaced[x][y]; 
+	//actorsPlaced[x][y].setScale(.9,.9);
+	
+	actor.setSpriteIndex(color*9 + (new_n-1));
+	
+	var zoomout= new CAAT.ScaleBehavior().
+    setFrameTime(actor.time, 300).
+    setValues( .6, 1, .6,  1, .5, .5).
+    addListener( {
+        behaviorExpired : function(behavior, time, actor) {
+        	checkAndRemove(x, y);
+        	if (numbers.length==0) {
+				goNextLevel();
+			}
+        }
+    });
+	actor.addBehavior(zoomout);
+	calarrays[x][y] = new_value;
+}
+
 /**为候选的一个位置增加一个方块，并将其飞行到指定位置*/
 function _pushInNumber() {
 	for ( var i = 0; i < numbers.length; i++) {
@@ -892,4 +1050,16 @@ function _createAndFly(actor, pos) {
 	}
 	return actor;
 }
+
+if (!Array.prototype.clone ) {
+	  Array.prototype.clone = function() {
+	    var arr1 = new Array();
+	    for (var property in this) {
+	        arr1[property] = typeof(this[property]) == 'object' ? this[property].clone() : this[property]
+	    }
+	    return arr1;
+	  }
+}
+
+
 
