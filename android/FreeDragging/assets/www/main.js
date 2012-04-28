@@ -78,6 +78,7 @@ function initRiddle(t) {
 	     		];
 	gameModel = MODEL_RIDDLE;
 	calarrays = riddles[t].clone();
+	
 	for ( var i = 0; i < calarrays.length; i++) {
 		for ( var j = 0; j < calarrays[i].length; j++) {
 			if (calarrays[i][j]!=0) {
@@ -109,10 +110,10 @@ function initRiddle(t) {
 	}
 	
 	levelInfo.setText(gamectx.level + "级");
+	cleanQuene();
 	numbers = riddlesRemains[t].clone();
 	_pushInNumber();
 }
-
 
 
 function initGameCtx(leveled) {
@@ -329,7 +330,7 @@ function initLevelsScene() {
 	numberImages= new CAAT.SpriteImage().
 	initialize(director.getImage('numbers'), 9, 9);
 	extraImages =  new CAAT.SpriteImage().
-	initialize(director.getImage('extras'), 1, 9);
+	initialize(director.getImage('extras'), 9, 1);
 	var chessbgImages =  new CAAT.SpriteImage().
 	initialize(director.getImage('chessbg'), 1, 1);
 	var bgimage= new CAAT.SpriteImage().
@@ -453,9 +454,6 @@ function showPenddingInfo(btns, idx) {
 	}
 	
 	penddingContainer.findActorById(ID_PASS_INFO).setSpriteIndex(idx);
-
-	
-	
 	
 	penddingContainer.findActorById(ID_BTN_NEXT).setVisible(false);
 	penddingContainer.findActorById(ID_BTN_CONTINUE).setVisible(false);
@@ -490,6 +488,7 @@ function refreshLevel() {
 }
 
 function gotoMenu() {
+	cleanQuene();
 	if (penddingContainer!=null) {
 		penddingContainer.emptyChildren();
 		penddingContainer.setExpired(0);
@@ -508,9 +507,9 @@ function hidePenddingContainer(cb) {
 		  .setFrameTime(mapScene.time, 400);
 		penddingContainer.addBehavior(pb).addListener( {
 			behaviorExpired : function() {
-				penddingContainer.emptyChildren();
-				penddingContainer.setExpired(0);
-				penddingContainer = null;
+				//penddingContainer.emptyChildren();
+				//penddingContainer.setExpired(0);
+				//penddingContainer = null;
 			}
 		} );
 	}
@@ -814,11 +813,10 @@ function generateNextBlock() {
 	if (gameModel==MODEL_RIDDLE) {
 		_pushInNumber();
 	}
-	
 }
 
 function putInQueue() {
-	if (Math.random()<0.1) {
+	if (Math.random()<0.1 && gamectx.level>1) {
 		pp  = gamectx.level;
 		if (pp>4) pp=4;
 		numbers.push("a-" + (Math.floor(Math.random()*pp) + 1));
@@ -1130,6 +1128,15 @@ function _createAndFly(actor, pos) {
 	}
 	return actor;
 }
+
+function cleanQuene() {
+	for ( var i = 0; i < numberActors.length; i++) {
+		numberActors[i].setExpired(0);
+	}
+	numberActors = [];
+	numbers = [];
+}
+
 
 if (!Array.prototype.clone ) {
 	  Array.prototype.clone = function() {
