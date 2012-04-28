@@ -117,6 +117,14 @@ function initRiddle(t) {
 
 function initGameCtx(leveled) {
 	gameModel = MODEL_LEVEL;
+	for ( var i = 0; i < actorsPlaced.length; i++) {
+		for ( var j = 0; j < actorsPlaced[i].length; j++) {
+			if (actorsPlaced[i][j]!=0 && actorsPlaced[i][j]!=null) {
+				actorsPlaced[i][j].setExpired(0);
+			}
+		}
+	}
+	
 	calarrays = [
 		[0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0],
@@ -137,8 +145,8 @@ function initGameCtx(leveled) {
 		[0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0]
-		];
-
+	];
+	
 	placed = 0;
 	if (leveled) {
 		gamectx.level = 0;
@@ -181,10 +189,10 @@ function goNextLevel() {
 			}
 		}
 		if(finished) {
-			showPenddingInfo(true);
+			showPenddingInfo([ID_BTN_NEXT,ID_BTN_RESTART], 0);
 			//initRiddle(30);
 		} else {
-			showPenddingInfo(false);
+			showPenddingInfo([ID_BTN_RESTART], 1);
 		}
 	}
 }
@@ -222,7 +230,7 @@ function boot() {
 	        width, height,
 	        document.getElementById('container'));
 	startScene = director.createScene();
-	mapScene = director.createScene();
+	
 	new CAAT.ImagePreloader().loadImages(
 			worknfightImages,
 			function(counter, images) {
@@ -259,7 +267,7 @@ function initStartScene() {
 	initialize(director.getImage('btnEmpty'), 1, 1);
 	
 	txtinfoImages = new CAAT.SpriteImage().
-	initialize(director.getImage('txtinfo'), 3, 2);
+	initialize(director.getImage('txtinfo'), 4, 2);
 	
 	var logoActor= new CAAT.Actor().setBackgroundImage(logoImg.getRef(), true)
 		.setLocation(width/2-145,50);
@@ -278,13 +286,18 @@ function initStartScene() {
 }
 
 function onGameStartClicked(button) {
-	initLevelsScene();
+	if (mapScene==null) {
+		initLevelsScene();
+	}
+	
 	initGameCtx(true);
 	director.setScene(director.getSceneIndex(mapScene));
 }
 
 function onCrazyStartClicked(button) {
-	initLevelsScene();
+	if (mapScene==null) {
+		initLevelsScene();
+	}
 	if (localStorage.getItem("riddle.level")!=null) {
 		gamectx.level = parseInt(localStorage.getItem("riddle.level"));
 	} else {
@@ -294,12 +307,11 @@ function onCrazyStartClicked(button) {
 	director.setScene(director.getSceneIndex(mapScene));
 }
 
-
 /**
  * 初始化游戏屏幕
  */
 function initLevelsScene() {
-	
+	mapScene = director.createScene();
 	mapContainer = new CAAT.ActorContainer().
 	setBounds(0, 0, director.width, director.height);
 	mapScene.addChild(mapContainer);
@@ -328,6 +340,16 @@ function initLevelsScene() {
 	
 	flyNearCloud('cloudfar', 2, mapContainer);
 	flyNearCloud('cloudnear', 1, mapContainer);
+	
+	
+
+	var penddingImg = new CAAT.SpriteImage().
+	initialize(director.getImage('penddingbtn'), 1, 2);
+	var btnPendding= new CAAT.Actor()
+	.setAsButton(
+			penddingImg.getRef(), 0, 0, 1, 1, onPenddingClick
+     ).setLocation(5,5);
+	mapContainer.addChild(btnPendding);
 	
 	
 	/*
@@ -368,7 +390,14 @@ function initLevelsScene() {
  * 显示信息栏，  并提供返回等按钮。
  */
 var penddingContainer = null;
-function showPenddingInfo(next) {
+var ID_PASS_INFO = "info.passed";
+
+
+var ID_BTN_NEXT = "btn.nextlevel";
+var ID_BTN_CONTINUE = "btn.continueLevel";
+var ID_BTN_RESTART = "btn.restart";
+
+function showPenddingInfo(btns, idx) {
 	ready = false;
 	
 	if (penddingContainer==null) {
@@ -379,39 +408,62 @@ function showPenddingInfo(next) {
 		var numberImages= new CAAT.SpriteImage().
 		initialize(director.getImage('penddingbg'), 1, 1);
 		penddingContainer.setBackgroundImage(numberImages.getRef(), true);
-	}
-	
-	if (next) {
-		var infoImage= new CAAT.SpriteImage().
-		initialize(director.getImage('passinfo'), 2, 1);
 		
-		var iactor= new CAAT.Actor()
+		var infoImage= new CAAT.SpriteImage().
+		initialize(director.getImage('passinfo'), 3, 1);
+		
+		var actor1= new CAAT.Actor()
 		.setBackgroundImage(infoImage.getRef(), true).setSpriteIndex(0)
 		.setPosition(60,30);
-		penddingContainer.addChild(iactor);
+		actor1.setId(ID_PASS_INFO);
+		penddingContainer.addChild(actor1);
 		
 		var nextBtn= new CAAT.Actor()
 		.setAsButton(
 					txtinfoImages.getRef(),
 					0, 0, 1, 1, makeUpNextLevel
-	     ).setLocation(penddingContainer.width-120,penddingContainer.height-60);
-		penddingContainer.addChild(nextBtn);
-	} else {
-		var infoImage= new CAAT.SpriteImage().
-		initialize(director.getImage('passinfo'), 2, 1);
+	     ).setLocation(penddingContainer.width-100,penddingContainer.height-60);
 		
-		var iactor= new CAAT.Actor()
-		.setBackgroundImage(infoImage.getRef(), true).setSpriteIndex(1)
-		.setPosition(60,30);
-		penddingContainer.addChild(iactor);
-	}
-	var refreshBtn= new CAAT.Actor()
-	.setAsButton(
+		nextBtn.setId(ID_BTN_NEXT);
+		penddingContainer.addChild(nextBtn);
+		
+		var continueBtn= new CAAT.Actor()
+		.setAsButton(
+					txtinfoImages.getRef(),
+					6, 6, 7, 7, continueLevel
+	     ).setLocation(penddingContainer.width-180,penddingContainer.height-60);
+		
+		continueBtn.setId(ID_BTN_CONTINUE);
+		penddingContainer.addChild(continueBtn);
+		
+		var refreshBtn= new CAAT.Actor()
+		.setAsButton(
+					txtinfoImages.getRef(),
+					2, 2, 3, 3, refreshLevel
+	     ).setLocation(penddingContainer.width-180,penddingContainer.height-60);
+		refreshBtn.setId(ID_BTN_RESTART);
+		penddingContainer.addChild(refreshBtn);
+		
+		var menuBtn = new CAAT.Actor()
+		.setAsButton(
 				txtinfoImages.getRef(),
-				2, 2, 3, 3, refreshLevel
-     ).setLocation(penddingContainer.width-240,penddingContainer.height-60);
-	penddingContainer.addChild(refreshBtn);
+				4, 4, 5, 5, gotoMenu
+		).setLocation(penddingContainer.width-280,penddingContainer.height-60);
+		penddingContainer.addChild(menuBtn);
+	}
 	
+	penddingContainer.findActorById(ID_PASS_INFO).setSpriteIndex(idx);
+
+	
+	
+	
+	penddingContainer.findActorById(ID_BTN_NEXT).setVisible(false);
+	penddingContainer.findActorById(ID_BTN_CONTINUE).setVisible(false);
+	penddingContainer.findActorById(ID_BTN_RESTART).setVisible(false);
+	
+	for ( var i = 0; i < btns.length; i++) {
+		penddingContainer.findActorById(btns[i]).setVisible(true);
+	}
 	
 	var path= new CAAT.LinearPath()
 	.setInitialPosition(director.width/2 - 140, -200)
@@ -424,12 +476,29 @@ function showPenddingInfo(next) {
 	penddingContainer.addBehavior(pb);//.addBehavior(alpha);
 }
 
+function onPenddingClick() {
+	showPenddingInfo([ID_BTN_CONTINUE],2);
+}
+
+function continueLevel() {
+	hidePenddingContainer();
+}
+
 function refreshLevel() {
 	gamectx.level --;
 	makeUpNextLevel();
 }
 
-function hidePenddingContainer() {
+function gotoMenu() {
+	if (penddingContainer!=null) {
+		penddingContainer.emptyChildren();
+		penddingContainer.setExpired(0);
+		penddingContainer = null;
+	}
+	director.setScene(director.getSceneIndex(startScene));
+}
+
+function hidePenddingContainer(cb) {
 	if (penddingContainer!=null) {
 		var path= new CAAT.LinearPath()
 		.setFinalPosition(director.width/2 - 140, -200)
