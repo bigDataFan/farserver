@@ -147,7 +147,7 @@ function initGameCtx(leveled) {
 		[0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0]
 	];
-	
+	setScore(0);
 	placed = 0;
 	if (leveled) {
 		gamectx.level = 0;
@@ -222,7 +222,6 @@ function makeUpNextLevel() {
 		initRiddle(gamectx.level);
 	}
 	hidePenddingContainer();
-	
 }
 
 
@@ -282,7 +281,7 @@ function initStartScene() {
 	
 	var b2= new CAAT.Actor()
 		.setAsButton(btnStartLevelImg.getRef(), 2, 2, 3, 3, onCrazyStartClicked
-			).setLocation(width/2-80, height/2+60);
+			).setLocation(width/2-85, height/2+60);
 	startContainer.addChild(b2);
 }
 
@@ -341,8 +340,6 @@ function initLevelsScene() {
 	
 	flyNearCloud('cloudfar', 2, mapContainer);
 	flyNearCloud('cloudnear', 1, mapContainer);
-	
-	
 
 	var penddingImg = new CAAT.SpriteImage().
 	initialize(director.getImage('penddingbtn'), 1, 2);
@@ -398,6 +395,7 @@ var ID_BTN_NEXT = "btn.nextlevel";
 var ID_BTN_CONTINUE = "btn.continueLevel";
 var ID_BTN_RESTART = "btn.restart";
 
+
 function showPenddingInfo(btns, idx) {
 	ready = false;
 	
@@ -409,15 +407,13 @@ function showPenddingInfo(btns, idx) {
 		var numberImages= new CAAT.SpriteImage().
 		initialize(director.getImage('penddingbg'), 1, 1);
 		penddingContainer.setBackgroundImage(numberImages.getRef(), true);
-		
-		var infoImage= new CAAT.SpriteImage().
-		initialize(director.getImage('passinfo'), 3, 1);
-		
-		var actor1= new CAAT.Actor()
-		.setBackgroundImage(infoImage.getRef(), true).setSpriteIndex(0)
-		.setPosition(60,30);
-		actor1.setId(ID_PASS_INFO);
-		penddingContainer.addChild(actor1);
+
+		var menuBtn = new CAAT.Actor()
+		.setAsButton(
+				txtinfoImages.getRef(),
+				4, 4, 5, 5, gotoMenu
+		).setLocation(45,20);
+		penddingContainer.addChild(menuBtn);
 		
 		var nextBtn= new CAAT.Actor()
 		.setAsButton(
@@ -432,7 +428,7 @@ function showPenddingInfo(btns, idx) {
 		.setAsButton(
 					txtinfoImages.getRef(),
 					6, 6, 7, 7, continueLevel
-	     ).setLocation(penddingContainer.width-180,penddingContainer.height-60);
+	     ).setLocation(penddingContainer.width-100,penddingContainer.height-160);
 		
 		continueBtn.setId(ID_BTN_CONTINUE);
 		penddingContainer.addChild(continueBtn);
@@ -444,38 +440,58 @@ function showPenddingInfo(btns, idx) {
 	     ).setLocation(penddingContainer.width-180,penddingContainer.height-60);
 		refreshBtn.setId(ID_BTN_RESTART);
 		penddingContainer.addChild(refreshBtn);
-		
-		var menuBtn = new CAAT.Actor()
-		.setAsButton(
-				txtinfoImages.getRef(),
-				4, 4, 5, 5, gotoMenu
-		).setLocation(penddingContainer.width-280,penddingContainer.height-60);
-		penddingContainer.addChild(menuBtn);
 	}
 	
-	penddingContainer.findActorById(ID_PASS_INFO).setSpriteIndex(idx);
+	//penddingContainer.findActorById(ID_PASS_INFO).setSpriteIndex(idx);
 	
-	penddingContainer.findActorById(ID_BTN_NEXT).setVisible(false);
-	penddingContainer.findActorById(ID_BTN_CONTINUE).setVisible(false);
-	penddingContainer.findActorById(ID_BTN_RESTART).setVisible(false);
-	
-	for ( var i = 0; i < btns.length; i++) {
-		penddingContainer.findActorById(btns[i]).setVisible(true);
+	if (btns.indexOf(ID_BTN_NEXT)>-1) {
+		penddingContainer.findActorById(ID_BTN_NEXT).setVisible(true);
+		penddingContainer.findActorById(ID_BTN_NEXT).setPosition(45, 240);
+	} else {
+		penddingContainer.findActorById(ID_BTN_NEXT).setVisible(false);
+		penddingContainer.findActorById(ID_BTN_NEXT).setPosition(-200,-200);
 	}
 	
+	if (btns.indexOf(ID_BTN_CONTINUE)>-1) {
+		penddingContainer.findActorById(ID_BTN_CONTINUE).setVisible(true);
+		penddingContainer.findActorById(ID_BTN_CONTINUE).setPosition(45, 80);
+	} else {
+		penddingContainer.findActorById(ID_BTN_CONTINUE).setVisible(false);
+		penddingContainer.findActorById(ID_BTN_CONTINUE).setPosition(-200,-200);
+	}
+
+	if (btns.indexOf(ID_BTN_RESTART)>-1) {
+		penddingContainer.findActorById(ID_BTN_RESTART).setVisible(true);
+		penddingContainer.findActorById(ID_BTN_RESTART).setPosition(45, 140);
+	} else {
+		penddingContainer.findActorById(ID_BTN_RESTART).setVisible(false);
+		penddingContainer.findActorById(ID_BTN_RESTART).setPosition(-200,-200);
+	}
+	if (btns.indexOf(ID_BTN_NEXT)>-1) {
+		penddingContainer.findActorById(ID_BTN_NEXT).setVisible(true);
+		penddingContainer.findActorById(ID_BTN_NEXT).setPosition(45, 80);
+	} else {
+		penddingContainer.findActorById(ID_BTN_NEXT).setVisible(false);
+		penddingContainer.findActorById(ID_BTN_NEXT).setPosition(-200,-200);
+	}
 	var path= new CAAT.LinearPath()
-	.setInitialPosition(director.width/2 - 140, -200)
-	.setFinalPosition(director.width/2 - 140 , 100);
+	.setInitialPosition(director.width/2 - 120, -300)
+	.setFinalPosition(director.width/2 - 120, 80);
 	
 	var pb = new CAAT.PathBehavior()
 	  .setPath(path)
 	  .setFrameTime(mapScene.time, 400);
-	//var alpha = new CAAT.AlphaBehavior().setValues(.2, 1).setFrameTime(mapScene.time, 500);
-	penddingContainer.addBehavior(pb);//.addBehavior(alpha);
+	var alpha = new CAAT.AlphaBehavior().setValues(.2, 1).setFrameTime(mapScene.time, 400);
+	penddingContainer.addBehavior(pb).addBehavior(alpha);
 }
 
 function onPenddingClick() {
-	showPenddingInfo([ID_BTN_CONTINUE],2);
+	ready = false;
+	if (gameModel==MODEL_LEVEL) {
+		showPenddingInfo([ID_BTN_CONTINUE],2);
+	} else if (gameModel==MODEL_RIDDLE) {
+		showPenddingInfo([ID_BTN_CONTINUE,ID_BTN_RESTART],2);	
+	}
 }
 
 function continueLevel() {
@@ -483,25 +499,47 @@ function continueLevel() {
 }
 
 function refreshLevel() {
-	gamectx.level --;
-	makeUpNextLevel();
+	if (gameModel==MODEL_LEVEL) {
+		initGameCtx(true);
+	} else if (gameModel==MODEL_RIDDLE) {
+		gamectx.level --;
+		makeUpNextLevel();	
+	}
 }
 
 function gotoMenu() {
 	cleanQuene();
+	
 	if (penddingContainer!=null) {
+		penddingContainer.setPosition(director.width/2 - 120, -400);
+		/*
 		penddingContainer.emptyChildren();
 		penddingContainer.setExpired(0);
 		penddingContainer = null;
+		*/
 	}
+	setMaxScore();
+	
 	director.setScene(director.getSceneIndex(startScene));
+}
+
+function setMaxScore() {
+	var maxScore = 0;
+	if (localStorage.getItem("riddle.max")!=null) {
+		maxScore = parseInt(localStorage.getItem("riddle.max"));
+	}
+	
+	if (score>maxScore) {
+		localStorage.setItem("riddle.max", score);
+		alert("恭喜您打破最高分记录 :" + score + "分!");
+	}
 }
 
 function hidePenddingContainer(cb) {
 	if (penddingContainer!=null) {
 		var path= new CAAT.LinearPath()
-		.setFinalPosition(director.width/2 - 140, -200)
-		.setInitialPosition(director.width/2 - 140 , 100);
+		.setFinalPosition(director.width/2 - 120, -400)
+		.setInitialPosition(director.width/2 - 120 , 100);
 		var pb = new CAAT.PathBehavior()
 		  .setPath(path)
 		  .setFrameTime(mapScene.time, 400);
@@ -513,7 +551,6 @@ function hidePenddingContainer(cb) {
 			}
 		} );
 	}
-	
 	ready = true;
 }
 
@@ -572,6 +609,21 @@ function initScore() {
 			scoreActors.push(actor);
 		}
 	}
+	
+	var maxScore = 0;
+	if (localStorage.getItem("riddle.max")!=null) {
+		maxScore = parseInt(localStorage.getItem("riddle.max"));
+	}
+	
+	var maxScore = new CAAT.TextActor().
+	setFont("14px sans-serif").
+	setText("最高分:" + maxScore).
+	setOutlineColor('white').
+	calcTextSize(director).
+	setTextAlign("center").
+	setLocation(-90, 10);
+	//setOutline(true);
+	scoreContainer.addChild(maxScore);
 }
 
 function setScore(n) {
@@ -747,8 +799,6 @@ function doExtras(number, actor, x, y) {
 		removeBlock(x,y-1, "burst");
 		removeBlock(x,y+1, "burst");
 	}
-	
-
 }
 
 /** 棋盘的点击事件 */
@@ -818,8 +868,8 @@ function generateNextBlock() {
 function putInQueue() {
 	if (Math.random()<0.1 && gamectx.level>1) {
 		pp  = gamectx.level;
-		if (pp>4) pp=4;
-		numbers.push("a-" + (Math.floor(Math.random()*pp) + 1));
+		if (pp>6) pp=6;
+		numbers.push("a-" + (Math.floor(Math.random()*pp)+1));
 	} else {
 		numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
 	}
@@ -952,7 +1002,8 @@ function checkAndRemove(x,y) {
 	}
 	
 	if (placed>=80) {
-		alert("失败 ");
+		setMaxScore();
+		showPenddingInfo([ID_BTN_RESTART], null);
 	}
 }
 
