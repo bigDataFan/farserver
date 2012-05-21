@@ -21,7 +21,7 @@ var worknfightImages = [
     {id:"returnmenu", url:'images/progresive.png'},
     {id:"animals", url:"images/animals.png"},
     {id:"penddingbg", url:"images/dialog.png"},
-    {id:"passinfo", url:"images/passinfo.png"},
+    //{id:"passinfo", url:"images/passinfo.png"},
     {id:"txtinfo", url:"images/txtInfo.png"},
     {id:"penddingbtn", url:"images/pendding.png"}
 ];
