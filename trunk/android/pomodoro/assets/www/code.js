@@ -85,12 +85,15 @@ function viewRunOver() {
 	$('#timer .btn-a').hide();
 	$('#btn-break').show();
 	
+	
 	if (startItem.count()==1) {
 		var data = startItem.first();
 		$('#timer').data("running", data);
 		$('#timer .upper-title').html(data.title);
 		$('#btn-knowabout').hide();
 		$('#time-remains').html("00:00");
+		
+		playAudio("/android_asset/www/567.mp3");
 		return;
 	}
 }
@@ -631,3 +634,20 @@ function formateDate(date) {
 	return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
 	
 }
+
+
+function playAudio(src) {
+    var my_media = new Media(src, onSuccess, onError);
+    // Play audio
+    my_media.play();
+
+}
+function onSuccess() {
+
+}
+function onError(error) {
+
+}
+
+
+
