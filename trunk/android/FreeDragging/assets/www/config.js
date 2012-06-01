@@ -6,10 +6,10 @@ var height = 510;//window.innerHeight;
 
 var worknfightImages = [
     {id:"logo", url: "images/logo.png"},
-    {id:"bgstart", url: "images/background_top.jpg"},
+    {id:"bgstart", url: "images/background_top.png"},
     {id:"numbers", url: 'images/x40.png'},
     {id:"nums", url: 'images/nums.png'},
-    {id:"background", url: 'images/fondo.jpg'},
+    {id:"background", url: 'images/fondo.png'},
     {id:"levelbg", url: 'images/rsz_3level.png'},
     {id:"scorebg", url: 'images/score.png'},
     {id:"cloudnear", url:'images/nube1.png'},
@@ -35,7 +35,11 @@ function getLevelNumber(level) {
 }
 
 function getLevelBlocks(level) {
-	return 20;
+	return 30;
+}
+
+function getLevelDiffs(level) {
+	return level;
 }
 
 function getLevelExtras(level) {

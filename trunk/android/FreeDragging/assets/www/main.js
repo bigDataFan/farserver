@@ -158,7 +158,6 @@ function initGameCtx(leveled) {
 		gamectx.remains = Number.MAX_VALUE;
 	}
 	//showPenddingInfo();
-	
 }
 
 function goNextLevel() {
@@ -280,7 +279,7 @@ function initStartScene() {
 	startContainer.addChild(b1);
 	
 	var b2= new CAAT.Actor()
-		.setAsButton(btnStartLevelImg.getRef(), 2, 2, 3, 3, onCrazyStartClicked
+		.setAsButton(btnStartLevelImg.getRef(), 2, 2, 3, 3, onRiddleClicked
 			).setLocation(width/2-85, height/2+60);
 	startContainer.addChild(b2);
 }
@@ -294,7 +293,7 @@ function onGameStartClicked(button) {
 	director.setScene(director.getSceneIndex(mapScene));
 }
 
-function onCrazyStartClicked(button) {
+function onRiddleClicked(button) {
 	if (mapScene==null) {
 		initLevelsScene();
 	}
@@ -335,7 +334,7 @@ function initLevelsScene() {
 	var bgimage= new CAAT.SpriteImage().
 	initialize(director.getImage('background'), 1, 1);
 	
-	mapContainer.setBackgroundImage(bgimage.getRef(), true).setBackgroundImageOffset(-300,-1300);
+	mapContainer.setBackgroundImage(bgimage.getRef(), true);//.setBackgroundImageOffset(-300,-1300);
 	squareContainer.setBackgroundImage(chessbgImages.getRef(), true).setBackgroundImageOffset(0,0);
 	
 	flyNearCloud('cloudfar', 2, mapContainer);
@@ -348,7 +347,6 @@ function initLevelsScene() {
 			penddingImg.getRef(), 0, 0, 1, 1, onPenddingClick
      ).setLocation(5,5);
 	mapContainer.addChild(btnPendding);
-	
 	
 	/*
 	var animalsImg= new CAAT.SpriteImage().
@@ -395,10 +393,8 @@ var ID_BTN_NEXT = "btn.nextlevel";
 var ID_BTN_CONTINUE = "btn.continueLevel";
 var ID_BTN_RESTART = "btn.restart";
 
-
 function showPenddingInfo(btns, idx) {
 	ready = false;
-	
 	if (penddingContainer==null) {
 		//初始化
 		penddingContainer = new CAAT.ActorContainer();
@@ -518,7 +514,10 @@ function gotoMenu() {
 		penddingContainer = null;
 		*/
 	}
-	setMaxScore();
+	
+	if (gameModel==MODEL_LEVEL) {
+		setMaxScore();
+	}
 	
 	director.setScene(director.getSceneIndex(startScene));
 }
@@ -531,6 +530,7 @@ function setMaxScore() {
 	
 	if (score>maxScore) {
 		localStorage.setItem("riddle.max", score);
+		maxScoreActor.setText("最高分:" + maxScore);
 		alert("恭喜您打破最高分记录 :" + score + "分!");
 	}
 }
@@ -587,7 +587,7 @@ function flyNearCloud(image, speed, container) {
 /**设置当前的分数*/
 var scoreActors = [];
 var score = 0;
-
+var maxScoreActor = null;
 /**初始化分数栏*/
 function initScore() {
 	var scoreImage = new CAAT.SpriteImage().
@@ -615,7 +615,7 @@ function initScore() {
 		maxScore = parseInt(localStorage.getItem("riddle.max"));
 	}
 	
-	var maxScore = new CAAT.TextActor().
+	maxScoreActor = new CAAT.TextActor().
 	setFont("14px sans-serif").
 	setText("最高分:" + maxScore).
 	setOutlineColor('white').
@@ -623,7 +623,7 @@ function initScore() {
 	setTextAlign("center").
 	setLocation(-90, 10);
 	//setOutline(true);
-	scoreContainer.addChild(maxScore);
+	scoreContainer.addChild(maxScoreActor);
 }
 
 function setScore(n) {
@@ -692,6 +692,7 @@ function doMoving(me) {
 		moving = null;
 	}
 }
+
 
 
 /**用于移动处理 当鼠标点击方块时选择移动的源*/
@@ -865,15 +866,16 @@ function generateNextBlock() {
 	}
 }
 
+/**随机生成一个候选的方块*/
 function putInQueue() {
 	if (Math.random()<0.1 && gamectx.level>1) {
 		pp  = gamectx.level;
 		if (pp>6) pp=6;
 		numbers.push("a-" + (Math.floor(Math.random()*pp)+1));
 	} else {
-		numbers.push((Math.floor(Math.random()*9)+1) + "-" + (Math.floor(Math.random()*9) + 1));
+		numbers.push((Math.floor(Math.random()*getLevelDiffs(gamectx.level))+1) + "-" + (Math.floor(Math.random()*9) + 1));
 	}
-} 
+}
 
 /**随机在棋盘上放置一个数字方块*/
 function placeRandomNumber() {
@@ -924,36 +926,72 @@ function checkAndRemove(x,y) {
 	var xe = getPosNumber(x+2, y);
 	var totalInc = 0;
 	
+	var ra = xa%10; 
+	var rb = xb%10;
+	var rc = xc%10;
+	var rd = xd%10;
+	var re = xe%10;
+	/*
+	if (ra==rb && rb==rc && rc==rd && rd==re && rc>0) {
+		removeBlock(x-2,y);
+		removeBlock(x-1,y);
+		removeBlock(x+1,y);
+		removeBlock(x+2,y);
+		totalInc += ra + rb + rd + re;
+	} else if (ra==rb && rb==rc && rc==rd && rc>0) {
+		removeBlock(x-2,y);
+		removeBlock(x-1,y);
+		removeBlock(x+1,y);
+		totalInc += ra + rb + rd;
+	} else if  (rb==rc && rc==rd && rd==re && rc>0) {
+		removeBlock(x-1,y);
+		removeBlock(x+1,y);
+		removeBlock(x+2,y);
+		totalInc += rb + rd + re;
+	} else if (ra==rb && rb==rc && rc>0) {
+		removeBlock(x-2,y);
+		removeBlock(x-1,y);
+		totalInc += ra + rb;
+	} else if  (rc==rd && rd==re && rc>0) {
+		removeBlock(x+1,y);
+		removeBlock(x+2,y);
+		totalInc += rd + re;
+	} else if  (rb==rc && rc==rd && rc>0) {
+		removeBlock(x-1,y);
+		removeBlock(x+1,y);
+		totalInc += rb + rd;
+	} else
+	*/
 	if (xa>0 && xb>0 && xc>0 && xd>0 && xe>0 && (xb-xa==xc-xb && xc-xb==xd-xc && xd-xc==xe-xd) && (Math.abs(xb-xa)==1 || xb==xa)) {
 		removeBlock(x-2,y);
 		removeBlock(x-1,y);
 		removeBlock(x+1,y);
 		removeBlock(x+2,y);
-		totalInc += xa + xb + xd + xe;
+		totalInc += ra + rb + rd + re;
 	} else if (xa>0 && xb>0 && xc>0 && xd>0 && (xb-xa==xc-xb && xc-xb==xd-xc) && (xb==xa || Math.abs(xb-xa)==1)) {
 		removeBlock(x-2,y);
 		removeBlock(x-1,y);
 		removeBlock(x+1,y);
-		totalInc += xa + xb + xd;
+		totalInc += ra + rb + rd;
 	} else if (xb>0 && xc>0 && xd>0 && xe>0 && (xc-xb==xd-xc && xd-xc==xe-xd) && (xc==xb || Math.abs(xc-xb)==1)) {
 		removeBlock(x-1,y);
 		removeBlock(x+1,y);
 		removeBlock(x+2,y);
-		totalInc += xb + xd + xe;
+		totalInc += rb + rd + re;
 	} else if (xb>0 && xc>0 && xd>0 && (xc-xb==xd-xc) && (xc==xb || Math.abs(xc-xb)==1)) {
 		removeBlock(x-1,y);
 		removeBlock(x+1,y);
-		totalInc += xb + xd;
+		totalInc += rb + rd;
 	} 
 	if (xd>0 && xc>0 && xe>0 && (xd-xc==xe-xd) && (xd==xc || Math.abs(xd-xc)==1) ) {
 		removeBlock(x+1,y);
 		removeBlock(x+2,y);
-		totalInc += xd + xe;
+		totalInc += rd + re;
 	} 
 	if (xa>0 && xb>0 && xc>0 && (xb-xa==xc-xb) && (xb==xa || Math.abs(xb-xa)==1)) {
 		removeBlock(x-2,y);
 		removeBlock(x-1,y);
-		totalInc += xa + xb;
+		totalInc += ra + rb;
 	}
 	
 	var ya = getPosNumber(x, y-2);
@@ -962,46 +1000,83 @@ function checkAndRemove(x,y) {
 	var yd = getPosNumber(x, y+1);
 	var ye = getPosNumber(x, y+2);
 	
+	
+	var rya = ya%10; 
+	var ryb = yb%10;
+	var ryc = yc%10;
+	var ryd = yd%10;
+	var rye = ye%10;
+	/*
+	if (rya==ryb && ryb==ryc && ryc==ryd && ryd==rye && ryc>0) {
+		removeBlock(x,y-2);
+		removeBlock(x,y-1);
+		removeBlock(x,y+1);
+		removeBlock(x,y+2);
+		totalInc += rya + ryb + ryd + rye;
+	} else if (rya==ryb && ryb==ryc && ryc==ryd && ryc>0) {
+		removeBlock(x,y-2);
+		removeBlock(x,y-1);
+		removeBlock(x,y+1);
+		totalInc += rya + ryb + ryd;
+	} else if  (ryb==ryc && ryc==ryd && ryd==rye && ryc>0) {
+		removeBlock(x,y-1);
+		removeBlock(x,y+1);
+		removeBlock(x,y+2);
+		totalInc += ryb + ryd + rye;
+	} else if (rya==ryb && ryb==ryc && ryc>0) {
+		removeBlock(x,y-2);
+		removeBlock(x,y-1);
+		totalInc += rya + ryb;
+	} else if  (ryc==ryd && ryd==rye && ryc>0) {
+		removeBlock(x,y+1);
+		removeBlock(x,y+2);
+		totalInc += ryd + rye;
+	} else if  (ryb==ryc && ryc==ryd && ryc>0) {
+		removeBlock(x,y-1);
+		removeBlock(x,y+1);
+		totalInc += ryb + ryd;
+	} else
+	*/
 	if (ya>0&&yb>0&&yc>0&&yd>0&&ye>0 && (yb-ya==yc-yb && yc-yb==yd-yc && yd-yc==ye-yd) && (Math.abs(yb-ya)==1 || ya==yb)) {
 		removeBlock(x,y-2);
 		removeBlock(x,y-1);
 		removeBlock(x,y+1);
 		removeBlock(x,y+2);
-		totalInc += ya + yb + yd + ye;
+		totalInc += rya + ryb + ryd + rye;
 	} else if (ya>0&&yb>0&&yc>0&&yd>0 && (yb-ya==yc-yb && yc-yb==yd-yc) && (Math.abs(yb-ya)==1 || ya==yb)) {
 		removeBlock(x,y-2);
 		removeBlock(x,y-1);
 		removeBlock(x,y+1);
-		totalInc += ya + yb + yd;
+		totalInc += rya + ryb + ryd;
 	} else if (yb>0&&yc>0&&yd>0&&ye>0 && (yc-yb==yd-yc && yd-yc==ye-yd) && (Math.abs(yc-yb)==1 || yc==yb)) {
 		removeBlock(x,y-1);
 		removeBlock(x,y+1);
 		removeBlock(x,y+2);
-		totalInc += yb + yd + ye;
+		totalInc += ryb + ryd + rye;
 	} 
 	if (ya>0&&yb>0&&yc>0 && (yb-ya==yc-yb) && (Math.abs(yb-ya)==1 || ya==yb)) {
 		removeBlock(x,y-2);
 		removeBlock(x,y-1);
-		totalInc += ya + yb;
+		totalInc += rya + ryb;
 	} 
 	if (yb>0&&yc>0&&yd>0 && (yc-yb==yd-yc) && (Math.abs(yc-yb)==1 || yc==yb)) {
 		removeBlock(x,y-1);
 		removeBlock(x,y+1);
-		totalInc += yb + yd;
+		totalInc += ryb + ryd;
 	} 
 	if (yc>0&&yd>0&&ye>0 && (yd-yc==ye-yd) && (Math.abs(yd-yc)==1 || yd==yc)) {
 		removeBlock(x,y+1);
 		removeBlock(x,y+2);
-		totalInc += yd + ye;
+		totalInc += ryd + rye;
 	}
 
 	if (totalInc>0) {
-		totalInc += xc;
+		totalInc += rc;
 		removeBlock(x,y);
 		setScore(score + totalInc);
 	}
 	
-	if (placed>=80) {
+	if (placed>=75) {
 		setMaxScore();
 		showPenddingInfo([ID_BTN_RESTART], null);
 	}
@@ -1023,7 +1098,7 @@ function getPosNumber(x, y) {
 	if (calarrays[x][y].charAt(0)=='a') {
 		return -5;
 	}
-	return parseInt(calarrays[x][y].split("-")[1]);
+	return parseInt(calarrays[x][y].split("-")[0])*10 + parseInt(calarrays[x][y].split("-")[1]);
 }
 
 /**删除指定位置的方块,可以指定多种效果 包括淡出、旋转退出， 掉落等*/
@@ -1119,6 +1194,7 @@ function _pushInNumber() {
 	}
 }
 
+/**将一个方块飞行到指定位置。 如果方块不存在，则直接创建。*/
 function _createAndFly(actor, pos) {
 	if (actor==null) {
 		var value = numbers[pos];
