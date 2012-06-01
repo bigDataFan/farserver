@@ -5,7 +5,7 @@ var startScene;
 var mapContainer;
 var squareContainer;
 var ready = false; 
-
+var isPendding = false;
 var placed = 0;
 var levelInfo;
 var numbers = [];
@@ -113,10 +113,13 @@ function initRiddle(t) {
 	cleanQuene();
 	numbers = riddlesRemains[t].clone();
 	_pushInNumber();
+	isPendding = false;
+	maxScoreActor.setVisible(false);
 }
 
 
 function initGameCtx(leveled) {
+	isPendding = false;
 	gameModel = MODEL_LEVEL;
 	for ( var i = 0; i < actorsPlaced.length; i++) {
 		for ( var j = 0; j < actorsPlaced[i].length; j++) {
@@ -148,34 +151,36 @@ function initGameCtx(leveled) {
 		[0,0,0,0,0,0,0,0,0,0]
 	];
 	setScore(0);
+	cleanQuene();
 	placed = 0;
 	if (leveled) {
 		gamectx.level = 0;
-		goNextLevel();
-	} else {
+		goCommonNextLevel();
+	} else { //不会再发生的情况
 		gamectx.level = 100;
-		goNextLevel();
+		goCommonNextLevel();
 		gamectx.remains = Number.MAX_VALUE;
 	}
+	
+	maxScoreActor.setVisible(true);
 	//showPenddingInfo();
 }
 
-function goNextLevel() {
+function goCommonNextLevel() {
+	gamectx.level ++;
+	levelInfo.setText(gamectx.level + "级");
+	gamectx.remains = getLevelBlocks(gamectx.level);
+
+	for ( var i = 0; i < 7; i++) {
+		putInQueue();
+	}
+	_pushInNumber();
+}
+
+function checkOnBoards() {
 	
 	if (gameModel==MODEL_LEVEL) {
-		gamectx.level ++;
-		levelInfo.setText(gamectx.level + "级");
-		gamectx.remains = getLevelBlocks(gamectx.level);
-		
-		for ( var i = 0; i < 7; i++) {
-			putInQueue();
-		}
-		if (gamectx.level>1) {
-			for ( var i = 0; i < gamectx.level; i++) {
-				placeRandomNumber();
-			}
-		}
-		_pushInNumber();
+		goCommonNextLevel();
 	}
 	
 	if (gameModel==MODEL_RIDDLE) {
@@ -198,21 +203,9 @@ function goNextLevel() {
 }
 
 
-function makeUpNextLevel() {
+function onNextButtonClicked() {
 	if (gameModel==MODEL_LEVEL) {
-		gamectx.level ++;
-		
-		gamectx.remains = getLevelBlocks(gamectx.level);
-		levelInfo.setText(gamectx.level + "级");
-		for ( var i = 0; i < 7; i++) {
-			putInQueue();
-		}
-		if (gamectx.level>1) {
-			for ( var i = 0; i < gamectx.level; i++) {
-				placeRandomNumber();
-			}
-		}
-		_pushInNumber();
+		goCommonNextLevel();
 	}
 	
 	if (gameModel==MODEL_RIDDLE) {
@@ -282,6 +275,13 @@ function initStartScene() {
 		.setAsButton(btnStartLevelImg.getRef(), 2, 2, 3, 3, onRiddleClicked
 			).setLocation(width/2-85, height/2+60);
 	startContainer.addChild(b2);
+	
+	var exitBtn = new CAAT.Actor()
+	.setAsButton(btnStartLevelImg.getRef(), 4, 4, 5, 5, onAppCloseClicked
+	).setLocation(width/2-85, height/2+120);
+	startContainer.addChild(exitBtn);
+	
+	repeatPlay("/android_asset/www/mm.mid");
 }
 
 function onGameStartClicked(button) {
@@ -306,6 +306,9 @@ function onRiddleClicked(button) {
 	director.setScene(director.getSceneIndex(mapScene));
 }
 
+function onAppCloseClicked(button) {
+	navigator.app.exitApp();
+}
 /**
  * 初始化游戏屏幕
  */
@@ -393,8 +396,14 @@ var ID_BTN_NEXT = "btn.nextlevel";
 var ID_BTN_CONTINUE = "btn.continueLevel";
 var ID_BTN_RESTART = "btn.restart";
 
+/***
+ * 显示中断栏。 如果还未初始化，则初始化container
+ * @param btns 显示的按钮数组。
+ * @param idx 暂时不用
+ */
 function showPenddingInfo(btns, idx) {
 	ready = false;
+	isPendding = true;
 	if (penddingContainer==null) {
 		//初始化
 		penddingContainer = new CAAT.ActorContainer();
@@ -414,7 +423,7 @@ function showPenddingInfo(btns, idx) {
 		var nextBtn= new CAAT.Actor()
 		.setAsButton(
 					txtinfoImages.getRef(),
-					0, 0, 1, 1, makeUpNextLevel
+					0, 0, 1, 1, onNextButtonClicked
 	     ).setLocation(penddingContainer.width-100,penddingContainer.height-60);
 		
 		nextBtn.setId(ID_BTN_NEXT);
@@ -472,7 +481,7 @@ function showPenddingInfo(btns, idx) {
 	}
 	var path= new CAAT.LinearPath()
 	.setInitialPosition(director.width/2 - 120, -300)
-	.setFinalPosition(director.width/2 - 120, 80);
+	.setFinalPosition(director.width/2 - 120, 120);
 	
 	var pb = new CAAT.PathBehavior()
 	  .setPath(path)
@@ -482,7 +491,6 @@ function showPenddingInfo(btns, idx) {
 }
 
 function onPenddingClick() {
-	ready = false;
 	if (gameModel==MODEL_LEVEL) {
 		showPenddingInfo([ID_BTN_CONTINUE],2);
 	} else if (gameModel==MODEL_RIDDLE) {
@@ -496,10 +504,10 @@ function continueLevel() {
 
 function refreshLevel() {
 	if (gameModel==MODEL_LEVEL) {
-		initGameCtx(true);
+		hidePenddingContainer(initGameCtx(true));
 	} else if (gameModel==MODEL_RIDDLE) {
 		gamectx.level --;
-		makeUpNextLevel();	
+		onNextButtonClicked();	
 	}
 }
 
@@ -530,7 +538,7 @@ function setMaxScore() {
 	
 	if (score>maxScore) {
 		localStorage.setItem("riddle.max", score);
-		maxScoreActor.setText("最高分:" + maxScore);
+		maxScoreActor.setText("最高分:" + score);
 		alert("恭喜您打破最高分记录 :" + score + "分!");
 	}
 }
@@ -545,13 +553,15 @@ function hidePenddingContainer(cb) {
 		  .setFrameTime(mapScene.time, 400);
 		penddingContainer.addBehavior(pb).addListener( {
 			behaviorExpired : function() {
+				cb;
 				//penddingContainer.emptyChildren();
 				//penddingContainer.setExpired(0);
 				//penddingContainer = null;
 			}
 		} );
 	}
-	ready = true;
+	isPendding = false;
+	ready = true;	
 }
 
 
@@ -684,7 +694,7 @@ function doMoving(me) {
 	        	  checkAndRemove(ax,ay);
 	        	  //当移动发生并且执行完检查后，不剩余方块则跳到下一关
 	        	  if (numbers.length==0) {
-	         		  	goNextLevel();
+	        		  checkOnBoards();
 	      		  }
 	          }
 	      });
@@ -726,10 +736,9 @@ function actorMouseDown(me) {
 			var number = numbers.shift();
 			var actor = numberActors.shift();
 			actor.setExpired(0);
-			
 			removeBlock(ax, ay, "zoomout");
 			if (numbers.length==0) {
-				goNextLevel();
+				checkOnBoards();
 			} else {
 				generateNextBlock();
 			}
@@ -804,12 +813,11 @@ function doExtras(number, actor, x, y) {
 
 /** 棋盘的点击事件 */
 function onBoadClicked(me) {
+	if (!ready || isPendding) return;
 	if (moving!=null) {
 		doMoving(me);
 		return;
 	}
-	
-	if (!ready) return;
 	
 	var ax = Math.floor(me.x / numberImages.singleWidth);
 	var ay = Math.floor(me.y / numberImages.singleHeight);
@@ -837,10 +845,11 @@ function onBoadClicked(me) {
         		  checkAndRemove(ax, ay);
         	  }
         	  if (numbers.length==0) {
-        		  goNextLevel();
+        		  checkOnBoards();
         	  } else {
         		  generateNextBlock();
         	  }
+        	  playPut();
           }
       } );
 	actor.addBehavior(pb);
@@ -924,6 +933,7 @@ function checkAndRemove(x,y) {
 	var xc = getPosNumber(x, y);
 	var xd = getPosNumber(x+1, y);
 	var xe = getPosNumber(x+2, y);
+	
 	var totalInc = 0;
 	
 	var ra = xa%10; 
@@ -931,6 +941,11 @@ function checkAndRemove(x,y) {
 	var rc = xc%10;
 	var rd = xd%10;
 	var re = xe%10;
+	
+	if (gameModel==MODEL_RIDDLE) {
+		xa = ra; xb=rb; xc=rc; xd=rd; xe=re;
+	}
+	
 	/*
 	if (ra==rb && rb==rc && rc==rd && rd==re && rc>0) {
 		removeBlock(x-2,y);
@@ -960,8 +975,7 @@ function checkAndRemove(x,y) {
 		removeBlock(x-1,y);
 		removeBlock(x+1,y);
 		totalInc += rb + rd;
-	} else
-	*/
+	} else */
 	if (xa>0 && xb>0 && xc>0 && xd>0 && xe>0 && (xb-xa==xc-xb && xc-xb==xd-xc && xd-xc==xe-xd) && (Math.abs(xb-xa)==1 || xb==xa)) {
 		removeBlock(x-2,y);
 		removeBlock(x-1,y);
@@ -999,13 +1013,17 @@ function checkAndRemove(x,y) {
 	var yc = getPosNumber(x, y);
 	var yd = getPosNumber(x, y+1);
 	var ye = getPosNumber(x, y+2);
-	
-	
+
 	var rya = ya%10; 
 	var ryb = yb%10;
 	var ryc = yc%10;
 	var ryd = yd%10;
 	var rye = ye%10;
+	
+	if (gameModel==MODEL_RIDDLE) {
+		ya = rya; yb = ryb; yc = ryc; yd = ryd; ye = rye;
+	}
+	
 	/*
 	if (rya==ryb && ryb==ryc && ryc==ryd && ryd==rye && ryc>0) {
 		removeBlock(x,y-2);
@@ -1035,8 +1053,7 @@ function checkAndRemove(x,y) {
 		removeBlock(x,y-1);
 		removeBlock(x,y+1);
 		totalInc += ryb + ryd;
-	} else
-	*/
+	} else */
 	if (ya>0&&yb>0&&yc>0&&yd>0&&ye>0 && (yb-ya==yc-yb && yc-yb==yd-yc && yd-yc==ye-yd) && (Math.abs(yb-ya)==1 || ya==yb)) {
 		removeBlock(x,y-2);
 		removeBlock(x,y-1);
@@ -1073,12 +1090,14 @@ function checkAndRemove(x,y) {
 	if (totalInc>0) {
 		totalInc += rc;
 		removeBlock(x,y);
+		playRemove();
 		setScore(score + totalInc);
 	}
 	
 	if (placed>=75) {
-		setMaxScore();
+		ready = false;
 		showPenddingInfo([ID_BTN_RESTART], null);
+		setMaxScore();
 	}
 }
 
@@ -1175,7 +1194,7 @@ function incBlock(x, y,inc) {
         behaviorExpired : function(behavior, time, actor) {
         	checkAndRemove(x, y);
         	if (numbers.length==0) {
-				goNextLevel();
+				checkOnBoards();
 			}
         }
     });
@@ -1228,7 +1247,6 @@ function _createAndFly(actor, pos) {
                         	 }
                          }
                  	});
-		
 		actor.addBehavior(pb);
 		actor.setPosition(60 + pos*(numberImages.singleWidth), -45);
 		squareContainer.addChild(actor);
@@ -1256,6 +1274,8 @@ function _createAndFly(actor, pos) {
 	return actor;
 }
 
+
+/**将队列清除*/
 function cleanQuene() {
 	for ( var i = 0; i < numberActors.length; i++) {
 		numberActors[i].setExpired(0);
@@ -1274,6 +1294,40 @@ if (!Array.prototype.clone ) {
 	    return arr1;
 	  }
 }
+
+
+function repeatPlay(src) {
+	var my_media = new Media(src, function(){
+		my_media.play();
+	}, function(){});
+	my_media.play();
+}
+
+var putMedia = new Media("/android_asset/www/put.mp3",  function(){},  function(){});
+var removeMedia = new Media("/android_asset/www/remove.mp3",  function(){},  function(){});
+
+function playRemove() {
+	removeMedia.play();
+}
+
+function playPut() {
+	putMedia.play();
+}
+
+
+function playAudio(src) {
+    var my_media = new Media(src, onSuccess, onError);
+    // Play audio
+    my_media.play();
+}
+
+function onSuccess() {
+	
+}
+function onError(error) {
+
+}
+
 
 
 
