@@ -10,6 +10,9 @@ var placed = 0;
 var levelInfo;
 var numbers = [];
 
+
+var isPhone = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/);
+
 var calarrays = [
 	[0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0],
@@ -319,7 +322,7 @@ function initLevelsScene() {
 	mapScene.addChild(mapContainer);
 
 	squareContainer = new CAAT.ActorContainer().
-	setBounds(0, director.height-400, 320, 400);
+	setBounds(0, director.height-board_height, board_width, board_height);
 	mapScene.addChild(squareContainer);
 
 	/*
@@ -1233,8 +1236,8 @@ function _createAndFly(actor, pos) {
 			.setSpriteIndex((parseInt(vs[0])-1)*9 + parseInt(vs[1])-1);
 		}
 		var path= new CAAT.LinearPath()
-		.setInitialPosition(width, -45)
-		.setFinalPosition(60 + pos*(numberImages.singleWidth), -45);
+		.setInitialPosition(width, -numberImages.singleWidth)
+		.setFinalPosition(60 + pos*(numberImages.singleWidth), -numberImages.singleWidth);
 		
 		var pb = new CAAT.PathBehavior()
 		.setPath(path)
@@ -1248,13 +1251,13 @@ function _createAndFly(actor, pos) {
                          }
                  	});
 		actor.addBehavior(pb);
-		actor.setPosition(60 + pos*(numberImages.singleWidth), -45);
+		actor.setPosition(60 + pos*(numberImages.singleWidth), -(numberImages.singleWidth));
 		squareContainer.addChild(actor);
 		actor.mouseDown = actorMouseDown;
 	} else {
 		var path= new CAAT.LinearPath()
-	    .setInitialPosition(actor.x,-45)
-	    .setFinalPosition(60 + pos*(numberImages.singleWidth), -45);
+	    .setInitialPosition(actor.x,-numberImages.singleWidth)
+	    .setFinalPosition(60 + pos*(numberImages.singleWidth), -numberImages.singleWidth);
 		var pb = new CAAT.PathBehavior()
         .setPath(path)
         .setFrameTime(squareContainer.time, 500)
@@ -1266,10 +1269,8 @@ function _createAndFly(actor, pos) {
            	 }
             }
     	});
-
 		actor.addBehavior(pb);
-		
-		actor.setPosition(60 + pos*(numberImages.singleWidth), -45);
+		actor.setPosition(60 + pos*(numberImages.singleWidth), -numberImages.singleWidth);
 	}
 	return actor;
 }
@@ -1297,28 +1298,41 @@ if (!Array.prototype.clone ) {
 
 
 function repeatPlay(src) {
-	var my_media = new Media(src, function(){
+	if (isPhone) {
+		var my_media = new Media(src, function(){
+			my_media.play();
+		}, function(){});
 		my_media.play();
-	}, function(){});
-	my_media.play();
+	}
 }
 
-var putMedia = new Media("/android_asset/www/put.mp3",  function(){},  function(){});
-var removeMedia = new Media("/android_asset/www/remove.mp3",  function(){},  function(){});
+
+var putMedia;
+var removeMedia;
+if (isPhone) {
+	putMedia = new Media("/android_asset/www/put.mp3",  function(){},  function(){});
+	removeMedia = new Media("/android_asset/www/remove.mp3",  function(){},  function(){});
+}
 
 function playRemove() {
-	removeMedia.play();
+	if (isPhone) {
+		removeMedia.play();
+	}
 }
 
 function playPut() {
-	putMedia.play();
+	if (isPhone) {
+		putMedia.play();
+	}
 }
 
 
 function playAudio(src) {
-    var my_media = new Media(src, onSuccess, onError);
-    // Play audio
-    my_media.play();
+	if (isPhone) {
+		var my_media = new Media(src, onSuccess, onError);
+		// Play audio
+		my_media.play();
+	}
 }
 
 function onSuccess() {
