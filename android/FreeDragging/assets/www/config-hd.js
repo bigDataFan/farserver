@@ -1,18 +1,19 @@
 /**
  * 
  */
-var width = 320;//window.innerWidth;
-var height = 510;//window.innerHeight;
+var width = 480;//window.innerWidth;
+var height = 720;//window.innerHeight;
 
-var board_width=320;
-var board_height=400;
+var board_width=480;
+var board_height=600;
+
 
 var worknfightImages = [
     {id:"logo", url: "images/logo.png"},
-    {id:"bgstart", url: "images/background_top.png"},
-    {id:"numbers", url: 'images/x40.png'},
+    {id:"bgstart", url: "images-hd/background_top.png"},
+    {id:"numbers", url: 'images-hd/numbers.png'},
     {id:"nums", url: 'images/nums.png'},
-    {id:"background", url: 'images/fondo.png'},
+    {id:"background", url: 'images-hd/fondo.png'},
     {id:"levelbg", url: 'images/rsz_3level.png'},
     {id:"scorebg", url: 'images/score.png'},
     {id:"cloudnear", url:'images/nube1.png'},
@@ -20,7 +21,7 @@ var worknfightImages = [
     {id:"extras", url:'images/nums40-bg.png'},
     {id:"btnstartLevel", url:'images/start.png'},
     {id:"btnEmpty", url:'images/btnEmpty.png'},
-    {id:"chessbg", url:'images/chessbg320.png'},
+    {id:"chessbg", url:'images-hd/sb.png'},
     {id:"returnmenu", url:'images/progresive.png'},
    // {id:"animals", url:"images/animals.png"},
     {id:"penddingbg", url:"images/dialog.png"},
