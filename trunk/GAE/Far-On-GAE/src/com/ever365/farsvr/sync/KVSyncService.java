@@ -28,7 +28,6 @@ public class KVSyncService {
 	private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	
 	private MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
-	
 	private ArrayList<String> updated = new ArrayList<String>();
 	
 	private String genKey(String kind, String key) {
@@ -39,7 +38,6 @@ public class KVSyncService {
 	public void saveKey(
 			@RestParam(value="kind") String kind,
 			@RestParam(value="key") String key,@RestParam(value="value") String value) {
-
 		updated.add(genKey(kind, key));
 		syncCache.put(genKey(kind, key), value);
 	}
@@ -62,7 +60,7 @@ public class KVSyncService {
 				Entity entity = datastore.get(KeyFactory.createKey(kind, AuthenticationUtil.getCurrentUser() + "^" + key));
 				if (entity!=null) {
 					log.fine("read key:" + gkey);
-					v = entity.getProperty("value");
+					v = ((Text)entity.getProperty("value")).getValue();
 					syncCache.put(gkey, v);
 				} else {
 					log.fine("read key not found:" + gkey);
@@ -95,7 +93,7 @@ public class KVSyncService {
 		for (String key : toRemoved) {
 			if (syncCache.contains(key)) {
 				String[] keys = key.split("\\^");
-				Entity entity = new Entity(keys[0], keys[1] + "." +keys[2]); 
+				Entity entity = new Entity(keys[0], keys[1] + "^" +keys[2]); 
 				entity.setProperty("value", new Text((String) syncCache.get(key)));
 				datastore.put(entity);
 				log.fine("writen key:" + key);
