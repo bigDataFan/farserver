@@ -29,7 +29,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.ever365.rest.registry.HttpServiceRegistry;
 import com.ever365.rest.registry.MethodInvocation;
-import com.ever365.security.LoginServlet;
 import com.ever365.security.UserService;
 
 /**
