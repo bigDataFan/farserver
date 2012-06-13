@@ -1,0 +1,434 @@
+<!DOCTYPE HTML> 
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>懒猫记账</title>
+
+<link rel="stylesheet" type="text/css" href="css/style.css"/>
+<link rel="stylesheet" type="text/css" href="css/zebra_datepicker.css"/>
+</head>
+<body>
+
+<div id="nav" class="nav">
+<table style="border: 0px; height:36px " width="100%">
+	<tr>
+		<td width="260px">
+			<button onclick="layout.back()" class="tbtn" style="display:none" id="btn-return-main">返回</button>
+			<button onclick="layout.switchDividedView()" style="display:none" id="switchBackBtn">关闭报表</button>
+			<button class="tbtn" id="btn-save-outcome-remove" style="display:none" onclick="uiRemoveSelected()">删除</button>
+		</td>
+		<td>
+			<button class="tbtn" id="btn-save-form" style="display:none" onclick="saveCurrentForm()">保存</button>
+			<button class="tbtn" id="btn-add-form" style="display:none" onclick="formReset(true)">新增</button>
+			<button class="tbtn" id="btn-add-bigcat" style="display:none" onclick="category.addRoot($('ul.category'))">增加大类</button>
+			<button class="tbtn" id="btn-save-cat" style="display:none" onclick="uiSaveCategory()">保存设置</button>
+			
+			<div style="right: 3px; bottom: 0; position: absolute; top: 3px; width: 150px;text-align: right;">	
+				<button id="loginLink" onclick="location.href='/login.jsp'">
+					登陆
+				</button>
+				<button id="logoutLink" style="display:none" onclick="location.href='/logout'">注销</button>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<!-- 
+	 <span class="button" >创建项目</span>
+	 
+	 <span class="button" >增加人员</span>
+	 -->	
+</div>
+
+	<div class="left" >
+		<div id="toplist" style="display:none; height:535px;" btns="">
+			<div class="si" id="navdashboard" onclick="navDashboardClick()"><div class="cc Uc"></div><span>账户概况</span></div>
+			<div class="projectlist">
+				<div class="qi">收入与支出</div>
+			</div>
+			<div class="si" id="navoutcome" onclick="navOutComeClick()"><div class="cc Uc"></div><div id="groupdbsize" class="count">0</div> <span>支出记录</span></div>
+			<div class="si" id="navincome" onclick="navInComeClick()"><div class="cc Uc"></div><div id="incomedbsize" class="count">0</div><span>收入记录</span></div>
+			<div class="si" id="navreport" onclick="navReportClick()"><div class="cc Uc"></div><span>报表与统计</span></div>
+
+			<div class="projectlist">
+				<div class="qi">配置</div>
+			</div>
+			<div class="si" id="navcat" onclick="navCategoryClick()"><div class="cc Uc"></div><span>类别</span></div>
+			<!-- 
+			<div class="resourceList">
+				<div class="qi">人员与资源</div>
+			</div>
+			 -->
+			 <div id="connectionInfo">
+				<span id="networkInfo">未连接到服务器</span>
+			</div>
+		</div>
+		
+		<div id="detailList" style="display:none" btns="btn-return-main">
+				<div class="emptyInfo">
+					您还没有增加记录
+				</div>				
+				
+				<div class="taskItemTemplate" style="display:none">
+					<div>
+						<div class="selectedArrow" style="visibility: visible;"></div>
+						<div class="priority"><img src="/image/status_offline.png"></div>
+						<div class="resource">
+							<span class="bind" bindTo="outtype,intype"></span>
+						</div>
+					</div>
+					<div>
+						<div class="dotc" >
+							<div class="checkbox"></div>
+						</div>
+						<div class="total">
+							<div class="mark bind" bindTo="total" ></div>
+						</div>
+						<div>
+							<span class="Nj"><span class="cc Qc Pj"></span><span
+								class="cc ec"></span>
+							</span>
+							<span class="title bind" bindTo="title" max="10">title</span>
+						</div>
+					</div>
+					<div class="snapshot">
+						<!-- <div class="progress"></div> --> <div style="margin-left: 5px;" class="bind" bindTo="time"></div> <div style="margin-left: 5px;" class="bind" bindTo="outmethod"></div> 
+					</div>
+				</div>
+				<div class="moreRecord" style="display: none;">
+						<button style="margin:0px; width:100%;height: 100%" onclick="showMore()">显示更多...</button>
+				</div>	
+				
+		</div>
+		
+		<div id="reportList" style="display:none" btns="btn-return-main">
+			<div class="item">
+				<div class="label">
+					每月报表 <select name="generalyear" class="year">
+							<option>2001</option>
+							<option>2002</option>
+							<option>2003</option>
+							<option>2004</option>
+							<option>2005</option>
+							<option>2006</option>
+							<option>2007</option>
+							<option>2008</option>
+							<option>2009</option>
+							<option>2010</option>
+							<option selected="selected">2011</option>
+							<option>2012</option>
+				        </select>年<select name="generalmonth" class="month">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+							<option>12</option>
+				        </select>  <button onclick="analyzeMonth()">分析</button>
+				</div>		
+			</div>
+			
+			<div class="item">
+				<div class="label">
+					按月支出线 <select name="monthlineselect" class="year">
+							<option>2001</option>
+							<option>2002</option>
+							<option>2003</option>
+							<option>2004</option>
+							<option>2005</option>
+							<option>2006</option>
+							<option>2007</option>
+							<option>2008</option>
+							<option>2009</option>
+							<option>2010</option>
+							<option>2011</option>
+							<option>2012</option>
+				        </select> 年  <button onclick="analyzeMonthLine()">分析</button>
+				</div>
+			</div>
+			<div class="item">
+				<div class="label">
+					按月收入线 <select name="monthlineselectincome" class="year">
+							<option>2001</option>
+							<option>2002</option>
+							<option>2003</option>
+							<option>2004</option>
+							<option>2005</option>
+							<option>2006</option>
+							<option>2007</option>
+							<option>2008</option>
+							<option>2009</option>
+							<option>2010</option>
+							<option>2011</option>
+							<option>2012</option>
+				        </select> 年  <button onclick="analyzeMonthIncomeLine()">分析</button>
+				</div>
+			</div>
+			<div class="item">
+				<div class="label">
+					按月盈余线 <select name="monthlineselectremain" class="year">
+							<option>2001</option>
+							<option>2002</option>
+							<option>2003</option>
+							<option>2004</option>
+							<option>2005</option>
+							<option>2006</option>
+							<option>2007</option>
+							<option>2008</option>
+							<option>2009</option>
+							<option>2010</option>
+							<option>2011</option>
+							<option>2012</option>
+				        </select> 年  <button onclick="analyzeMonthRemainLine()">分析</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="right">
+		<div class="content form" id="addOutComeForm" style="display:none" db="groupdb" btns="btn-save-form,btn-add-form">
+			<div class="title" style="width:450px"><h3>编辑支出</h3> </div>
+			<div class="label">
+				金额 * ：  <input type="text" name="total" size="5" class="number" > <span style="color: green;" id="calculateTotalProcess"></span>
+			</div> 
+			<div class="label">
+				支出描述： <input type="text" name="title" size="36"> 
+			</div>
+			<div class="label">
+				日期 * ： 
+				<input type="text" class="choosedate" name="time" size="16" width="200"> 
+			</div>
+			<div class="label">
+				支出方式 * ：  
+				<select name="outmethod">
+						<option default="1">现金</option>
+						<option>刷卡</option>
+						<option>网上支付</option>
+				</select> 
+			</div> 
+			
+			<div class="label">
+				支出类型： 
+				<select name="outtype">
+					<option default="1" targetDiv="singleitem">单笔支出</option>
+					<option targetDiv="multiitems">多笔(超市购物等)</option>
+					<option>特殊支出(预算外)</option>
+				</select>
+			</div>
+			
+			<div id="singleitem" class="label switched outtype" default="1">
+				所属分类 ： 
+				<select name="category" class="category">
+				</select> 
+			</div>
+			
+			<div id="multiitems" name="items" class="label switched outtype">
+				<ul>
+					<li class="forclone" style="display:none">
+						<label>支出项：<input type="text" name="title" size="16"></label>
+						<label>金额 <input type="text" name="cost" size="4"  class="number"></label>
+						<label>类别<select class="category" name="category"></select></label>
+						<a class="delete" href="javascript:void(0)">删除</a>
+					 </li>
+				</ul>
+				<div style="margin-top: 10px;">
+					<button clone="items" onclick="uicloneSubitem()">增加一项</button> <button onclick="calculateTotal()">计算到总金额</button>
+				</div>
+			</div>
+		</div>
+		
+		<div class="content form" id="addInComeForm" db="incomedb" style="display:none" btns="btn-save-form,btn-add-form">
+			<div class="title"><h2>收入编辑</h2> </div>
+				<div class="label">
+					收入描述： <input type="text" name="title" size="36"> 
+				</div>
+				<div class="label">
+					收入金额： <input type="text" name="total" size="8" class="number"> 
+				</div>
+				<div class="label">
+				日期 * ： 
+				<input type="text" class="choosedate" name="time" size="16" width="200">
+				</div>
+				<div class="label">
+					收入类型: 
+					<select name="intype" >
+						<option>固定收入</option>
+						<option>奖金及补贴</option>
+						<option>股票与其他投资</option>
+						<option>兼职</option>
+						<option>固定资产收益</option>
+						<option>其他</option>
+					</select>
+				</div>
+				
+				<div class="label">
+					付款方： <input type="text" name="from" size="36"> 
+				</div>
+				
+				<div class="label">
+					备注：<textarea rows="5" cols="50" name="desc"></textarea>
+				</div>
+				
+				<div class="label"> 
+					税前工资 <input type="text" name="fullSalary" class="number"><button onclick="calculateTax()">计算</button> <br>
+					住房公积金: <input type="text" name="housingReserve" size="5" class="number">
+					养老保险: <input type="text" name="endowmentInsurance" size="5" class="number">
+					医疗保险: <input type="text" name="medicalInsurance" size="5" class="number">
+					失业保险: <input type="text" name="jobInsurance" size="5" class="number">
+					缴纳个税:  <input type="text" name="personalTax" size="5" class="number">
+				</div>
+		</div>
+		
+		<div style="display:none" id="report">
+			<div id="generalReport" class="reports">
+				<div class="title">
+					<div class="info"></div>
+				</div> 
+				<div class="reportlist content">
+				
+					<div>
+					<img id="outcomeline"/> 
+						<div class="jiashare" id="jiathisshareOutComeLine" style="display:none" > 
+	                     <!-- JiaThis Button BEGIN -->
+	                     <div id="ckepop">       
+	                     <a href="http://www.jiathis.com/share/?uid=ever365money" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">分享</a>
+	                     <span class="jiathis_separator">|</span>
+	                     <a class="jiathis_button_tsina"></a>
+	                     <a class="jiathis_button_qzone"></a>
+	                     <a class="jiathis_button_kaixin001"></a>
+	                     <a class="jiathis_button_renren"></a>
+	                     </div>
+	                     <!-- JiaThis Button END -->
+						</div>
+					</div>
+					<div>
+					<img id="outcomepie"/>
+					<div class="jiashare" id="jiathisshareOutComePie" style="display:none" > 
+	                     <!-- JiaThis Button BEGIN -->
+	                     <div id="ckepop">       
+	                     <a href="http://www.jiathis.com/share/?uid=ever365money" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">分享</a>
+	                     <span class="jiathis_separator">|</span>
+	                     <a class="jiathis_button_tsina"></a>
+	                     <a class="jiathis_button_qzone"></a>
+	                     <a class="jiathis_button_kaixin001"></a>
+	                     <a class="jiathis_button_renren"></a>
+	                     </div>
+	                     <!-- JiaThis Button END -->
+						</div>
+					</div>
+				</div>
+				<div></div>
+				<div id="categorychart" ></div>
+			</div>
+			
+			<div id="monthReport" class="reports">
+				
+				<div class="content">
+					<img id="outcomemonthline"/>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="content" id="eidtCat" style="display:none" btns="btn-add-bigcat,btn-save-cat">
+			<ul class="category" style="width: 450px">
+				
+			</ul>
+		</div>
+		
+		<div class="content nav" id="dashboard" style="display:none">
+			<div class="title" style="width:450px"><h2>欢迎使用懒猫记账</h2> </div>
+			
+			<ul style="width: 450px;">
+ 				<!-- <li>
+ 					<span class="title">本月支出总计</span>
+ 					<div class="total" id="recentmonth">
+ 					</div>
+ 				</li>
+ 				 -->
+ 				<li><span class="title" id="currentUserName"></span></li>
+ 				<li><span class="title">欢迎下载使用懒猫记账android版本,<a href="http://www.appchina.com/soft_detail_218822_0_10.html" target="blank">到应用汇下载</a>|<a href="http://static.apk.hiapk.com/html/2012/02/412500.html" target="_blank">到安卓市场下载</a></span></li>
+ 				<li>
+ 					<span class="title">统计信息</span>
+ 					<table cellspacing="0" cellpadding="0" class="tbl tbl-timesummary" id="tbl-timesummary">
+						<tbody>
+						<tr>
+							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="big_link" style="background-color: transparent; ">
+							  <a href="javascript:void(0)" >
+							    <span class="type-smallgrey">本月支出总计</span>
+							    <span id="recentmonth" class="type-largehours">0</span>
+							  </a>
+							</td>
+							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
+						 	 <a href="javascript:void(0)" >
+						      <span class="type-smallgrey">最近3天支出总计</span>
+						      <span id="recent3day" class="type-largehours">0</span>
+						    </a>
+						 	</td>
+						</tr>
+						
+						<tr>
+							<td class="big_link" style="background-color: white;">
+							  <a href="javascript:void(0)">
+							    <span class="type-smallgrey">本月支出条目</span>
+							    <span id="recentmonthcount" class="type-largehours">0</span>
+							  </a>
+							</td>
+							<td onmouseout="this.style.backgroundColor='transparent'" onmouseover="this.style.backgroundColor='white'" class="tbl-leftborder big_link" style="background-color: transparent;">
+						      <a href="javascript:void(0)">
+						        <span class="type-smallgrey">总计支出条目</span>
+						        <span id="outcometotalcount" class="type-largehours">0</span>
+						      </a>
+						    </td>
+						  </tr>
+					</tbody></table>
+     				</li>
+     				<li>
+ 					<span class="title">最近30天记账支出情况</span>
+ 					</li>
+     				<li style="height:200px">
+     					<img id="recent30daygraph">
+     				</li>
+     				<li>
+ 					<span class="title">有意见或者建议，请写邮件给作者<a href="mailto:yaomy@ever365.com">yaomy@ever365.com</a></span>
+ 					</li>
+     		</ul>
+		</div>
+	</div>
+	
+	<!-- 
+	<div class="bottom nav"> <table style="border: 0px; height:36px " width="100%">
+	<tr>
+		<td width="260px">
+			<button id="loginLink" onclick="location.href='/office/login.jsp?redirectTo=/home/money/index.html'">
+				登陆
+			</button>
+			<span  id="userInfo" style="display:none;">您好 <span  class="name">游客</span>
+				<a class="fixed" href="/logout?redirect=/home/money/index.html">注销</a>
+			</span>
+		</td>
+		<td>
+			<span id="networkInfo">未连接到服务器</span>
+		</td>
+	</tr>
+	</table>
+
+	</div>
+ -->
+ 
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/zebra_datepicker.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+<script type="text/javascript" src="js/money.js"></script>
+ 
+ 
+</body>
+</html>
+

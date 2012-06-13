@@ -1,0 +1,274 @@
+@CHARSET "UTF-8";
+.qq-uploader { position:relative; width: 100%;}
+
+
+.qq-upload-button-hover {background:#F8F8F8}
+.qq-upload-button-focus {outline:1px dotted black;}
+
+.qq-upload-drop-area {
+    position:absolute; top:0; left:0; width:100%; height:100%; min-height: 70px; z-index:2;
+    background:#FF9797; text-align:center; 
+}
+.qq-upload-drop-area span {
+    display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px;
+}
+.qq-upload-drop-area-active {background:#FF7171;}
+
+.qq-upload-list {
+	padding: 0;
+	list-style: disc;
+	position: absolute;
+	left: 100px;
+	top: 0px;
+	width: 400px;
+}
+.qq-upload-list li { margin:0; padding:0; line-height:15px; font-size:12px;}
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
+    margin-right: 7px;
+}
+
+.qq-upload-file {}
+.qq-upload-spinner {display:inline-block; background: url("loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
+.qq-upload-size,.qq-upload-cancel {font-size:11px;}
+
+.qq-upload-failed-text {display:none;}
+.qq-upload-fail .qq-upload-failed-text {display:inline;}
+
+
+.qq-upload-button {
+	/*
+    box-shadow: 0 1px 1px white inset, 0 3px 3px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+	padding: 7px 0;
+	margin: 10px;
+	text-align:center;
+    background-color: #B6D3F4;   
+    background:#880000; border-bottom:1px solid #ddd;color:#fff;
+    background-image: -moz-linear-gradient(center top , #B6D3F4, #5483B8) !important;
+        border: 1px solid #9AC9FF !important;
+    border-radius: 8px;
+	*/
+    display:block; 
+    position:absolute;
+	top: 0px;
+    width: 30px;  
+}
+
+
+
+/**功能列表头样式*/
+#terminal ul {
+	display: block;
+	list-style: none;
+}
+#terminal ul.nav li {
+	position: relative;
+	float: left;
+	margin-top: 12px;
+	/*margin: 12px 0px 0px 0px;*/
+	display: list-item;
+	background: url(images/navi_seperator.png) 100% 1px no-repeat #494738;
+	width: 96px;
+}
+
+#terminal ul.nav li a {
+   color: white;
+    display: block;
+    font-size: 13px;
+    line-height: 54px;
+    margin-left: 50px;
+    margin-right:10px;
+    padding: 0 5px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: 0 1px 1px #9D9999;
+}
+
+#terminal ul.nav li span {
+    display: block;
+    height: 30px;
+    left: 50%;
+    margin-left: -30px;
+    position: absolute;
+    top: 12px;
+    width: 30px;
+}
+/**结束功能头定义*/
+
+
+#terminal div.pages div.itemcontainer {
+	padding: 5px;
+	border-bottom: 1px solid #D6D6D6;
+	border-top: 1px solid white;
+	margin: 0;
+	border-left: 1px solid #D8E1E2;
+	border-right: 1px solid #D8E1E2;
+	background: #edf1f2  repeat-y right;
+	display: block;
+	min-height: 30px;
+	color: #40494A;
+}
+
+
+div.pages div.pagebar {
+    background: url("image/header_bg-x.png") repeat-x scroll 0 0 transparent;
+    color: #999999;
+    font-size: 14px;
+    height: 35px;
+    left: 0;
+    margin: 0;
+    top: 0;
+    width: 100%;
+	display:block;
+}
+
+div.pages div.pageFootbar {
+    background: url("image/header_bg-x.png") repeat-x scroll bottom left transparent;
+    color: #999999;
+    font-size: 14px;
+    height: 30px;
+    left: 0;
+    margin: 0;
+    top: 0;
+    width: 100%;
+	display:block;
+}
+
+
+
+div.pages div.pageFootbar span.flipPageBar {
+	float: right;
+	padding:7px;
+	color: #BB3E26;
+}
+
+div.fileItem div.image {
+	float: left;
+}
+
+
+div.fileItem div.title {
+	padding-left: 5px;
+	float:left;
+	font-size: 12px;
+	width: 260px;
+}
+
+div.fileItem div.desc {
+	padding-left: 5px;
+	float:left;
+	color: #92999C;
+	width: 80px;
+}
+div.fileItem div.oper {
+	float: right;
+	padding-top:8px;
+	padding-right:3px;
+	width: 30px;
+}
+
+/*
+div.fileItem div.oper a {
+	padding:3px;
+	margin:2px;
+	width:50px;
+	text-align: center;
+	background: #494738 repeat-x top left;
+	color: #CCC;
+}
+*/
+
+div.fileItem div.oper a{
+	text-decoration: none;
+	display: block;
+	height: 26px;
+	width: 30px;
+	line-height: 26px;
+	text-align: center;
+	background: white url(image/bg_masthead.jpg) repeat-x top left;
+	color: #CCC;
+}
+
+
+
+div.noteItem div.oper {
+	float: right;
+	display: block;
+}
+
+
+/**time styles*/
+
+div.timeItem div.timeDesc {
+	padding:5px;
+	float: left;
+	width: 300px;
+}
+div.timeItem div.timeDura {
+	padding:5px;
+	color: black;
+	float: left;
+	width: 1px;
+}
+div.timeItem div.timeOper {
+	color: black;
+	float: right;
+	width: 120px;
+}
+div.running {
+	background-color: #d4f1ff; 
+}
+
+div.running div.timeOper a {
+    border: 0 none;
+    color: #333333;
+    display: block;
+    height: 19px;
+    padding: 5px 60px 0 0;
+    text-decoration: none;
+	background: transparent url('/office/image/btn_running.gif') no-repeat scroll right top;
+}
+ 
+div.pending div.timeOper a {
+    border: 0 none;
+    color: #333333;
+    display: block;
+    height: 19px;
+    padding: 5px 60px 0 0;
+    text-decoration: none;
+	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right top;
+}
+
+div.pending div.timeOper a:HOVER {
+	background: transparent url('/office/image/btn_timer.png') no-repeat scroll right -24px;
+} 
+
+div.running div.timeOper a span {
+	padding-right:50px;
+	padding-bottom: 10px;
+}
+
+
+#timeTotal{
+	padding-top:8px;
+	padding-right: 5px;
+	color: black;
+	float: right;
+	color: black;
+	
+}
+/*--------------------------------end time style*/
+
+
+input[type="submit"] {
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#F8F8F8),to(#F1F1F1));
+	background-image: -webkit-linear-gradient(top,#F8F8F8,#F1F1F1);
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	background-color: #F8F8F8;
+	background-image: linear-gradient(top,#F8F8F8,#F1F1F1);
+	background-image: -o-linear-gradient(top,#F8F8F8,#F1F1F1);
+	border: 1px solid #C6C6C6;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	color: #333;
+}
