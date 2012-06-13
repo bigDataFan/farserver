@@ -95,7 +95,7 @@ function login() {
 				</div>
 				
 				<div class="label">
-					  没有账号？请 <a href="/login/register.jsp">注册</a>
+					  没有账号？请 <a href="/register.jsp">注册</a>
 				</div>
 				
 				<!-- 
