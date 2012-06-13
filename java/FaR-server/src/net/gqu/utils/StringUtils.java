@@ -972,8 +972,6 @@ public abstract class StringUtils {
 	}
 	
 	public static boolean isUserId(String userId) {
-		
-		
 		if (userIdPattern==null) {
 			userIdPattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]{4,15}$");
 		}
