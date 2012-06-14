@@ -97,13 +97,11 @@ function login() {
 				<div class="label">
 					  没有账号？请 <a href="/register.jsp">注册</a>
 				</div>
-				
 				<!-- 
 				<div class="label other">
-					 &nbsp;<a href="<%=oauth360%>"> <img src="image/login360.png" alt="360账号登录" border="0"> </a>
+					 &nbsp;<a href="<%=oauth360%>"> <img src="image/360login.png" alt="360账号登录" border="0"> </a>
 				</div>
-				 -->
-				 
+				  -->
 				 
 				<!-- 
 				<div class="label other">

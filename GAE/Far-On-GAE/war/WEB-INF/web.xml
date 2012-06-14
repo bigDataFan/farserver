@@ -31,6 +31,25 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>com.ever365.farsvr.rest.RestServiceServlet</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<display-name>Dt360OAuthServlet</display-name>
+		<servlet-name>Dt360OAuthServlet</servlet-name>
+		<servlet-class>com.ever365.farsvr.oauth.Dt360OAuthServlet</servlet-class>
+		<init-param>	
+		<param-name>key</param-name>
+		<param-value>34cb3c964f6be83d7bf1867f15512b93</param-value>
+		</init-param>
+		<init-param>	
+		<param-name>secret</param-name>
+		<param-value>6c0395ad4fba6ec75574022acc893676</param-value>
+		</init-param>
+		<init-param>	
+		<param-name>uri</param-name>
+		<param-value>http://money.ever365.com/oauth/dt360</param-value>
+		</init-param>
+	</servlet>
+	
+	
 	<filter-mapping>
 		<filter-name>SetUserFilter</filter-name>
 		<url-pattern>/service/*</url-pattern>
@@ -54,6 +73,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>RestServlet</servlet-name>
 		<url-pattern>/service/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Dt360OAuthServlet</servlet-name>
+		<url-pattern>/oauth/dt360</url-pattern>
+	</servlet-mapping>
+	
 	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
