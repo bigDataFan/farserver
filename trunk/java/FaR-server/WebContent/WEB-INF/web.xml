@@ -116,6 +116,13 @@
 		<servlet-name>Dt360OAuthServlet</servlet-name>
 		<servlet-class>com.ever365.oauth.dt360.Dt360OAuthServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>Check360Servlet</display-name>
+		<servlet-name>Check360Servlet</servlet-name>
+		<servlet-class>com.ever365.farsvr.oauth.Check360Servlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>RandomImgServlet</servlet-name>
@@ -164,6 +171,10 @@
 	<servlet-mapping>
 		<servlet-name>Dt360OAuthServlet</servlet-name>
 		<url-pattern>/oauth/dt360</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Check360Servlet</servlet-name>
+		<url-pattern>/oauth/360</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>
