@@ -63,13 +63,24 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 </div></div></div>
 
            	<div class="timeTemplate itemcontainer" style="display: none">
-           		<div class="timeDesc"> </div>
-           		<div class="timeStatics">启动于 <span class="timeStart"></span> &nbsp;&nbsp; 中断 <span class="timePending"></span>次 &nbsp;&nbsp;  <a class="details" href="#">操作</a> <span class="warning" style="display:none">已记录了指定时长</span></div>
-           		<!--  <div class="timeDura">12:00</div>  -->
-           		<div class="timeOper">
-           			<a href="#"><span>12:00</span></a>
-           		</div>
+           		<table width="100%">
+           			<tr>
+           				<td>
+           					<div class="timeDesc"> <span class="desc"></span><br>
+           						启动于 <span class="timeStart"></span> &nbsp;&nbsp; 中断 <span class="timePending"></span>次 &nbsp;&nbsp;  <a class="details" href="#">操作</a> <span class="warning" style="display:none">已记录了指定时长</span>
+           					</div>  
+           				</td>
+           				
+           				<td>
+			           		<div class="timeOper">
+			           			<a href="#"><span>12:00</span></a>
+			           		</div>
+			           	</td>
+           			</tr>
+           		</table>
+           		
            	</div>
+           	
            		<div class="list" id="timelist">
            			<div class="title">
            				<div class="opers addItem" >
@@ -83,7 +94,6 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 	           		</div>
 	           		
 	           		
-	           		
 	           		<div id="itemedit" class="details" style="display: none">
 						<div class="label">
 							时间项名称  <input type="text" id="editTime"> 
@@ -91,6 +101,10 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 						<div class="label">
 							超过<input type="text" id="autoStop" size="4" value="8"> 小时此事项自动结束
 						</div>
+						<div class="label">
+							调整已执行时间<input type="text" id="editDuraTime" size="8" value="00:00" > 
+						</div>
+						
 						<!--
 						<div class="label sharetosina"  style="display: none;">
 							<a  href="javascript:office.time.sinaShareMessage()">共享到新浪微博</a>
@@ -102,8 +116,20 @@ $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]
 						</div>
 					</div>
 			
+			    	
+		           	
+					<div class="moreInfo" id="showMore" onclick="office.time.showMore()">
+           				查看昨日及更早的记录
+           			</div>
+           			
+           			<div >
+		           		<table width="100%" id="moreInfoTable">
+		           			<tr class="moreTemplate" style="display: none"><td class="dura"></td><td class="desc"></td><td class="date"></td></tr>
+		           		</table>
+		           	</div>
+		           	
            		</div>
-<div class="nav">
+		<div class="nav">
  			<ul>
  				<li>
  					<span class="title">总计用时</span>
