@@ -283,26 +283,26 @@ div.timeItem {
 }
 
 div.timeItem:HOVER {
-
 	background-color:#FAF0C8;
 	text-shadow: #ddd 0 1px 0;
 }
 
 div.timeItem div.timeDesc {
 	padding:10px;
-	float: left;
+	width:500px;
+	max-width:500px;
 	min-width:300px;
-	position: fixed;
+	line-height: 20px;
 }
 
 
-div.timeItem div.timeStatics {
-	padding: 36px 0px 0px 10px;
-	float: left;
+span.timeStart, span.timePending  {
+	--padding: 36px 0px 0px 10px;
+	--float: left;
 	min-width:80px;
 	color: #7D7D7D;
 	font-size: 12px;
-	position: fixed;
+	---position: fixed;
 	text-shadow: 0 1px 0 white;
 }
 
@@ -311,7 +311,7 @@ div.timeItem div.timeStatics span.warning {
 }
 
 
-div.timeItem div.timeStatics a.details {
+a.details {
 	color: #7D7D7D;
 	text-decoration: none;
 	background: none repeat scroll 0 0 #EB5847;
@@ -329,7 +329,7 @@ div.timeItem div.timeStatics a.details {
 div.timeItem div.timeDura {
 	padding:5px;
 	color: black;
-	float: right;
+	
 	width: 1px;
 }
 div.timeItem div.timeOper {
@@ -337,7 +337,6 @@ div.timeItem div.timeOper {
 	float: right;
 	width: 90px;
 	font-weight: bold;
-	padding-top: 20px;
 }
 div.running {
 	background-color: #d4f1ff; 
@@ -386,6 +385,20 @@ div.running div.timeOper a span {
 }
 
 
+#moreInfoTable td {
+	padding: 8px 0px 8px 8px;
+    height: 20px;
+    background: url("networks.png") left repeat-x transparent;
+    
+    border:1px dashed #DDD;
+    --border-bottom: 1px dashed #DDD;
+}
+
+#moreInfoTable td.dura {
+	font: bold;
+	font-size: 1.2em;
+	
+}
 
 div.nav {
 	position: absolute;
@@ -504,6 +517,13 @@ table.tbl-timesummary td.big_link a, table.tbl-invoicesummary td.big_link a {
 	background-repeat: no-repeat;
 	background-position: right 1px;
 	padding: 0 25px 0 0;
+}
+
+.moreInfo {
+	padding: 8px;	
+	text-align: right;
+	color: #3366CC;
+	cursor: pointer;
 }
 
 .ui-datepicker {

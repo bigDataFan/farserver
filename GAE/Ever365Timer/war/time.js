@@ -58,8 +58,8 @@ office.time = {
 		$('div.pending div.timeOper a').live('click', function(data) {
 			office.time.startItem($(this).attr('id'));
 		});
-		$('div.timeStatics a.details').live('click', function(data) {
-			office.time.itemDetailView($(this).parent().parent().data("timedata"));
+		$('a.details').live('click', function(data) {
+			office.time.itemDetailView($(this).parents('div.timeItem').data("timedata"));
 		});
 		
 		
@@ -95,6 +95,8 @@ office.time = {
 								}
 						);
 					}
+
+					office.time.displayStastics();
 					office.time.listDay(office.getDateFormat(office.date));
 					
 				});
@@ -110,9 +112,18 @@ office.time = {
 				}
 		);
 		*/
-		
-		
-		
+	},
+	
+	showed: 0 ,
+	showMore:function() {
+		var c = 0;
+		for ( var i = office.time.items.length-1-office.time.showed; i >=0; i--) {
+			
+			office.time.addMoreUITime(office.time.items[i]);
+			c++;
+			
+			if (c==10) break;
+		}
 	},
 	
 	listDay:function(date) {
@@ -141,6 +152,48 @@ office.time = {
 	},
 	schedued:false,
 	
+	displayStastics : function() {
+		
+		var yesterDayTotal = 0;
+		var theWeekTotal = 0;
+		var allTotal = 0;
+		
+		var yesterDayStart = new Date(new Date().getTime() - 24 * 60 * 60 * 1000).setHours(0, 1, 1, 1);
+		var todayStart = yesterDayStart + 24 * 60 * 60 * 1000;
+		
+		var weekStart =  new Date(new Date().getTime() - new Date().getDay()*24 * 60 * 60 * 1000).setHours(0, 1, 1, 1);
+		
+		for ( var i = 0; i < office.time.items.length; i++) {
+			if (office.time.items[i].created>yesterDayStart && office.time.items[i].created<todayStart) {
+				yesterDayTotal +=office.time.items[i].dura;
+			}
+			
+			if (office.time.items[i].created>weekStart) {
+				theWeekTotal += office.time.items[i].dura;
+			}
+			
+			allTotal += office.time.items[i].dura;
+			
+		}
+		$('#itemCount').html(office.time.items.length);
+		
+		$('#yesterdayTime').html(office.time.formatDura(yesterDayTotal));
+		$('#weekTime').html(office.time.formatDura(theWeekTotal));
+		$('#totalTime').html(office.time.formatDura(allTotal));
+	},
+	
+	addMoreUITime: function(o) {
+		var timed = $("tr.moreTemplate").clone();
+		timed.removeClass('moreTemplate').addClass("moreTimeItem");
+		timed.show();
+		
+		timed.find('td.dura').html(office.time.formatDura(o.dura));
+		timed.find('td.desc').html(o.desc);
+		timed.find('td.date').html(office.getDateFormat(new Date(o.created)));
+		
+		$('#moreInfoTable').append(timed);
+		office.time.showed ++;
+	},
 	
 	addUITime: function(o) {
 		var timed = $('div.timeTemplate').clone();
@@ -148,7 +201,9 @@ office.time = {
 		timed.attr("id", "item-" + o.id);
 		timed.data("timedata", o);
 		
-		$('#timelist').append(timed);
+		
+		$('#showMore').before(timed);
+		//$('#timelist').append(timed);
 		
 		if (isIE6()) {
 			timed.css("width", $('#timelist').css("width"));
@@ -166,24 +221,28 @@ office.time = {
 			dura = o.dura;
 		}
 		timed.find('div.timeOper span').html(office.time.formatDura(dura));
-		timed.find('div.timeStatics span.warning').hide();
+		timed.find('span.warning').hide();
 		
-		timed.find('div.timeStatics span.timeStart').html(office.time.formatHour(o.created));
-		timed.find('div.timeStatics span.timePending').html(((o.checks==null)?0:o.checks.length) );
+		timed.find('span.timeStart').html(office.time.formatHour(o.created));
+		timed.find('span.timePending').html(((o.checks==null)?0:o.checks.length) );
 		
 		if(isIE6()) {
 			timed.find('div.timeStatics span.timeStart').hide();
 			timed.find('div.timeStatics span.timePending').hide();
 		}
 		
-		timed.find('div.timeDesc').html(o.desc);
+		timed.find('span.desc').html(o.desc);
 		timed.fadeIn('fast');
+		
+		office.time.showed ++;
 	},
 	
 	itemDetailView:function(data) {
 		office.time.currentEdit = data;
 		$('#editTime').val(data.desc);
 		$('#autoStop').val((data.autostop==null)?"0":data.autostop);
+		$('#editDuraTime').val(office.time.formatDura(data.dura));
+		
 		office.switchView('div.details');
 	},
 	
@@ -195,11 +254,14 @@ office.time = {
 			for ( var i = 0; i < office.time.items.length; i++) {
 				if (office.time.items[i].id==office.time.currentEdit.id) {
 					office.time.items[i].desc = $('#editTime').val();
+					office.time.items[i].dura = office.time.formatedToMill($("#editDuraTime").val());
 					
 					if (!isNaN($('#autoStop').val())) {
 						office.time.items[i].autostop =  $('#autoStop').val();
 					}
 					
+					$('#item-' + office.time.currentEdit.id).find("span.desc").html($('#editTime').val());
+					$('#item-' + office.time.currentEdit.id).find("div.timeOper span").html(office.time.formatDura(office.time.items[i].dura));
 					break;
 				}
 			}
@@ -217,7 +279,7 @@ office.time = {
 				newItem.autostop =  $('#autoStop').val();
 			}
 			
-			newItem.dura = 0;
+			newItem.dura = office.time.formatedToMill($("#editDuraTime").val());
 			newItem.date = office.getDateFormat(new Date());
 			newItem.checks = [];
 			newItem.laststart = 0;
@@ -336,9 +398,9 @@ office.time = {
 			   			$(this).html(parseInt($(this).html()) + 1);
 			   		});
 			   		
-					$("div.running").removeClass("running").addClass("pending");
 				}
 		)
+		$("div.running").removeClass("running").addClass("pending");
 	},
 
 	startItem:function(id) {
@@ -434,6 +496,8 @@ office.time = {
 	
 	formatedToMill: function(formated) {
 		var sr = formated.split(":");
+		if (sr.length!=2) return 0;
+		
 		return parseInt(sr[0])*60*60*1000 + parseInt(sr[1].charAt(0)=='0'?sr[1].charAt(1):sr[1])*60*1000;
 	},
 	
