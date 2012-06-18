@@ -63,6 +63,10 @@ office.time = {
 		});
 		
 		
+		if (isIE6()) {
+			$('#timelist').css("width",600);
+		}
+		
 		var vNum = Math.random();
 		vNum = Math.floor(vNum*10);
 		
@@ -81,9 +85,11 @@ office.time = {
 						//匿名用户
 						$('#loginLink').show();
 						$('#helloLink').hide();
+						$('#logoutLink').hide();
 					} else {
 						$('#loginLink').hide();
-						$('#helloLink span').html('您好 ' + office.currentUser);
+						$('#helloLink').html('您好 ' + office.currentUser);
+						$('#logoutLink').show();
 						$('#helloLink').show();
 					}
 					
@@ -223,12 +229,12 @@ office.time = {
 		timed.find('div.timeOper span').html(office.time.formatDura(dura));
 		timed.find('span.warning').hide();
 		
-		timed.find('span.timeStart').html(office.time.formatHour(o.created));
-		timed.find('span.timePending').html(((o.checks==null)?0:o.checks.length) );
+		timed.find('span.timeStart').html("启动于 " + office.time.formatHour(o.created));
+		timed.find('span.timePending').html(" 中断了" + ((o.checks==null)?0:o.checks.length) + "次");
 		
 		if(isIE6()) {
-			timed.find('div.timeStatics span.timeStart').hide();
-			timed.find('div.timeStatics span.timePending').hide();
+			timed.find('span.timeStart').hide();
+			timed.find('span.timePending').hide();
 		}
 		
 		timed.find('span.desc').html(o.desc);
@@ -394,9 +400,11 @@ office.time = {
 		office.time.callToUpdate(
 				function() {
 					//将  中断x次部分的数字更新
+					/*
 			   		$("div.running div.timeStatics span.timePending").each(function() {
 			   			$(this).html(parseInt($(this).html()) + 1);
 			   		});
+			   		*/
 			   		
 				}
 		)
@@ -424,10 +432,11 @@ office.time = {
 				},
 				function(data) {
 					//将  中断x次部分的数字更新
+					/*
 					$("div.running div.timeStatics span.timePending").each(function() {
 			   			$(this).html(parseInt($(this).html()) + 1);
 			   		});
-					
+					*/
 					$("div.running").removeClass("running").addClass("pending");
 			   		
 
