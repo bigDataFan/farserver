@@ -49,9 +49,7 @@ public class LoginServlet extends HttpServlet {
     		return;
     	}
     	
-    	
     	boolean checked = localUserService.checkUserPassword(username, pwd);
-    	
     	
     	if (checked) {
     		String ticket = cookieService.getOrCreateTicket(request, response);

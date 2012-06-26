@@ -24,6 +24,8 @@ public class AuthenticationUtil
     public static ThreadLocal<Boolean> guest =  new ThreadLocal<Boolean>();
     public static ThreadLocal<Boolean> admin =  new ThreadLocal<Boolean>();
     
+    public static ThreadLocal<String> ticket =  new ThreadLocal<String>();
+    
     public static final String SYSTEM_USER_NAME = "system";
 
 	public static void setCurrentUser(String user) {

@@ -49,6 +49,19 @@ public class CookieService {
 	}
 
 	/**
+	 * 根据ticket获取用户名称
+	 */
+	public String getUserNameWithTicket(String ticket) {
+		Object v = syncCache.get("ticket." + ticket);
+		if (v==null) {
+			return null;
+		} else {
+			return (String) v;
+		}
+	}
+	
+	
+	/**
 	 * 为任意一个请求分配使用cookie
 	 * 
 	 * 如果用户携带的cookie曾经登陆过， 则返回此用户

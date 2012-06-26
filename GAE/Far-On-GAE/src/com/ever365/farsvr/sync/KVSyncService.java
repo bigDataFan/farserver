@@ -1,11 +1,9 @@
 package com.ever365.farsvr.sync;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import com.ever365.farsvr.rest.RestParam;
@@ -16,8 +14,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
-import com.google.appengine.api.log.LogService;
-import com.google.appengine.api.log.LogServiceFactory;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
@@ -53,6 +49,7 @@ public class KVSyncService {
 		result.put("user", AuthenticationUtil.getCurrentUser());
 		result.put("city", AuthenticationUtil.city.get());
 		result.put("time", System.currentTimeMillis());
+		result.put("ticket", AuthenticationUtil.ticket.get());
 		
 		Object v = syncCache.get(gkey);
 		if (v==null) {
