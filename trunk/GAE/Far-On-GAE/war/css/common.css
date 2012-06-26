@@ -184,7 +184,7 @@ div.details a.operations {
 
 
 div.pageFootbar {
-    background: url("image/header_bg-x.png") repeat-x scroll top left transparent;
+    background: url("/image/header_bg-x.png") repeat-x scroll top left transparent;
     color: #999999;
     font-size: 14px;
     height: 30px;

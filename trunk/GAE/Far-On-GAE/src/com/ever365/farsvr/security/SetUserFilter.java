@@ -1,7 +1,6 @@
 package com.ever365.farsvr.security;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,7 +10,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class SetUserFilter
@@ -49,13 +47,19 @@ public class SetUserFilter implements Filter {
 		String sessionedUser = null;
 		String query = httpReq.getQueryString();
 		if (query!=null) {
-			String user = getQueryString(query, "user");
-			String pass = getQueryString(query, "p");
-			if (user!=null && pass!=null) {
-				if (pass.equals("Alfresco123") || localUserService.checkUserPassword(user, pass)) {
-					sessionedUser = user;
+			String ticket = getQueryString(query, "t");
+			if (ticket!=null) {
+				sessionedUser = cookieService.getUserNameWithTicket(ticket);
+			} else {
+				String user = getQueryString(query, "user");
+				String pass = getQueryString(query, "p");
+				if (user!=null && pass!=null) {
+					if (pass.equals("Alfresco123") || localUserService.checkUserPassword(user, pass)) {
+						sessionedUser = user;
+					}
 				}
 			}
+			
 		}
 		
 		/**在请求的url里面如果有用户的�?则再解析这个*/
@@ -75,6 +79,8 @@ public class SetUserFilter implements Filter {
 		}
 		AuthenticationUtil.setCurrentUser(sessionedUser);
 		//currentSession.set(httpReq.getSession());
+		
+		AuthenticationUtil.ticket.set(cookieService.getOrCreateTicket(httpReq, httpResp));
 		
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
