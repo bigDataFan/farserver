@@ -119,33 +119,6 @@ function getLocalCache(k) {
 */
 
 
-function setLocalCache(k, v) {
-	if (localStorage) {
-		try {
-			localStorage.setItem(k,v);
-		} catch (e) {
-			localStorage.clear();
-			localStorage.setItem(k,v);
-		}
-	} else {
-		showInfo("建议您升级到浏览器到IE8或以上版本来缓存图书",5000);
-	}
-}
-
-function getLocalCache(k) {
-	if (localStorage) {
-		try {
-			return localStorage.getItem(k);
-		} catch (e) {
-			return null;
-		}
-		
-	}
-} 
-
-
-
-
 var twoPage = false;
 
 
@@ -491,42 +464,10 @@ function showInfo(info, timeout) {
 	}
 }
 
-/*
-
-function goWithStart(pos, alltext) {
-	
-	var i = maxSize;
-	var rangeTo = ((pos + i) < alltext.length)? (pos + i) : alltext.length;
-	
-	var most = alltext.substring(pos,rangeTo);
-	
-	most = most.replace(/\n/g, "<br>");
-	
-	
-	var textSpan = document.getElementById("dynamicSpan");
-    var textDiv = document.getElementById("dynamicDiv");
-
-    
-    
-    $(textSpan).html(most);
-    
-    while(textSpan.offsetHeight > textDiv.offsetHeight)
-    {
-   	 	i-=10;
-   	 	$(textSpan).html(most.substring(0,i));
-   		if (i<0) {
-   			alert("fail");
-   			break;
-   		}
-    }
-    
-    return most.substring(0, i);
-	 
-}
-
-*/
 
 
 $.urlParam = function(name){ var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href); if (!results) { return 0; } return results[1] || 0;}
+
+
 
 
