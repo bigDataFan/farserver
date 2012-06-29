@@ -1,0 +1,189 @@
+@CHARSET "UTF-8";
+
+html {
+	background: url(data:image/jpeg;base64,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) left top repeat;
+	overflow-y:hidden;
+}
+
+body {
+	color: #333;
+	font: 16px "Microsoft YaHei","Helvetica Neue",Helvetica,"Lucida Grande","Luxi Sans",Arial,sans-serif;
+	line-height:20px;
+	overflow-y:hidden;
+}
+
+* {
+	padding: 0px;
+	margin:  0px;
+}
+
+a, a:HOVER, a:VISITED {
+	color: #262626;
+	text-decoration: none;
+}
+
+#head {
+	background: #3e78c0 url("image/top.png") repeat-x;
+	
+	/*
+	background: #3D3D3D;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #363636),color-stop(1, #464646));
+	background: -ms-linear-gradient(bottom, #363636, #464646);
+	background: -moz-linear-gradient(center bottom, #363636 0, #464646 100%);
+	*/
+	color:white;
+	height: 42px;
+	line-height: 42px;
+	position:absolute;
+	width:100%;
+	left:0px;
+	top:0px;
+	z-index: 999;
+}
+
+
+#head .menu {
+	display: block;
+	list-style: none;
+	padding: 2px;
+	margin-left: 20px;
+}
+
+#head ul li {
+	float:left;
+	display: inline-block;
+	line-height: 42px;
+	margin-left:10px;
+	padding: 0;
+	vertical-align: top;
+}
+
+
+#head  li a {
+	width: 36px;
+	height: 36px;
+	overflow: hidden;
+	text-indent: -9999px;
+	display: block;
+}
+
+a.header {
+	background: url("image/icons.png") -76px 0px;
+}
+a.jump {
+	background: url("image/icons.png") -307px -111px;
+}
+
+a.config {
+	background: url("image/icons.png") -229px -37px;
+}
+
+a.snapshot {
+	background: url("image/icons.png") -117px 0px;
+}
+
+a.home {
+	background: url("image/icons.png") -343px -74px;
+}
+
+a.remove {
+	background: url("image/icons.png") -343px -37px;
+}
+a.fullscreen {
+	background: url("image/icons.png") -267px 0px;
+}
+
+a.login {
+	background: url("image/icons.png") -229px -111px;
+}
+
+
+
+#containerDiv1 {
+	float:  left;
+	padding: 45px 15px 25px 15px;
+	line-height:1.5em;
+	
+}
+
+#containerDiv2 {
+	float:  left;
+	padding: 45px 15px 25px 15px;
+	line-height:1.5em;
+}
+#dynamicDiv {
+	
+	position: absolute;
+	z-index: -199;
+	left:0px;
+	top:0px;
+	visibility: hidden;
+}
+
+#sliderContainer {
+	position: absolute;
+	left:0px;	
+	height: 25px;
+	width: 100%;
+	z-index: 10;
+	background: #3e78c0 url("image/top.png") repeat-x;
+}
+
+
+#sliderDiv {
+	margin-left:20px;
+	margin-top:5px;
+	float:left;
+	height:8px;
+	font-size:12px;
+	width: 400px;
+}
+
+#slideInfo {
+	float:left;
+	margin-left:20px;
+	color: white;
+}
+
+/*布局 基础 */
+#contentWrapper {
+	overflow: hidden;
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	zoom: 1;
+}
+
+
+#bookListDiv {
+	position:absolute;
+	width:100%;
+	top: 45px;
+}
+
+#upload {
+	padding: 10px;
+	margin: 0 auto;
+	width: 95%;
+}
+
+#shelf {
+	border: 1px solid B8B8B8;
+	-webkit-box-shadow: 0 0 5px 1px #B8B8B8;
+	-moz-box-shadow: 0 0 5px 1px #b8b8b8;
+	box-shadow: 0 0 5px 1px #B8B8B8;
+	margin:0 auto;
+	width: 95%;
+}
+
+#booklist {
+	padding-bottom: 16px;
+	list-style: none;
+}
+
+#booklist li {
+	padding:8px;
+	border-bottom: 1px solid #E3E3E3;
+}
