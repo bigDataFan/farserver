@@ -4,7 +4,8 @@ $(document).ready(function(){
 	$.getJSON("/service/key/get",
 			{
 				"kind":"reader",
-				"key":"books"
+				"key":"books",
+				"r": new Date().getTime()
 			},
 			function(data) {
 				
