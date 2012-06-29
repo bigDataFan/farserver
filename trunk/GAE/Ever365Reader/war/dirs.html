@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文件列表</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.uploadify.com/wp-content/themes/uploadify/js/jquery.uploadify.min.js"></script>
+<link rel="stylesheet" type="text/css" href="uploadify.css"/>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	$.getJSON("/service/key/get",
+			{
+				"kind":"reader",
+				"key":"books"
+			},
+			function(data) {
+				$("#file_upload_1").uploadify({
+					'fileTypeDesc' : '选择TXT文本文件',
+					'fileTypeExts' : '*.txt',
+					'fileSizeLimit' : '10MB',
+					height        : 30,
+					swf           : '/uploadify.swf',
+					uploader      : '/upload?t=' + data.ticket,
+					width         : 120
+				});
+			})
+	
+});
+
+	
+
+</script>
+</head>
+
+
+<body>
+
+<div id="new">
+	<p><input type="file" name="file_upload" id="file_upload_1" /></p>	
+	
+</div>
+
+<div id="list"></div>
+</body>
+</html>
