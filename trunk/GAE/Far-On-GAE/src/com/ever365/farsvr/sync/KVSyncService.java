@@ -36,6 +36,10 @@ public class KVSyncService {
 			@RestParam(value="key") String key,@RestParam(value="value") String value) {
 		updated.add(genKey(kind, key));
 		syncCache.put(genKey(kind, key), value);
+		
+		Entity entity = new Entity(kind, AuthenticationUtil.getCurrentUser() + "^" + key); 
+		entity.setProperty("value", new Text(value));
+		datastore.put(entity);
 	}
 	
 	@RestService(method="GET", uri="/key/get")
