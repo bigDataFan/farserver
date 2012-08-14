@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>番茄工作法</title>
+
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+
+<script type="text/javascript">
+var BIND="click";
+</script>
+<script type="text/javascript" src="code.js"></script>
+</head>
+<body >
+	<div id="header-wrapper">
+		<div id="header">
+			<!--  <a id="lumosity-logo">a</a>-->
+			<ul class="header-nav-ul">
+				<li><a id="btn-rename" class="header-btn" href="#" onclick="openRename()">修改</a></li>
+				<li><a id="btn-remove" class="header-btn"  href="#" onclick="removeCurrent()">删除</a><li>
+				<li><a id="btn-finished" class="header-btn"  href="#" onclick="finishCurrent()">完成</a><li>
+				<li><a id="btn-unfinished" class="header-btn"  href="#" onclick="unfinishCurrent()">未完成</a><li>
+				<li><a id="btn-setTodo" class="header-btn"  href="#" onclick="setAsTodo()">添到任务</a><li>
+			</ul>
+			<div id="btn-config" class="right" style="padding-right: 8px;padding-top: 4px;"><a onclick="location.href='config.html'" ><img src="images/info.png"></a></div>
+		</div>
+		
+		<div id="message">
+		</div>
+	</div>
+	
+	<div id="content-wrapper">
+		<div id="timer" >
+			<div class="upper-title">
+				请选择任务
+			</div>
+			
+			<div id="time-remains" class="big-infos">
+			</div>
+			
+			<div class="operations">
+				<a id="btn-knowabout" href="about.html">了解什么是番茄工作法</a>
+				<a id="btn-stop" onclick="stop()" class="btn-a">停止</a>  
+				<a id="btn-start" onclick="start()" class="btn-a">启动</a>
+				<a id="btn-break" onclick="breaks()" class="btn-a">休息</a>
+				<a id="btn-break-stop" onclick="finishBreak()" class="btn-a">结束休息</a>
+			</div>
+		</div>
+		
+		<div class="center-dialog" id="new-dialog">
+			<div class="upper-title hidden" id="todos-title">
+				新增今日任务
+			</div>
+			
+			<div class="upper-title hidden" id="breaks-title">
+				打断事件 
+			</div>
+			
+			<div class="upper-title hidden" id="plans-title">
+				接下来几天的计划
+			</div>
+			
+			<div class="upper-title hidden" id="rename-title">
+				修改名称
+			</div>
+			
+			<div class="big-infos">
+				<input class="new-input" id="txtinput" size="18" type="text">
+			</div>
+			<div class="extras" id="todos-extra">
+				预计番茄 <input type="number" id="predicted" size="4" value="8" style="width: 4em;">个
+			</div>
+			
+			<div class="extras" id="breaks-extra">
+				<select id="breaks-opts">
+					<option value="out">来自外部打断</option>
+					<option value="inner">自身因素中断</option>
+				</select>
+			</div>
+			
+
+			<div class="operations">
+				<a class="btn-a"  onclick="saveOrUpdate()">保存</a> <a class="btn-a" onclick="closeEdit()">关闭</a>
+			</div>
+		</div>
+		
+		<div id="task-list">
+			<div class="title" onclick="showList('todos')">今日任务 <div id="todos-add" class="add" onclick="showAdd('todos')"><a href="#"></a></div> </div>
+			
+			<ul id="todos">
+			<!-- 
+				<li class="task intr">
+					您今日还没有工作任务，您可以通过双击未来计划项加为今日任务，或者直接创建一个
+				</li>
+			 -->				
+				<li class="task hidden">
+					<div class="title-info">整理手工的页面</div>
+					<div class="icon-info">
+						<span class="tomatoes">0</span>/<span class="predicttomatoes">8</span>
+						<span class="quotes">0</span>
+					</div>
+				</li>
+			</ul>
+						
+			<div class="title" onclick="showList('breaks')">被打断列表 <div id="breaks-add" onclick="showAdd('breaks')"  class="add hidden"><a href="#"></a></div> </div>
+			
+			<ul id="breaks" class="hidden">
+			<!-- 
+				<li class="task intr">
+					当出现<font color="red">打断</font>时，无论是自身还是外部因素，请记录下它并且<font color="red">继续</font>您的番茄时间直到结束
+				</li>
+			-->
+			</ul>
+			
+			<div class="title" onclick="showList('plans')">未来计划 <div id="plans-add" class="add hidden" onclick="showAdd('plans')"><a href="#"></a></div> </div>
+			
+			
+			<ul id="plans" class="hidden"> 
+			<!-- 
+				<li class="task intr">
+					当您想起将来要做的事情，请不要马上开始。请记录起来并继续您的番茄时间直到结束
+				</li>
+			-->
+			</ul>
+		</div>
+		
+	</div>
+
+</body>
+</html>
