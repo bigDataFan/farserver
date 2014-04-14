@@ -9,8 +9,6 @@
 <%@page import="com.ever365.ecm.service.PublicService"%>
 <html>
 <head>
-<meta charset="UTF-8">
-<title></title>
 <%
 response.setContentType("text/html;charset=UTF-8");
 
@@ -40,6 +38,9 @@ List<Object> recList = homeData.get("首页推荐");
 List<Object> hotList = homeData.get("热门");
 List<Object> recentList = homeData.get("recent");
 %>
+<title><%=entityMap.get("name") %></title>
+
+<meta charset="UTF-8" >
 
 <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/util.js"></script>
@@ -56,8 +57,7 @@ List<Object> recentList = homeData.get("recent");
 <body>
 
 <div class="header">
-	<div class="nav"><span><%=entityMap.get("name") %></span></div>
-	
+	<a href="/"><img src="img/slide8-small.png"></a>
 	<div class="login-wrapper">
 		<strong class="status"><i class="user icon"></i><span> 帐户</span></strong>
 		<span class="nav-dropdown">
