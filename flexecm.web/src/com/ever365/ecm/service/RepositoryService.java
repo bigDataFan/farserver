@@ -24,6 +24,7 @@ import com.ever365.ecm.repo.QName;
 import com.ever365.ecm.repo.Repository;
 import com.ever365.ecm.repo.RepositoryDAO;
 import com.ever365.ecm.service.listener.RepositoryListener;
+import com.ever365.mongo.AutoIncrementingHelper;
 import com.ever365.rest.HttpStatus;
 import com.ever365.rest.HttpStatusException;
 import com.ever365.rest.RestParam;
@@ -39,6 +40,8 @@ import com.ever365.utils.UUID;
  */
 
 public class RepositoryService {
+
+	private static final String PUBLIC_SEQ = "publicseq";
 
 	public static final String IMG_TEMP_REPO = "img://temp";
 
@@ -60,6 +63,7 @@ public class RepositoryService {
 	private ContentDAO contentDAO;
 	private RepositoryDAO repositoryDAO;
 	private ClipboardDAO clipboardDAO;
+	private AutoIncrementingHelper incrementingHelper;
 	
 	public void setClipboardDAO(ClipboardDAO clipboardDAO) {
 		this.clipboardDAO = clipboardDAO;
@@ -82,6 +86,12 @@ public class RepositoryService {
 		this.listeners = listeners;
 	}
 	
+	
+	
+	public void setIncrementingHelper(AutoIncrementingHelper incrementingHelper) {
+		this.incrementingHelper = incrementingHelper;
+		incrementingHelper.initIncreasor(PUBLIC_SEQ);
+	}
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;
 	}
@@ -888,9 +898,9 @@ public class RepositoryService {
 		if (entity == null || entity.getType().equals(Model.TYPE_FOLDER)) {
 			throw new HttpStatusException(HttpStatus.BAD_REQUEST);
 		}
-		
 		Map<QName, Serializable> specialProperties = new HashMap<QName, Serializable>();
 		specialProperties.put(Model.PUBLISHED, true);
+		specialProperties.put(Model.PUBLISHED_SEQ, incrementingHelper.getNextSequence(PUBLIC_SEQ));
 		entityDAO.updateEntityProperties(entity, specialProperties);
 	}
 	
@@ -979,7 +989,7 @@ public class RepositoryService {
 		}
 	}
 	
-	@RestService(uri="/file/download", method="GET")
+	@RestService(uri="/file/download", method="GET", authenticated=false)
 	public ContentData getContentData(@RestParam(value="id", required=true)String id) {
 		
 		Entity entity = entityDAO.getEntityById(id);

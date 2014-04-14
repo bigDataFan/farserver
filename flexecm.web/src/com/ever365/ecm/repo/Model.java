@@ -81,6 +81,7 @@ public interface Model {
 	
 	public static final QName FACETED = QName.createQName(SYSTEM_NAMESPACE, "faceted");
 	public static final QName PUBLISHED = QName.createQName(SYSTEM_NAMESPACE, "pub");
+	public static final QName PUBLISHED_SEQ = QName.createQName(SYSTEM_NAMESPACE, "pubseq");
 	
 	public static final QName PROP_ADMIN_EMAIL = QName.createQName(SYSTEM_NAMESPACE, "adminemail");
 	public static final QName PROP_ADMIN_EMAIL_OK = QName.createQName(SYSTEM_NAMESPACE, "adminemailok");

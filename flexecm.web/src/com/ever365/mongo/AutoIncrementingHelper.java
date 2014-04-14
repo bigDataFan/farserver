@@ -31,17 +31,12 @@ public class AutoIncrementingHelper {
 	}
 	
 	public Long getNextSequence(String name) {
-		x++;
-		return x;
-		/*
 		BasicDBObject query = new BasicDBObject("_id", name);
 		DBObject update = new BasicDBObject();
 		update.put("$inc", incMap);
 		
 		DBObject dbo = dataSource.getCollection("counters").findAndModify(query, update);
-		
 		return (Long) dbo.get("seq");
-		*/
 	}
 	
 }
