@@ -519,6 +519,9 @@ public class EntityDAOImpl implements EntityDAO {
 			}
 		}
 		
+		setMap.put(getQNameKey(Model.PROP_MODIFIED), System.currentTimeMillis());
+		setMap.put(getQNameKey(Model.PROP_MODIFIER), AuthenticationUtil.getCurrentUser());
+		
 		if (!src.getParentId().equals(target.getId())) {
 			setMap.put(getQNameKey(Model.PROP_PARENT_ID), new ObjectId(target.getId()));
 			//setMap.put(getQNameKey(Model.PROP_SEQ), this.autoIncrementingHelper.getNextSequence(ENTITIES));
