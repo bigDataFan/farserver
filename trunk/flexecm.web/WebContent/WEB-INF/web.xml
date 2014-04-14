@@ -78,10 +78,10 @@
   </context-param>
   <context-param>
     <param-name>loginPage</param-name>
-    <param-value>/login.html</param-value>
+    <param-value>/index.jsp</param-value>
   </context-param>
   <context-param>
     <param-name>logonPage</param-name>
-    <param-value>/web/home.html</param-value>
+    <param-value>/index.jsp</param-value>
   </context-param>
 </web-app>

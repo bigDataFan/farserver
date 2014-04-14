@@ -8,7 +8,6 @@ $(document).ready(function() {
 	if (person) {
 		userLogon(person);
 	}
-	
 	$(".recommend .view .article-title").hide();
 	
 	$(".recommend .view").hover(function() {
@@ -16,22 +15,32 @@ $(document).ready(function() {
 	}, function() {
 		$(this).find(".article-title").fadeOut("fast");
 	});
-	/*
-	$(".pager div.article .article-title").css("bottom", "260");
-	
-	$(".pager div.article").hover(function() {
-		$(this).find(".article-title").css("bottom",250-parseInt($(this).find(".article-title").css("height")));
-	}, function() {
-		$(this).find(".article-title").css("bottom", "260px");
+
+	$(".time-formated").each(function() {
+		$(this).html(Utils.formatTime(parseInt($(this).html())));
 	});
-	*/
 	
 	$(".pager div.article").hover(function() {
 		$(this).find("img").css("margin-top", "-40px");
 	}, function() {
 		$(this).find("img").css("margin-top", "0px");
 	});
+	
+	viewPageInit();
 });
+
+function viewPageInit() {
+	
+}
+
+
+function myHome() {
+	if (person) {
+		location.href = "/web/home.html";
+	} else {
+		loginDialog();
+	}
+}
 
 function closeDialog() {
 	$("#modal").hide();
@@ -61,7 +70,8 @@ function login() {
 		'name': $("#user_login").val(),
 		'password': $("#user_pass").val()
 	},  function() {
-		userLogon($("#user_login").val());
+		person = $("#user_login").val();
+		userLogon(person);
 		closeDialog();
 	}).fail( function() {
 		$("#logon-result").html("用户名或密码错误");
@@ -94,4 +104,41 @@ function userLogon(name) {
 function isEmail(str){
 	var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
 	return reg.test(str);
+}
+
+
+function onUpper() {
+	var o = $(".slideview").data("opened");
+	if (o==null) {
+		closeCover();
+	} else {
+		if (o==0) return;
+		o --;
+		$(".slideview").data("opened", o);
+		$(".slideview .img").css("background-position-y" , -602 * o);
+	}
+}
+
+function onDowner() {
+	var o = $(".slideview").data("opened");
+	if (o==null) {
+		closeCover();
+	} else {
+		o ++;
+		$(".slideview").data("opened", o);
+		$(".slideview .img").css("background-position-y" , -602 * o);
+	}
+}
+
+function closeCover() {
+	var img = new Image;
+	img.src = $(".slideview .img").css('background-image').replace(/url\(|\)$|"/ig, '');
+	
+	alert($(".slideview .img").css("background-size"));
+	$(".slideview").data("opened", 0);
+	
+	$(".slideview .upper,.slideview .downer").css("background", "transparent");
+	$(".slideview .upper,.slideview .downer").html("");
+	$(".slideview .upper,.slideview .downer").css("border-bottom", "none");
+	$(".slideview .upper,.slideview .downer").css("border-top", "none");
 }

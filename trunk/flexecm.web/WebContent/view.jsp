@@ -1,3 +1,4 @@
+<%@page import="com.ever365.utils.StringUtils"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@page import="com.ever365.ecm.service.servlet.LoginServlet"%>
@@ -10,29 +11,38 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-
 <%
-
 response.setContentType("text/html;charset=UTF-8");
 
+String seq = request.getParameter("seq");
+if (seq==null) {
+	response.sendError(400);
+	return;
+}
+
 PublicService publicService = (PublicService)ContextLoaderListener.getCurrentWebApplicationContext().getBean("rest.public");
+
 Object user = session.getAttribute(LoginServlet.SESSION_USER);
 
+Map<String,Object> entityMap = publicService.getCachedEntity(seq);
+if (entityMap==null) {
+	response.sendError(400);
+	return;
+}
 Map<String, List<Object>> homeData = publicService.homeData();
 
 if (homeData==null) {
 	publicService.initHomeData();
 	homeData = publicService.homeData();
 }
-
 List<Object> splash =  homeData.get("Splash");
 List<Object> recList = homeData.get("首页推荐");
 List<Object> hotList = homeData.get("热门");
 List<Object> recentList = homeData.get("recent");
-
 %>
 
 <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/util.js"></script>
 <script type="text/javascript" language="javascript" src="js/index.js"></script>
 <link rel="StyleSheet" href="css/index.css"  type="text/css">
 
@@ -46,8 +56,7 @@ List<Object> recentList = homeData.get("recent");
 <body>
 
 <div class="header">
-
-	<div class="nav"><a href="javascript:myHome();">我的内容库</a></div>
+	<div class="nav"><span><%=entityMap.get("name") %></span></div>
 	
 	<div class="login-wrapper">
 		<strong class="status"><i class="user icon"></i><span> 帐户</span></strong>
@@ -60,87 +69,32 @@ List<Object> recentList = homeData.get("recent");
 </div>
 
 <div class="main">
-	<div class="logo row">
-		<img src="../img/slide8.png">
-  
-	</div>
-	<div class="list row">
-	<%
-		if (splash.size()>=1) {
-			Map<String, Object> splashOne = (Map<String, Object>)splash.get(0);
-	%>		
-		<div class="article slide">
-			<a href="/view.jsp?seq=<%=splashOne.get("seq")%>">
-				<img class="article-image" src="/pub/file/image?id=<%=splashOne.get("tn")%>">
-				<h1 class="article-title"><%=splashOne.get("name") %></h1>
-				
-				<ul class="meta">
-          			<li>
-          				<span class="publisher"><%=splashOne.get("creator") %></span>• 
-          				<time >1 小时前</time>
-          			</li>
-        		</ul>
-			</a>
-		</div>
-			
-	<%		
-		}
-	%>
-		
-		<div class="recommend">
-			<h2>
-				推荐
-			</h2>
-			
-			<%
-				Integer count = 0;
-				for(Object o : recList) {
-					if (count>=4) {
-						break;
-					}
-					Map<String, Object> recommend = (Map<String, Object>)o;
-			%>
-					<div class="view">
-						<a  href="/view.jsp?seq=<%=recommend.get("seq")%>">
-						<img class="article-image" src="/pub/file/image?id=<%=recommend.get("tn")%>">
-						<h1 class="article-title"><%=recommend.get("name") %></h1>
-						</a>
-					</div>			
-			<%
-				}
-			%>
-		</div>
-		
-	</div>
-
-	<div class="sep-title">
-		<i class="recent icon"></i>最新展示
-	</div>
-	<div class="pager row">
-			<%
-				for(Object o : recentList) {
-					Map<String, Object> recent = (Map<String, Object>)o;
-			%>
-				
-					<div class="article">
-						<a>
-							<img class="article-image" src="/pub/file/image?id=<%=recent.get("tn")%>">
-							<h1 class="article-title"><%=recent.get("name") %></h1>
-							
-							<ul class="meta">
-			          			<li>
-			          				<span class="publisher"><%=recent.get("creator") %></span>• 
-			          				<time datetime="2014-03-06T07:56:41+00:00" pubdate="pubdate">1 小时前</time>
-			          			</li>
-			        		</ul>
-						</a>
+		<div class="slideview">
+			<%if(entityMap.get("ext").equals("png")) { %>
+				<div class="img" style="background-image: url('/pub/file/download?id=<%=entityMap.get("id")%>')">
+					<div class="upper" onclick="onUpper();">
+						点击进入上一页
 					</div>
-						
-			<%
-				}
-			%>
+					<div class="downer" onclick="onDowner();">
+						点击进入下一页
+					</div>
+				</div>
+			<% } else {%>
+				<div class="img" style="background-image: url('/pub/file/download?id=<%=entityMap.get("tn")%>')">
+				
+				</div>
+			<%} %>
+			
+			<div class="fns">
+				<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more">分享到：</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a></div>
+				<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"24"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+			</div>
+		</div>
 		
-	</div>
+		<div class="comments">
+			
+		</div>
+	
 	
 	<div class="aside">
 		<div class="title">
@@ -231,7 +185,6 @@ List<Object> recentList = homeData.get("recent");
 		</div>
       </div>
     </div>
-    
     
     <div class="modal-bg"></div>
   </div>

@@ -64,6 +64,7 @@
 	    <property name="contentDAO" ref="contentDataDao"></property>
 	    <property name="contentStoreDAO" ref="contentStoreDao"></property>
 	    <property name="clipboardDAO" ref="clipboardDao"></property>
+	    <property name="incrementingHelper" ref="autoIncrementingHelper"></property>
 	</bean>
 	
 	<bean id="rest.public" class="com.ever365.ecm.service.PublicService">
