@@ -264,6 +264,7 @@ public class RepositoryService {
 		result.put(LIST, converted);
 		return result;
 	}
+	
 	public Repository getUserRepo() {
 		return repositoryDAO.getRepository("usr://" + AuthenticationUtil.getCurrentUser(), false);
 	}
@@ -303,7 +304,7 @@ public class RepositoryService {
 		
 		for (RepositoryListener listener : listeners) {
 			if (listener.enabled()) {
-				listener.onFileUploaded(entity);
+				listener.onFileUploaded(parentEntity, entity);
 			}
 		}
 		return entity.toMap();
@@ -562,7 +563,7 @@ public class RepositoryService {
 		
 		for (RepositoryListener listener : listeners) {
 			if (listener.enabled()) {
-				listener.onFolderCreated(entity);
+				listener.onFolderCreated(parentEntity, entity);
 			}
 		}
 		return entity.toMap();

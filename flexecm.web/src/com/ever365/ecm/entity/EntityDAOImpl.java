@@ -703,6 +703,5 @@ public class EntityDAOImpl implements EntityDAO {
 		
 		return result;
 	}
-	
 
 }
