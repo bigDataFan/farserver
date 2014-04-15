@@ -18,17 +18,11 @@ response.setContentType("text/html;charset=UTF-8");
 PublicService publicService = (PublicService)ContextLoaderListener.getCurrentWebApplicationContext().getBean("rest.public");
 Object user = session.getAttribute(LoginServlet.SESSION_USER);
 
-Map<String, List<Object>> homeData = publicService.homeData();
 
-if (homeData==null) {
-	publicService.initHomeData();
-	homeData = publicService.homeData();
-}
-
-List<Object> splash =  homeData.get("Splash");
-List<Object> recList = homeData.get("首页推荐");
-List<Object> hotList = homeData.get("热门");
-List<Object> recentList = homeData.get("recent");
+List<Map<String, Object>> splash =  publicService.getList("展示");
+List<Map<String, Object>> recList =  publicService.getList("首页推荐");
+List<Map<String, Object>> hotList =  publicService.getList("热门");
+List<Map<String, Object>> recentList =  publicService.getList("最新资源");
 
 %>
 

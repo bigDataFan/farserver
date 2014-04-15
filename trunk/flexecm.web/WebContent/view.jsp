@@ -27,16 +27,7 @@ if (entityMap==null) {
 	response.sendError(400);
 	return;
 }
-Map<String, List<Object>> homeData = publicService.homeData();
-
-if (homeData==null) {
-	publicService.initHomeData();
-	homeData = publicService.homeData();
-}
-List<Object> splash =  homeData.get("Splash");
-List<Object> recList = homeData.get("首页推荐");
-List<Object> hotList = homeData.get("热门");
-List<Object> recentList = homeData.get("recent");
+List<Map<String, Object>> hotList =  publicService.getList("热门");
 %>
 <title><%=entityMap.get("name") %></title>
 

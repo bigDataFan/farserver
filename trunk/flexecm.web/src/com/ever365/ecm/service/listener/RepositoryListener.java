@@ -14,13 +14,13 @@ public interface RepositoryListener {
 	public void beforeFileUpload(String repository, String path, String name,
 			InputStream is, long size);
 	
-	public void onFileUploaded(Entity entity);
+	public void onFileUploaded(Entity parent, Entity entity);
 	
-	public void onFolderCreated(Entity entity);
+	public void onFolderCreated(Entity parent, Entity entity);
 	
-	public void onMoved(Entity srcEntity, Entity targetEntity);
+	public void onMoved(Entity srcEntity, Entity targetParent);
 	
-	public void onCopied(Entity srcEntity, Entity targetEntity);
+	public void onCopied(Entity srcEntity, Entity targetParent);
 	
 	public void onDeleted(Entity entity);
 

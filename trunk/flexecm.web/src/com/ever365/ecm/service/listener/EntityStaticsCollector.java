@@ -32,7 +32,7 @@ public class EntityStaticsCollector implements RepositoryListener {
 	}
 
 	@Override
-	public void onFileUploaded(Entity entity) {
+	public void onFileUploaded(Entity parent, Entity entity) {
 		LinkedList<Entity> ancestors = entityDAO.getAncestor(entity);
 		if (ancestors==null) return;
 		
@@ -60,7 +60,7 @@ public class EntityStaticsCollector implements RepositoryListener {
 	}
 
 	@Override
-	public void onFolderCreated(Entity entity) {
+	public void onFolderCreated(Entity parent, Entity entity) {
 		LinkedList<Entity> ancestors = entityDAO.getAncestor(entity);
 		if (ancestors==null) return;
 		for (Entity ancestor : ancestors) {

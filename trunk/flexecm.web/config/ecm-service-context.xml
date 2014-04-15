@@ -52,8 +52,7 @@
 	<bean id="rest.repository" class="com.ever365.ecm.service.RepositoryService">
 	    <property name="listeners">
 	        <list>
-	            <ref bean="entityStaticsCollector"/>
-	            <ref bean="repositoryLogger"/>
+	            <ref bean="publicServiceRefresher"/>
 	        </list>
 	    </property>
 	    <property name="entityDAO" ref="entityDao"></property>
@@ -70,22 +69,21 @@
 	<bean id="rest.public" class="com.ever365.ecm.service.PublicService">
 		<property name="entityDAO" ref="entityDao"></property>
 	    <property name="contentDAO" ref="contentDataDao"></property>
-	    <property name="tags">
-	    	<list>
-	    		<value>首页推荐</value>
-	    		<value>Splash</value>
-	    		<value>热门</value>
-	    	</list>
-	    </property>
+	    <property name="repositoryDAO" ref="repositoryDao"></property>
 	</bean>
 	 	
 	<bean id="contentStoreFactory" class="com.ever365.ecm.content.ContentStoreFactory">
 		<property name="personService" ref="rest.person"></property>
 	</bean>
-	 	
-	<bean id="repositoryLogger" class="com.ever365.ecm.service.listener.LogListener">
-	</bean> 
-	 	
+	 
+	 <bean id="publicServiceRefresher" class="com.ever365.ecm.service.PublicServiceRefresher">
+	 	<property name="publicService" ref="rest.public"></property>
+	 	<property name="enabled">
+	        <value>${main.auto.refresh}</value>
+	    </property>
+	 </bean>
+	 
+	 
 	<bean id="entityStaticsCollector" class="com.ever365.ecm.service.listener.EntityStaticsCollector">
 	    <property name="entityDAO" ref="entityDao"></property>
 	    <property name="enabled">
